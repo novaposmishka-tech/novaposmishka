@@ -6,6 +6,9 @@
   },
   "options": {},
   "attributes": {
+    "title": {
+      "type": "string"
+    },
     "images": {
       "type": "component",
       "repeatable": true,
@@ -13,7 +16,13 @@
     },
     "radius": {
       "type": "enumeration",
-      "enum": ["sm", "md", "lg", "xl", "full"]
+      "enum": [
+        "sm",
+        "md",
+        "lg",
+        "xl",
+        "full"
+      ]
     }
   }
 }

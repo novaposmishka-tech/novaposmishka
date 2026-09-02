@@ -22,6 +22,17 @@
       "type": "component",
       "component": "utilities.basic-image",
       "repeatable": false
+    },
+    "rating": {
+      "type": "decimal",
+      "min": 0,
+      "max": 5
+    },
+    "date": {
+      "type": "date"
+    },
+    "source": {
+      "type": "string"
     }
   },
   "config": {}

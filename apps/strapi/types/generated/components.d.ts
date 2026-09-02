@@ -90,6 +90,7 @@ export interface SectionsCarousel extends Struct.ComponentSchema {
   attributes: {
     images: Schema.Attribute.Component<"utilities.image-with-link", true>
     radius: Schema.Attribute.Enumeration<["sm", "md", "lg", "xl", "full"]>
+    title: Schema.Attribute.String
   }
 }
 
@@ -173,6 +174,7 @@ export interface SectionsTestimonials extends Struct.ComponentSchema {
     icon: "quote"
   }
   attributes: {
+    links: Schema.Attribute.Component<"utilities.link", true>
     testimonials: Schema.Attribute.Component<"shared.testimonial", true>
     title: Schema.Attribute.String
   }
@@ -341,7 +343,10 @@ export interface SharedTestimonial extends Struct.ComponentSchema {
   attributes: {
     authorName: Schema.Attribute.String & Schema.Attribute.Required
     authorNote: Schema.Attribute.String
+    date: Schema.Attribute.Date
     photo: Schema.Attribute.Component<"utilities.basic-image", false>
+    rating: Schema.Attribute.Decimal
+    source: Schema.Attribute.String
     quote: Schema.Attribute.Text & Schema.Attribute.Required
   }
 }
