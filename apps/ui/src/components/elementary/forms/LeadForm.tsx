@@ -100,8 +100,12 @@ export function LeadForm({
           </div>
         )}
 
+        {/* The form always sits on the dark brand gradient, whose last stop is
+            the same colour as the primary button — a default button would go
+            invisible against the bottom of the card. Secondary inverts it. */}
         <Button
           type="submit"
+          variant="secondary"
           className="mx-auto mt-4 w-full md:w-fit"
           size="lg"
           form={leadFormName}

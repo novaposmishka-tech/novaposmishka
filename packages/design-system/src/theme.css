@@ -7,8 +7,8 @@
     --color-card-foreground: oklch(0.985 0 0);
     --color-popover: oklch(0.145 0 0);
     --color-popover-foreground: oklch(0.985 0 0);
-    --color-primary: oklch(0.985 0 0);
-    --color-primary-foreground: oklch(0.205 0 0);
+    --color-primary: var(--color-brand-accent);
+    --color-primary-foreground: var(--color-brand-deep);
     --color-secondary: oklch(0.269 0 0);
     --color-secondary-foreground: oklch(0.985 0 0);
     --color-muted: oklch(0.269 0 0);
@@ -19,32 +19,38 @@
     --color-destructive-foreground: oklch(0.985 0 0);
     --color-border: oklch(1 0 0 / 10%);
     --color-input: oklch(1 0 0 / 15%);
-    --color-ring: oklch(0.556 0 0);
+    --color-ring: var(--color-brand-accent);
   }
 }
 
 @theme static {
-  /* Shadcn/ui config (Light mode) */
+  /* Shadcn/ui config (Light mode)
+   *
+   * The semantic tokens below point at the brand palette defined further down,
+   * so a component written against shadcn conventions (bg-primary, text-muted-
+   * foreground, focus rings) comes out in the clinic's colours without
+   * knowing about them. Left as the starter shipped them, every button and
+   * focus ring renders in neutral grey. */
   --radius: 0.5rem;
   --color-background: oklch(1 0 0);
-  --color-foreground: oklch(0.145 0 0);
+  --color-foreground: var(--color-brand-ink);
   --color-card: oklch(1 0 0);
-  --color-card-foreground: oklch(0.145 0 0);
+  --color-card-foreground: var(--color-brand-ink);
   --color-popover: oklch(1 0 0);
-  --color-popover-foreground: oklch(0.145 0 0);
-  --color-primary: oklch(0.205 0 0);
-  --color-primary-foreground: oklch(0.985 0 0);
-  --color-secondary: oklch(0.97 0 0);
-  --color-secondary-foreground: oklch(0.205 0 0);
-  --color-muted: oklch(0.97 0 0);
-  --color-muted-foreground: oklch(0.556 0 0);
-  --color-accent: oklch(0.97 0 0);
-  --color-accent-foreground: oklch(0.205 0 0);
-  --color-destructive: oklch(0.577 0.245 27.325);
+  --color-popover-foreground: var(--color-brand-ink);
+  --color-primary: var(--color-brand-deep);
+  --color-primary-foreground: var(--color-brand-inverted);
+  --color-secondary: var(--color-brand-surface);
+  --color-secondary-foreground: var(--color-brand-deep);
+  --color-muted: var(--color-brand-surface);
+  --color-muted-foreground: var(--color-brand-body);
+  --color-accent: var(--color-brand-surface);
+  --color-accent-foreground: var(--color-brand-deep);
+  --color-destructive: var(--color-brand-danger);
   --color-destructive-foreground: oklch(0.985 0 0);
-  --color-border: oklch(0.922 0 0);
-  --color-input: oklch(0.922 0 0);
-  --color-ring: oklch(0.708 0 0);
+  --color-border: var(--color-brand-border);
+  --color-input: var(--color-brand-border);
+  --color-ring: var(--color-brand-accent);
 
   /* ---------------------------------------------------------------------
    * Nova Posmishka brand tokens (from Figma)
