@@ -263,5 +263,10 @@
       },
       "withGithub": "Увійти через GitHub"
     }
+  },
+  "testimonials": {
+    "readMore": "Читати далі",
+    "readLess": "Згорнути",
+    "rating": "Оцінка"
   }
 }
