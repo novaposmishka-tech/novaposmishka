@@ -1,0 +1,14 @@
+{
+  // `pnpm typecheck` runs the workspace's own TypeScript (6.x), which refuses
+  // `moduleResolution: "Node"` as deprecated unless the deprecation is
+  // acknowledged. Strapi's build cannot carry that acknowledgement: it
+  // compiles with the TypeScript 5.4.5 pinned by @strapi/typescript-utils,
+  // and 5.4 rejects "6.0" as an invalid value outright.
+  //
+  // So the option lives here instead of in tsconfig.json — the type check gets
+  // it, `strapi develop` and `strapi build` never see it.
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "ignoreDeprecations": "6.0"
+  }
+}

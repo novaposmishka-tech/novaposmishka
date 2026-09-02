@@ -28,7 +28,7 @@
     "test": "vitest run",
     "test:watch": "vitest",
     "transfer": "strapi transfer",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "tsc --noEmit -p tsconfig.typecheck.json"
   },
   "dependencies": {
     "@_sh/strapi-plugin-ckeditor": "7.1.1",
