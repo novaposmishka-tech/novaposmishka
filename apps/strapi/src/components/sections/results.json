@@ -17,6 +17,11 @@
       "type": "component",
       "component": "shared.before-after",
       "repeatable": true
+    },
+    "link": {
+      "type": "component",
+      "component": "utilities.link",
+      "repeatable": false
     }
   },
   "config": {}

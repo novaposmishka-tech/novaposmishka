@@ -187,6 +187,7 @@ export interface SectionsResults extends Struct.ComponentSchema {
   }
   attributes: {
     cases: Schema.Attribute.Component<"shared.before-after", true>
+    link: Schema.Attribute.Component<"utilities.link", false>
     subtitle: Schema.Attribute.Text
     title: Schema.Attribute.String
   }
@@ -205,6 +206,9 @@ export interface SharedBeforeAfter extends Struct.ComponentSchema {
     before: Schema.Attribute.Component<"utilities.basic-image", false> &
       Schema.Attribute.Required
     caption: Schema.Attribute.String
+    doctorName: Schema.Attribute.String
+    doctorPhoto: Schema.Attribute.Component<"utilities.basic-image", false>
+    tags: Schema.Attribute.Component<"utilities.text", true>
   }
 }
 

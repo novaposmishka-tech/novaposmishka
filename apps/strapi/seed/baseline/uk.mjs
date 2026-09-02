@@ -209,6 +209,47 @@ export const homepage = {
       ],
     },
     {
+      __component: "sections.results",
+      title: "Наші роботи",
+      cases: [
+        {
+          caption: "Вирівнювання зубів брекетами",
+          before: image("cases-1", "Зуби пацієнта до лікування"),
+          after: image("cases-2", "Зуби пацієнта після лікування"),
+          doctorName: "Сергій Шевчук",
+          doctorPhoto: image("cases-3", "Сергій Шевчук, лікар клініки"),
+          tags: [
+            text("Ортодонтія"),
+            text("Кейс: Тотальне перевтілення посмішки"),
+          ],
+        },
+        {
+          caption: "Імплантація та протезування на імплантах",
+          before: image("cases-4", "Зуби пацієнта до лікування"),
+          after: image("cases-5", "Зуби пацієнта після лікування"),
+          doctorName: "Сергій Шевчук",
+          doctorPhoto: image("cases-3", "Сергій Шевчук, лікар клініки"),
+          tags: [
+            text("Ортопедія"),
+            text("Хірургія"),
+            text("Кейс: Імплантація та протезування на імплантах"),
+          ],
+        },
+        {
+          caption: "Лікування карієсу в дитини",
+          before: image("cases-2", "Зуби пацієнта до лікування"),
+          after: image("cases-1", "Зуби пацієнта після лікування"),
+          doctorName: "Сергій Шевчук",
+          doctorPhoto: image("cases-3", "Сергій Шевчук, лікар клініки"),
+          tags: [
+            text("Дитяча стоматологія"),
+            text("Терапевтична стоматологія"),
+          ],
+        },
+      ],
+      link: anchor("Дивитись усі роботи", "#results", BUTTON_ON_DARK),
+    },
+    {
       __component: "sections.doctors",
       title: "Команда лікарів",
       doctors: [

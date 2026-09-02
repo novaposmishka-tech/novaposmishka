@@ -21,6 +21,19 @@
       "component": "utilities.basic-image",
       "repeatable": false,
       "required": true
+    },
+    "doctorName": {
+      "type": "string"
+    },
+    "doctorPhoto": {
+      "type": "component",
+      "component": "utilities.basic-image",
+      "repeatable": false
+    },
+    "tags": {
+      "type": "component",
+      "component": "utilities.text",
+      "repeatable": true
     }
   },
   "config": {}
