@@ -13,7 +13,10 @@ interface Props {
 }
 
 export function Breadcrumbs({ breadcrumbs, className, locale }: Props) {
-  if (!breadcrumbs || breadcrumbs.length === 0) {
+  // A single crumb is the current page pointing at itself — it tells the reader
+  // nothing and puts a one-item BreadcrumbList in the page's structured data.
+  // The homepage is the case that always hits this.
+  if (!breadcrumbs || breadcrumbs.length < 2) {
     return null
   }
 
