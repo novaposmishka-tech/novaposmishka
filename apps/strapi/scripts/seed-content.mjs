@@ -22,6 +22,7 @@ import process from "node:process"
 import { fileURLToPath } from "node:url"
 
 import { ensureMedia, resolveMediaMarkers } from "./seed-media.mjs"
+import { servicePages } from "../seed/baseline/services.mjs"
 import { footer, homepage, locale, navbar } from "../seed/baseline/uk.mjs"
 
 const appDir = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..")
@@ -47,9 +48,26 @@ try {
   const missingMedia = new Set()
   const resolve = (data) => resolveMediaMarkers(data, media, missingMedia)
 
-  await seedSingleType("api::navbar.navbar", "Navbar", resolve(navbar))
-  await seedSingleType("api::footer.footer", "Footer", resolve(footer))
-  await seedHomepage(resolve(homepage))
+  // Pages first: the navbar and the service cards link to them by slug, and
+  // those links need documentIds that only exist once the pages do.
+  const pageIds = new Map()
+  for (const servicePage of servicePages) {
+    const id = await seedPage(servicePage.slug, resolve(servicePage))
+    pageIds.set(servicePage.slug, id)
+  }
+
+  const missingPages = new Set()
+  const link = (data) => resolvePageLinks(resolve(data), pageIds, missingPages)
+
+  await seedSingleType("api::navbar.navbar", "Navbar", link(navbar))
+  await seedSingleType("api::footer.footer", "Footer", link(footer))
+  await seedPage(homepage.slug, link(homepage))
+
+  if (missingPages.size > 0) {
+    console.warn(
+      `[seed:content] Dropped ${missingPages.size} link(s) to pages that were not seeded: ${[...missingPages].join(", ")}`
+    )
+  }
 
   if (missingMedia.size > 0) {
     console.warn(
@@ -139,37 +157,85 @@ async function seedSingleType(uid, label, data) {
   console.log(`[seed:content] ${label}: created.`)
 }
 
-async function seedHomepage(homepage) {
+/** @returns {Promise<string>} the page's documentId, for links pointing at it. */
+async function seedPage(label, page) {
   const uid = "api::page.page"
   const existing = await strapi.documents(uid).findFirst({
     locale,
     fields: ["documentId"],
-    filters: { fullPath: homepage.fullPath },
+    filters: { fullPath: page.fullPath },
     status: "draft",
   })
 
   if (existing && !force) {
-    console.log("[seed:content] Homepage: exists, left untouched.")
+    console.log(`[seed:content] Page ${label}: exists, left untouched.`)
 
-    return
+    return existing.documentId
   }
 
   const document = existing
     ? await strapi.documents(uid).update({
         documentId: existing.documentId,
         locale,
-        data: homepage,
+        data: page,
       })
-    : await strapi.documents(uid).create({ locale, data: homepage })
+    : await strapi.documents(uid).create({ locale, data: page })
 
-  // The UI reads published documents, so a draft-only homepage still 404s.
+  // The UI reads published documents, so a draft-only page still 404s.
   await strapi
     .documents(uid)
     .publish({ documentId: document.documentId, locale })
 
   console.log(
-    `[seed:content] Homepage: ${existing ? "replaced" : "created"} and published.`
+    `[seed:content] Page ${label}: ${existing ? "replaced" : "created"} and published.`
   )
+
+  return document.documentId
+}
+
+/**
+ * Turns every `pageLink()` marker into a `utilities.link` relation.
+ *
+ * Seeded links point at other seeded pages by slug, because a documentId is
+ * only known once the page exists and differs per database. Storing the
+ * relation rather than a path means a link keeps working if the page is later
+ * moved under a different parent.
+ */
+function resolvePageLinks(value, pageIds, missing = new Set()) {
+  if (Array.isArray(value)) {
+    return value
+      .map((item) => resolvePageLinks(item, pageIds, missing))
+      .filter((item) => item !== undefined)
+  }
+
+  if (value === null || typeof value !== "object") {
+    return value
+  }
+
+  if (typeof value.__pageSlug === "string") {
+    const documentId = pageIds.get(value.__pageSlug)
+
+    if (documentId == null) {
+      missing.add(value.__pageSlug)
+
+      // Undefined, so the callers above drop the key or the array entry.
+      return
+    }
+
+    const { __pageSlug, ...rest } = value
+
+    return { ...rest, type: "page", page: documentId }
+  }
+
+  const out = {}
+  for (const [key, item] of Object.entries(value)) {
+    const resolved = resolvePageLinks(item, pageIds, missing)
+    if (resolved !== undefined) {
+      out[key] = resolved
+    }
+  }
+
+  return out
 }
 
 function normalizeDatabaseHost() {

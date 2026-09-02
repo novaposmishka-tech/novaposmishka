@@ -7,52 +7,38 @@
  * once an editor changes it in the admin panel the seed leaves it alone (see
  * scripts/seed-content.mjs).
  *
- * Images are deliberately absent: `utilities.basic-image` requires a media
- * entry and the clinic's photos are not in the repository yet. Every section
- * below renders text-only until they are uploaded through the admin panel.
+ * The service pages live in ./services.mjs; the helpers both files share are in
+ * ./shared.mjs.
  */
 
-export const locale = "uk"
+import { SERVICE_SLUGS } from "./services.mjs"
+import {
+  ADDRESS,
+  anchor,
+  BUTTON,
+  BUTTON_ON_DARK,
+  BUTTON_QUIET,
+  EMAIL,
+  image,
+  OPENING_HOURS,
+  pageLink,
+  PHONES,
+  text,
+} from "./shared.mjs"
 
-const PHONES = ["093 762 05 00", "067 762 55 00"]
-const EMAIL = "novaposmishka@gmail.com"
-const ADDRESS = "вулиця Івана Сльоти, 50а, м. Житомир"
-const OPENING_HOURS = ["Пн–Пт: 9:00 – 19:00", "Сб: 9:00 – 15:00"]
-
-const text = (value) => ({ text: value })
-
-/**
- * An in-page anchor, e.g. the CTA that scrolls down to the lead form.
- *
- * `decorations` is not optional in practice: StrapiLink falls back to the
- * "link" variant, which renders a call to action as plain underlined text.
- */
-const anchor = (label, href, decorations = null) => ({
-  type: "external",
-  label,
-  href,
-  newTab: false,
-  decorations,
-})
-
-/** The filled brand button the design uses for every "Записатися". */
-const BUTTON = { variant: "default", size: "lg", hasIcons: false }
-
-/** Its counterpart on a photo or a dark card: white face, dark label. */
-const BUTTON_ON_DARK = { variant: "secondary", size: "lg", hasIcons: false }
-
-/**
- * A `utilities.basic-image` pointing at a file in `seed/media`, named without
- * its extension. The seeder swaps the marker for the uploaded file's id, which
- * differs per database — see scripts/seed-media.mjs.
- */
-const image = (name, alt) => ({ __media: name, alt })
+export { locale } from "./shared.mjs"
 
 export const navbar = {
   navbarItems: [
     // The renderer only links an item when `isCategoryLink` is set; a plain
     // label without sub-items falls back to inert text.
-    { isCategoryLink: true, link: anchor("Послуги", "/#services") },
+    {
+      isCategoryLink: false,
+      label: "Послуги",
+      categoryItems: SERVICE_SLUGS.map(({ card, slug }) =>
+        pageLink(card, slug)
+      ),
+    },
     { isCategoryLink: true, link: anchor("Про нас", "/#why-us") },
     { isCategoryLink: true, link: anchor("Лікарі", "/#doctors") },
     { isCategoryLink: true, link: anchor("Відгуки", "/#testimonials") },
@@ -181,37 +167,44 @@ export const homepage = {
           name: "Терапія",
           description: "Основний скрижаль для здорових та красивих зубів",
           icon: image("services-1", ""),
+          link: pageLink("Детальніше", "terapiia", BUTTON_QUIET),
         },
         {
           name: "Ортопедія",
           description: "Ваш шлях до здорових та гарних зубів",
           icon: image("services-2", ""),
+          link: pageLink("Детальніше", "ortopediia", BUTTON_QUIET),
         },
         {
           name: "Хірургія",
           description: "Новий рівень турботи про Ваші зуби",
           icon: image("services-3", ""),
+          link: pageLink("Детальніше", "khirurhiia", BUTTON_QUIET),
         },
         {
           name: "Ортодонтія",
           description: "Красива та здорова посмішка на кожен день",
           icon: image("services-4", ""),
+          link: pageLink("Детальніше", "ortodontiia", BUTTON_QUIET),
         },
         {
           name: "Пародонтологія",
           description: "Ми знаємо, як подбати про здоров'я Ваших зубів та ясен",
           icon: image("services-5", ""),
+          link: pageLink("Детальніше", "parodontolohiia", BUTTON_QUIET),
         },
         {
           name: "Дитяча стоматологія",
           description:
             "Створюємо основу для здорових посмішок маленьких пацієнтів",
           icon: image("services-6", ""),
+          link: pageLink("Детальніше", "dytiacha-stomatolohiia", BUTTON_QUIET),
         },
         {
           name: "Гнатологія",
           description: "Здоров'я скронево-нижньощелепного суглобу",
           icon: image("services-7", ""),
+          link: pageLink("Детальніше", "hnatolohiia", BUTTON_QUIET),
         },
       ],
     },
