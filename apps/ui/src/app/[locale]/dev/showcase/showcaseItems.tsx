@@ -27,6 +27,7 @@ import MockedStrapiHeadingWithCTAButton from "@/app/[locale]/dev/showcase/compon
 import MockedStrapiHero from "@/app/[locale]/dev/showcase/components/strapiComponents/MockedStrapiHero"
 import MockedStrapiHeroCollage from "@/app/[locale]/dev/showcase/components/strapiComponents/MockedStrapiHeroCollage"
 import MockedStrapiImageWithCTAButton from "@/app/[locale]/dev/showcase/components/strapiComponents/MockedStrapiImageWithCTAButton"
+import MockedStrapiPriceList from "@/app/[locale]/dev/showcase/components/strapiComponents/MockedStrapiPriceList"
 import MockedStrapiResults from "@/app/[locale]/dev/showcase/components/strapiComponents/MockedStrapiResults"
 import MockedStrapiServices from "@/app/[locale]/dev/showcase/components/strapiComponents/MockedStrapiServices"
 import MockedStrapiTestimonials from "@/app/[locale]/dev/showcase/components/strapiComponents/MockedStrapiTestimonials"
@@ -213,6 +214,13 @@ export const showcaseItems = [
     kind: "component",
     component: MockedStrapiWhyUs,
     description: "Reasons to choose the clinic, with an optional side image",
+  },
+  {
+    id: "price-list",
+    label: "Price list",
+    kind: "component",
+    component: MockedStrapiPriceList,
+    description: "Service prices, grouped by category",
   },
   {
     id: "services",

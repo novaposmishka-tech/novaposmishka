@@ -80,7 +80,8 @@
         "sections.testimonials",
         "sections.why-us",
         "utilities.ck-editor-text",
-        "utilities.tip-tap-rich-text"
+        "utilities.tip-tap-rich-text",
+        "sections.price-list"
       ]
     },
     "children": {

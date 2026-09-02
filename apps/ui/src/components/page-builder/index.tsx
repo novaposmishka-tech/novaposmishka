@@ -13,6 +13,7 @@ import { StrapiStatistics } from "@/components/page-builder/components/sections/
 import StrapiHeadingWithCTAButton from "@/components/page-builder/components/sections/StrapiHeadingWithCTAButton"
 import StrapiHero from "@/components/page-builder/components/sections/StrapiHero"
 import StrapiImageWithCTAButton from "@/components/page-builder/components/sections/StrapiImageWithCTAButton"
+import StrapiPriceList from "@/components/page-builder/components/sections/StrapiPriceList"
 import StrapiResults from "@/components/page-builder/components/sections/StrapiResults"
 import StrapiServices from "@/components/page-builder/components/sections/StrapiServices"
 import StrapiTestimonials from "@/components/page-builder/components/sections/StrapiTestimonials"
@@ -49,6 +50,7 @@ export const PageContentComponents: Partial<
   "sections.contacts": StrapiContacts,
   "sections.doctors": StrapiDoctors,
   "sections.results": StrapiResults,
+  "sections.price-list": StrapiPriceList,
   "sections.services": StrapiServices,
   "sections.testimonials": StrapiTestimonials,
   "sections.why-us": StrapiWhyUs,

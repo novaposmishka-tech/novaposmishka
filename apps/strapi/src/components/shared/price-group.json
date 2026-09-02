@@ -1,0 +1,21 @@
+{
+  "collectionName": "components_shared_price_groups",
+  "info": {
+    "displayName": "PriceGroup",
+    "icon": "layer",
+    "description": ""
+  },
+  "options": {},
+  "attributes": {
+    "title": {
+      "type": "string",
+      "required": true
+    },
+    "rows": {
+      "type": "component",
+      "component": "shared.price-row",
+      "repeatable": true
+    }
+  },
+  "config": {}
+}
