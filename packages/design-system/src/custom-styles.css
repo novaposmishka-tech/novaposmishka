@@ -11,8 +11,11 @@
   word-break: break-word;
 }
 
+/* CMS body copy. Brand tokens, not Tailwind greys — and note that this
+   rule sets the colour on the paragraph itself, so an inherited colour from a
+   dark section cannot win: those sections pass [&_p]:text-inherit. */
 .ck-editor-rich-text-page p {
-  @apply text-gray-600 dark:text-gray-400;
+  @apply text-brand-body dark:text-brand-muted;
 }
 
 .ck-content iframe[src^="https://www.youtube.com"] {
