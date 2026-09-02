@@ -187,6 +187,9 @@ export interface SectionsResults extends Struct.ComponentSchema {
   }
   attributes: {
     cases: Schema.Attribute.Component<"shared.before-after", true>
+    display: Schema.Attribute.Enumeration<["carousel", "grid"]> &
+      Schema.Attribute.Required &
+      Schema.Attribute.DefaultTo<"carousel">
     link: Schema.Attribute.Component<"utilities.link", false>
     subtitle: Schema.Attribute.Text
     title: Schema.Attribute.String

@@ -8,8 +8,8 @@
  *
  * The starter seeds from a `strapi export` tarball, which needs someone to
  * produce it from a populated instance first. This script covers the other
- * direction: it builds the baseline from the copy in `seed/baseline/uk.mjs`,
- * so a fresh clone (or a database whose demo locales were deleted) can reach a
+ * direction: it builds the baseline from the copy in `seed/baseline/`, so a
+ * fresh clone (or a database whose demo locales were deleted) can reach a
  * rendering site without an admin session.
  *
  * It only ever creates what is missing — an existing document is left exactly
@@ -22,6 +22,7 @@ import process from "node:process"
 import { fileURLToPath } from "node:url"
 
 import { ensureMedia, resolveMediaMarkers } from "./seed-media.mjs"
+import { casesPage } from "../seed/baseline/cases.mjs"
 import { servicePages } from "../seed/baseline/services.mjs"
 import { footer, homepage, locale, navbar } from "../seed/baseline/uk.mjs"
 
@@ -51,9 +52,8 @@ try {
   // Pages first: the navbar and the service cards link to them by slug, and
   // those links need documentIds that only exist once the pages do.
   const pageIds = new Map()
-  for (const servicePage of servicePages) {
-    const id = await seedPage(servicePage.slug, resolve(servicePage))
-    pageIds.set(servicePage.slug, id)
+  for (const page of [...servicePages, casesPage]) {
+    pageIds.set(page.slug, await seedPage(page.slug, resolve(page)))
   }
 
   const missingPages = new Set()

@@ -22,6 +22,15 @@
       "type": "component",
       "component": "utilities.link",
       "repeatable": false
+    },
+    "display": {
+      "type": "enumeration",
+      "enum": [
+        "carousel",
+        "grid"
+      ],
+      "default": "carousel",
+      "required": true
     }
   },
   "config": {}
