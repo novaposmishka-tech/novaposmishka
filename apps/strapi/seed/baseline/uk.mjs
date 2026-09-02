@@ -12,6 +12,7 @@
  */
 
 import { cases } from "./cases.mjs"
+import { reviews } from "./reviews.mjs"
 import { SERVICE_SLUGS } from "./services.mjs"
 import {
   ADDRESS,
@@ -245,20 +246,27 @@ export const homepage = {
     },
     {
       __component: "sections.testimonials",
-      title: "Що кажуть пацієнти",
-      testimonials: [
+      title: "Відгуки",
+      testimonials: reviews,
+      links: [
         {
-          quote:
-            "Вже після першого візиту відчула покращення, а після курсу лікування зник дискомфорт і ясна стали здоровими.",
-          authorName: "Марія Т.",
-          authorNote: "Лікування ясен",
+          ...anchor(
+            "Google",
+            "https://www.google.com/search?q=Нова+Посмішка+Житомир",
+            BUTTON_QUIET
+          ),
+          newTab: true,
         },
-        {
-          quote:
-            "Боявся імплантації роками. Тут усе пояснили спокійно і крок за кроком — виявилося зовсім не страшно.",
-          authorName: "Сергій П.",
-          authorNote: "Імплантація",
-        },
+      ],
+    },
+    {
+      __component: "sections.carousel",
+      title: "Галерея",
+      images: [
+        { image: image("gallery-1", "Стоматологічний кабінет клініки") },
+        { image: image("gallery-2", "Обладнання клініки") },
+        { image: image("gallery-3", "Прийом маленького пацієнта") },
+        { image: image("gallery-4", "Робота лікаря з пацієнтом") },
       ],
     },
     {
