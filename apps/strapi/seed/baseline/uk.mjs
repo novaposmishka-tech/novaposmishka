@@ -21,13 +21,22 @@ const OPENING_HOURS = ["Пн–Пт: 9:00 – 19:00", "Сб: 9:00 – 15:00"]
 
 const text = (value) => ({ text: value })
 
-/** An in-page anchor, e.g. the CTA that scrolls down to the lead form. */
-const anchor = (label, href) => ({
+/**
+ * An in-page anchor, e.g. the CTA that scrolls down to the lead form.
+ *
+ * `decorations` is not optional in practice: StrapiLink falls back to the
+ * "link" variant, which renders a call to action as plain underlined text.
+ */
+const anchor = (label, href, decorations = null) => ({
   type: "external",
   label,
   href,
   newTab: false,
+  decorations,
 })
+
+/** The filled brand button the design uses for every "Записатися". */
+const BUTTON = { variant: "default", size: "lg", hasIcons: false }
 
 export const navbar = {
   navbarItems: [
@@ -39,7 +48,7 @@ export const navbar = {
     { isCategoryLink: true, link: anchor("Відгуки", "/#testimonials") },
     { isCategoryLink: true, link: anchor("Контакти", "/#contacts") },
   ],
-  primaryButtons: [anchor("Записатися", "/#lead-form-section")],
+  primaryButtons: [anchor("Записатися", "/#lead-form-section", BUTTON)],
 }
 
 export const footer = {
@@ -101,7 +110,7 @@ export const homepage = {
       title: "<h1><strong>Ваша посмішка — наша турбота</strong></h1>",
       description:
         "<p>Сучасні методи лікування, досвідчені лікарі та турбота про кожного пацієнта.</p>",
-      links: [anchor("Записатися", "#lead-form-section")],
+      links: [anchor("Записатися", "#lead-form-section", BUTTON)],
       serviceTags: [
         text("Імплантація"),
         text("Ортодонтія"),
