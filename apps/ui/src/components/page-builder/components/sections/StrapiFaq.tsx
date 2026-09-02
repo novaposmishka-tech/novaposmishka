@@ -20,30 +20,45 @@ export function StrapiFaq({
 
   return (
     <section>
-      <Container className="py-8">
-        <div className="flex flex-col items-center gap-6">
-          <Typography tag="h2" variant="heading3">
+      <Container className="flex flex-col gap-8">
+        <div className="flex max-w-4xl flex-col gap-3">
+          <Typography tag="h2" className="text-brand-ink">
             {component.title}
           </Typography>
-          <Typography>{component.subTitle}</Typography>
-
-          {component.accordions && (
-            <div className="w-full">
-              <Accordion
-                type="single"
-                collapsible
-                className="mx-auto w-full max-w-180"
-              >
-                {component.accordions.map((x) => (
-                  <AccordionItem key={x.id} value={x.id.toString()}>
-                    <AccordionTrigger>{x.question}</AccordionTrigger>
-                    <AccordionContent>{x.answer}</AccordionContent>
-                  </AccordionItem>
-                ))}
-              </Accordion>
-            </div>
+          {component.subTitle && (
+            <Typography className="text-brand-body">
+              {component.subTitle}
+            </Typography>
           )}
         </div>
+
+        {component.accordions && (
+          <Accordion type="single" collapsible className="w-full">
+            {component.accordions.map((x) =>
+              x.answer ? (
+                <AccordionItem key={x.id} value={x.id.toString()}>
+                  {/* The design sets these rows at 18px across the full content
+                      width, not the small centred column the starter shipped. */}
+                  <AccordionTrigger className="text-brand-ink text-lg">
+                    {x.question}
+                  </AccordionTrigger>
+                  <AccordionContent className="text-brand-body text-base">
+                    {x.answer}
+                  </AccordionContent>
+                </AccordionItem>
+              ) : (
+                // An entry with nothing written for it yet stays a plain row:
+                // a chevron that opens onto an empty panel is worse than none.
+                <div
+                  key={x.id}
+                  className="text-brand-ink border-b py-4 text-lg font-medium last:border-b-0"
+                >
+                  {x.question}
+                </div>
+              )
+            )}
+          </Accordion>
+        )}
       </Container>
     </section>
   )

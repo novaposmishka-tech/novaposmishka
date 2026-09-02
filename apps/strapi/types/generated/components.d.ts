@@ -208,6 +208,19 @@ export interface SharedBeforeAfter extends Struct.ComponentSchema {
   }
 }
 
+export interface SectionsPriceList extends Struct.ComponentSchema {
+  collectionName: "components_sections_price_lists"
+  info: {
+    description: ""
+    displayName: "PriceList"
+    icon: "priceTag"
+  }
+  attributes: {
+    groups: Schema.Attribute.Component<"shared.price-group", true>
+    title: Schema.Attribute.String
+  }
+}
+
 export interface SectionsServices extends Struct.ComponentSchema {
   collectionName: "components_sections_services"
   info: {
@@ -237,6 +250,32 @@ export interface SectionsWhyUs extends Struct.ComponentSchema {
     >
     subtitle: Schema.Attribute.Text
     title: Schema.Attribute.String
+  }
+}
+
+export interface SharedPriceGroup extends Struct.ComponentSchema {
+  collectionName: "components_shared_price_groups"
+  info: {
+    description: ""
+    displayName: "PriceGroup"
+    icon: "layer"
+  }
+  attributes: {
+    rows: Schema.Attribute.Component<"shared.price-row", true>
+    title: Schema.Attribute.String & Schema.Attribute.Required
+  }
+}
+
+export interface SharedPriceRow extends Struct.ComponentSchema {
+  collectionName: "components_shared_price_rows"
+  info: {
+    description: ""
+    displayName: "PriceRow"
+    icon: "priceTag"
+  }
+  attributes: {
+    label: Schema.Attribute.String & Schema.Attribute.Required
+    price: Schema.Attribute.String & Schema.Attribute.Required
   }
 }
 
@@ -570,7 +609,7 @@ export interface UtilitiesAccordions extends Struct.ComponentSchema {
     displayName: "Accordions"
   }
   attributes: {
-    answer: Schema.Attribute.Text & Schema.Attribute.Required
+    answer: Schema.Attribute.Text
     question: Schema.Attribute.String & Schema.Attribute.Required
   }
 }
@@ -736,6 +775,7 @@ declare module "@strapi/strapi" {
       "sections.hero": SectionsHero
       "sections.image-with-cta-button": SectionsImageWithCtaButton
       "sections.results": SectionsResults
+      "sections.price-list": SectionsPriceList
       "sections.services": SectionsServices
       "sections.statistics": SectionsStatistics
       "sections.testimonials": SectionsTestimonials
@@ -750,6 +790,8 @@ declare module "@strapi/strapi" {
       "shared.figure": SharedFigure
       "shared.image-with-config": SharedImageWithConfig
       "shared.image-with-title-and-description": SharedImageWithTitleAndDescription
+      "shared.price-group": SharedPriceGroup
+      "shared.price-row": SharedPriceRow
       "shared.rating": SharedRating
       "shared.service": SharedService
       "shared.testimonial": SharedTestimonial

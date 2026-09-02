@@ -32,6 +32,10 @@ export function StrapiHero({
   const hasBackground = Boolean(backgroundImage)
   const hasImages = !hasBackground && Boolean(images?.length)
   const isCentered = !hasBackground && !hasImages
+  // Service pages use the photo hero with copy alone. Without a bottom row to
+  // push away, stretching the card just leaves a tall empty half.
+  const hasBottomRow =
+    hasBackground && (Boolean(images?.length) || Boolean(serviceTags?.length))
 
   return (
     <section>
@@ -59,7 +63,10 @@ export function StrapiHero({
           className={cn(
             "flex flex-col gap-10",
             hasBackground
-              ? "px-8 py-14 md:px-12.5 lg:min-h-175 lg:justify-between lg:py-16"
+              ? cn(
+                  "px-8 py-14 md:px-12.5 lg:py-16",
+                  hasBottomRow && "lg:min-h-175 lg:justify-between"
+                )
               : "px-4 py-8 lg:py-12",
             hasImages && "lg:flex-row lg:items-center lg:gap-16"
           )}
@@ -131,7 +138,7 @@ export function StrapiHero({
 
           {/* Over a photo the design closes the hero with its own row: the
               clinic snapshot on the left, the specialties on the right. */}
-          {hasBackground && (
+          {hasBottomRow && (
             <div className="flex flex-col gap-8 lg:flex-row lg:items-end lg:justify-between">
               {images?.[0] && (
                 <StrapiBasicImage
