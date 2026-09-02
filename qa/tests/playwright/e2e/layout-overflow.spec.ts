@@ -16,11 +16,6 @@ const WIDTHS = [
 ]
 
 test.describe("Layout has no horizontal overflow", () => {
-  // The showcase is the heaviest route in the app and the dev server compiles
-  // it on demand, with every browser project asking for it at once. The
-  // default 30s is not enough for the first worker through the door.
-  test.describe.configure({ timeout: 60_000 })
-
   for (const { name, width } of WIDTHS) {
     test(`showcase fits the viewport at ${name} (${width}px)`, async ({
       page,

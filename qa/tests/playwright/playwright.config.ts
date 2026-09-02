@@ -117,7 +117,17 @@ export default defineConfig({
   fullyParallel: true,
   forbidOnly: !!process.env.CI,
   retries: process.env.CI ? 2 : 0,
-  workers: process.env.CI ? 3 : undefined,
+  // Locally this runs against a dev server that compiles routes on demand.
+  // Playwright would otherwise default to half the cores, and every one of
+  // those workers requests the same uncompiled route at once — which times out
+  // tests that have nothing wrong with them.
+  workers: process.env.CI ? 3 : 2,
+
+  // The suite runs against a dev server that compiles each route on first
+  // request, and every worker asks for the homepage and the showcase at once.
+  // Playwright's 30s default expires on that compile, not on anything the
+  // page does wrong.
+  timeout: 60_000,
   reporter: [["html", { open: process.env.CI ? "never" : "on-failure" }]],
 
   use: {
