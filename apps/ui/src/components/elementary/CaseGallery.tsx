@@ -8,6 +8,9 @@ import { cn } from "@/lib/styles"
 
 type Case = NonNullable<Data.Component<"sections.results">["cases"]>[number]
 
+/** How many a grid shows before the reader asks for the rest. */
+const PAGE_SIZE = 4
+
 /**
  * The clinic's before/after cases, filtered by the tags the cases carry.
  *
@@ -18,10 +21,19 @@ type Case = NonNullable<Data.Component<"sections.results">["cases"]>[number]
 export function CaseGallery({
   cases,
   labels,
+  display = "carousel",
 }: {
   readonly cases: Case[]
-  readonly labels: { all: string; before: string; after: string; list: string }
+  readonly labels: {
+    all: string
+    before: string
+    after: string
+    list: string
+    more: string
+  }
+  readonly display?: "carousel" | "grid"
 }) {
+  const isGrid = display === "grid"
   const tags = useMemo(() => {
     const seen = new Set<string>()
     for (const item of cases) {
@@ -34,10 +46,12 @@ export function CaseGallery({
   }, [cases])
 
   const [active, setActive] = useState<string | null>(null)
+  const [limit, setLimit] = useState(PAGE_SIZE)
 
-  const shown = active
+  const matching = active
     ? cases.filter((item) => item.tags?.some((tag) => tag.text === active))
     : cases
+  const shown = isGrid ? matching.slice(0, limit) : matching
 
   return (
     <div className="flex flex-col gap-10">
@@ -47,13 +61,20 @@ export function CaseGallery({
             <li key={tag ?? "all"}>
               <button
                 type="button"
-                onClick={() => setActive(tag)}
+                onClick={() => {
+                  setActive(tag)
+                  setLimit(PAGE_SIZE)
+                }}
                 aria-pressed={active === tag}
                 className={cn(
                   "cursor-pointer rounded-full px-7.5 py-3 text-base transition-colors",
                   active === tag
-                    ? "text-brand-ink bg-white"
-                    : "text-brand-inverted bg-white/10 hover:bg-white/20"
+                    ? isGrid
+                      ? "bg-brand-deep text-brand-inverted"
+                      : "text-brand-ink bg-white"
+                    : isGrid
+                      ? "bg-brand-surface text-brand-ink hover:bg-brand-border"
+                      : "text-brand-inverted bg-white/10 hover:bg-white/20"
                 )}
               >
                 {tag ?? labels.all}
@@ -63,20 +84,31 @@ export function CaseGallery({
         </ul>
       )}
 
-      {/* A scroll-snap row rather than a carousel widget — no script, and it
-          works with touch. A scrollable region is not keyboard-operable on its
-          own, though, so it takes a tab stop and a name of its own. */}
+      {/* The listing page lays the cases out as a grid; on the homepage they
+          are a scroll-snap row — no script, and it works with touch. A
+          scrollable region is not keyboard-operable on its own, though, so
+          there it takes a tab stop and a name. */}
       <ul
-        tabIndex={0}
-        aria-label={labels.list}
-        className="-mx-2 flex snap-x snap-mandatory list-none gap-6 overflow-x-auto px-2 pb-2 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
+        {...(isGrid ? {} : { tabIndex: 0, "aria-label": labels.list })}
+        className={cn(
+          "list-none",
+          isGrid
+            ? "grid grid-cols-1 gap-6 md:grid-cols-2"
+            : "-mx-2 flex snap-x snap-mandatory gap-6 overflow-x-auto px-2 pb-2 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
+        )}
       >
         {shown.map((item) => (
           <li
             key={item.id}
-            // Two to a row, whatever the container is: the design's fixed 598px
-            // card assumes its own container width and gets clipped in ours.
-            className="w-full shrink-0 snap-start rounded-[26px] bg-white/5 p-7.5 md:w-[calc(50%-0.75rem)]"
+            className={cn(
+              "rounded-[26px] p-7.5",
+              isGrid
+                ? "border-brand-border bg-brand-paper border"
+                : // Two to a row, whatever the container is: the design's fixed
+                  // 598px card assumes its own container width and is clipped
+                  // in ours.
+                  "w-full shrink-0 snap-start bg-white/5 md:w-[calc(50%-0.75rem)]"
+            )}
           >
             <div className="flex flex-col gap-6">
               <div className="relative grid grid-cols-2 gap-0 overflow-hidden rounded-2xl">
@@ -86,20 +118,35 @@ export function CaseGallery({
 
               <div className="flex flex-col gap-5">
                 {item.caption && (
-                  <p className="text-brand-inverted text-2xl font-semibold">
+                  <p
+                    className={cn(
+                      "text-2xl font-semibold",
+                      isGrid ? "text-brand-ink" : "text-brand-inverted"
+                    )}
+                  >
                     {item.caption}
                   </p>
                 )}
 
                 {item.doctorName && (
-                  <div className="flex items-center gap-4 border-t border-white/15 pt-5">
+                  <div
+                    className={cn(
+                      "flex items-center gap-4 border-t pt-5",
+                      isGrid ? "border-brand-border" : "border-white/15"
+                    )}
+                  >
                     {item.doctorPhoto && (
                       <StrapiBasicImage
                         component={item.doctorPhoto}
                         className="size-17.5 rounded-full object-cover"
                       />
                     )}
-                    <span className="text-brand-inverted text-xl">
+                    <span
+                      className={cn(
+                        "text-xl",
+                        isGrid ? "text-brand-ink" : "text-brand-inverted"
+                      )}
+                    >
                       {item.doctorName}
                     </span>
                   </div>
@@ -109,6 +156,16 @@ export function CaseGallery({
           </li>
         ))}
       </ul>
+
+      {isGrid && matching.length > shown.length && (
+        <button
+          type="button"
+          onClick={() => setLimit((current) => current + PAGE_SIZE)}
+          className="bg-brand-deep text-brand-inverted hover:bg-brand-mid mx-auto cursor-pointer rounded-full px-7.5 py-3 text-base transition-colors"
+        >
+          {labels.more}
+        </button>
+      )}
     </div>
   )
 }
