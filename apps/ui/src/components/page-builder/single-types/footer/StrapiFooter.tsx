@@ -25,8 +25,12 @@ export function StrapiFooter({ locale }: { readonly locale: Locale }) {
   const now = new Date()
   const currentYear = now.getFullYear()
 
+  // A real `footer` element, not a div: it makes this the page's `contentinfo`
+  // landmark. Without it the CTA form, the contact list and the copyright all
+  // sit outside any landmark, which is an axe `region` violation and leaves
+  // screen-reader users no way to jump here.
   return (
-    <div className="bg-primary/10 w-full border-t shadow-sm backdrop-blur transition-colors duration-300">
+    <footer className="bg-primary/10 w-full border-t shadow-sm backdrop-blur transition-colors duration-300">
       {footer.leadForm && (
         <div className="pt-16 pb-8">
           <StrapiLeadForm component={footer.leadForm} />
@@ -131,7 +135,7 @@ export function StrapiFooter({ locale }: { readonly locale: Locale }) {
           </div>
         </div>
       </Container>
-    </div>
+    </footer>
   )
 }
 
