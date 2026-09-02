@@ -1,0 +1,7 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(bash .claude/skills/strapi-schema-check/scripts/check.sh main)"
+    ]
+  }
+}

@@ -1,0 +1,25 @@
+{
+  "collectionName": "components_sections_contacts",
+  "info": {
+    "displayName": "Contacts",
+    "icon": "phone",
+    "description": ""
+  },
+  "options": {},
+  "attributes": {
+    "title": {
+      "type": "string"
+    },
+    "items": {
+      "type": "component",
+      "component": "shared.contact-item",
+      "repeatable": true
+    },
+    "image": {
+      "type": "component",
+      "component": "utilities.basic-image",
+      "repeatable": false
+    }
+  },
+  "config": {}
+}

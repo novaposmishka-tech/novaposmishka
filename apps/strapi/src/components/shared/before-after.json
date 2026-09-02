@@ -1,0 +1,27 @@
+{
+  "collectionName": "components_shared_before_afters",
+  "info": {
+    "displayName": "BeforeAfter",
+    "icon": "picture",
+    "description": ""
+  },
+  "options": {},
+  "attributes": {
+    "caption": {
+      "type": "string"
+    },
+    "before": {
+      "type": "component",
+      "component": "utilities.basic-image",
+      "repeatable": false,
+      "required": true
+    },
+    "after": {
+      "type": "component",
+      "component": "utilities.basic-image",
+      "repeatable": false,
+      "required": true
+    }
+  },
+  "config": {}
+}

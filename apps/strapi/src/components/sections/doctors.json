@@ -1,0 +1,23 @@
+{
+  "collectionName": "components_sections_doctors",
+  "info": {
+    "displayName": "Doctors",
+    "icon": "user",
+    "description": ""
+  },
+  "options": {},
+  "attributes": {
+    "title": {
+      "type": "string"
+    },
+    "subtitle": {
+      "type": "text"
+    },
+    "doctors": {
+      "type": "component",
+      "component": "shared.doctor",
+      "repeatable": true
+    }
+  },
+  "config": {}
+}

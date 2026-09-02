@@ -1,0 +1,22 @@
+{
+  "collectionName": "components_forms_lead_forms",
+  "info": {
+    "displayName": "LeadForm",
+    "icon": "phone",
+    "description": ""
+  },
+  "options": {},
+  "attributes": {
+    "title": {
+      "type": "string"
+    },
+    "description": {
+      "type": "text"
+    },
+    "gdpr": {
+      "type": "component",
+      "repeatable": false,
+      "component": "utilities.link"
+    }
+  }
+}

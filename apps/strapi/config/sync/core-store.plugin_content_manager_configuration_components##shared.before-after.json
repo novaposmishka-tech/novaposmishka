@@ -1,0 +1,108 @@
+{
+  "key": "plugin_content_manager_configuration_components::shared.before-after",
+  "value": {
+    "settings": {
+      "bulkable": true,
+      "filterable": true,
+      "searchable": true,
+      "pageSize": 10,
+      "relationOpenMode": "modal",
+      "mainField": "caption",
+      "defaultSortBy": "caption",
+      "defaultSortOrder": "ASC"
+    },
+    "metadatas": {
+      "id": {
+        "edit": {},
+        "list": {
+          "label": "id",
+          "searchable": false,
+          "sortable": false
+        }
+      },
+      "caption": {
+        "edit": {
+          "label": "caption",
+          "description": "",
+          "placeholder": "",
+          "visible": true,
+          "editable": true
+        },
+        "list": {
+          "label": "caption",
+          "searchable": true,
+          "sortable": true
+        }
+      },
+      "before": {
+        "edit": {
+          "label": "before",
+          "description": "",
+          "placeholder": "",
+          "visible": true,
+          "editable": true
+        },
+        "list": {
+          "label": "before",
+          "searchable": false,
+          "sortable": false
+        }
+      },
+      "after": {
+        "edit": {
+          "label": "after",
+          "description": "",
+          "placeholder": "",
+          "visible": true,
+          "editable": true
+        },
+        "list": {
+          "label": "after",
+          "searchable": false,
+          "sortable": false
+        }
+      },
+      "documentId": {
+        "edit": {},
+        "list": {
+          "label": "documentId",
+          "searchable": true,
+          "sortable": true
+        }
+      }
+    },
+    "layouts": {
+      "list": [
+        "id",
+        "caption",
+        "before",
+        "after"
+      ],
+      "edit": [
+        [
+          {
+            "name": "caption",
+            "size": 6
+          }
+        ],
+        [
+          {
+            "name": "before",
+            "size": 12
+          }
+        ],
+        [
+          {
+            "name": "after",
+            "size": 12
+          }
+        ]
+      ]
+    },
+    "uid": "shared.before-after",
+    "isComponent": true
+  },
+  "type": "object",
+  "environment": null,
+  "tag": null
+}

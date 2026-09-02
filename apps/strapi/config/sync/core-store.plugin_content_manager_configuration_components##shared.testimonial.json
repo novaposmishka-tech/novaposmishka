@@ -1,0 +1,126 @@
+{
+  "key": "plugin_content_manager_configuration_components::shared.testimonial",
+  "value": {
+    "settings": {
+      "bulkable": true,
+      "filterable": true,
+      "searchable": true,
+      "pageSize": 10,
+      "relationOpenMode": "modal",
+      "mainField": "authorName",
+      "defaultSortBy": "authorName",
+      "defaultSortOrder": "ASC"
+    },
+    "metadatas": {
+      "id": {
+        "edit": {},
+        "list": {
+          "label": "id",
+          "searchable": false,
+          "sortable": false
+        }
+      },
+      "quote": {
+        "edit": {
+          "label": "quote",
+          "description": "",
+          "placeholder": "",
+          "visible": true,
+          "editable": true
+        },
+        "list": {
+          "label": "quote",
+          "searchable": true,
+          "sortable": true
+        }
+      },
+      "authorName": {
+        "edit": {
+          "label": "authorName",
+          "description": "",
+          "placeholder": "",
+          "visible": true,
+          "editable": true
+        },
+        "list": {
+          "label": "authorName",
+          "searchable": true,
+          "sortable": true
+        }
+      },
+      "authorNote": {
+        "edit": {
+          "label": "authorNote",
+          "description": "",
+          "placeholder": "",
+          "visible": true,
+          "editable": true
+        },
+        "list": {
+          "label": "authorNote",
+          "searchable": true,
+          "sortable": true
+        }
+      },
+      "photo": {
+        "edit": {
+          "label": "photo",
+          "description": "",
+          "placeholder": "",
+          "visible": true,
+          "editable": true
+        },
+        "list": {
+          "label": "photo",
+          "searchable": false,
+          "sortable": false
+        }
+      },
+      "documentId": {
+        "edit": {},
+        "list": {
+          "label": "documentId",
+          "searchable": true,
+          "sortable": true
+        }
+      }
+    },
+    "layouts": {
+      "list": [
+        "id",
+        "quote",
+        "authorName",
+        "authorNote"
+      ],
+      "edit": [
+        [
+          {
+            "name": "quote",
+            "size": 6
+          },
+          {
+            "name": "authorName",
+            "size": 6
+          }
+        ],
+        [
+          {
+            "name": "authorNote",
+            "size": 6
+          }
+        ],
+        [
+          {
+            "name": "photo",
+            "size": 12
+          }
+        ]
+      ]
+    },
+    "uid": "shared.testimonial",
+    "isComponent": true
+  },
+  "type": "object",
+  "environment": null,
+  "tag": null
+}

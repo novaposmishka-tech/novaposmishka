@@ -1,0 +1,27 @@
+{
+  "collectionName": "components_shared_ratings",
+  "info": {
+    "displayName": "Rating",
+    "icon": "star",
+    "description": ""
+  },
+  "options": {},
+  "attributes": {
+    "label": {
+      "type": "string",
+      "required": true
+    },
+    "score": {
+      "type": "decimal",
+      "required": true,
+      "min": 0,
+      "max": 5
+    },
+    "link": {
+      "type": "component",
+      "component": "utilities.link",
+      "repeatable": false
+    }
+  },
+  "config": {}
+}

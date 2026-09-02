@@ -1,0 +1,28 @@
+{
+  "collectionName": "components_sections_why_us",
+  "info": {
+    "displayName": "WhyUs",
+    "icon": "star",
+    "description": ""
+  },
+  "options": {},
+  "attributes": {
+    "title": {
+      "type": "string"
+    },
+    "subtitle": {
+      "type": "text"
+    },
+    "reasons": {
+      "type": "component",
+      "component": "shared.image-with-title-and-description",
+      "repeatable": true
+    },
+    "image": {
+      "type": "component",
+      "component": "utilities.basic-image",
+      "repeatable": false
+    }
+  },
+  "config": {}
+}

@@ -1,0 +1,23 @@
+{
+  "collectionName": "components_sections_results",
+  "info": {
+    "displayName": "Results",
+    "icon": "picture",
+    "description": ""
+  },
+  "options": {},
+  "attributes": {
+    "title": {
+      "type": "string"
+    },
+    "subtitle": {
+      "type": "text"
+    },
+    "cases": {
+      "type": "component",
+      "component": "shared.before-after",
+      "repeatable": true
+    }
+  },
+  "config": {}
+}

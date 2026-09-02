@@ -1,0 +1,24 @@
+{
+  "collectionName": "components_shared_doctors",
+  "info": {
+    "displayName": "Doctor",
+    "icon": "user",
+    "description": ""
+  },
+  "options": {},
+  "attributes": {
+    "name": {
+      "type": "string",
+      "required": true
+    },
+    "specialty": {
+      "type": "string"
+    },
+    "photo": {
+      "type": "component",
+      "component": "utilities.basic-image",
+      "repeatable": false
+    }
+  },
+  "config": {}
+}

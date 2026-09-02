@@ -1,0 +1,164 @@
+import "server-only"
+
+import type { Data } from "@repo/strapi-types"
+
+import CkEditorRenderer from "@/components/elementary/ck-editor"
+import { Container } from "@/components/elementary/Container"
+import { StrapiBasicImage } from "@/components/page-builder/components/utilities/StrapiBasicImage"
+import StrapiLink from "@/components/page-builder/components/utilities/StrapiLink"
+import { cn } from "@/lib/styles"
+import type { PageBuilderComponentProps } from "@/types/general"
+
+export function StrapiHero({
+  component,
+}: PageBuilderComponentProps & { component: Data.Component<"sections.hero"> }) {
+  const {
+    title,
+    description,
+    links,
+    tag,
+    note,
+    images,
+    serviceTags,
+    backgroundImage,
+  } = component
+
+  // The design has several hero treatments, so the layout follows the content:
+  //  - a background image  → a rounded dark card with the copy over it
+  //  - images              → a two-column split, copy left and collage right
+  //  - neither             → the original centered layout, so hero content
+  //                          authored before either field existed still renders
+  //                          the way it was written.
+  const hasBackground = Boolean(backgroundImage)
+  const hasImages = !hasBackground && Boolean(images?.length)
+  const isCentered = !hasBackground && !hasImages
+
+  return (
+    <section>
+      <Container
+        className={cn(
+          hasBackground &&
+            "relative isolate overflow-hidden rounded-[50px] text-white"
+        )}
+      >
+        {hasBackground && backgroundImage && (
+          <>
+            <StrapiBasicImage
+              component={backgroundImage}
+              fill
+              sizes="100vw"
+              className="-z-20 object-cover"
+            />
+            {/* Black at 40%, as in the design — the copy has to stay legible
+                whatever photo an editor picks. */}
+            <div className="absolute inset-0 -z-10 bg-black/40" />
+          </>
+        )}
+
+        <div
+          className={cn(
+            "flex flex-col gap-10",
+            hasBackground
+              ? "px-8 py-20 md:px-12.5 lg:py-32"
+              : "px-4 py-8 lg:py-12",
+            hasImages && "lg:flex-row lg:items-center lg:gap-16"
+          )}
+        >
+          <div
+            className={cn(
+              "flex flex-col gap-4",
+              isCentered
+                ? "mx-auto items-center justify-center text-center md:w-2/4"
+                : "flex-1 items-start text-left"
+            )}
+          >
+            {tag && (
+              <div
+                className={cn(
+                  "mb-4 flex items-center justify-center rounded-full border px-3 py-1 shadow-sm backdrop-blur-md",
+                  hasBackground
+                    ? "border-white/30 bg-white/20"
+                    : "border-brand-border bg-brand-surface/60"
+                )}
+              >
+                <CkEditorRenderer htmlContent={tag} className="mb-0" />
+              </div>
+            )}
+
+            <CkEditorRenderer htmlContent={title} />
+
+            {description && (
+              <CkEditorRenderer
+                htmlContent={description}
+                className={cn(isCentered && "mx-auto max-w-168.75")}
+              />
+            )}
+
+            {links && (
+              <div
+                className={cn(
+                  "flex w-full flex-col gap-2 pt-6 lg:flex-row lg:gap-4",
+                  isCentered ? "mx-auto md:w-fit" : "lg:w-auto"
+                )}
+              >
+                {links.map((link) => (
+                  <StrapiLink
+                    key={link.id}
+                    component={link}
+                    className="w-full lg:w-fit"
+                  />
+                ))}
+              </div>
+            )}
+
+            {/* The design lists the clinic's specialties as pills under the CTA. */}
+            {serviceTags && serviceTags.length > 0 && (
+              <ul
+                className={cn(
+                  "flex flex-wrap gap-3 pt-6",
+                  isCentered && "justify-center"
+                )}
+              >
+                {serviceTags.map((serviceTag) => (
+                  <li
+                    key={serviceTag.id}
+                    className={cn(
+                      "rounded-full px-5 py-2.5 text-sm backdrop-blur-sm",
+                      hasBackground
+                        ? "bg-white/30"
+                        : "bg-brand-surface border-brand-border border"
+                    )}
+                  >
+                    {serviceTag.text}
+                  </li>
+                ))}
+              </ul>
+            )}
+
+            <CkEditorRenderer htmlContent={note} className="pt-6" />
+          </div>
+
+          {hasImages && (
+            <div className="grid flex-1 grid-cols-2 gap-4">
+              {images?.map((image, index) => (
+                <StrapiBasicImage
+                  key={image.id}
+                  component={image}
+                  // The collage alternates tall and short tiles, as in the design.
+                  className={cn(
+                    "w-full rounded-3xl object-cover",
+                    index % 2 === 0 ? "aspect-3/4" : "mt-8 aspect-square"
+                  )}
+                />
+              ))}
+            </div>
+          )}
+        </div>
+      </Container>
+    </section>
+  )
+}
+
+StrapiHero.displayName = "StrapiHero"
+
+export default StrapiHero

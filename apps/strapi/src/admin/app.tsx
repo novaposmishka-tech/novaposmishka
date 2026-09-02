@@ -1,0 +1,80 @@
+import { setPluginConfig } from "@_sh/strapi-plugin-ckeditor"
+import type { StrapiApp } from "@strapi/strapi/admin"
+
+import "@repo/design-system/styles.css"
+
+import { defaultCkEditorConfig, simpleCkEditorConfig } from "./ckeditor/configs"
+import DataRevalidate from "./extensions/DataRevalidate"
+import Hierarchy from "./extensions/Hierarchy"
+
+export default {
+  config: {
+    // Admin panel UI language — unrelated to content locales. Ukrainian is
+    // bundled with Strapi, so no custom translations are needed.
+    locales: ["uk", "en"],
+  },
+  async bootstrap(app: StrapiApp) {
+    app
+      .getPlugin("content-manager")
+      .injectComponent("editView", "right-links", {
+        name: "Hierarchy",
+        Component: Hierarchy,
+      })
+
+    app
+      .getPlugin("content-manager")
+      .injectComponent("editView", "right-links", {
+        name: "DataRevalidate",
+        Component: DataRevalidate,
+      })
+
+    const adminPanelConfigEnv = process.env.ADMIN_PANEL_CONFIG_API_AUTH_TOKEN
+    if (adminPanelConfigEnv) {
+      /**
+       * Fetch admin panel config at runtime (e.g., theme settings)
+       * and apply them to the admin panel.
+       *
+       * This can be used to inject CSS into the admin panel based on runtime env variables.
+       * This is an example of usage, feel free to modify per your needs.
+       */
+      const configRequest = await fetch("/api/admin-panel-config", {
+        headers: {
+          Authorization: `Bearer ${process.env.ADMIN_PANEL_CONFIG_API_AUTH_TOKEN}`,
+        },
+      })
+      if (configRequest.ok) {
+        const configData = await configRequest.json()
+
+        // Set the variable to the window object so it can be accessed globally
+        Object.defineProperty(globalThis, "ADMIN_PANEL_CONFIG", {
+          value: configData,
+          configurable: true,
+          writable: true,
+        })
+
+        // Set data-theme attribute on document element so that we can potentially include CSS themes
+        document.documentElement.dataset.theme =
+          configData.APP_BRAND.toLowerCase()
+
+        const colors =
+          configData.APP_BRAND === "BRAND_A"
+            ? { primary: "#123123", accent: "#234234" }
+            : { primary: "#321321", accent: "#432432" }
+
+        document.documentElement.style.setProperty(
+          "--color-primary-default",
+          colors.primary
+        )
+        document.documentElement.style.setProperty(
+          "--color-accent-dark",
+          colors.accent
+        )
+      } else {
+        console.error(await configRequest.text())
+      }
+    }
+  },
+  register(_app: StrapiApp) {
+    setPluginConfig({ presets: [defaultCkEditorConfig, simpleCkEditorConfig] })
+  },
+}
