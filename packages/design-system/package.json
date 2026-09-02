@@ -21,7 +21,7 @@
   "scripts": {
     "build": "tailwindcss -i ./src/styles.css -o ./dist/styles.css && node ./src/build-ck-config.js && node ./src/build-tiptap-config.js",
     "dev": "tailwindcss -i ./src/styles.css -o ./dist/styles.css --watch",
-    "lint": "eslint -c ../../eslint.config.mjs './**/*.{js,ts,jsx,tsx,cjs,mjs}'",
+    "lint": "eslint -c ../../eslint.config.mjs \"./**/*.{js,ts,jsx,tsx,cjs,mjs}\"",
     "lint:fix": "pnpm lint --fix"
   },
   "dependencies": {

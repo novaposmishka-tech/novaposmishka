@@ -1,0 +1,30 @@
+# Prettier is configured with `endOfLine: "lf"`, so a working tree checked out
+# with CRLF fails `prettier/prettier` on every line of every file. Git's
+# `core.autocrlf=true` (the Windows default) does exactly that, which made
+# package-wide `pnpm lint` unusable on Windows machines. Pinning the checkout
+# to LF keeps the working tree and Prettier in agreement on every platform.
+* text=auto eol=lf
+
+# Windows batch files are the exception: the interpreter needs CRLF.
+*.bat text eol=crlf
+*.cmd text eol=crlf
+
+# Never touch binaries — the detection above is heuristic, these are certain.
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.gif binary
+*.ico binary
+*.webp binary
+*.avif binary
+*.woff binary
+*.woff2 binary
+*.ttf binary
+*.otf binary
+*.eot binary
+*.pdf binary
+*.zip binary
+*.gz binary
+*.tar binary
+*.mp4 binary
+*.webm binary

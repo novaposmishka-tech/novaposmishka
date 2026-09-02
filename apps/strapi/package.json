@@ -14,7 +14,7 @@
     "develop:watch": "node scripts/seed-runner.mjs develop --watch-admin",
     "generate": "strapi generate",
     "generate:types": "strapi ts:generate-types",
-    "lint": "eslint -c ../../eslint.config.mjs './**/*.{js,ts,jsx,tsx,cjs,mjs}'",
+    "lint": "eslint -c ../../eslint.config.mjs \"./**/*.{js,ts,jsx,tsx,cjs,mjs}\"",
     "lint:fix": "pnpm lint --fix",
     "run:db": "docker compose up -d db",
     "run:imgproxy": "docker compose --profile imgproxy up -d imgproxy",
