@@ -21,6 +21,7 @@ import path from "node:path"
 import process from "node:process"
 import { fileURLToPath } from "node:url"
 
+import { ensureMedia, resolveMediaMarkers } from "./seed-media.mjs"
 import { footer, homepage, locale, navbar } from "../seed/baseline/uk.mjs"
 
 const appDir = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..")
@@ -39,9 +40,22 @@ try {
   strapi = await loadStrapi()
 
   await ensureLocale()
-  await seedSingleType("api::navbar.navbar", "Navbar", navbar)
-  await seedSingleType("api::footer.footer", "Footer", footer)
-  await seedHomepage()
+
+  const media = await ensureMedia(strapi, path.join(appDir, "seed", "media"), {
+    log: console.log,
+  })
+  const missingMedia = new Set()
+  const resolve = (data) => resolveMediaMarkers(data, media, missingMedia)
+
+  await seedSingleType("api::navbar.navbar", "Navbar", resolve(navbar))
+  await seedSingleType("api::footer.footer", "Footer", resolve(footer))
+  await seedHomepage(resolve(homepage))
+
+  if (missingMedia.size > 0) {
+    console.warn(
+      `[seed:content] Dropped ${missingMedia.size} image(s) with no file in seed/media: ${[...missingMedia].join(", ")}`
+    )
+  }
 
   console.log("[seed:content] Done.")
 } catch (error) {
@@ -125,7 +139,7 @@ async function seedSingleType(uid, label, data) {
   console.log(`[seed:content] ${label}: created.`)
 }
 
-async function seedHomepage() {
+async function seedHomepage(homepage) {
   const uid = "api::page.page"
   const existing = await strapi.documents(uid).findFirst({
     locale,
