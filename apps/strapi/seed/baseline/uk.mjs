@@ -38,6 +38,16 @@ const anchor = (label, href, decorations = null) => ({
 /** The filled brand button the design uses for every "Записатися". */
 const BUTTON = { variant: "default", size: "lg", hasIcons: false }
 
+/** Its counterpart on a photo or a dark card: white face, dark label. */
+const BUTTON_ON_DARK = { variant: "secondary", size: "lg", hasIcons: false }
+
+/**
+ * A `utilities.basic-image` pointing at a file in `seed/media`, named without
+ * its extension. The seeder swaps the marker for the uploaded file's id, which
+ * differs per database — see scripts/seed-media.mjs.
+ */
+const image = (name, alt) => ({ __media: name, alt })
+
 export const navbar = {
   navbarItems: [
     // The renderer only links an item when `isCategoryLink` is set; a plain
@@ -106,87 +116,130 @@ export const homepage = {
   content: [
     {
       __component: "sections.hero",
-      tag: "<p><strong>Приватна сімейна стоматологія в Житомирі</strong></p>",
-      title: "<h1><strong>Ваша посмішка — наша турбота</strong></h1>",
-      description:
-        "<p>Сучасні методи лікування, досвідчені лікарі та турбота про кожного пацієнта.</p>",
-      links: [anchor("Записатися", "#lead-form-section", BUTTON)],
+      backgroundImage: image(
+        "hero-1",
+        "Лікарка оглядає пацієнтку в кріслі стоматологічної клініки"
+      ),
+      tag: "<p>Лікування без болю</p>",
+      title: "<h1><strong>Ми лікуємо.<br>Ви усміхаєтесь.</strong></h1>",
+      description: "<p>Приватна сімейна стоматологія в Житомирі.</p>",
+      links: [
+        anchor("Записатися на прийом", "#lead-form-section", BUTTON_ON_DARK),
+      ],
+      images: [image("hero-2", "Кабінет клініки «Нова Посмішка»")],
       serviceTags: [
-        text("Імплантація"),
         text("Ортодонтія"),
         text("Протезування"),
+        text("Імплантація"),
+        text("Хірургія"),
+        text("Терапія"),
         text("Дитяча стоматологія"),
+        text("Пародонтологія"),
       ],
     },
     {
-      __component: "sections.services",
-      title: "Наші послуги",
-      subtitle:
-        "Повний цикл стоматологічної допомоги — від профілактики до складного протезування.",
-      services: [
+      __component: "sections.statistics",
+      figures: [
+        { number: 10, suffix: "+", description: "<p>Років досвіду</p>" },
         {
-          name: "Імплантація",
-          description:
-            "Відновлення втрачених зубів із гарантією на імплант і коронку.",
+          number: 20,
+          suffix: "К+",
+          description: "<p>Пацієнтів, що довіряють нам</p>",
         },
-        {
-          name: "Ортодонтія",
-          description: "Брекети та елайнери для дорослих і підлітків.",
-        },
-        {
-          name: "Протезування",
-          description: "Коронки, вініри та мости з сучасної кераміки.",
-        },
-        {
-          name: "Терапія",
-          description:
-            "Лікування карієсу та каналів під мікроскопом, без болю.",
-        },
-        {
-          name: "Дитяча стоматологія",
-          description:
-            "Лікування без стресу — у комфортній для дитини атмосфері.",
-        },
-        {
-          name: "Професійна гігієна",
-          description: "Чистка, полірування та профілактика — двічі на рік.",
-        },
+        { number: 4.8, description: "<p>Рейтинг Google</p>" },
       ],
     },
     {
       __component: "sections.why-us",
-      title: "Чому обирають саме нас?",
-      subtitle:
-        "Приватна сімейна стоматологія в Житомирі — з увагою до кожного пацієнта.",
+      title: "Чому саме ми?",
       reasons: [
         {
-          title: "<p><strong>Досвідчені лікарі</strong></p>",
-          description: "<p>Понад 10 років практики у кожного спеціаліста.</p>",
+          title: "<p><strong>Лікуємо без болю</strong></p>",
+          description:
+            "<p>Підберемо анестезію так, щоб не боліло. Навіть найскладніші операції в нас за відчуттями «як комарик укусив».</p>",
+          image: image("why-us-1", "Маленька пацієнтка на прийомі"),
         },
         {
-          title: "<p><strong>Сучасне обладнання</strong></p>",
-          description: "<p>Цифрова діагностика та безболісне лікування.</p>",
+          title: "<p><strong>Працюємо при відключеннях струму</strong></p>",
+          description:
+            "<p>В нас є генератор, що дозволяє надавати всі стоматологічні послуги при відсутності струму: від пломбування до імплантації.</p>",
+          image: image("why-us-2", "Лікар працює з пацієнткою"),
         },
         {
-          title: "<p><strong>Прозорі ціни</strong></p>",
-          description: "<p>План лікування та вартість — до початку робіт.</p>",
+          title: "<p><strong>Маємо зубний мікроскоп</strong></p>",
+          description:
+            "<p>Це мінімізує ризик помилок, забезпечує надійне лікування каналів та значно знижує ймовірність повторного запалення.</p>",
+          image: image("why-us-3", "Лікування під стоматологічним мікроскопом"),
+        },
+      ],
+    },
+    {
+      __component: "sections.services",
+      title: "Ми допоможемо з будь-якою проблемою",
+      services: [
+        {
+          name: "Терапія",
+          description: "Основний скрижаль для здорових та красивих зубів",
+          icon: image("services-1", ""),
         },
         {
-          title: "<p><strong>Гарантія</strong></p>",
-          description: "<p>На всі види робіт, з подальшим супроводом.</p>",
+          name: "Ортопедія",
+          description: "Ваш шлях до здорових та гарних зубів",
+          icon: image("services-2", ""),
+        },
+        {
+          name: "Хірургія",
+          description: "Новий рівень турботи про Ваші зуби",
+          icon: image("services-3", ""),
+        },
+        {
+          name: "Ортодонтія",
+          description: "Красива та здорова посмішка на кожен день",
+          icon: image("services-4", ""),
+        },
+        {
+          name: "Пародонтологія",
+          description: "Ми знаємо, як подбати про здоров'я Ваших зубів та ясен",
+          icon: image("services-5", ""),
+        },
+        {
+          name: "Дитяча стоматологія",
+          description:
+            "Створюємо основу для здорових посмішок маленьких пацієнтів",
+          icon: image("services-6", ""),
+        },
+        {
+          name: "Гнатологія",
+          description: "Здоров'я скронево-нижньощелепного суглобу",
+          icon: image("services-7", ""),
         },
       ],
     },
     {
       __component: "sections.doctors",
-      title: "Наші лікарі",
-      subtitle:
-        "Команда, якій довіряють пацієнти — від профілактики до складної імплантації.",
+      title: "Команда лікарів",
       doctors: [
-        { name: "Олена Ковальчук", specialty: "Терапевт-стоматолог" },
-        { name: "Андрій Мельник", specialty: "Хірург-імплантолог" },
-        { name: "Ірина Савченко", specialty: "Ортодонт" },
-        { name: "Дмитро Бондаренко", specialty: "Дитячий стоматолог" },
+        {
+          name: "Шевчук Сергій Миколайович",
+          specialty: "Ортодонт",
+          photo: image("doctors-1", "Шевчук Сергій Миколайович, ортодонт"),
+        },
+        {
+          name: "Єгоренкова Тетяна Вікторівна",
+          specialty: "Дитячий стоматолог",
+          photo: image(
+            "doctors-2",
+            "Єгоренкова Тетяна Вікторівна, дитячий стоматолог"
+          ),
+        },
+        {
+          name: "Пархомчук Андрій Валентинович",
+          specialty: "Стоматолог-ортопед",
+          photo: image(
+            "doctors-3",
+            "Пархомчук Андрій Валентинович, стоматолог-ортопед"
+          ),
+        },
       ],
     },
     {

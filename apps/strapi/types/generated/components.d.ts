@@ -521,7 +521,7 @@ export interface SharedFigure extends Struct.ComponentSchema {
           preset: "defaultCkEditor"
         }
       >
-    number: Schema.Attribute.BigInteger
+    number: Schema.Attribute.Decimal
     prefix: Schema.Attribute.String
     suffix: Schema.Attribute.String
   }
