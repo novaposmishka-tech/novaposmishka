@@ -59,7 +59,7 @@ export function StrapiHero({
           className={cn(
             "flex flex-col gap-10",
             hasBackground
-              ? "px-8 py-20 md:px-12.5 lg:py-32"
+              ? "px-8 py-14 md:px-12.5 lg:min-h-175 lg:justify-between lg:py-16"
               : "px-4 py-8 lg:py-12",
             hasImages && "lg:flex-row lg:items-center lg:gap-16"
           )}
@@ -77,7 +77,7 @@ export function StrapiHero({
                 className={cn(
                   "mb-4 flex items-center justify-center rounded-full border px-3 py-1 shadow-sm backdrop-blur-md",
                   hasBackground
-                    ? "border-white/30 bg-white/20"
+                    ? "border-white/40 [&_p]:text-inherit!"
                     : "border-brand-border bg-brand-surface/60"
                 )}
               >
@@ -85,12 +85,18 @@ export function StrapiHero({
               </div>
             )}
 
-            <CkEditorRenderer htmlContent={title} />
+            <CkEditorRenderer
+              htmlContent={title}
+              className={cn(hasBackground && "[&_h1]:text-inherit!")}
+            />
 
             {description && (
               <CkEditorRenderer
                 htmlContent={description}
-                className={cn(isCentered && "mx-auto max-w-168.75")}
+                className={cn(
+                  isCentered && "mx-auto max-w-168.75",
+                  hasBackground && "text-lg [&_p]:text-inherit!"
+                )}
               />
             )}
 
@@ -111,32 +117,35 @@ export function StrapiHero({
               </div>
             )}
 
-            {/* The design lists the clinic's specialties as pills under the CTA. */}
-            {serviceTags && serviceTags.length > 0 && (
-              <ul
-                className={cn(
-                  "flex flex-wrap gap-3 pt-6",
-                  isCentered && "justify-center"
-                )}
-              >
-                {serviceTags.map((serviceTag) => (
-                  <li
-                    key={serviceTag.id}
-                    className={cn(
-                      "rounded-full px-5 py-2.5 text-sm backdrop-blur-sm",
-                      hasBackground
-                        ? "bg-white/30"
-                        : "bg-brand-surface border-brand-border border"
-                    )}
-                  >
-                    {serviceTag.text}
-                  </li>
-                ))}
-              </ul>
+            {!hasBackground && (
+              <ServiceTags
+                serviceTags={serviceTags}
+                isCentered={isCentered}
+                onPhoto={false}
+                className="pt-6"
+              />
             )}
 
             <CkEditorRenderer htmlContent={note} className="pt-6" />
           </div>
+
+          {/* Over a photo the design closes the hero with its own row: the
+              clinic snapshot on the left, the specialties on the right. */}
+          {hasBackground && (
+            <div className="flex flex-col gap-8 lg:flex-row lg:items-end lg:justify-between">
+              {images?.[0] && (
+                <StrapiBasicImage
+                  component={images[0]}
+                  className="aspect-3/2 w-full rounded-3xl object-cover lg:w-75"
+                />
+              )}
+              <ServiceTags
+                serviceTags={serviceTags}
+                isCentered={false}
+                className="lg:max-w-156 lg:justify-end"
+              />
+            </div>
+          )}
 
           {hasImages && (
             <div className="grid flex-1 grid-cols-2 gap-4">
@@ -156,6 +165,50 @@ export function StrapiHero({
         </div>
       </Container>
     </section>
+  )
+}
+
+/**
+ * The clinic's specialties, as pills. On a photo they are translucent white,
+ * as in the design; on the light layouts they take the surface tokens.
+ */
+function ServiceTags({
+  serviceTags,
+  isCentered,
+  onPhoto = true,
+  className,
+}: {
+  readonly serviceTags: Data.Component<"sections.hero">["serviceTags"]
+  readonly isCentered: boolean
+  readonly onPhoto?: boolean
+  readonly className?: string
+}) {
+  if (!serviceTags || serviceTags.length === 0) {
+    return null
+  }
+
+  return (
+    <ul
+      className={cn(
+        "flex list-none flex-wrap gap-3",
+        isCentered && "justify-center",
+        className
+      )}
+    >
+      {serviceTags.map((serviceTag) => (
+        <li
+          key={serviceTag.id}
+          className={cn(
+            "rounded-full px-5 py-2.5 text-base backdrop-blur-sm",
+            onPhoto
+              ? "bg-white/20"
+              : "bg-brand-surface border-brand-border border text-sm"
+          )}
+        >
+          {serviceTag.text}
+        </li>
+      ))}
+    </ul>
   )
 }
 
