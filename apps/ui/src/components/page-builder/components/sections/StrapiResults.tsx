@@ -3,8 +3,9 @@ import "server-only"
 import type { Data } from "@repo/strapi-types"
 import { getTranslations } from "next-intl/server"
 
+import { CaseGallery } from "@/components/elementary/CaseGallery"
 import { Container } from "@/components/elementary/Container"
-import { StrapiBasicImage } from "@/components/page-builder/components/utilities/StrapiBasicImage"
+import StrapiLink from "@/components/page-builder/components/utilities/StrapiLink"
 import Typography from "@/components/typography"
 import type { PageBuilderComponentProps } from "@/types/general"
 
@@ -13,7 +14,7 @@ export async function StrapiResults({
 }: PageBuilderComponentProps & {
   component: Data.Component<"sections.results">
 }) {
-  const { title, subtitle, cases } = component
+  const { title, subtitle, cases, link } = component
 
   if (!cases?.length) {
     return null
@@ -23,51 +24,32 @@ export async function StrapiResults({
 
   return (
     <section id="results" className="scroll-mt-24">
-      <Container className="flex flex-col gap-10">
+      {/* The design gives the cases the same dark card as the why-us section. */}
+      <Container className="bg-brand-gradient text-brand-inverted flex flex-col gap-10 rounded-[50px] p-8 md:p-12.5">
         {(title || subtitle) && (
-          <div className="flex max-w-2xl flex-col gap-4">
+          <div className="flex max-w-3xl flex-col gap-4">
             {title && (
-              <Typography tag="h2" className="text-brand-ink">
+              <Typography tag="h2" className="text-brand-inverted">
                 {title}
               </Typography>
             )}
             {subtitle && (
-              <Typography className="text-brand-body">{subtitle}</Typography>
+              <Typography className="text-brand-on-dark">{subtitle}</Typography>
             )}
           </div>
         )}
 
-        <ul className="grid grid-cols-1 gap-10 md:grid-cols-2">
-          {cases.map((item) => (
-            <li key={item.id} className="flex flex-col gap-3">
-              <div className="grid grid-cols-2 gap-3">
-                <figure className="flex flex-col gap-2">
-                  <StrapiBasicImage
-                    component={item.before}
-                    className="aspect-square w-full rounded-2xl object-cover"
-                  />
-                  <figcaption className="text-brand-body text-xs uppercase">
-                    {t("before")}
-                  </figcaption>
-                </figure>
-                <figure className="flex flex-col gap-2">
-                  <StrapiBasicImage
-                    component={item.after}
-                    className="aspect-square w-full rounded-2xl object-cover"
-                  />
-                  <figcaption className="text-brand-body text-xs uppercase">
-                    {t("after")}
-                  </figcaption>
-                </figure>
-              </div>
-              {item.caption && (
-                <Typography className="text-brand-ink-soft text-sm">
-                  {item.caption}
-                </Typography>
-              )}
-            </li>
-          ))}
-        </ul>
+        <CaseGallery
+          cases={cases}
+          labels={{
+            all: t("all"),
+            before: t("before"),
+            after: t("after"),
+            list: t("list"),
+          }}
+        />
+
+        {link && <StrapiLink component={link} className="mx-auto mt-2 w-fit" />}
       </Container>
     </section>
   )
