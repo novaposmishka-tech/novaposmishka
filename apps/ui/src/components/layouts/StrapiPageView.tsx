@@ -69,7 +69,9 @@ export default function StrapiPageView({ params, searchParams }: Props) {
 
             return (
               <ErrorBoundary key={key}>
-                <div className={cn("mb-20 md:mb-32 lg:mb-40")}>
+                {/* The design spaces every section 90px apart at desktop,
+                    not the starter's 160px. */}
+                <div className={cn("mb-12 md:mb-16 lg:mb-22.5")}>
                   <Component
                     component={comp}
                     pageParams={params}
