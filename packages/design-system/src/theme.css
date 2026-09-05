@@ -74,6 +74,12 @@
   --color-brand-border: #d3edf1;
   --color-brand-surface: #eaf2f3;
   --color-brand-paper: #f8f8f6;
+  /* The card behind the service accordion. */
+  --color-brand-mist: #f2f4f7;
+  /* Hairlines inside cards: lighter than brand-border. */
+  --color-brand-hairline: #efefef;
+  /* The zebra stripe on a price row. */
+  --color-brand-stripe: #fbfbfb;
 
   /* Text */
   --color-brand-ink: #081725;

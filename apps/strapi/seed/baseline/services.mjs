@@ -4,13 +4,11 @@
  * The copy comes from the Figma file: the hero, an accordion of what the
  * service covers, and the paragraph that closes the section.
  *
- * The price tables are deliberately absent. All seven pages in the design
- * carry the same twenty rows, nine of them repeated within the page, so it is
- * a placeholder table rather than the clinic's prices — and invented prices on
- * a dental site are not a defensible default. sections.price-list is built and
- * waiting for the real list.
+ * The price table each page ends with is the design's own placeholder — see
+ * ./prices.mjs, which explains what is wrong with it and why it is here.
  */
 
+import { priceList } from "./prices.mjs"
 import {
   anchor,
   BUTTON_ON_DARK,
@@ -76,6 +74,8 @@ export const servicePages = [
       {
         __component: "sections.faq",
         title: "Наша стоматологія пропонує широкий спектр послуг, включаючи:",
+        subTitle:
+          "Наша команда готова надати Вам індивідуальну консультацію та розробити план лікування, який відповідає Вашим потребам та бюджету.",
         accordions: [
           {
             question: "Лікування карієсу",
@@ -99,11 +99,7 @@ export const servicePages = [
           },
         ],
       },
-      {
-        __component: "utilities.ck-editor-content",
-        content:
-          "<p>Наша команда готова надати Вам індивідуальну консультацію та розробити план лікування, який відповідає Вашим потребам та бюджету.</p>",
-      },
+      priceList("Ціни на терапевтичні послуги"),
     ],
   },
   {
@@ -145,6 +141,8 @@ export const servicePages = [
       {
         __component: "sections.faq",
         title: "Чому варто обрати протезування зубів?",
+        subTitle:
+          "Оберіть послуги протезування в нашій клініці та насолоджуйтеся здоровою та привабливою посмішкою щодня!",
         accordions: [
           {
             question: "Відновлення функціональності",
@@ -168,11 +166,7 @@ export const servicePages = [
           },
         ],
       },
-      {
-        __component: "utilities.ck-editor-content",
-        content:
-          "<p>Оберіть послуги протезування в нашій клініці та насолоджуйтеся здоровою та привабливою посмішкою щодня!</p>",
-      },
+      priceList("Ціни на протезування зубів"),
     ],
   },
   {
@@ -214,6 +208,8 @@ export const servicePages = [
       {
         __component: "sections.faq",
         title: "Наші хірургічні послуги включають:",
+        subTitle:
+          "Запишіться на консультацію до наших хірургів і переконайтеся у високому рівні надання послуг які ми пропонуємо.",
         accordions: [
           {
             question: "Видалення зубів",
@@ -237,11 +233,7 @@ export const servicePages = [
           },
         ],
       },
-      {
-        __component: "utilities.ck-editor-content",
-        content:
-          "<p>Запишіться на консультацію до наших хірургів і переконайтеся у високому рівні надання послуг які ми пропонуємо.</p>",
-      },
+      priceList("Ціни на хірургічні послуги"),
     ],
   },
   {
@@ -283,6 +275,8 @@ export const servicePages = [
       {
         __component: "sections.faq",
         title: "Що Ви повинні знати про ортодонтичне лікування:",
+        subTitle:
+          "Не відкладайте свою мрію про прекрасну посмішку - звертайтеся до нас.​",
         accordions: [
           {
             question: "Брекети",
@@ -306,11 +300,7 @@ export const servicePages = [
           },
         ],
       },
-      {
-        __component: "utilities.ck-editor-content",
-        content:
-          "<p>Не відкладайте свою мрію про прекрасну посмішку - звертайтеся до нас.​</p>",
-      },
+      priceList("Ціни на ортодонтичні послуги"),
     ],
   },
   {
@@ -352,6 +342,8 @@ export const servicePages = [
       {
         __component: "sections.faq",
         title: "Своєчасний візит до пародонтолога вкрай важливий:​",
+        subTitle:
+          "У нашій клініці ми пропонуємо сучасні методи лікування та профілактики захворювань ясен, щоб забезпечити вам здорову та гарну посмішку.",
         accordions: [
           {
             question: "Профілактика пародонтиту",
@@ -375,11 +367,7 @@ export const servicePages = [
           },
         ],
       },
-      {
-        __component: "utilities.ck-editor-content",
-        content:
-          "<p>У нашій клініці ми пропонуємо сучасні методи лікування та профілактики захворювань ясен, щоб забезпечити вам здорову та гарну посмішку.</p>",
-      },
+      priceList("Ціни на пародонтологічні послуги"),
     ],
   },
   {
@@ -421,6 +409,8 @@ export const servicePages = [
       {
         __component: "sections.faq",
         title: "Наша дитяча стоматологія включає в себе:",
+        subTitle:
+          "Допоможемо Вашим дітям вирости зі здоровою посмішкою та переконанням, що відвідування стоматолога - це приємна та важлива частина їхнього дорослого життя",
         accordions: [
           {
             question: "Проведення дружніх оглядів",
@@ -444,11 +434,7 @@ export const servicePages = [
           },
         ],
       },
-      {
-        __component: "utilities.ck-editor-content",
-        content:
-          "<p>Допоможемо Вашим дітям вирости зі здоровою посмішкою та переконанням, що відвідування стоматолога - це приємна та важлива частина їхнього дорослого життя</p>",
-      },
+      priceList("Ціни на дитячу стоматологію"),
     ],
   },
   {
@@ -513,6 +499,7 @@ export const servicePages = [
           },
         ],
       },
+      priceList("Ціни на гнатологічні послуги"),
     ],
   },
 ]
