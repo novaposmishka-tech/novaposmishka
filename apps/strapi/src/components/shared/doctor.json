@@ -18,6 +18,11 @@
       "type": "component",
       "component": "utilities.basic-image",
       "repeatable": false
+    },
+    "credentials": {
+      "type": "component",
+      "component": "shared.credential",
+      "repeatable": true
     }
   },
   "config": {}

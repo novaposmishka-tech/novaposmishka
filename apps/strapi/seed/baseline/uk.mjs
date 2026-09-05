@@ -12,6 +12,7 @@
  */
 
 import { cases } from "./cases.mjs"
+import { featuredDoctors } from "./doctors.mjs"
 import { reviews } from "./reviews.mjs"
 import { SERVICE_SLUGS } from "./services.mjs"
 import {
@@ -21,8 +22,10 @@ import {
   BUTTON_ON_DARK,
   BUTTON_QUIET,
   EMAIL,
+  GOOGLE_RATING,
   image,
   OPENING_HOURS,
+  OPENING_HOURS_SCHEMA,
   pageLink,
   PHONES,
   text,
@@ -41,8 +44,8 @@ export const navbar = {
         pageLink(card, slug)
       ),
     },
-    { isCategoryLink: true, link: anchor("Про нас", "/#why-us") },
-    { isCategoryLink: true, link: anchor("Лікарі", "/#doctors") },
+    { isCategoryLink: true, link: pageLink("Лікарі", "likari") },
+    { isCategoryLink: true, link: pageLink("Наші роботи", "nashi-roboty") },
     { isCategoryLink: true, link: anchor("Відгуки", "/#testimonials") },
     { isCategoryLink: true, link: anchor("Контакти", "/#contacts") },
   ],
@@ -51,7 +54,7 @@ export const navbar = {
 
 export const footer = {
   description:
-    "Приватна сімейна стоматологія в Житомирі. Лікуємо дорослих і дітей — від профілактики до імплантації.",
+    "Приватна сімейна стоматологія в Житомирі - простір, де здоров'я зубів поєднується з комфортом, довірою та сучасними технологіями.",
   contacts: [
     { label: "Адреса", kind: "text", values: [text(ADDRESS)] },
     { label: "Телефон", kind: "phone", values: PHONES.map(text) },
@@ -60,7 +63,7 @@ export const footer = {
   ],
   rating: {
     label: "Google",
-    score: 4.9,
+    score: GOOGLE_RATING,
   },
   leadForm: {
     title: "Маєте запитання? Почнімо з консультації",
@@ -98,7 +101,7 @@ export const homepage = {
         addressLocality: "Житомир",
         addressCountry: "UA",
       },
-      openingHours: ["Mo-Fr 09:00-19:00", "Sa 09:00-15:00"],
+      openingHours: OPENING_HOURS_SCHEMA,
     },
   },
   content: [
@@ -134,7 +137,10 @@ export const homepage = {
           suffix: "К+",
           description: "<p>Пацієнтів, що довіряють нам</p>",
         },
-        { number: 4.8, description: "<p>Рейтинг Google</p>" },
+        {
+          number: GOOGLE_RATING,
+          description: "<p>Рейтинг Google</p>",
+        },
       ],
     },
     {
@@ -220,29 +226,8 @@ export const homepage = {
     {
       __component: "sections.doctors",
       title: "Команда лікарів",
-      doctors: [
-        {
-          name: "Шевчук Сергій Миколайович",
-          specialty: "Ортодонт",
-          photo: image("doctors-1", "Шевчук Сергій Миколайович, ортодонт"),
-        },
-        {
-          name: "Єгоренкова Тетяна Вікторівна",
-          specialty: "Дитячий стоматолог",
-          photo: image(
-            "doctors-2",
-            "Єгоренкова Тетяна Вікторівна, дитячий стоматолог"
-          ),
-        },
-        {
-          name: "Пархомчук Андрій Валентинович",
-          specialty: "Стоматолог-ортопед",
-          photo: image(
-            "doctors-3",
-            "Пархомчук Андрій Валентинович, стоматолог-ортопед"
-          ),
-        },
-      ],
+      // Portraits only here; /likari carries the training for each of them.
+      doctors: featuredDoctors.map(({ credentials, ...rest }) => rest),
     },
     {
       __component: "sections.testimonials",

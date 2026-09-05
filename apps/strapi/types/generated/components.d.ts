@@ -319,6 +319,19 @@ export interface SharedService extends Struct.ComponentSchema {
   }
 }
 
+export interface SharedCredential extends Struct.ComponentSchema {
+  collectionName: "components_shared_credentials"
+  info: {
+    description: ""
+    displayName: "Credential"
+    icon: "book"
+  }
+  attributes: {
+    label: Schema.Attribute.String & Schema.Attribute.Required
+    value: Schema.Attribute.Text & Schema.Attribute.Required
+  }
+}
+
 export interface SharedDoctor extends Struct.ComponentSchema {
   collectionName: "components_shared_doctors"
   info: {
@@ -327,6 +340,7 @@ export interface SharedDoctor extends Struct.ComponentSchema {
     icon: "user"
   }
   attributes: {
+    credentials: Schema.Attribute.Component<"shared.credential", true>
     name: Schema.Attribute.String & Schema.Attribute.Required
     photo: Schema.Attribute.Component<"utilities.basic-image", false>
     specialty: Schema.Attribute.String
@@ -798,6 +812,7 @@ declare module "@strapi/strapi" {
       "seo-utilities.social-icons": SeoUtilitiesSocialIcons
       "shared.before-after": SharedBeforeAfter
       "shared.contact-item": SharedContactItem
+      "shared.credential": SharedCredential
       "shared.doctor": SharedDoctor
       "shared.figure": SharedFigure
       "shared.image-with-config": SharedImageWithConfig
