@@ -19,6 +19,17 @@
       "type": "component",
       "component": "utilities.link",
       "repeatable": true
+    },
+    "writtenLabel": {
+      "type": "string"
+    },
+    "videoLabel": {
+      "type": "string"
+    },
+    "videoReviews": {
+      "type": "component",
+      "repeatable": true,
+      "component": "shared.video-review"
     }
   },
   "config": {}

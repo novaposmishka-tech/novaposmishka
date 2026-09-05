@@ -14,6 +14,7 @@
 import { cases } from "./cases.mjs"
 import { featuredDoctors } from "./doctors.mjs"
 import { reviews } from "./reviews.mjs"
+import { videoReviews } from "./video-reviews.mjs"
 import { SERVICE_SLUGS } from "./services.mjs"
 import {
   ADDRESS,
@@ -290,16 +291,10 @@ export const homepage = {
       __component: "sections.testimonials",
       title: "Відгуки",
       testimonials: reviews,
-      links: [
-        {
-          ...anchor(
-            "Google",
-            "https://www.google.com/search?q=Нова+Посмішка+Житомир",
-            BUTTON_QUIET
-          ),
-          newTab: true,
-        },
-      ],
+      // The design switches between the two here rather than linking out.
+      writtenLabel: "Google",
+      videoLabel: "Відеовідгуки",
+      videoReviews,
     },
     {
       __component: "sections.carousel",

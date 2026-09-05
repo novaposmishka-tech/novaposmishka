@@ -222,6 +222,9 @@ export interface SectionsTestimonials extends Struct.ComponentSchema {
   attributes: {
     links: Schema.Attribute.Component<"utilities.link", true>
     testimonials: Schema.Attribute.Component<"shared.testimonial", true>
+    videoLabel: Schema.Attribute.String
+    videoReviews: Schema.Attribute.Component<"shared.video-review", true>
+    writtenLabel: Schema.Attribute.String
     title: Schema.Attribute.String
   }
 }
