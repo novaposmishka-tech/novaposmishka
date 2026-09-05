@@ -2,6 +2,7 @@
 
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useTranslations } from "next-intl"
+import { useSyncExternalStore } from "react"
 import { useForm } from "react-hook-form"
 import { toast } from "sonner"
 import * as z from "zod"
@@ -19,10 +20,26 @@ import { readError } from "@/lib/http"
  */
 export function LeadForm({
   gdpr,
+  onStatusChange,
 }: Readonly<{
   gdpr?: { href?: string; label?: string; newTab?: boolean }
+  /** The block around the form shows the outcome; see LeadFormBlock. */
+  onStatusChange?: (status: "idle" | "sent" | "failed") => void
 }>) {
   const t = useTranslations("leadForm")
+
+  // Until React has taken over the form, a submit button is just a button the
+  // browser acts on itself — which navigates away with the phone number in the
+  // query string and loses the lead. Inert until then.
+  //
+  // useSyncExternalStore rather than an effect: it reads false on the server
+  // and true on the client with no extra state write, which is exactly the
+  // question being asked.
+  const hydrated = useSyncExternalStore(
+    subscribeToNothing,
+    () => true,
+    () => false
+  )
 
   const form = useForm<z.infer<FormSchemaType>>({
     resolver: zodResolver(LeadFormSchema),
@@ -44,9 +61,10 @@ export function LeadForm({
         throw new Error(body.error ?? t("error"))
       }
 
-      toast.success(t("success"))
       form.reset()
+      onStatusChange?.("sent")
     } catch (caught) {
+      onStatusChange?.("failed")
       toast.error(caught instanceof Error ? caught.message : t("error"))
     }
   }
@@ -84,39 +102,49 @@ export function LeadForm({
           className="absolute left-[-9999px] size-0 opacity-0"
           {...form.register("company")}
         />
+
+        <div className="flex w-full flex-col gap-4">
+          {gdpr?.href && (
+            <div className="mt-5 flex flex-col items-center sm:flex-row">
+              <p>{t("gdpr")}</p>
+              <AppLink
+                openInNewTab={gdpr.newTab}
+                className="p-0 pl-1 font-medium"
+                href={gdpr.href}
+              >
+                {gdpr.label || t("gdprLink")}
+              </AppLink>
+            </div>
+          )}
+
+          {/* Inside the form, not linked to it by a `form` attribute: with the
+              button outside, Firefox and WebKit submitted natively and
+              navigated away with the phone number in the query string instead
+              of posting it. Chromium happened to work, which is why it went
+              unnoticed.
+
+              The form always sits on the dark brand gradient, whose last stop
+              is the same colour as the primary button — a default button would
+              go invisible against the bottom of the card. Secondary inverts it. */}
+          <Button
+            type={hydrated ? "submit" : "button"}
+            variant="secondary"
+            className="mx-auto mt-4 w-full md:w-fit"
+            size="lg"
+            isLoading={form.formState.isSubmitting}
+            data-hydrated={hydrated || undefined}
+          >
+            {t("submit")}
+          </Button>
+        </div>
       </AppForm>
-
-      <div className="flex w-full flex-col gap-4">
-        {gdpr?.href && (
-          <div className="mt-5 flex flex-col items-center sm:flex-row">
-            <p>{t("gdpr")}</p>
-            <AppLink
-              openInNewTab={gdpr.newTab}
-              className="p-0 pl-1 font-medium"
-              href={gdpr.href}
-            >
-              {gdpr.label || t("gdprLink")}
-            </AppLink>
-          </div>
-        )}
-
-        {/* The form always sits on the dark brand gradient, whose last stop is
-            the same colour as the primary button — a default button would go
-            invisible against the bottom of the card. Secondary inverts it. */}
-        <Button
-          type="submit"
-          variant="secondary"
-          className="mx-auto mt-4 w-full md:w-fit"
-          size="lg"
-          form={leadFormName}
-          isLoading={form.formState.isSubmitting}
-        >
-          {t("submit")}
-        </Button>
-      </div>
     </div>
   )
 }
+
+/** The value never changes after mount, so there is nothing to subscribe to. */
+const unsubscribe = () => {}
+const subscribeToNothing = () => unsubscribe
 
 const LeadFormSchema = z.object({
   name: z.string().optional(),
