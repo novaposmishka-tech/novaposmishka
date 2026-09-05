@@ -65,6 +65,7 @@ export function NavbarInner({
       <NavbarMobileNavigation
         navbarItems={navbarData?.navbarItems}
         primaryButtons={navbarData?.primaryButtons}
+        phone={navbarData?.phone}
         session={session}
         locale={locale}
       />

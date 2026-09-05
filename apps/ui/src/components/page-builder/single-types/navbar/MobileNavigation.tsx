@@ -1,14 +1,14 @@
 "use client"
 
 import type { Data } from "@repo/strapi-types"
-import { ChevronLeft, ChevronRight, X } from "lucide-react"
+import { ChevronLeft, ChevronRight, PhoneIcon, X } from "lucide-react"
 import { useTranslations, type Locale } from "next-intl"
 import { useState } from "react"
 
 import StrapiLink from "@/components/page-builder/components/utilities/StrapiLink"
-import { NavbarAuthSection } from "@/components/page-builder/single-types/navbar/NavbarAuthSection"
 import Typography from "@/components/typography"
 import { Button } from "@/components/ui/button"
+import { contactHref } from "@/lib/contacts"
 import { cn } from "@/lib/styles"
 import type { BetterAuthSessionWithStrapi } from "@/types/better-auth"
 
@@ -19,6 +19,7 @@ interface MobileNavigationProps {
   navbarItems?: Data.ContentType<"api::navbar.navbar">["navbarItems"]
   session?: BetterAuthSessionWithStrapi | null
   locale?: Locale
+  phone?: string | null
 }
 
 export function MobileNavigation({
@@ -28,8 +29,10 @@ export function MobileNavigation({
   setOpen,
   session,
   locale,
+  phone,
 }: MobileNavigationProps) {
   const t = useTranslations("general")
+  const phoneHref = phone ? contactHref("phone", phone) : undefined
   const [activeItem, setActiveItem] =
     useState<Data.Component<"layout.navbar-item"> | null>(null)
 
@@ -120,11 +123,17 @@ export function MobileNavigation({
       </div>
       {/* FOOTER */}
       <div className="mt-auto space-y-4 border-t px-6 py-4">
-        {/* Auth */}
-        {/* TO DO: these components should be changed to mobile view in the future */}
-        <div className="flex w-full items-center justify-between gap-2">
-          <NavbarAuthSection sessionSSR={session} />
-        </div>
+        {/* The design closes the menu with the clinic's number — the quickest
+            way to reach it from a phone, which is what this menu is on. */}
+        {phoneHref && (
+          <a
+            href={phoneHref}
+            className="text-brand-ink flex items-center gap-3 text-lg font-medium"
+          >
+            <PhoneIcon aria-hidden className="size-5" />
+            {phone}
+          </a>
+        )}
         {primaryButtons?.length ? (
           <div className="space-y-2">
             {primaryButtons.map((button) => (

@@ -33,11 +33,13 @@ export function NavbarMobileNavigation({
   primaryButtons,
   session,
   locale,
+  phone,
 }: {
   readonly primaryButtons?: Data.ContentType<"api::navbar.navbar">["primaryButtons"]
   readonly navbarItems?: Data.ContentType<"api::navbar.navbar">["navbarItems"]
   readonly session?: BetterAuthSessionWithStrapi | null
   readonly locale: Locale
+  readonly phone?: string | null
 }) {
   const [mobileOpen, setMobileOpen] = useNavbarMobile()
 
@@ -45,6 +47,7 @@ export function NavbarMobileNavigation({
     <MobileNavigation
       navbarItems={navbarItems}
       primaryButtons={primaryButtons}
+      phone={phone}
       isOpen={mobileOpen}
       setOpen={setMobileOpen}
       session={session}
