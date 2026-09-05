@@ -1,0 +1,26 @@
+{
+  "collectionName": "components_sections_maps",
+  "info": {
+    "displayName": "Map",
+    "icon": "pin",
+    "description": ""
+  },
+  "options": {},
+  "attributes": {
+    "title": {
+      "type": "string"
+    },
+    "address": {
+      "type": "text"
+    },
+    "embedUrl": {
+      "type": "string"
+    },
+    "link": {
+      "type": "component",
+      "component": "utilities.link",
+      "repeatable": false
+    }
+  },
+  "config": {}
+}

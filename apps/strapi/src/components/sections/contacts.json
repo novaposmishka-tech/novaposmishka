@@ -19,6 +19,15 @@
       "type": "component",
       "component": "utilities.basic-image",
       "repeatable": false
+    },
+    "display": {
+      "type": "enumeration",
+      "enum": [
+        "card",
+        "list"
+      ],
+      "default": "card",
+      "required": true
     }
   },
   "config": {}

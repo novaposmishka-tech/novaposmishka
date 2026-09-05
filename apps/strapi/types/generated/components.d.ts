@@ -130,6 +130,9 @@ export interface SectionsContacts extends Struct.ComponentSchema {
     icon: "phone"
   }
   attributes: {
+    display: Schema.Attribute.Enumeration<["card", "list"]> &
+      Schema.Attribute.Required &
+      Schema.Attribute.DefaultTo<"card">
     image: Schema.Attribute.Component<"utilities.basic-image", false>
     items: Schema.Attribute.Component<"shared.contact-item", true>
     title: Schema.Attribute.String
@@ -214,6 +217,21 @@ export interface SharedBeforeAfter extends Struct.ComponentSchema {
     doctorName: Schema.Attribute.String
     doctorPhoto: Schema.Attribute.Component<"utilities.basic-image", false>
     tags: Schema.Attribute.Component<"utilities.text", true>
+  }
+}
+
+export interface SectionsMap extends Struct.ComponentSchema {
+  collectionName: "components_sections_maps"
+  info: {
+    description: ""
+    displayName: "Map"
+    icon: "pin"
+  }
+  attributes: {
+    address: Schema.Attribute.Text
+    embedUrl: Schema.Attribute.String
+    link: Schema.Attribute.Component<"utilities.link", false>
+    title: Schema.Attribute.String
   }
 }
 
@@ -801,6 +819,7 @@ declare module "@strapi/strapi" {
       "sections.hero": SectionsHero
       "sections.image-with-cta-button": SectionsImageWithCtaButton
       "sections.results": SectionsResults
+      "sections.map": SectionsMap
       "sections.price-list": SectionsPriceList
       "sections.services": SectionsServices
       "sections.statistics": SectionsStatistics
