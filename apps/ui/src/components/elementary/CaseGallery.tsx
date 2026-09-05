@@ -4,6 +4,7 @@ import type { Data } from "@repo/strapi-types"
 import { useMemo, useState } from "react"
 
 import { BeforeAfterSlider } from "@/components/elementary/BeforeAfterSlider"
+import { ScrollRow } from "@/components/elementary/ScrollRow"
 import { StrapiBasicImage } from "@/components/page-builder/components/utilities/StrapiBasicImage"
 import { caseStudyId } from "@/lib/case-studies"
 import { cn } from "@/lib/styles"
@@ -105,18 +106,8 @@ export function CaseGallery({
       )}
 
       {/* The listing page lays the cases out as a grid; on the homepage they
-          are a scroll-snap row — no script, and it works with touch. A
-          scrollable region is not keyboard-operable on its own, though, so
-          there it takes a tab stop and a name. */}
-      <ul
-        {...(isGrid ? {} : { tabIndex: 0, "aria-label": labels.list })}
-        className={cn(
-          "list-none",
-          isGrid
-            ? "grid grid-cols-1 gap-6 md:grid-cols-2"
-            : "-mx-2 flex snap-x snap-mandatory gap-6 overflow-x-auto px-2 pb-2 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
-        )}
-      >
+          are the design's scrolling row, with its arrows underneath. */}
+      <Cases isGrid={isGrid} label={labels.list}>
         {shown.map((item) => (
           <li
             key={item.id}
@@ -177,7 +168,7 @@ export function CaseGallery({
             </div>
           </li>
         ))}
-      </ul>
+      </Cases>
 
       {isGrid && matching.length > shown.length && (
         <button
@@ -189,6 +180,35 @@ export function CaseGallery({
         </button>
       )}
     </div>
+  )
+}
+
+/** The grid on the listing page, the scrolling row on the homepage. */
+function Cases({
+  isGrid,
+  label,
+  children,
+}: {
+  readonly isGrid: boolean
+  readonly label: string
+  readonly children: React.ReactNode
+}) {
+  if (isGrid) {
+    return (
+      <ul className="grid list-none grid-cols-1 gap-6 md:grid-cols-2">
+        {children}
+      </ul>
+    )
+  }
+
+  return (
+    <ScrollRow
+      label={label}
+      tone="dark"
+      className="focus-visible:outline-white"
+    >
+      {children}
+    </ScrollRow>
   )
 }
 

@@ -31,7 +31,9 @@
     "close": "Закрити",
     "submitForm": "Надіслати",
     "saveChanges": "Зберегти зміни",
-    "back": "Назад"
+    "back": "Назад",
+    "previous": "Попередні",
+    "next": "Наступні"
   },
   "tables": {
     "previousPage": "Попередня сторінка",

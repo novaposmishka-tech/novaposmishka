@@ -3,6 +3,7 @@ import "server-only"
 import type { Data } from "@repo/strapi-types"
 
 import { Container } from "@/components/elementary/Container"
+import { ScrollRow } from "@/components/elementary/ScrollRow"
 import { StrapiBasicImage } from "@/components/page-builder/components/utilities/StrapiBasicImage"
 import Typography from "@/components/typography"
 import type { PageBuilderComponentProps } from "@/types/general"
@@ -27,15 +28,9 @@ export function StrapiCarousel({
           </Typography>
         )}
 
-        {/* Square tiles, four across at desktop as in the design, scrolling on
-            narrower screens rather than shrinking to stamps. It stays one
-            scroll container at every width so it needs only one tab stop — a
-            scrollable region is not keyboard-operable without one. */}
-        <ul
-          tabIndex={0}
-          aria-label={title ?? undefined}
-          className="-mx-2 flex snap-x snap-mandatory list-none gap-6 overflow-x-auto px-2 pb-2 focus-visible:outline-2 focus-visible:outline-offset-2"
-        >
+        {/* Square tiles, four across at desktop as in the design, scrolling
+            on narrower screens rather than shrinking to stamps. */}
+        <ScrollRow label={title}>
           {images.map((item) => (
             <li
               key={item.id}
@@ -47,7 +42,7 @@ export function StrapiCarousel({
               />
             </li>
           ))}
-        </ul>
+        </ScrollRow>
       </Container>
     </section>
   )

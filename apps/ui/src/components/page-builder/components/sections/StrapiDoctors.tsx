@@ -3,6 +3,7 @@ import "server-only"
 import type { Data } from "@repo/strapi-types"
 
 import { Container } from "@/components/elementary/Container"
+import { ScrollRow } from "@/components/elementary/ScrollRow"
 import { StrapiBasicImage } from "@/components/page-builder/components/utilities/StrapiBasicImage"
 import StrapiLink from "@/components/page-builder/components/utilities/StrapiLink"
 import Typography from "@/components/typography"
@@ -42,32 +43,18 @@ export function StrapiDoctors({
         )}
 
         {/* Two layouts, chosen by the content: the team page lists each
-            dentist's training, which needs a wide card two to a row; the
-            homepage shows the same people as portraits four across. */}
-        {/* On a phone the design scrolls the portraits sideways rather than
-            stacking eight of them. The detailed cards keep stacking: their
-            credentials are unreadable in a two-thirds-width column. */}
-        <ul
-          {...(detailed
-            ? {}
-            : { tabIndex: 0, "aria-label": title ?? undefined })}
-          className={cn(
-            "list-none",
-            detailed
-              ? "grid grid-cols-1 gap-8 lg:grid-cols-2"
-              : cn(
-                  "-mx-2 flex snap-x snap-mandatory gap-8 overflow-x-auto px-2 pb-2",
-                  "sm:mx-0 sm:grid sm:grid-cols-2 sm:overflow-visible sm:px-0",
-                  "lg:grid-cols-4"
-                )
-          )}
-        >
+            dentist's training, which needs a wide card two to a row and stacks
+            them, because credentials are unreadable in a narrow column; the
+            homepage shows the same people as portraits, three across in the
+            scrolling row the design gives arrows to. */}
+        <Portraits detailed={detailed} label={title}>
           {doctors.map((doctor) => (
             <li
               key={doctor.id}
               className={cn(
                 "flex flex-col gap-4",
-                !detailed && "w-2/3 shrink-0 snap-start sm:w-auto",
+                !detailed &&
+                  "w-2/3 shrink-0 snap-start sm:w-[calc(50%-1rem)] lg:w-[calc(33.333%-1.334rem)]",
                 detailed &&
                   "border-brand-border bg-brand-paper gap-7.5 rounded-[20px] border p-7.5"
               )}
@@ -130,9 +117,37 @@ export function StrapiDoctors({
               )}
             </li>
           ))}
-        </ul>
+        </Portraits>
       </Container>
     </section>
+  )
+}
+
+/**
+ * The list the portraits sit in: a plain stack for the team page, the design's
+ * scrolling row with arrows for the homepage.
+ */
+function Portraits({
+  detailed,
+  label,
+  children,
+}: {
+  readonly detailed: boolean
+  readonly label?: string | null
+  readonly children: React.ReactNode
+}) {
+  if (detailed) {
+    return (
+      <ul className="grid list-none grid-cols-1 gap-8 lg:grid-cols-2">
+        {children}
+      </ul>
+    )
+  }
+
+  return (
+    <ScrollRow label={label} className="gap-8">
+      {children}
+    </ScrollRow>
   )
 }
 
