@@ -19,14 +19,14 @@ export function StrapiPriceList({
 
   return (
     <section id="prices" className="scroll-mt-24">
-      <Container className="flex flex-col gap-10">
+      <Container className="flex flex-col gap-12.5">
         {title && (
           <Typography tag="h2" className="text-brand-ink">
             {title}
           </Typography>
         )}
 
-        <div className="flex flex-col gap-10">
+        <div className="flex flex-col gap-12.5">
           {groups.map((group) => (
             <div key={group.id} className="flex flex-col gap-4">
               <Typography tag="h3" className="text-brand-ink text-2xl">

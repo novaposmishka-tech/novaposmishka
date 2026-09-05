@@ -23,7 +23,7 @@ export function StrapiDoctors({
 
   return (
     <section id="doctors" className="scroll-mt-24">
-      <Container className="flex flex-col gap-10">
+      <Container className="flex flex-col gap-12.5">
         {(title || subtitle) && (
           <div className="flex max-w-2xl flex-col gap-4">
             {title && (

@@ -65,7 +65,7 @@ export function StrapiHero({
             hasBackground
               ? cn(
                   "px-8 py-14 md:px-12.5 lg:py-16",
-                  hasBottomRow && "lg:min-h-175 lg:justify-between"
+                  hasBottomRow && "lg:min-h-191 lg:justify-between"
                 )
               : "px-4 py-8 lg:py-12",
             hasImages && "lg:flex-row lg:items-center lg:gap-16"

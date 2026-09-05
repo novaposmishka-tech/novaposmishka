@@ -25,7 +25,7 @@ export async function StrapiTestimonials({
 
   return (
     <section id="testimonials" className="scroll-mt-24">
-      <Container className="flex flex-col gap-10">
+      <Container className="flex flex-col gap-12.5">
         <div className="flex flex-wrap items-center justify-between gap-4">
           {title && (
             <Typography tag="h2" className="text-brand-ink">

@@ -266,20 +266,6 @@ export const homepage = {
         { image: image("gallery-4", "Робота лікаря з пацієнтом") },
       ],
     },
-    {
-      __component: "sections.contacts",
-      title: "Контакти",
-      items: [
-        { label: "Адреса", kind: "text", values: [text(ADDRESS)] },
-        { label: "Телефон", kind: "phone", values: PHONES.map(text) },
-        { label: "Email", kind: "email", values: [text(EMAIL)] },
-        {
-          label: "Графік роботи",
-          kind: "text",
-          values: OPENING_HOURS.map(text),
-        },
-      ],
-    },
   ],
 }
 

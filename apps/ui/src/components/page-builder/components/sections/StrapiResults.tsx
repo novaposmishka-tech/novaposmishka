@@ -29,7 +29,7 @@ export async function StrapiResults({
       {/* The design gives the cases the same dark card as the why-us section. */}
       <Container
         className={cn(
-          "flex flex-col gap-10",
+          "flex flex-col gap-12.5",
           isCarousel &&
             "bg-brand-gradient text-brand-inverted rounded-[50px] p-8 md:p-12.5"
         )}

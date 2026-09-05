@@ -20,7 +20,7 @@ export function StrapiCarousel({
 
   return (
     <section id="gallery" className="scroll-mt-24">
-      <Container className="flex flex-col gap-10">
+      <Container className="flex flex-col gap-12.5">
         {title && (
           <Typography tag="h2" className="text-brand-ink text-center">
             {title}
@@ -39,7 +39,7 @@ export function StrapiCarousel({
           {images.map((item) => (
             <li
               key={item.id}
-              className="w-2/3 shrink-0 snap-start sm:w-2/5 lg:w-[calc(25%-1.125rem)]"
+              className="w-2/3 shrink-0 snap-start sm:w-2/5 lg:w-94"
             >
               <StrapiBasicImage
                 component={item.image}
