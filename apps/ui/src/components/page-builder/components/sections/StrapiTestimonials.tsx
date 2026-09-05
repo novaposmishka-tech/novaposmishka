@@ -7,6 +7,7 @@ import { Container } from "@/components/elementary/Container"
 import { ReviewCard } from "@/components/elementary/ReviewCard"
 import StrapiLink from "@/components/page-builder/components/utilities/StrapiLink"
 import Typography from "@/components/typography"
+import { cn } from "@/lib/styles"
 import type { PageBuilderComponentProps } from "@/types/general"
 
 export async function StrapiTestimonials({
@@ -41,19 +42,33 @@ export async function StrapiTestimonials({
           )}
         </div>
 
-        {/* CSS columns rather than a grid: the reviews are different lengths and
-            the design packs them without the ragged bottom a grid would leave. */}
-        <div className="gap-6 *:mb-6 md:columns-2 lg:columns-3">
+        {/* On a phone these scroll sideways, as the design does — nine cards
+            stacked make the page twice as long as it should be. From md up they
+            are CSS columns rather than a grid: the reviews are different lengths
+            and columns pack them without the ragged bottom a grid would leave. */}
+        <div
+          tabIndex={0}
+          aria-label={title ?? undefined}
+          className={cn(
+            "-mx-2 flex snap-x snap-mandatory gap-6 overflow-x-auto px-2 pb-2",
+            "md:mx-0 md:block md:gap-0 md:overflow-visible md:px-0",
+            "md:columns-2 md:*:mb-6 lg:columns-3"
+          )}
+        >
           {testimonials.map((review) => (
-            <ReviewCard
+            <div
               key={review.id}
-              review={review}
-              labels={{
-                more: t("readMore"),
-                less: t("readLess"),
-                rating: t("rating"),
-              }}
-            />
+              className="w-4/5 shrink-0 snap-start md:w-auto"
+            >
+              <ReviewCard
+                review={review}
+                labels={{
+                  more: t("readMore"),
+                  less: t("readLess"),
+                  rating: t("rating"),
+                }}
+              />
+            </div>
           ))}
         </div>
       </Container>

@@ -40,17 +40,24 @@ export function StrapiDoctors({
         {/* Two layouts, chosen by the content: the team page lists each
             dentist's training, which needs a wide card two to a row; the
             homepage shows the same people as portraits four across. */}
+        {/* On a phone the design shows these one at a time in a carousel;
+            stacking eight portraits makes the page three times as long. Above
+            sm it is a plain grid, so the tab stop only earns its keep on the
+            narrow end — but it has to be declared statically either way. */}
         <ul
+          tabIndex={0}
+          aria-label={title ?? undefined}
           className={cn(
-            "grid list-none grid-cols-1 gap-8",
-            detailed ? "lg:grid-cols-2" : "sm:grid-cols-2 lg:grid-cols-4"
+            "-mx-2 flex snap-x snap-mandatory list-none gap-8 overflow-x-auto px-2 pb-2",
+            "sm:mx-0 sm:grid sm:grid-cols-2 sm:overflow-visible sm:px-0",
+            detailed ? "lg:grid-cols-2" : "lg:grid-cols-4"
           )}
         >
           {doctors.map((doctor) => (
             <li
               key={doctor.id}
               className={cn(
-                "flex flex-col gap-4",
+                "flex w-2/3 shrink-0 snap-start flex-col gap-4 sm:w-auto",
                 detailed &&
                   "border-brand-border bg-brand-paper gap-7.5 rounded-[20px] border p-7.5"
               )}
