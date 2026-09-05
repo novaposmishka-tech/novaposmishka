@@ -585,6 +585,18 @@ export interface ApiNavbarNavbar extends Struct.SingleTypeSchema {
     }
   }
   attributes: {
+    bookingForm: Schema.Attribute.Component<"forms.lead-form", false> &
+      Schema.Attribute.SetPluginOptions<{
+        i18n: {
+          localized: true
+        }
+      }>
+    phones: Schema.Attribute.Component<"utilities.text", true> &
+      Schema.Attribute.SetPluginOptions<{
+        i18n: {
+          localized: true
+        }
+      }>
     createdAt: Schema.Attribute.DateTime
     createdBy: Schema.Attribute.Relation<"oneToOne", "admin::user"> &
       Schema.Attribute.Private

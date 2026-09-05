@@ -53,6 +53,26 @@
           "localized": true
         }
       }
+    },
+    "phones": {
+      "type": "component",
+      "repeatable": true,
+      "component": "utilities.text",
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      }
+    },
+    "bookingForm": {
+      "type": "component",
+      "repeatable": false,
+      "component": "forms.lead-form",
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      }
     }
   }
 }

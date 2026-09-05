@@ -7,6 +7,7 @@ import { type ComponentType, type SVGProps, use } from "react"
 
 import { Container } from "@/components/elementary/Container"
 import { RatingBadge } from "@/components/elementary/RatingBadge"
+import { operatorIcon } from "@/components/icons/operators"
 import {
   InstagramIcon,
   MessengerIcon,
@@ -163,9 +164,15 @@ function ContactCell({ item }: { readonly item: Contact }) {
       {item.values?.map((value) => {
         const text = value.text ?? ""
         const href = contactHref(item.kind, text)
+        // The design marks each number with its operator.
+        const Operator = item.kind === "phone" ? operatorIcon(text) : null
 
         return (
-          <dd key={value.id} className="text-brand-ink text-base">
+          <dd
+            key={value.id}
+            className="text-brand-ink flex items-center gap-2 text-base"
+          >
+            {Operator && <Operator className="size-5 shrink-0" />}
             {href ? (
               <a className="hover:underline" href={href}>
                 {text}

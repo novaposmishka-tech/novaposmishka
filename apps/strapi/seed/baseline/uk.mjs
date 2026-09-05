@@ -53,7 +53,15 @@ export const navbar = {
     { isCategoryLink: true, link: pageLink("Контакти", "kontakty") },
   ],
   primaryButtons: [anchor("Записатись", "/#lead-form-section", BUTTON)],
+  // The header answers on both numbers, and opens the booking form over the
+  // page; the anchor above stays as the fallback for a reader without script.
+  phones: PHONES.map(text),
   phone: PHONES[0],
+  bookingForm: {
+    title: "Записатися на прийом",
+    description:
+      "Залиште заявку — ми звʼяжемося з вами та підберемо зручний час.",
+  },
 }
 
 export const footer = {

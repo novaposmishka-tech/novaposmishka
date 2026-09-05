@@ -5,6 +5,7 @@ import type { Locale } from "next-intl"
 
 import { ClinicLogo } from "@/components/elementary/ClinicLogo"
 import { Container } from "@/components/elementary/Container"
+import { BookingDialog } from "@/components/elementary/forms/BookingDialog"
 import { StrapiBasicImage } from "@/components/page-builder/components/utilities/StrapiBasicImage"
 import StrapiImageWithLink from "@/components/page-builder/components/utilities/StrapiImageWithLink"
 import StrapiLink from "@/components/page-builder/components/utilities/StrapiLink"
@@ -53,10 +54,32 @@ export function NavbarInner({
 
             {/* RIGHT SIDE */}
             <div className="hidden h-full items-center gap-4 pl-4 lg:flex">
-              <NavbarPhoneButton phone={navbarData?.phone} />
-              {navbarData?.primaryButtons?.map((button) => (
-                <StrapiLink key={button.id} component={button} />
-              ))}
+              <NavbarPhoneButton
+                phones={
+                  navbarData?.phones?.length
+                    ? navbarData.phones.map((entry) => entry.text)
+                    : [navbarData?.phone]
+                }
+              />
+              {/* The design opens the booking form over the page rather
+                  than sending the reader down to the footer. Without a form
+                  configured the buttons stay ordinary links. */}
+              {navbarData?.bookingForm && navbarData.primaryButtons?.[0] ? (
+                <BookingDialog
+                  label={navbarData.primaryButtons[0].label ?? ""}
+                  title={navbarData.bookingForm.title}
+                  description={navbarData.bookingForm.description}
+                  gdpr={{
+                    href: navbarData.bookingForm.gdpr?.href ?? undefined,
+                    label: navbarData.bookingForm.gdpr?.label ?? undefined,
+                    newTab: navbarData.bookingForm.gdpr?.newTab ?? false,
+                  }}
+                />
+              ) : (
+                navbarData?.primaryButtons?.map((button) => (
+                  <StrapiLink key={button.id} component={button} />
+                ))
+              )}
             </div>
             <NavbarMobileToggle />
           </Container>

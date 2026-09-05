@@ -1,0 +1,52 @@
+import type { SVGProps } from "react"
+
+type IconProps = SVGProps<SVGSVGElement>
+
+/**
+ * The mobile operators' marks, as the design sets them beside each number.
+ *
+ * Exported from the Figma file and left in each operator's own colour: these
+ * are brand logos, and one recoloured to fit a palette stops being that logo.
+ */
+export function LifecellIcon(props: IconProps) {
+  return (
+    <svg viewBox="0 0 24 24" fill="none" aria-hidden {...props}>
+      <path
+        d="M2 12C2 6.47347 6.47347 2 12 2C17.5265 2 22 6.47347 22 12C22 17.5265 17.5265 22 12 22C10.9061 22 9.86123 21.8286 8.88163 21.502C9.59184 17.3714 12.1959 14.0082 15.6408 12.5796C16.049 13.0531 16.6531 13.3469 17.3224 13.3469C18.5469 13.3469 19.5429 12.351 19.5429 11.1265C19.5429 9.90204 18.5469 8.90612 17.3224 8.90612C16.098 8.90612 15.102 9.90204 15.102 11.1265C10.702 12.449 7.14286 15.5184 5.33878 19.4612C4.76735 18.9469 4.25306 18.3673 3.81225 17.7388C3.91837 13.902 5.81224 10.5469 8.66122 8.56327C9.06939 9.02041 9.66531 9.31429 10.3265 9.31429C11.551 9.31429 12.5469 8.31837 12.5469 7.08571C12.5469 5.85306 11.551 4.86531 10.3265 4.86531C9.09388 4.86531 8.10612 5.86122 8.10612 7.08571C8.10612 7.15102 8.11429 7.21633 8.11429 7.27347C5.45306 8.20408 3.28163 10.049 2.00816 12.3837C2 12.2612 2 12.1306 2 12Z"
+        fill="#FFC10E"
+      />
+    </svg>
+  )
+}
+
+export function KyivstarIcon(props: IconProps) {
+  return (
+    <svg viewBox="0 0 24 24" fill="none" aria-hidden {...props}>
+      <path
+        fillRule="evenodd"
+        clipRule="evenodd"
+        d="M12 2.5C12.5383 2.5 12.9746 2.93644 12.9746 3.47481V8.35571C12.9746 8.89408 12.5383 9.33052 12 9.33052C11.4617 9.33052 11.0254 8.89408 11.0254 8.35571V3.47481C11.0254 2.93644 11.4617 2.5 12 2.5ZM2.04735 9.68811C2.21264 9.17575 2.76192 8.89442 3.27419 9.05974L7.9479 10.568C8.46017 10.7333 8.74146 11.2827 8.57617 11.7951C8.41088 12.3074 7.8616 12.5888 7.34933 12.4234L2.67562 10.9152C2.16335 10.7498 1.88206 10.2005 2.04735 9.68811ZM21.9527 9.68811C22.1179 10.2005 21.8367 10.7498 21.3244 10.9152L16.6507 12.4234C16.1384 12.5888 15.5891 12.3074 15.4238 11.7951C15.2585 11.2827 15.5398 10.7333 16.0521 10.568L20.7258 9.05974C21.2381 8.89442 21.7874 9.17575 21.9527 9.68811ZM9.88619 15.7897C10.3206 16.1076 10.4151 16.7175 10.0973 17.152L7.20878 21.1007C6.89094 21.5352 6.28111 21.6297 5.84669 21.3119C5.41226 20.994 5.31775 20.384 5.63559 19.9495L8.5241 16.0008C8.84194 15.5663 9.45177 15.4718 9.88619 15.7897ZM14.1138 15.7897C14.5482 15.4718 15.1581 15.5663 15.4759 16.0008L18.3644 19.9495C18.6822 20.384 18.5877 20.994 18.1533 21.3119C17.7189 21.6297 17.1091 21.5352 16.7912 21.1007L13.9027 17.152C13.5849 16.7175 13.6794 16.1076 14.1138 15.7897Z"
+        fill="#2A8EE6"
+      />
+    </svg>
+  )
+}
+
+/**
+ * The operator a Ukrainian mobile number belongs to, by its code. Only the two
+ * the clinic uses are drawn; anything else gets no mark rather than a wrong
+ * one, and numbers do move between operators, so this is a hint, not a fact.
+ */
+export function operatorIcon(phone: string | null | undefined) {
+  const code = (phone ?? "").replaceAll(/\D/g, "").slice(0, 3)
+
+  if (["063", "073", "093"].includes(code)) {
+    return LifecellIcon
+  }
+
+  if (["067", "068", "096", "097", "098"].includes(code)) {
+    return KyivstarIcon
+  }
+
+  return null
+}
