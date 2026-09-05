@@ -215,6 +215,17 @@ export const homepage = {
           link: pageLink("Детальніше", "hnatolohiia", BUTTON_QUIET),
         },
       ],
+      callToAction: {
+        name: "Не знаєте, з чого почати?",
+        description:
+          "Запишіться на консультацію — лікар визначить, яка допомога вам потрібна.",
+        icon: image("services-8", ""),
+        link: anchor(
+          "Записатися на консультацію",
+          "#lead-form-section",
+          BUTTON
+        ),
+      },
     },
     {
       __component: "sections.results",

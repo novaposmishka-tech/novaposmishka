@@ -17,6 +17,11 @@
       "type": "component",
       "component": "shared.service",
       "repeatable": true
+    },
+    "callToAction": {
+      "type": "component",
+      "component": "shared.service",
+      "repeatable": false
     }
   },
   "config": {}

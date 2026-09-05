@@ -13,7 +13,7 @@ export function StrapiServices({
 }: PageBuilderComponentProps & {
   component: Data.Component<"sections.services">
 }) {
-  const { title, subtitle, services } = component
+  const { title, subtitle, services, callToAction } = component
 
   if (!services?.length) {
     return null
@@ -71,6 +71,39 @@ export function StrapiServices({
               )}
             </li>
           ))}
+
+          {/* The design closes the grid with a card for the reader who does not
+              know which of these they need. Same shape as a service, so it
+              takes the same component — only the colours differ. */}
+          {callToAction && (
+            <li className="bg-brand-surface border-brand-border flex min-h-53.5 gap-2 overflow-hidden rounded-[26px] border pt-7.5 pb-7.5 pl-7.5">
+              <div className="flex flex-1 flex-col gap-3">
+                <Typography tag="h3" className="text-brand-ink text-2xl">
+                  {callToAction.name}
+                </Typography>
+
+                {callToAction.description && (
+                  <Typography className="text-brand-body text-sm">
+                    {callToAction.description}
+                  </Typography>
+                )}
+
+                {callToAction.link && (
+                  <StrapiLink
+                    component={callToAction.link}
+                    className="mt-auto w-fit"
+                  />
+                )}
+              </div>
+
+              {callToAction.icon && (
+                <StrapiBasicImage
+                  component={callToAction.icon}
+                  className="-mb-7.5 h-45 w-2/5 shrink-0 self-end object-contain object-bottom"
+                />
+              )}
+            </li>
+          )}
         </ul>
       </Container>
     </section>

@@ -256,6 +256,7 @@ export interface SectionsServices extends Struct.ComponentSchema {
     icon: "grid"
   }
   attributes: {
+    callToAction: Schema.Attribute.Component<"shared.service", false>
     services: Schema.Attribute.Component<"shared.service", true>
     subtitle: Schema.Attribute.Text
     title: Schema.Attribute.String
