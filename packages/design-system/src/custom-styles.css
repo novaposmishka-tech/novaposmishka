@@ -32,7 +32,7 @@
 .tip-tap-editor-wrapper h1,
 .tip-tap-editor-wrapper .typo-h1,
 h1 {
-  @apply mb-2 text-4xl md:text-5xl lg:text-6xl;
+  @apply mb-2 text-4xl font-semibold md:text-6xl lg:text-[4.5rem] lg:leading-[1.1];
 }
 
 .ck-editor-rich-text-page h2,
@@ -43,7 +43,7 @@ h1 {
 .tip-tap-editor-wrapper h2,
 .tip-tap-editor-wrapper .typo-h2,
 h2 {
-  @apply mb-1.5 text-3xl md:text-4xl lg:text-5xl;
+  @apply mb-1.5 text-3xl md:text-4xl lg:text-[2.5rem] lg:leading-[1.2];
 }
 
 .ck-editor-rich-text-page h3,
@@ -54,7 +54,7 @@ h2 {
 .tip-tap-editor-wrapper h3,
 .tip-tap-editor-wrapper .typo-h3,
 h3 {
-  @apply mb-1 text-2xl md:text-3xl lg:text-4xl;
+  @apply mb-1 text-xl font-semibold md:text-2xl lg:leading-[1.4];
 }
 
 .ck-editor-rich-text-page h4,
@@ -65,7 +65,7 @@ h3 {
 .tip-tap-editor-wrapper h4,
 .tip-tap-editor-wrapper .typo-h4,
 h4 {
-  @apply mb-1 text-xl md:text-2xl lg:text-3xl;
+  @apply mb-1 text-lg font-semibold md:text-xl lg:text-2xl;
 }
 
 .ck-editor-rich-text-page h5,
@@ -98,14 +98,14 @@ h6 {
 .typo-p-medium,
 .tip-tap-editor-wrapper p,
 .tip-tap-editor-wrapper .typo-p-medium {
-  @apply mb-0.5 text-sm;
+  @apply mb-0.5 text-base leading-[1.375];
 }
 
 .ck-editor-rich-text-page .typo-p-large,
 .ck-editor__main .ck-content .typo-p-large,
 .typo-p-large,
 .tip-tap-editor-wrapper .typo-p-large {
-  @apply mb-0.5 text-lg;
+  @apply mb-0.5 text-xl leading-[1.5];
 }
 
 .ck-editor-rich-text-page .typo-p-small,

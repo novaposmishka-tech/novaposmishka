@@ -14,8 +14,11 @@ export function Container({
   return (
     <div
       className={cn(
-        "mx-auto w-full",
-        hideDefaultPadding ? "max-w-312" : "max-w-308 px-6",
+        // The design lays content out 1320px wide inside a 1440px frame, so
+        // the gutter is 60px at desktop and 15px on a phone — not a fixed
+        // max-width with padding inside it.
+        "mx-auto w-full max-w-360",
+        hideDefaultPadding ? "" : "px-4 md:px-15",
         className
       )}
     >
