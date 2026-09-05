@@ -3,6 +3,7 @@
 import type { Data } from "@repo/strapi-types"
 import { useMemo, useState } from "react"
 
+import { BeforeAfterSlider } from "@/components/elementary/BeforeAfterSlider"
 import { StrapiBasicImage } from "@/components/page-builder/components/utilities/StrapiBasicImage"
 import { cn } from "@/lib/styles"
 
@@ -30,6 +31,7 @@ export function CaseGallery({
     after: string
     list: string
     more: string
+    compare: string
   }
   readonly display?: "carousel" | "grid"
 }) {
@@ -111,10 +113,12 @@ export function CaseGallery({
             )}
           >
             <div className="flex flex-col gap-6">
-              <div className="relative grid grid-cols-2 gap-0 overflow-hidden rounded-2xl">
-                <Half image={item.before} label={labels.before} align="left" />
-                <Half image={item.after} label={labels.after} align="right" />
-              </div>
+              <BeforeAfterSlider
+                before={item.before}
+                after={item.after}
+                labels={labels}
+                className="rounded-2xl"
+              />
 
               <div className="flex flex-col gap-5">
                 {item.caption && (
@@ -166,37 +170,6 @@ export function CaseGallery({
           {labels.more}
         </button>
       )}
-    </div>
-  )
-}
-
-function Half({
-  image,
-  label,
-  align,
-}: {
-  readonly image: Case["before"]
-  readonly label: string
-  readonly align: "left" | "right"
-}) {
-  if (!image) {
-    return null
-  }
-
-  return (
-    <div className="relative">
-      <StrapiBasicImage
-        component={image}
-        className="aspect-269/293 w-full object-cover"
-      />
-      <span
-        className={cn(
-          "text-brand-ink absolute top-5 rounded-full bg-white px-4 py-1 text-sm",
-          align === "left" ? "left-5" : "right-5"
-        )}
-      >
-        {label}
-      </span>
     </div>
   )
 }

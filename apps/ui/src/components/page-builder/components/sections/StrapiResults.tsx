@@ -67,6 +67,7 @@ export async function StrapiResults({
             after: t("after"),
             list: t("list"),
             more: t("more"),
+            compare: t("compare"),
           }}
         />
 
