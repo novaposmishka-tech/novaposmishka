@@ -10,7 +10,17 @@ export const CLINIC_NAME = "Нова Посмішка"
 export const PHONES = ["093 762 05 00", "067 762 55 00"]
 export const EMAIL = "novaposmishka@gmail.com"
 export const ADDRESS = "вулиця Івана Сльоти, 50а, м. Житомир"
-export const OPENING_HOURS = ["Пн–Пт: 9:00 – 19:00", "Сб: 9:00 – 15:00"]
+export const OPENING_HOURS = [
+  "Пн - Пт: 8:00 - 20:00",
+  "Сб: 9:00 - 15:00",
+  "Нд: Вихідний",
+]
+
+/** Schema.org spelling of the same hours, for the homepage structured data. */
+export const OPENING_HOURS_SCHEMA = ["Mo-Fr 08:00-20:00", "Sa 09:00-15:00"]
+
+/** The clinic's Google rating, as the design shows it in the footer. */
+export const GOOGLE_RATING = 4.8
 
 export const text = (value) => ({ text: value })
 
