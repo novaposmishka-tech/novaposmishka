@@ -73,7 +73,15 @@ export default async function RootLayout({
   ]
 
   return (
-    <html lang={locale} suppressHydrationWarning>
+    // The font variables belong on <HTML>: the design system defines
+    // --font-sans in terms of --font-open-sans at :root, and a reference that
+    // resolves nowhere makes the whole declaration invalid — which is why the
+    // site was rendering in the system stack rather than Open Sans.
+    <html
+      lang={locale}
+      suppressHydrationWarning
+      className={cn(fontOpenSans.variable, fontNunito.variable)}
+    >
       <head>
         <Script id="csr-config" strategy="beforeInteractive">
           {`
@@ -91,13 +99,7 @@ export default async function RootLayout({
        `}
         </Script>
       </head>
-      <body
-        className={cn(
-          "min-h-screen font-sans antialiased",
-          fontOpenSans.variable,
-          fontNunito.variable
-        )}
-      >
+      <body className="min-h-screen font-sans antialiased">
         <TrackingScripts />
         <ServerProviders>
           <StrapiPreviewListener />
