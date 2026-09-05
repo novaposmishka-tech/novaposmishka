@@ -22,6 +22,14 @@ content are missing.
 
 ## Blocked on content
 
+- [ ] **Google Maps Embed API key.** The contact page has the map section but no
+      map: Google refuses its keyless `output=embed` URL, rendering an empty
+      frame, so the section ships with the address and a working "Маршрут" link
+      instead. Issue a key for the Maps Embed API, then set `embedUrl` on the
+      section to
+      `https://www.google.com/maps/embed/v1/place?key=…&q=…` — the frame appears
+      on its own, and the CSP already allows www.google.com.
+
 - [ ] **Photos.** Every section renders text-only until images are uploaded
       through the admin panel: the hero collage, the doctors' portraits, the
       service icons and the contacts photo.
@@ -44,7 +52,7 @@ content are missing.
 
 - [ ] **Strapi typegen is broken** in this environment: `pnpm generate:types`
       fails with `(Typegen) Failed to generate types for contentTypes:
-    e.charAt is not a function`. Reproduced on an unrelated project built
+  e.charAt is not a function`. Reproduced on an unrelated project built
       from the same starter, so it is a Strapi 5.48 bug, not our schemas.
 
       Until it is fixed, entries in `apps/strapi/types/generated/*.d.ts` must be

@@ -23,6 +23,7 @@ import { fileURLToPath } from "node:url"
 
 import { ensureMedia, resolveMediaMarkers } from "./seed-media.mjs"
 import { casesPage } from "../seed/baseline/cases.mjs"
+import { contactsPage } from "../seed/baseline/contacts.mjs"
 import { doctorsPage } from "../seed/baseline/doctors.mjs"
 import { servicePages } from "../seed/baseline/services.mjs"
 import { footer, homepage, locale, navbar } from "../seed/baseline/uk.mjs"
@@ -53,7 +54,7 @@ try {
   // Pages first: the navbar and the service cards link to them by slug, and
   // those links need documentIds that only exist once the pages do.
   const pageIds = new Map()
-  for (const page of [...servicePages, casesPage, doctorsPage]) {
+  for (const page of [...servicePages, casesPage, doctorsPage, contactsPage]) {
     pageIds.set(page.slug, await seedPage(page.slug, resolve(page)))
   }
 
