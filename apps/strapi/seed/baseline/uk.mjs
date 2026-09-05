@@ -46,7 +46,7 @@ export const navbar = {
     },
     { isCategoryLink: true, link: pageLink("Лікарі", "likari") },
     { isCategoryLink: true, link: pageLink("Наші роботи", "nashi-roboty") },
-    { isCategoryLink: true, link: anchor("Відгуки", "/#testimonials") },
+    { isCategoryLink: true, link: pageLink("Відгуки", "vidhuky") },
     { isCategoryLink: true, link: pageLink("Контакти", "kontakty") },
   ],
   primaryButtons: [anchor("Записатися", "/#lead-form-section", BUTTON)],

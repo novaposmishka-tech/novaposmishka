@@ -34,6 +34,11 @@ content are missing.
       through the admin panel: the hero collage, the doctors' portraits, the
       service icons and the contacts photo.
 
+- [ ] **Video testimonials.** The reviews page has a "Відеовідгуки" row in the
+      design — four vertical clips, each with a quote under it. The clips do not
+      exist, so the section is not built; the written Google reviews below it
+      are.
+
 - [ ] **The before/after section.** `sections.results` is built and registered
       but is not on the homepage — its component requires two media entries per
       case. Add the section in the admin panel once the case photos exist.
@@ -52,7 +57,7 @@ content are missing.
 
 - [ ] **Strapi typegen is broken** in this environment: `pnpm generate:types`
       fails with `(Typegen) Failed to generate types for contentTypes:
-  e.charAt is not a function`. Reproduced on an unrelated project built
+e.charAt is not a function`. Reproduced on an unrelated project built
       from the same starter, so it is a Strapi 5.48 bug, not our schemas.
 
       Until it is fixed, entries in `apps/strapi/types/generated/*.d.ts` must be
