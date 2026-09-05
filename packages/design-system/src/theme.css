@@ -75,6 +75,8 @@
   --color-brand-ink: #081725;
   --color-brand-ink-soft: #1a1a1a;
   --color-brand-body: #5a5a5a;
+  /* Only legible on a dark surface: at roughly 2:1 on paper or white this
+     fails contrast for text. Use brand-body for secondary copy on light. */
   --color-brand-muted: #aeaeae;
   --color-brand-inverted: #f8f8f8;
   --color-brand-on-dark: #bfc9d9;

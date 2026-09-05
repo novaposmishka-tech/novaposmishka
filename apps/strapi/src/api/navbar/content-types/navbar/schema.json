@@ -45,6 +45,14 @@
       },
       "component": "utilities.link",
       "repeatable": true
+    },
+    "phone": {
+      "type": "string",
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      }
     }
   }
 }

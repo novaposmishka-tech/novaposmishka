@@ -590,6 +590,12 @@ export interface ApiNavbarNavbar extends Struct.SingleTypeSchema {
           localized: true
         }
       }>
+    phone: Schema.Attribute.String &
+      Schema.Attribute.SetPluginOptions<{
+        i18n: {
+          localized: true
+        }
+      }>
     navbarItems: Schema.Attribute.Component<"layout.navbar-item", true> &
       Schema.Attribute.SetPluginOptions<{
         i18n: {

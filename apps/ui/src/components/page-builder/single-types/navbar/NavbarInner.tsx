@@ -3,16 +3,17 @@ import "server-only"
 import type { Data } from "@repo/strapi-types"
 import type { Locale } from "next-intl"
 
+import { ClinicLogo } from "@/components/elementary/ClinicLogo"
 import { Container } from "@/components/elementary/Container"
 import { StrapiBasicImage } from "@/components/page-builder/components/utilities/StrapiBasicImage"
 import StrapiImageWithLink from "@/components/page-builder/components/utilities/StrapiImageWithLink"
 import StrapiLink from "@/components/page-builder/components/utilities/StrapiLink"
-import { NavbarAuthSection } from "@/components/page-builder/single-types/navbar/NavbarAuthSection"
 import {
   NavbarMobileNavigation,
   NavbarMobileProvider,
   NavbarMobileToggle,
 } from "@/components/page-builder/single-types/navbar/NavbarMobileControls"
+import { NavbarPhoneButton } from "@/components/page-builder/single-types/navbar/NavbarPhoneButton"
 import type { BetterAuthSessionWithStrapi } from "@/types/better-auth"
 
 import { DesktopNavigation } from "./DesktopNavigation"
@@ -32,27 +33,27 @@ export function NavbarInner({
         <div className="flex h-16 items-center">
           <Container className="flex h-full items-center justify-between px-6">
             {/* LEFT SIDE */}
-            <div className="flex items-center gap-2">
-              {/* Logo */}
+            <div className="flex items-center gap-8">
+              {/* Logo — the clinic's own mark unless an editor uploaded one. */}
               {navbarData?.logoImage?.image && navbarData.logoImage.link ? (
                 <StrapiImageWithLink component={navbarData.logoImage} />
-              ) : null}
-              {navbarData?.logoImage?.image && !navbarData.logoImage.link ? (
+              ) : navbarData?.logoImage?.image ? (
                 <StrapiBasicImage
                   component={navbarData.logoImage.image}
                   width={80}
                   height={30}
                   className="h-7.5 w-20 shrink-0 object-contain"
                 />
-              ) : null}
+              ) : (
+                <ClinicLogo />
+              )}
               {/* Desktop Navigation */}
               <DesktopNavigation navbarItems={navbarData?.navbarItems} />
             </div>
 
             {/* RIGHT SIDE */}
-            <div className="hidden h-full items-center gap-2 pl-4 lg:flex">
-              <NavbarAuthSection sessionSSR={session} />
-              <div className="flex h-8 w-px flex-1 bg-black/70" />
+            <div className="hidden h-full items-center gap-4 pl-4 lg:flex">
+              <NavbarPhoneButton phone={navbarData?.phone} />
               {navbarData?.primaryButtons?.map((button) => (
                 <StrapiLink key={button.id} component={button} />
               ))}

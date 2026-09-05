@@ -49,7 +49,8 @@ export const navbar = {
     { isCategoryLink: true, link: pageLink("Відгуки", "vidhuky") },
     { isCategoryLink: true, link: pageLink("Контакти", "kontakty") },
   ],
-  primaryButtons: [anchor("Записатися", "/#lead-form-section", BUTTON)],
+  primaryButtons: [anchor("Записатись", "/#lead-form-section", BUTTON)],
+  phone: PHONES[0],
 }
 
 export const footer = {
