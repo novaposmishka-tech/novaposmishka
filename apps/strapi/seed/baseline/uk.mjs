@@ -282,6 +282,7 @@ export const homepage = {
     {
       __component: "sections.doctors",
       title: "Команда лікарів",
+      link: pageLink("Усі лікарі", "likari", BUTTON),
       // Portraits only here; /likari carries the training for each of them.
       doctors: featuredDoctors.map(({ credentials, ...rest }) => rest),
     },

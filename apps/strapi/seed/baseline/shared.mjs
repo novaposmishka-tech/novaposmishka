@@ -20,9 +20,13 @@ export const ADDRESS = "вулиця Івана Сльоти, 50а, м. Жито
 /** The same address as the footer sets it: city first, over two lines. */
 export const ADDRESS_LINES = ["м. Житомир,", "вулиця Івана Сльоти, 50а"]
 
-/** The postal address the contacts page prints under the map. */
+/**
+ * The postal address the contacts page prints under the map, as the design
+ * writes it. The design leaves the quotation mark after "Квартал" unclosed;
+ * it is closed here, the rest is untouched.
+ */
 export const ADDRESS_FULL =
-  'ЖК "Набережний Квартал, вулиця Івана Сльоти, 50а, Житомир, Житомирська область, Україна, 10024'
+  "ЖК «Набережний Квартал», вулиця Івана Сльоти, 50а, Житомир, Житомирська область, Україна, 10024"
 export const OPENING_HOURS = [
   "Пн - Пт: 8:00 - 20:00",
   "Сб: 9:00 - 15:00",

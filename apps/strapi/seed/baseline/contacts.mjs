@@ -9,6 +9,7 @@
 
 import {
   ADDRESS,
+  ADDRESS_FULL,
   anchor,
   BUTTON_QUIET,
   CLINIC_NAME,
@@ -56,7 +57,7 @@ export const contactsPage = {
     {
       __component: "sections.map",
       title: "Як нас знайти на карті?",
-      address: `ЖК «Набережний Квартал», ${ADDRESS}`,
+      address: ADDRESS_FULL,
       link: {
         ...anchor(
           "Маршрут",

@@ -4,6 +4,7 @@ import type { Data } from "@repo/strapi-types"
 
 import { Container } from "@/components/elementary/Container"
 import { StrapiBasicImage } from "@/components/page-builder/components/utilities/StrapiBasicImage"
+import StrapiLink from "@/components/page-builder/components/utilities/StrapiLink"
 import Typography from "@/components/typography"
 import { cn } from "@/lib/styles"
 import type { PageBuilderComponentProps } from "@/types/general"
@@ -13,7 +14,7 @@ export function StrapiDoctors({
 }: PageBuilderComponentProps & {
   component: Data.Component<"sections.doctors">
 }) {
-  const { title, subtitle, doctors } = component
+  const { title, subtitle, doctors, link } = component
 
   if (!doctors?.length) {
     return null
@@ -24,16 +25,19 @@ export function StrapiDoctors({
   return (
     <section id="doctors" className="scroll-mt-24">
       <Container className="flex flex-col gap-12.5">
-        {(title || subtitle) && (
-          <div className="flex max-w-2xl flex-col gap-4">
-            {title && (
-              <Typography tag="h2" className="text-brand-ink">
-                {title}
-              </Typography>
-            )}
-            {subtitle && (
-              <Typography className="text-brand-body">{subtitle}</Typography>
-            )}
+        {(title || subtitle || link) && (
+          <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+            <div className="flex max-w-2xl flex-col gap-4">
+              {title && (
+                <Typography tag="h2" className="text-brand-ink">
+                  {title}
+                </Typography>
+              )}
+              {subtitle && (
+                <Typography className="text-brand-body">{subtitle}</Typography>
+              )}
+            </div>
+            {link && <StrapiLink component={link} className="w-fit shrink-0" />}
           </div>
         )}
 
