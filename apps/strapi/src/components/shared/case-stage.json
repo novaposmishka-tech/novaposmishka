@@ -1,0 +1,32 @@
+{
+  "collectionName": "components_shared_case_stages",
+  "info": {
+    "displayName": "CaseStage",
+    "icon": "bulletList",
+    "description": "One numbered step of a treatment, with the photographs taken at it."
+  },
+  "options": {},
+  "attributes": {
+    "title": { "type": "string", "required": true },
+    "intro": { "type": "text" },
+    "bullets": {
+      "type": "component",
+      "repeatable": true,
+      "component": "utilities.text"
+    },
+    "note": { "type": "text" },
+    "doctorName": { "type": "string" },
+    "doctorPhoto": {
+      "type": "component",
+      "repeatable": false,
+      "component": "utilities.basic-image"
+    },
+    "images": {
+      "type": "component",
+      "repeatable": true,
+      "component": "utilities.basic-image"
+    },
+    "showBeforeAfter": { "type": "boolean", "default": false }
+  },
+  "config": {}
+}

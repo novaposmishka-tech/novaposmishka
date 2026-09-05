@@ -5,12 +5,20 @@ import { useMemo, useState } from "react"
 
 import { BeforeAfterSlider } from "@/components/elementary/BeforeAfterSlider"
 import { StrapiBasicImage } from "@/components/page-builder/components/utilities/StrapiBasicImage"
+import { caseStudyId } from "@/lib/case-studies"
 import { cn } from "@/lib/styles"
 
 type Case = NonNullable<Data.Component<"sections.results">["cases"]>[number]
 
 /** How many a grid shows before the reader asks for the rest. */
 const PAGE_SIZE = 4
+
+/**
+ * The prefix the design gives a tag that names a case written up in full
+ * further down the page. Those chips jump to the write-up; every other chip
+ * filters the grid.
+ */
+const WRITTEN_UP = "Кейс:"
 
 /**
  * The clinic's before/after cases, filtered by the tags the cases carry.
@@ -59,30 +67,40 @@ export function CaseGallery({
     <div className="flex flex-col gap-10">
       {tags.length > 0 && (
         <ul className="flex list-none flex-wrap gap-3">
-          {[null, ...tags].map((tag) => (
-            <li key={tag ?? "all"}>
-              <button
-                type="button"
-                onClick={() => {
-                  setActive(tag)
-                  setLimit(PAGE_SIZE)
-                }}
-                aria-pressed={active === tag}
-                className={cn(
-                  "cursor-pointer rounded-full px-7.5 py-3 text-base transition-colors",
-                  active === tag
-                    ? isGrid
-                      ? "bg-brand-deep text-brand-inverted"
-                      : "text-brand-ink bg-white"
-                    : isGrid
-                      ? "bg-brand-surface text-brand-ink hover:bg-brand-border"
-                      : "text-brand-inverted bg-white/10 hover:bg-white/20"
+          {[null, ...tags].map((tag) => {
+            const chip = cn(
+              "block cursor-pointer rounded-full px-7.5 py-3 text-base transition-colors",
+              active === tag
+                ? isGrid
+                  ? "bg-brand-deep text-brand-inverted"
+                  : "text-brand-ink bg-white"
+                : isGrid
+                  ? "bg-brand-surface text-brand-ink hover:bg-brand-border"
+                  : "text-brand-inverted bg-white/10 hover:bg-white/20"
+            )
+
+            return (
+              <li key={tag ?? "all"}>
+                {tag?.startsWith(WRITTEN_UP) ? (
+                  <a href={"#" + caseStudyId(tag)} className={chip}>
+                    {tag}
+                  </a>
+                ) : (
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setActive(tag)
+                      setLimit(PAGE_SIZE)
+                    }}
+                    aria-pressed={active === tag}
+                    className={chip}
+                  >
+                    {tag ?? labels.all}
+                  </button>
                 )}
-              >
-                {tag ?? labels.all}
-              </button>
-            </li>
-          ))}
+              </li>
+            )
+          })}
         </ul>
       )}
 

@@ -1,0 +1,42 @@
+{
+  "collectionName": "components_sections_case_studies",
+  "info": {
+    "displayName": "CaseStudy",
+    "icon": "stack",
+    "description": "One patient's treatment told end to end."
+  },
+  "options": {},
+  "attributes": {
+    "title": { "type": "string", "required": true },
+    "patient": { "type": "string" },
+    "tags": {
+      "type": "component",
+      "repeatable": true,
+      "component": "utilities.text"
+    },
+    "quote": { "type": "text" },
+    "videoLabel": { "type": "string" },
+    "videoUrl": { "type": "string" },
+    "videoPoster": {
+      "type": "component",
+      "repeatable": false,
+      "component": "utilities.basic-image"
+    },
+    "before": {
+      "type": "component",
+      "repeatable": false,
+      "component": "utilities.basic-image"
+    },
+    "after": {
+      "type": "component",
+      "repeatable": false,
+      "component": "utilities.basic-image"
+    },
+    "stages": {
+      "type": "component",
+      "repeatable": true,
+      "component": "shared.case-stage"
+    }
+  },
+  "config": {}
+}

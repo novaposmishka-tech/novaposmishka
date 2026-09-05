@@ -4,6 +4,7 @@ import StrapiContactForm from "@/components/page-builder/components/forms/Strapi
 import StrapiNewsletterForm from "@/components/page-builder/components/forms/StrapiNewsletterForm"
 import StrapiAnimatedLogoRow from "@/components/page-builder/components/sections/StrapiAnimatedLogoRow"
 import StrapiCarousel from "@/components/page-builder/components/sections/StrapiCarousel"
+import StrapiCaseStudy from "@/components/page-builder/components/sections/StrapiCaseStudy"
 import StrapiContacts from "@/components/page-builder/components/sections/StrapiContacts"
 import StrapiCTABanner from "@/components/page-builder/components/sections/StrapiCTABanner"
 import StrapiDoctors from "@/components/page-builder/components/sections/StrapiDoctors"
@@ -43,6 +44,7 @@ export const PageContentComponents: Partial<
   "sections.animated-logo-row": StrapiAnimatedLogoRow,
   "sections.faq": StrapiFaq,
   "sections.carousel": StrapiCarousel,
+  "sections.case-study": StrapiCaseStudy,
   "sections.heading-with-cta-button": StrapiHeadingWithCTAButton,
   "sections.hero": StrapiHero,
   "sections.image-with-cta-button": StrapiImageWithCTAButton,

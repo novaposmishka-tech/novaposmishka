@@ -81,6 +81,27 @@ export interface SectionsAnimatedLogoRow extends Struct.ComponentSchema {
   }
 }
 
+export interface SectionsCaseStudy extends Struct.ComponentSchema {
+  collectionName: "components_sections_case_studies"
+  info: {
+    description: "One patient treatment told end to end."
+    displayName: "CaseStudy"
+    icon: "stack"
+  }
+  attributes: {
+    after: Schema.Attribute.Component<"utilities.basic-image", false>
+    before: Schema.Attribute.Component<"utilities.basic-image", false>
+    patient: Schema.Attribute.String
+    quote: Schema.Attribute.Text
+    stages: Schema.Attribute.Component<"shared.case-stage", true>
+    tags: Schema.Attribute.Component<"utilities.text", true>
+    title: Schema.Attribute.String & Schema.Attribute.Required
+    videoLabel: Schema.Attribute.String
+    videoPoster: Schema.Attribute.Component<"utilities.basic-image", false>
+    videoUrl: Schema.Attribute.String
+  }
+}
+
 export interface SectionsCarousel extends Struct.ComponentSchema {
   collectionName: "components_sections_carousels"
   info: {
@@ -136,6 +157,25 @@ export interface SectionsContacts extends Struct.ComponentSchema {
     image: Schema.Attribute.Component<"utilities.basic-image", false>
     items: Schema.Attribute.Component<"shared.contact-item", true>
     title: Schema.Attribute.String
+  }
+}
+
+export interface SharedCaseStage extends Struct.ComponentSchema {
+  collectionName: "components_shared_case_stages"
+  info: {
+    description: "One numbered step of a treatment, with its photographs."
+    displayName: "CaseStage"
+    icon: "bulletList"
+  }
+  attributes: {
+    bullets: Schema.Attribute.Component<"utilities.text", true>
+    doctorName: Schema.Attribute.String
+    doctorPhoto: Schema.Attribute.Component<"utilities.basic-image", false>
+    images: Schema.Attribute.Component<"utilities.basic-image", true>
+    intro: Schema.Attribute.Text
+    note: Schema.Attribute.Text
+    showBeforeAfter: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<false>
+    title: Schema.Attribute.String & Schema.Attribute.Required
   }
 }
 
@@ -861,6 +901,7 @@ declare module "@strapi/strapi" {
       "layout.navbar-item": LayoutNavbarItem
       "sections.animated-logo-row": SectionsAnimatedLogoRow
       "sections.carousel": SectionsCarousel
+      "sections.case-study": SectionsCaseStudy
       "sections.contacts": SectionsContacts
       "sections.cta-banner": SectionsCtaBanner
       "sections.doctors": SectionsDoctors
@@ -882,6 +923,7 @@ declare module "@strapi/strapi" {
       "seo-utilities.seo-twitter": SeoUtilitiesSeoTwitter
       "seo-utilities.social-icons": SeoUtilitiesSocialIcons
       "shared.before-after": SharedBeforeAfter
+      "shared.case-stage": SharedCaseStage
       "shared.contact-item": SharedContactItem
       "shared.credential": SharedCredential
       "shared.doctor": SharedDoctor

@@ -6,6 +6,7 @@
  * drift apart.
  */
 
+import { caseStudies } from "./case-studies.mjs"
 import { CLINIC_NAME, image, text } from "./shared.mjs"
 
 const DOCTOR = "Сергій Шевчук"
@@ -36,7 +37,7 @@ export const cases = [
 ]
 
 const DESCRIPTION =
-  "Тут ми зібрали результати лікування наших пацієнтів — від невеликих змін до повного перевтілення посмішки."
+  "Тут ми зібрали результати лікування наших пацієнтів — від невеликих змін до повного перетворення посмішки."
 
 export const casesPage = {
   slug: "nashi-roboty",
@@ -61,5 +62,6 @@ export const casesPage = {
       display: "grid",
       cases,
     },
+    ...caseStudies,
   ],
 }
