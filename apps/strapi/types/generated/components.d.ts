@@ -165,6 +165,7 @@ export interface SectionsDoctors extends Struct.ComponentSchema {
     icon: "user"
   }
   attributes: {
+    link: Schema.Attribute.Component<"utilities.link", false>
     doctors: Schema.Attribute.Component<"shared.doctor", true>
     subtitle: Schema.Attribute.Text
     title: Schema.Attribute.String
@@ -261,6 +262,20 @@ export interface SectionsServices extends Struct.ComponentSchema {
     callToAction: Schema.Attribute.Component<"shared.service", false>
     services: Schema.Attribute.Component<"shared.service", true>
     subtitle: Schema.Attribute.Text
+    title: Schema.Attribute.String
+  }
+}
+
+export interface SectionsVideoReviews extends Struct.ComponentSchema {
+  collectionName: "components_sections_video_reviews"
+  info: {
+    description: ""
+    displayName: "VideoReviews"
+    icon: "play"
+  }
+  attributes: {
+    link: Schema.Attribute.Component<"utilities.link", false>
+    reviews: Schema.Attribute.Component<"shared.video-review", true>
     title: Schema.Attribute.String
   }
 }
@@ -385,6 +400,20 @@ export interface SharedSocialLink extends Struct.ComponentSchema {
   }
 }
 
+export interface SharedVideoReview extends Struct.ComponentSchema {
+  collectionName: "components_shared_video_reviews"
+  info: {
+    description: "A patient filmed review: the still, the quote, and the clip."
+    displayName: "VideoReview"
+    icon: "play"
+  }
+  attributes: {
+    poster: Schema.Attribute.Component<"utilities.basic-image", false>
+    quote: Schema.Attribute.Text & Schema.Attribute.Required
+    videoUrl: Schema.Attribute.String
+  }
+}
+
 export interface SharedTestimonial extends Struct.ComponentSchema {
   collectionName: "components_shared_testimonials"
   info: {
@@ -454,6 +483,8 @@ export interface SectionsHeadingWithCtaButton extends Struct.ComponentSchema {
   }
   attributes: {
     cta: Schema.Attribute.Component<"utilities.link", false>
+    mark: Schema.Attribute.Enumeration<["none", "google"]> &
+      Schema.Attribute.DefaultTo<"none">
     subText: Schema.Attribute.String
     title: Schema.Attribute.String & Schema.Attribute.Required
   }
@@ -844,6 +875,7 @@ declare module "@strapi/strapi" {
       "sections.services": SectionsServices
       "sections.statistics": SectionsStatistics
       "sections.testimonials": SectionsTestimonials
+      "sections.video-reviews": SectionsVideoReviews
       "sections.why-us": SectionsWhyUs
       "seo-utilities.seo": SeoUtilitiesSeo
       "seo-utilities.seo-og": SeoUtilitiesSeoOg
@@ -862,6 +894,7 @@ declare module "@strapi/strapi" {
       "shared.service": SharedService
       "shared.social-link": SharedSocialLink
       "shared.testimonial": SharedTestimonial
+      "shared.video-review": SharedVideoReview
       "utilities.accordions": UtilitiesAccordions
       "utilities.basic-image": UtilitiesBasicImage
       "utilities.ck-editor-content": UtilitiesCkEditorContent

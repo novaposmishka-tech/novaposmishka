@@ -18,6 +18,7 @@ import StrapiPriceList from "@/components/page-builder/components/sections/Strap
 import StrapiResults from "@/components/page-builder/components/sections/StrapiResults"
 import StrapiServices from "@/components/page-builder/components/sections/StrapiServices"
 import StrapiTestimonials from "@/components/page-builder/components/sections/StrapiTestimonials"
+import StrapiVideoReviews from "@/components/page-builder/components/sections/StrapiVideoReviews"
 import StrapiWhyUs from "@/components/page-builder/components/sections/StrapiWhyUs"
 import StrapiCkEditorContent from "@/components/page-builder/components/utilities/StrapiCkEditorContent"
 import StrapiTipTapEditorContent from "@/components/page-builder/components/utilities/StrapiTipTapEditorContent"
@@ -53,6 +54,7 @@ export const PageContentComponents: Partial<
   "sections.results": StrapiResults,
   "sections.map": StrapiMap,
   "sections.price-list": StrapiPriceList,
+  "sections.video-reviews": StrapiVideoReviews,
   "sections.services": StrapiServices,
   "sections.testimonials": StrapiTestimonials,
   "sections.why-us": StrapiWhyUs,

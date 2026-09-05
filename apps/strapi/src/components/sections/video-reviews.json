@@ -1,8 +1,8 @@
 {
-  "collectionName": "components_sections_doctors",
+  "collectionName": "components_sections_video_reviews",
   "info": {
-    "displayName": "Doctors",
-    "icon": "user",
+    "displayName": "VideoReviews",
+    "icon": "play",
     "description": ""
   },
   "options": {},
@@ -10,13 +10,10 @@
     "title": {
       "type": "string"
     },
-    "subtitle": {
-      "type": "text"
-    },
-    "doctors": {
+    "reviews": {
       "type": "component",
-      "component": "shared.doctor",
-      "repeatable": true
+      "repeatable": true,
+      "component": "shared.video-review"
     },
     "link": {
       "type": "component",

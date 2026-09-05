@@ -1,13 +1,31 @@
 /**
  * The reviews page.
  *
- * The design also gives it a "Відеовідгуки" row — four vertical clips with a
- * quote under each. The clips do not exist yet, so the section is not seeded;
- * the written reviews below it are the same ones the homepage shows.
+ * The "Відеовідгуки" row carries the four stills the design shows and the
+ * quote under each. The clips themselves do not exist yet: `videoUrl` is left
+ * empty, and the card stays a still until the clinic supplies one. The written
+ * reviews below it are the same ones the homepage shows.
  */
 
 import { reviews } from "./reviews.mjs"
-import { anchor, BUTTON, CLINIC_NAME, GOOGLE_RATING } from "./shared.mjs"
+import {
+  anchor,
+  BUTTON,
+  CLINIC_NAME,
+  GOOGLE_RATING,
+  image,
+} from "./shared.mjs"
+
+/** The filmed reviews, in the order the design puts them. */
+const videoReviews = [
+  "Сам процес пройшов максимально комфортно, безболісно. Лікар коментував кожен свій крок, питав, переживав",
+  "Процедура імплантації пройшла дуже комфортно, безболісно, хоча перед цим я дуже сильно хвилювався – але все пройшло на вищому рівні",
+  "Це не було боляче, мені сподобалось. Мені не було страшно. Мені сподобались іграшки та картини",
+  "З першої хвилини все було на найвищому рівні. Мене зустріли привітні адміністратори. Лікар провів детальний огляд та зрозуміло все пояснив",
+].map((quote, index) => ({
+  quote: `“${quote}”`,
+  poster: image(`video-review-${index + 1}`, "Пацієнт розповідає про лікування"),
+}))
 
 const DESCRIPTION =
   "Довіра пацієнтів — найкраща оцінка нашої роботи. Дякуємо, що обираєте «Нову Посмішку» та ділитеся своїми враженнями"
@@ -53,12 +71,28 @@ export const feedbacksPage = {
       ],
     },
     {
+      __component: "sections.video-reviews",
+      title: "Відеовідгуки",
+      reviews: videoReviews,
+    },
+    {
       __component: "sections.testimonials",
       title: "Google відгуки",
       testimonials: reviews,
       links: [
         { ...anchor("Google", GOOGLE_REVIEWS_URL, BUTTON), newTab: true },
       ],
+    },
+    {
+      __component: "sections.heading-with-cta-button",
+      mark: "google",
+      title: "Поділіться своїм досвідом.\nЗалиште свій відгук про клініку",
+      subText:
+        "Це допомагає нам зберігати прозорість та автентичність відгуків, щоб кожен пацієнт міг бути впевнений у їхній достовірності.\nДякуємо за вашу довіру та час!",
+      cta: {
+        ...anchor("Залишити відгук", GOOGLE_REVIEWS_URL, BUTTON),
+        newTab: true,
+      },
     },
   ],
 }

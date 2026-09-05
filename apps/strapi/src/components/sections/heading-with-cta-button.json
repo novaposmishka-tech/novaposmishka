@@ -17,6 +17,14 @@
       "type": "component",
       "repeatable": false,
       "component": "utilities.link"
+    },
+    "mark": {
+      "type": "enumeration",
+      "enum": [
+        "none",
+        "google"
+      ],
+      "default": "none"
     }
   }
 }

@@ -1,0 +1,24 @@
+{
+  "collectionName": "components_shared_video_reviews",
+  "info": {
+    "displayName": "VideoReview",
+    "icon": "play",
+    "description": "A patient's filmed review: the still the design shows, the quote under it, and the clip once there is one."
+  },
+  "options": {},
+  "attributes": {
+    "poster": {
+      "type": "component",
+      "repeatable": false,
+      "component": "utilities.basic-image"
+    },
+    "quote": {
+      "type": "text",
+      "required": true
+    },
+    "videoUrl": {
+      "type": "string"
+    }
+  },
+  "config": {}
+}
