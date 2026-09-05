@@ -480,6 +480,12 @@ export interface ApiFooterFooter extends Struct.SingleTypeSchema {
           localized: true
         }
       }>
+    socials: Schema.Attribute.Component<"shared.social-link", true> &
+      Schema.Attribute.SetPluginOptions<{
+        i18n: {
+          localized: true
+        }
+      }>
     locale: Schema.Attribute.String
     localizations: Schema.Attribute.Relation<"oneToMany", "api::footer.footer">
     logoImage: Schema.Attribute.Component<"utilities.image-with-link", false> &

@@ -154,6 +154,7 @@ export async function fetchFooter(locale: Locale) {
           leadForm: "smart",
           contacts: "smart",
           rating: "smart",
+          socials: "smart",
         },
       },
       {

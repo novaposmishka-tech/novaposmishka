@@ -1,0 +1,24 @@
+{
+  "collectionName": "components_shared_social_links",
+  "info": {
+    "displayName": "SocialLink",
+    "icon": "link",
+    "description": "One messenger or social account, drawn with that platform's mark."
+  },
+  "options": {},
+  "attributes": {
+    "platform": {
+      "type": "enumeration",
+      "enum": ["telegram", "whatsapp", "messenger", "instagram"],
+      "required": true
+    },
+    "href": {
+      "type": "string",
+      "required": true
+    },
+    "label": {
+      "type": "string"
+    }
+  },
+  "config": {}
+}

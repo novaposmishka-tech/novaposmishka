@@ -13,7 +13,11 @@
     },
     "kind": {
       "type": "enumeration",
-      "enum": ["text", "phone", "email"],
+      "enum": [
+        "text",
+        "phone",
+        "email"
+      ],
       "default": "text",
       "required": true
     },
@@ -21,6 +25,16 @@
       "type": "component",
       "component": "utilities.text",
       "repeatable": true
+    },
+    "icon": {
+      "type": "enumeration",
+      "enum": [
+        "clock",
+        "phone",
+        "map-pin",
+        "mail"
+      ],
+      "default": "clock"
     }
   },
   "config": {}

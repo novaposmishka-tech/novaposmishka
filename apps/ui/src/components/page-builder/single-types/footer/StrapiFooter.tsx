@@ -1,18 +1,45 @@
 import "server-only"
 
+import type { Data } from "@repo/strapi-types"
+import { Clock, Mail, MapPin, Phone } from "lucide-react"
 import type { Locale } from "next-intl"
-import { use } from "react"
+import { type ComponentType, type SVGProps, use } from "react"
 
 import { Container } from "@/components/elementary/Container"
 import { RatingBadge } from "@/components/elementary/RatingBadge"
-import { ThemeToggle } from "@/components/elementary/ThemeToggle"
+import {
+  InstagramIcon,
+  MessengerIcon,
+  TelegramIcon,
+  WhatsAppIcon,
+} from "@/components/icons/social"
 import StrapiLeadForm from "@/components/page-builder/components/forms/StrapiLeadForm"
 import StrapiImageWithLink from "@/components/page-builder/components/utilities/StrapiImageWithLink"
 import StrapiLink from "@/components/page-builder/components/utilities/StrapiLink"
 import Typography from "@/components/typography"
 import { contactHref } from "@/lib/contacts"
 import { fetchFooter } from "@/lib/strapi-api/content/server"
-import { cn } from "@/lib/styles"
+
+type Contact = NonNullable<
+  Data.ContentType<"api::footer.footer">["contacts"]
+>[number]
+type Social = NonNullable<
+  Data.ContentType<"api::footer.footer">["socials"]
+>[number]
+
+const CONTACT_ICONS: Record<string, ComponentType<SVGProps<SVGSVGElement>>> = {
+  clock: Clock,
+  phone: Phone,
+  "map-pin": MapPin,
+  mail: Mail,
+}
+
+const SOCIAL_ICONS: Record<string, ComponentType<SVGProps<SVGSVGElement>>> = {
+  telegram: TelegramIcon,
+  whatsapp: WhatsAppIcon,
+  messenger: MessengerIcon,
+  instagram: InstagramIcon,
+}
 
 export function StrapiFooter({ locale }: { readonly locale: Locale }) {
   const response = use(fetchFooter(locale))
@@ -24,6 +51,14 @@ export function StrapiFooter({ locale }: { readonly locale: Locale }) {
 
   const now = new Date()
   const currentYear = now.getFullYear()
+
+  // The design puts opening hours, phone and address in one row and drops the
+  // email onto the next, beside the messenger marks. Splitting the list here
+  // rather than in the CMS keeps that shape without asking an editor to know
+  // about it.
+  const contacts = footer.contacts ?? []
+  const inlineContacts = contacts.filter((item) => item.icon !== "mail")
+  const mailContact = contacts.find((item) => item.icon === "mail")
 
   // A real `footer` element, not a div: it makes this the page's `contentinfo`
   // landmark. Without it the CTA form, the contact list and the copyright all
@@ -37,18 +72,19 @@ export function StrapiFooter({ locale }: { readonly locale: Locale }) {
         </div>
       )}
 
-      <Container className="pt-8 pb-4">
-        <div className="flex flex-col justify-between gap-10 lg:flex-row">
-          <div className="flex max-w-sm flex-col items-center justify-center space-y-4 md:items-start md:justify-start">
+      <Container className="py-12.5">
+        <div className="flex flex-col gap-12 lg:flex-row lg:gap-20">
+          <div className="flex max-w-107.5 flex-col gap-6">
             <StrapiImageWithLink component={footer.logoImage} />
+
             {footer.description && (
-              <Typography className="text-brand-body text-center text-sm md:text-left">
+              <Typography className="text-brand-body text-sm">
                 {footer.description}
               </Typography>
             )}
 
             {footer.rating?.label && footer.rating.score != null && (
-              <div className="flex flex-col items-center gap-2 md:items-start">
+              <div className="flex flex-col gap-2">
                 <RatingBadge
                   label={footer.rating.label}
                   score={footer.rating.score}
@@ -63,79 +99,108 @@ export function StrapiFooter({ locale }: { readonly locale: Locale }) {
             )}
           </div>
 
-          {/* Opening hours, phones, address and email, as in the design. */}
-          {footer.contacts && footer.contacts.length > 0 && (
-            <dl className="grid grid-cols-1 gap-6 text-center sm:grid-cols-2 md:text-left">
-              {footer.contacts.map((item) => (
-                <div key={item.id} className="flex flex-col gap-1">
-                  <dt className="text-brand-body text-sm">{item.label}</dt>
-                  {item.values?.map((value) => {
-                    const text = value.text ?? ""
-                    const href = contactHref(item.kind, text)
-
-                    return (
-                      <dd key={value.id} className="text-sm font-medium">
-                        {href ? (
-                          <a className="hover:underline" href={href}>
-                            {text}
-                          </a>
-                        ) : (
-                          text
-                        )}
-                      </dd>
-                    )
-                  })}
-                </div>
-              ))}
-            </dl>
-          )}
-
-          <div
-            className={cn(
-              "grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-4"
-            )}
-          >
-            {footer.sections?.map((section) => (
-              <div
-                className="flex flex-col items-center md:items-start"
-                key={section.id}
-              >
-                <h3 className="pb-2 text-lg font-bold">{section.title}</h3>
-
-                {section.links?.map((link) => (
+          <div className="flex flex-1 flex-col gap-8">
+            {/* One flat row of links, as the design draws it. `footer.sections`
+                stays in the schema for anyone who wants grouped columns, but
+                this design has none, so nothing renders them. */}
+            {footer.links && footer.links.length > 0 && (
+              <nav className="border-brand-border flex flex-wrap justify-between gap-x-8 gap-y-3 border-b pb-8">
+                {footer.links.map((link) => (
                   <StrapiLink
                     key={link.id}
                     component={link}
-                    className="text-primary w-fit text-sm hover:underline"
+                    className="text-brand-ink w-fit px-0 text-base hover:underline"
                   />
                 ))}
-              </div>
-            ))}
-          </div>
-          <ThemeToggle className="absolute top-6 right-6 lg:flex" />
-        </div>
-
-        <div className="flex flex-col-reverse justify-between gap-4 lg:flex-row lg:items-center">
-          <div>
-            {footer.copyRight && (
-              <Typography className="mx-auto w-fit lg:mx-0">
-                {footer.copyRight.split("{YEAR}").join(String(currentYear))}
-              </Typography>
+              </nav>
             )}
-          </div>
 
-          <div className="flex flex-col items-center sm:flex-row md:space-x-4 lg:items-end">
-            {footer.links?.map((link) => (
-              <StrapiLink
-                key={link.id}
-                component={link}
-                className="w-full md:w-fit"
-              />
-            ))}
+            <dl className="grid grid-cols-1 gap-8 sm:grid-cols-3">
+              {inlineContacts.map((item) => (
+                <ContactCell key={item.id} item={item} />
+              ))}
+            </dl>
+
+            <div className="flex flex-col gap-8 sm:flex-row sm:items-end sm:justify-between">
+              {mailContact && (
+                <dl>
+                  <ContactCell item={mailContact} />
+                </dl>
+              )}
+
+              {footer.socials && footer.socials.length > 0 && (
+                <ul className="flex list-none items-center gap-4">
+                  {footer.socials.map((social) => (
+                    <SocialLink key={social.id} social={social} />
+                  ))}
+                </ul>
+              )}
+            </div>
           </div>
         </div>
+
+        {/* The design carries no copyright line; this renders only if an
+            editor decides to add one. */}
+        {footer.copyRight && (
+          <Typography className="text-brand-body mt-10 text-sm">
+            {footer.copyRight.split("{YEAR}").join(String(currentYear))}
+          </Typography>
+        )}
       </Container>
     </footer>
+  )
+}
+
+function ContactCell({ item }: { readonly item: Contact }) {
+  const Icon = CONTACT_ICONS[item.icon ?? "clock"] ?? Clock
+
+  return (
+    <div className="flex flex-col gap-2">
+      <dt className="text-brand-body flex items-center gap-2 text-sm">
+        <Icon aria-hidden className="size-4 shrink-0" />
+        {item.label}
+      </dt>
+      {item.values?.map((value) => {
+        const text = value.text ?? ""
+        const href = contactHref(item.kind, text)
+
+        return (
+          <dd key={value.id} className="text-brand-ink text-base">
+            {href ? (
+              <a className="hover:underline" href={href}>
+                {text}
+              </a>
+            ) : (
+              text
+            )}
+          </dd>
+        )
+      })}
+    </div>
+  )
+}
+
+function SocialLink({ social }: { readonly social: Social }) {
+  const Icon = social.platform ? SOCIAL_ICONS[social.platform] : undefined
+
+  // An account with no address is not a link; a mark that goes nowhere is
+  // worse than the row being one mark shorter.
+  if (!Icon || !social.href) {
+    return null
+  }
+
+  return (
+    <li>
+      <a
+        href={social.href}
+        target="_blank"
+        rel="noreferrer noopener"
+        aria-label={social.label ?? social.platform ?? undefined}
+        className="text-brand-teal hover:text-brand-light block transition-colors"
+      >
+        <Icon className="size-8.5" />
+      </a>
+    </li>
   )
 }
 

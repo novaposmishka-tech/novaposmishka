@@ -67,6 +67,10 @@
 
   /* Accents and surfaces */
   --color-brand-accent: #51a9b9;
+  /* The messenger marks in the footer; lighter than brand-light. */
+  --color-brand-teal: #1a7993;
+  /* The gold of the rating stars. */
+  --color-brand-star: #f3b600;
   --color-brand-border: #d3edf1;
   --color-brand-surface: #eaf2f3;
   --color-brand-paper: #f8f8f6;

@@ -147,6 +147,8 @@ export interface SharedContactItem extends Struct.ComponentSchema {
     icon: "phone"
   }
   attributes: {
+    icon: Schema.Attribute.Enumeration<["clock", "phone", "map-pin", "mail"]> &
+      Schema.Attribute.DefaultTo<"clock">
     kind: Schema.Attribute.Enumeration<["text", "phone", "email"]> &
       Schema.Attribute.Required &
       Schema.Attribute.DefaultTo<"text">
@@ -363,6 +365,23 @@ export interface SharedDoctor extends Struct.ComponentSchema {
     name: Schema.Attribute.String & Schema.Attribute.Required
     photo: Schema.Attribute.Component<"utilities.basic-image", false>
     specialty: Schema.Attribute.String
+  }
+}
+
+export interface SharedSocialLink extends Struct.ComponentSchema {
+  collectionName: "components_shared_social_links"
+  info: {
+    description: "One messenger or social account, drawn with that mark."
+    displayName: "SocialLink"
+    icon: "link"
+  }
+  attributes: {
+    href: Schema.Attribute.String & Schema.Attribute.Required
+    label: Schema.Attribute.String
+    platform: Schema.Attribute.Enumeration<
+      ["telegram", "whatsapp", "messenger", "instagram"]
+    > &
+      Schema.Attribute.Required
   }
 }
 
@@ -841,6 +860,7 @@ declare module "@strapi/strapi" {
       "shared.price-row": SharedPriceRow
       "shared.rating": SharedRating
       "shared.service": SharedService
+      "shared.social-link": SharedSocialLink
       "shared.testimonial": SharedTestimonial
       "utilities.accordions": UtilitiesAccordions
       "utilities.basic-image": UtilitiesBasicImage

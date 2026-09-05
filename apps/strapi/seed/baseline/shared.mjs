@@ -9,7 +9,20 @@ export const CLINIC_NAME = "Нова Посмішка"
 
 export const PHONES = ["093 762 05 00", "067 762 55 00"]
 export const EMAIL = "novaposmishka@gmail.com"
+
+/**
+ * The first phone in international form, for the messenger links that address
+ * a person by number (wa.me, t.me). "093 762 05 00" becomes "380937620500".
+ */
+export const PHONE_E164 = "380" + PHONES[0].replace(/[^0-9]/g, "").slice(1)
 export const ADDRESS = "вулиця Івана Сльоти, 50а, м. Житомир"
+
+/** The same address as the footer sets it: city first, over two lines. */
+export const ADDRESS_LINES = ["м. Житомир,", "вулиця Івана Сльоти, 50а"]
+
+/** The postal address the contacts page prints under the map. */
+export const ADDRESS_FULL =
+  'ЖК "Набережний Квартал, вулиця Івана Сльоти, 50а, Житомир, Житомирська область, Україна, 10024'
 export const OPENING_HOURS = [
   "Пн - Пт: 8:00 - 20:00",
   "Сб: 9:00 - 15:00",

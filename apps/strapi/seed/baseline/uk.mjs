@@ -17,6 +17,7 @@ import { reviews } from "./reviews.mjs"
 import { SERVICE_SLUGS } from "./services.mjs"
 import {
   ADDRESS,
+  ADDRESS_LINES,
   anchor,
   BUTTON,
   BUTTON_ON_DARK,
@@ -27,6 +28,7 @@ import {
   OPENING_HOURS,
   OPENING_HOURS_SCHEMA,
   pageLink,
+  PHONE_E164,
   PHONES,
   text,
 } from "./shared.mjs"
@@ -56,14 +58,57 @@ export const navbar = {
 export const footer = {
   description:
     "Приватна сімейна стоматологія в Житомирі - простір, де здоров'я зубів поєднується з комфортом, довірою та сучасними технологіями.",
+  // Order, labels and line breaks are the design's own. It quotes only the two
+  // working rows of the schedule here; the contacts page carries the Sunday
+  // line in full.
   contacts: [
-    { label: "Адреса", kind: "text", values: [text(ADDRESS)] },
-    { label: "Телефон", kind: "phone", values: PHONES.map(text) },
-    { label: "Email", kind: "email", values: [text(EMAIL)] },
-    { label: "Графік роботи", kind: "text", values: OPENING_HOURS.map(text) },
+    {
+      label: "Графік роботи:",
+      icon: "clock",
+      kind: "text",
+      values: OPENING_HOURS.slice(0, 2).map(text),
+    },
+    {
+      label: "Телефон:",
+      icon: "phone",
+      kind: "phone",
+      values: PHONES.map(text),
+    },
+    {
+      label: "Адреса:",
+      icon: "map-pin",
+      kind: "text",
+      values: ADDRESS_LINES.map(text),
+    },
+    { label: "Email:", icon: "mail", kind: "email", values: [text(EMAIL)] },
+  ],
+  // The design draws four messenger marks but names no accounts. These two are
+  // the clinic's own number on services that address people by number; the
+  // Instagram and Messenger handles have to come from the clinic before they
+  // can be linked to anything.
+  socials: [
+    {
+      platform: "whatsapp",
+      href: `https://wa.me/${PHONE_E164}`,
+      label: "WhatsApp",
+    },
+    {
+      platform: "telegram",
+      href: `https://t.me/+${PHONE_E164}`,
+      label: "Telegram",
+    },
+  ],
+  links: [
+    // There is no services index page in the design; the homepage grid is what
+    // "Послуги" means here.
+    anchor("Послуги", "/#services"),
+    pageLink("Лікарі", "likari"),
+    pageLink("Наші роботи", "nashi-roboty"),
+    pageLink("Відгуки", "vidhuky"),
+    pageLink("Контакти", "kontakty"),
   ],
   rating: {
-    label: "Google",
+    label: "Рейтинг Google",
     score: GOOGLE_RATING,
   },
   leadForm: {
@@ -71,7 +116,6 @@ export const footer = {
     description:
       "Залиште заявку — ми звʼяжемося з вами, відповімо на запитання та підберемо зручний час для консультації.",
   },
-  copyRight: "© {YEAR} Нова Посмішка. Усі права захищено.",
 }
 
 export const homepage = {
