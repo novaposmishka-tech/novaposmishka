@@ -21,7 +21,11 @@ import path from "node:path"
 import process from "node:process"
 import { fileURLToPath } from "node:url"
 
-import { ensureMedia, resolveMediaMarkers } from "./seed-media.mjs"
+import {
+  ensureMedia,
+  pruneOrphanedMediaLinks,
+  resolveMediaMarkers,
+} from "./seed-media.mjs"
 import { casesPage } from "../seed/baseline/cases.mjs"
 import { contactsPage } from "../seed/baseline/contacts.mjs"
 import { doctorsPage } from "../seed/baseline/doctors.mjs"
@@ -83,6 +87,8 @@ try {
       `[seed:content] Dropped ${missingMedia.size} image(s) with no file in seed/media: ${[...missingMedia].join(", ")}`
     )
   }
+
+  await pruneOrphanedMediaLinks(strapi, { log: console.log })
 
   console.log("[seed:content] Done.")
 } catch (error) {

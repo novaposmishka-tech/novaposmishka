@@ -122,3 +122,60 @@ export function resolveMediaMarkers(value, mediaByName, missing = new Set()) {
 
   return out
 }
+
+/**
+ * Removes media links whose owner no longer exists, and extra links on a
+ * single-valued media field.
+ *
+ * Strapi keeps these links in one polymorphic table and does not always clear
+ * them when a component is deleted — deleting the starter's demo locales left
+ * a pile behind. Component ids are then reused, so a freshly seeded image
+ * component can inherit a stale link to a completely unrelated file and render
+ * it instead of its own: that is how a screenshot of the Strapi admin ended up
+ * as a dentist's portrait.
+ *
+ * Orphans are unreachable by definition, so deleting them is safe. Where a
+ * single-valued field ended up with more than one link, the newest wins — that
+ * is the one this seed just wrote.
+ */
+export async function pruneOrphanedMediaLinks(strapi, { log = () => {} } = {}) {
+  const knex = strapi.db.connection
+  const rows = await knex("files_related_mph").distinct("related_type")
+
+  let orphaned = 0
+
+  for (const { related_type: relatedType } of rows) {
+    const table = strapi.db.metadata.get(relatedType)?.tableName
+
+    if (!table) {
+      continue
+    }
+
+    const deleted = await knex("files_related_mph")
+      .where("related_type", relatedType)
+      .whereNotIn("related_id", knex(table).select("id"))
+      .delete()
+
+    orphaned += deleted
+  }
+
+  // Keep the newest link per single-valued media field.
+  const duplicates = await knex.raw(
+    `delete from files_related_mph
+     where id not in (
+       select max(id) from files_related_mph group by related_id, related_type, field
+     )
+     and related_type in (
+       select related_type from files_related_mph
+       group by related_id, related_type, field having count(*) > 1
+     )`
+  )
+
+  const extra = duplicates.rowCount ?? 0
+
+  if (orphaned > 0 || extra > 0) {
+    log(
+      `[seed:media] Pruned ${orphaned} orphaned and ${extra} duplicate media link(s).`
+    )
+  }
+}
