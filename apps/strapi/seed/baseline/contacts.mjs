@@ -1,10 +1,9 @@
 /**
  * The contact page.
  *
- * The design draws a map here. It is not embedded yet: Google's keyless embed
- * renders an empty frame, and the supported route — the Maps Embed API — needs
- * a key the clinic has to issue. Set embedUrl once there is one; until then
- * the section still carries the address and a working directions link.
+ * The map is Google's keyless embed, the same URL the clinic's previous site
+ * used: maps.google.com redirects it to www.google.com/maps/embed, which can
+ * be framed and needs no API key. Both hosts are in the CSP.
  */
 
 import {
@@ -24,6 +23,10 @@ import {
 // pushes the finished URL past the 255 characters a link href can hold.
 // Browsers encode it on navigation anyway.
 const MAP_QUERY = "Івана+Сльоти+50а,+Житомир"
+
+/** The clinic's own embed URL, carried over from the previous site. */
+const MAP_EMBED =
+  "https://maps.google.com/maps?q=%D0%BD%D0%BE%D0%B2%D0%B0%20%D0%BF%D0%BE%D1%81%D0%BC%D1%96%D1%88%D0%BA%D0%B0&t=m&z=13&output=embed&iwloc=near"
 
 export const contactsPage = {
   slug: "kontakty",
@@ -58,6 +61,7 @@ export const contactsPage = {
       __component: "sections.map",
       title: "Як нас знайти на карті?",
       address: ADDRESS_FULL,
+      embedUrl: MAP_EMBED,
       link: {
         ...anchor(
           "Маршрут",

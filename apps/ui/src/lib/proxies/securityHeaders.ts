@@ -95,7 +95,7 @@ function buildCsp({
     //
     // The contact page frames a Google map. Named exactly, not a wildcard:
     // this is the one third party the site is allowed to embed.
-    "frame-src 'self' https://www.google.com",
+    "frame-src 'self' https://www.google.com https://maps.google.com",
     "worker-src 'self' blob:",
     [
       "media-src 'self' blob: https:",

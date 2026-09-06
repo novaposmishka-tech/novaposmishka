@@ -3,6 +3,7 @@ import "server-only"
 import type { Data } from "@repo/strapi-types"
 import { getTranslations } from "next-intl/server"
 
+import { ClinicLogo } from "@/components/elementary/ClinicLogo"
 import { Container } from "@/components/elementary/Container"
 import StrapiLink from "@/components/page-builder/components/utilities/StrapiLink"
 import Typography from "@/components/typography"
@@ -31,11 +32,10 @@ export async function StrapiMap({
           </Typography>
         )}
 
-        {/* The map itself is optional: Google's keyless embed renders nothing,
-            so a frame without a Maps Embed API key would be a blank hole where
-            the map should be. The address and the directions link work either
-            way, and the frame appears the moment an editor sets a real embed
-            URL. */}
+        {/* The map is optional, and needs no API key: the maps.google.com
+            "output=embed" URL redirects to Google's keyless embed endpoint,
+            which sets neither X-Frame-Options nor frame-ancestors. The address
+            and the directions link work with or without it. */}
         <div className={cn(embedUrl && "relative")}>
           {embedUrl && (
             <iframe
@@ -49,13 +49,19 @@ export async function StrapiMap({
           )}
 
           {(address || link) && (
+            // The design floats this at the map's top-left, over a static
+            // image. The live embed puts Google's own place card in exactly
+            // that corner, so ours sits at the bottom instead — same inset
+            // from the left, clear of theirs.
             <div
               className={cn(
                 "bg-brand-paper border-brand-border flex max-w-79 flex-col gap-4 rounded-[20px] border p-5",
                 embedUrl &&
-                  "absolute top-6 left-6 shadow-sm md:top-12 md:left-12"
+                  "absolute bottom-6 left-6 shadow-sm md:bottom-12 md:left-12"
               )}
             >
+              <ClinicLogo />
+
               {address && (
                 <Typography className="text-brand-ink text-sm">
                   {address}

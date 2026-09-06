@@ -15,14 +15,6 @@ content are missing.
 
 ## Blocked on content
 
-- [ ] **Google Maps Embed API key.** The contact page has the map section but no
-      map: Google refuses its keyless `output=embed` URL, rendering an empty
-      frame, so the section ships with the address and a working "Маршрут" link
-      instead. Issue a key for the Maps Embed API, then set `embedUrl` on the
-      section to
-      `https://www.google.com/maps/embed/v1/place?key=…&q=…` — the frame appears
-      on its own, and the CSP already allows www.google.com.
-
 - [ ] **Doctor portraits.** The design has photographs for five of the eight
       dentists; the other three render on /likari without one. (Шевчук,
       Замятін and Гончарук were recovered from the case-study frames.)
@@ -60,8 +52,8 @@ content are missing.
 e.charAt is not a function`. Reproduced on an unrelated project built
       from the same starter, so it is a Strapi 5.48 bug, not our schemas.
 
-              Until it is fixed, entries in `apps/strapi/types/generated/*.d.ts` must be
-              hand-written after a schema change (add the interface _and_ the registry
-              entry at the bottom of the file). Do **not** run `pnpm sync-types` —
-              `packages/strapi-types/generated` is a symlink to that folder, so its
-              `cp -r` copies the folder into itself.
+                Until it is fixed, entries in `apps/strapi/types/generated/*.d.ts` must be
+                hand-written after a schema change (add the interface _and_ the registry
+                entry at the bottom of the file). Do **not** run `pnpm sync-types` —
+                `packages/strapi-types/generated` is a symlink to that folder, so its
+                `cp -r` copies the folder into itself.
