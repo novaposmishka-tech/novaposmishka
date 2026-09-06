@@ -1,18 +1,12 @@
 import { beforeEach, describe, expect, it, vi } from "vitest"
 
-const {
-  getEnvVarMock,
-  isProductionMock,
-  logErrorMock,
-  loggerMock,
-  fetchAPIMock,
-} = vi.hoisted(() => ({
-  getEnvVarMock: vi.fn(),
-  isProductionMock: vi.fn(),
-  logErrorMock: vi.fn(),
-  loggerMock: { error: vi.fn(), warn: vi.fn(), info: vi.fn() },
-  fetchAPIMock: vi.fn(),
-}))
+const { getEnvVarMock, isProductionMock, logErrorMock, loggerMock } =
+  vi.hoisted(() => ({
+    getEnvVarMock: vi.fn(),
+    isProductionMock: vi.fn(),
+    logErrorMock: vi.fn(),
+    loggerMock: { error: vi.fn(), warn: vi.fn(), info: vi.fn() },
+  }))
 
 vi.mock("@/lib/env-vars", () => ({
   getEnvVar: getEnvVarMock,
@@ -25,12 +19,6 @@ vi.mock("@/lib/general-helpers", () => ({
 vi.mock("@/lib/logging", () => ({
   logError: logErrorMock,
   logger: loggerMock,
-}))
-
-vi.mock("@/lib/strapi-api", () => ({
-  PublicStrapiClient: {
-    fetchAPI: fetchAPIMock,
-  },
 }))
 
 import { POST } from "./route"
@@ -77,7 +65,6 @@ describe("POST /api/lead", () => {
 
     isProductionMock.mockReturnValue(true)
     getEnvVarMock.mockReturnValue("production")
-    fetchAPIMock.mockResolvedValue({})
     fetchMock.mockResolvedValue(Response.json({ ok: true }))
   })
 
@@ -103,7 +90,6 @@ describe("POST /api/lead", () => {
     expect(response.status).toBe(200)
     await expect(response.json()).resolves.toEqual({ ok: true })
     expect(fetchMock).not.toHaveBeenCalled()
-    expect(fetchAPIMock).not.toHaveBeenCalled()
   })
 
   it("returns 503 when the Telegram bot is not configured", async () => {
@@ -115,22 +101,12 @@ describe("POST /api/lead", () => {
     expect(fetchMock).not.toHaveBeenCalled()
   })
 
-  it("stores the lead and notifies Telegram with the submitted details", async () => {
+  it("notifies Telegram with the submitted details", async () => {
     const response = await POST(
       request({ name: "Іван", phone: "+380671234567" })
     )
 
     expect(response.status).toBe(200)
-
-    expect(fetchAPIMock).toHaveBeenCalledWith(
-      "/leads",
-      {},
-      expect.objectContaining({ method: "POST" })
-    )
-    const strapiInit = fetchAPIMock.mock.calls[0]?.[2] as RequestInit
-    expect(JSON.parse(strapiInit.body as string)).toEqual({
-      data: { name: "Іван", phone: "+380671234567" },
-    })
 
     const text = sentText(fetchMock)
     expect(text).toContain("Іван")
@@ -158,16 +134,6 @@ describe("POST /api/lead", () => {
     await POST(request({ phone: "+380671234567" }))
 
     expect(sentText(fetchMock)).toContain("ТЕСТОВЕ ПОВІДОМЛЕННЯ")
-  })
-
-  it("still notifies Telegram when the Strapi write fails", async () => {
-    fetchAPIMock.mockRejectedValue(new Error("strapi down"))
-
-    const response = await POST(request({ phone: "+380671234567" }))
-
-    expect(response.status).toBe(200)
-    expect(telegramCall(fetchMock)).toBeDefined()
-    expect(logErrorMock).toHaveBeenCalled()
   })
 
   it("returns 502 when Telegram rejects the message", async () => {

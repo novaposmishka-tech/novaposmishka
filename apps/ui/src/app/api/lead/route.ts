@@ -4,16 +4,14 @@ import { z } from "zod"
 import { getEnvVar } from "@/lib/env-vars"
 import { isProduction } from "@/lib/general-helpers"
 import { logError, logger } from "@/lib/logging"
-import { PublicStrapiClient } from "@/lib/strapi-api"
 
 /**
  * Receives a consultation request from the site's lead form and forwards it to
  * Telegram, which is what actually gets a human to call the patient back.
  *
- * The lead is also written to `api::lead.lead` so staff can find it in the
- * admin panel later, but that write is best-effort: if Strapi is down or the
- * API token is missing, the request must still reach Telegram rather than be
- * lost.
+ * Telegram is the whole of it: the clinic answers there, so a lead is not
+ * copied into the CMS. That keeps one place to look and no second store to
+ * keep in step.
  *
  * The bot token never reaches the browser: the form posts here, and only this
  * route (server-side) talks to Telegram.
@@ -43,9 +41,14 @@ function testBanner(): string[] {
     return []
   }
 
+  // APP_ENV is only ever "testing" or "production"; unset means someone is
+  // running the site on their own machine, which is worth saying plainly
+  // rather than reporting a missing variable at a reader who cannot fix it.
+  const where = getEnvVar("APP_ENV") ?? "локальна розробка"
+
   return [
     "⚠️ <b>ТЕСТОВЕ ПОВІДОМЛЕННЯ</b> — не реагуйте на нього",
-    `<i>Середовище: ${esc(getEnvVar("APP_ENV") ?? "не задано")}</i>`,
+    `<i>Середовище: ${esc(where)}</i>`,
     "",
   ]
 }
@@ -58,28 +61,6 @@ function buildMessage(lead: Lead): string {
     `<b>Ім'я:</b> ${lead.name ? esc(lead.name) : "—"}`,
     `<b>Телефон:</b> ${esc(lead.phone)}`,
   ].join("\n")
-}
-
-/**
- * Persists the lead to `api::lead.lead` so staff can find it in the admin
- * panel. Best-effort: a failure here is logged but must not stop the Telegram
- * notification, since that is what actually gets the lead answered.
- */
-async function createLeadRecord(lead: Lead): Promise<void> {
-  try {
-    await PublicStrapiClient.fetchAPI(
-      "/leads",
-      {},
-      {
-        method: "POST",
-        body: JSON.stringify({
-          data: { name: lead.name, phone: lead.phone },
-        }),
-      }
-    )
-  } catch (error) {
-    logError(error, "Could not save the lead to Strapi")
-  }
 }
 
 // A crude per-IP throttle. Enough to stop a form being hammered; it lives in
@@ -153,9 +134,6 @@ export async function POST(request: NextRequest) {
       { status: 503 }
     )
   }
-
-  // Write first (so the lead is in the admin panel), notify second.
-  await createLeadRecord(parsed.data)
 
   try {
     const response = await fetch(

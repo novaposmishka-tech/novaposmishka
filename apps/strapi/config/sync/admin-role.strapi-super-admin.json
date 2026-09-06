@@ -464,66 +464,6 @@
       "locale": null
     },
     {
-      "documentId": "zj68soxbm1mxl6y0yw0i4lsl",
-      "action": "plugin::content-manager.explorer.create",
-      "actionParameters": {},
-      "subject": "api::lead.lead",
-      "properties": {
-        "fields": [
-          "name",
-          "phone"
-        ]
-      },
-      "conditions": [],
-      "locale": null
-    },
-    {
-      "documentId": "mfybdjibuvktgufzz74rw7fe",
-      "action": "plugin::content-manager.explorer.delete",
-      "actionParameters": {},
-      "subject": "api::lead.lead",
-      "properties": {},
-      "conditions": [],
-      "locale": null
-    },
-    {
-      "documentId": "mleyvzpzgp60tkmknb1kmenn",
-      "action": "plugin::content-manager.explorer.publish",
-      "actionParameters": {},
-      "subject": "api::lead.lead",
-      "properties": {},
-      "conditions": [],
-      "locale": null
-    },
-    {
-      "documentId": "xv79549f5ywbii6lzfvt7j4y",
-      "action": "plugin::content-manager.explorer.read",
-      "actionParameters": {},
-      "subject": "api::lead.lead",
-      "properties": {
-        "fields": [
-          "name",
-          "phone"
-        ]
-      },
-      "conditions": [],
-      "locale": null
-    },
-    {
-      "documentId": "sghuljrqi0cgv5zi7v9gd5ru",
-      "action": "plugin::content-manager.explorer.update",
-      "actionParameters": {},
-      "subject": "api::lead.lead",
-      "properties": {
-        "fields": [
-          "name",
-          "phone"
-        ]
-      },
-      "conditions": [],
-      "locale": null
-    },
-    {
       "documentId": "cnl13bb43d0ynfr8l7eq3mj2",
       "action": "plugin::content-manager.explorer.create",
       "actionParameters": {},

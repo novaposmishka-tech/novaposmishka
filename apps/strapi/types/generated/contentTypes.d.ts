@@ -542,32 +542,6 @@ export interface ApiHierarchyHierarchy extends Struct.SingleTypeSchema {
   }
 }
 
-export interface ApiLeadLead extends Struct.CollectionTypeSchema {
-  collectionName: "leads"
-  info: {
-    displayName: "Lead"
-    pluralName: "leads"
-    singularName: "lead"
-  }
-  options: {
-    draftAndPublish: false
-  }
-  attributes: {
-    createdAt: Schema.Attribute.DateTime
-    createdBy: Schema.Attribute.Relation<"oneToOne", "admin::user"> &
-      Schema.Attribute.Private
-    locale: Schema.Attribute.String & Schema.Attribute.Private
-    localizations: Schema.Attribute.Relation<"oneToMany", "api::lead.lead"> &
-      Schema.Attribute.Private
-    name: Schema.Attribute.String
-    phone: Schema.Attribute.String & Schema.Attribute.Required
-    publishedAt: Schema.Attribute.DateTime
-    updatedAt: Schema.Attribute.DateTime
-    updatedBy: Schema.Attribute.Relation<"oneToOne", "admin::user"> &
-      Schema.Attribute.Private
-  }
-}
-
 export interface ApiNavbarNavbar extends Struct.SingleTypeSchema {
   collectionName: "navbars"
   info: {
@@ -1294,7 +1268,6 @@ declare module "@strapi/strapi" {
       "admin::user": AdminUser
       "api::footer.footer": ApiFooterFooter
       "api::hierarchy.hierarchy": ApiHierarchyHierarchy
-      "api::lead.lead": ApiLeadLead
       "api::navbar.navbar": ApiNavbarNavbar
       "api::page.page": ApiPagePage
       "api::redirect.redirect": ApiRedirectRedirect
