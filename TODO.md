@@ -15,9 +15,13 @@ content are missing.
 
 ## Blocked on content
 
-- [ ] **Doctor portraits.** The design has photographs for five of the eight
-      dentists; the other three render on /likari without one. (Шевчук,
-      Замятін and Гончарук were recovered from the case-study frames.)
+- [ ] **Three doctor portraits show the wrong person.** The design has
+      photographs for five of the eight dentists. Каменчук, Бучинська and
+      Острогляд are standing in with a colleague's photograph so the team page
+      has no gaps — one named dentist's face under another's name.
+
+      **Replace before this page is shown outside the clinic.** The three are
+      marked in `apps/strapi/seed/baseline/doctors.mjs`.
 
 - [ ] **More case photographs.** The homepage and /nashi-roboty show the
       three before/after cases the design provides. Every further case needs its
@@ -52,8 +56,8 @@ content are missing.
 e.charAt is not a function`. Reproduced on an unrelated project built
       from the same starter, so it is a Strapi 5.48 bug, not our schemas.
 
-                Until it is fixed, entries in `apps/strapi/types/generated/*.d.ts` must be
-                hand-written after a schema change (add the interface _and_ the registry
-                entry at the bottom of the file). Do **not** run `pnpm sync-types` —
-                `packages/strapi-types/generated` is a symlink to that folder, so its
-                `cp -r` copies the folder into itself.
+                  Until it is fixed, entries in `apps/strapi/types/generated/*.d.ts` must be
+                  hand-written after a schema change (add the interface _and_ the registry
+                  entry at the bottom of the file). Do **not** run `pnpm sync-types` —
+                  `packages/strapi-types/generated` is a symlink to that folder, so its
+                  `cp -r` copies the folder into itself.

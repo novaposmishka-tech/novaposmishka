@@ -2,9 +2,17 @@
  * The clinic's dentists.
  *
  * The homepage shows the first few as portraits; /likari lists them all with
- * the training the design records for each. Photographs exist for three of
- * them in the design — the rest render without one until the clinic supplies
- * theirs.
+ * the training the design records for each.
+ *
+ * Five have a photograph in the design: three on the team page, and two more
+ * that only appear as the small round portraits beside a treatment stage in
+ * the case studies.
+ *
+ * The other three are standing in with a colleague's photograph, on the
+ * clinic's instruction, so the page has no holes while the real ones are
+ * found. Those three entries are marked below and must be replaced before
+ * anyone outside the clinic sees this page: they put one named dentist's face
+ * under another named dentist's name.
  */
 
 import { CLINIC_NAME, image } from "./shared.mjs"
@@ -13,6 +21,15 @@ const PHOTOS = {
   "Шевчук Сергій Миколайович": "doctors-1",
   "Єгоренкова Тетяна Вікторівна": "doctors-2",
   "Пархомчук Андрій Валентинович": "doctors-3",
+  // From the case studies, where each treatment stage names its dentist.
+  "Замятін Віталій Олександрович": "doctor-zamiatin",
+  "Гончарук Артур Анатолійович": "doctor-honcharuk",
+
+  // PLACEHOLDERS — not these people. Borrowed from the three above so the
+  // team page has no gaps. Replace with their own photographs; see TODO.md.
+  "Каменчук Михайло Віталійович": "doctors-1",
+  "Бучинська Дарина Олександрівна": "doctors-2",
+  "Острогляд Євгеній Сергійович": "doctors-3",
 }
 
 const withPhoto = (doctor) => {
