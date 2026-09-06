@@ -99,6 +99,20 @@ export function resolveMediaMarkers(value, mediaByName, missing = new Set()) {
     return value
   }
 
+  // A bare media field (seo.metaImage and the like) takes the id on its own,
+  // where a basic-image component takes { media, alt }.
+  if (typeof value.__mediaId === "string") {
+    const id = mediaByName.get(value.__mediaId)
+
+    if (id == null) {
+      missing.add(value.__mediaId)
+
+      return
+    }
+
+    return id
+  }
+
   if (typeof value.__media === "string") {
     const id = mediaByName.get(value.__media)
 

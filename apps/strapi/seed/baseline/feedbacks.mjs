@@ -8,14 +8,8 @@
  */
 
 import { reviews } from "./reviews.mjs"
+import { anchor, BUTTON, CLINIC_NAME, GOOGLE_RATING } from "./shared.mjs"
 import { videoReviews } from "./video-reviews.mjs"
-import {
-  anchor,
-  BUTTON,
-  CLINIC_NAME,
-  GOOGLE_RATING,
-  image,
-} from "./shared.mjs"
 
 const DESCRIPTION =
   "Довіра пацієнтів — найкраща оцінка нашої роботи. Дякуємо, що обираєте «Нову Посмішку» та ділитеся своїми враженнями"

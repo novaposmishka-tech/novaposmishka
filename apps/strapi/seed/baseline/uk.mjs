@@ -14,10 +14,8 @@
 import { cases } from "./cases.mjs"
 import { featuredDoctors } from "./doctors.mjs"
 import { reviews } from "./reviews.mjs"
-import { videoReviews } from "./video-reviews.mjs"
 import { SERVICE_SLUGS } from "./services.mjs"
 import {
-  ADDRESS,
   ADDRESS_LINES,
   anchor,
   BUTTON,
@@ -26,6 +24,7 @@ import {
   EMAIL,
   GOOGLE_RATING,
   image,
+  mediaId,
   OPENING_HOURS,
   OPENING_HOURS_SCHEMA,
   pageLink,
@@ -33,6 +32,7 @@ import {
   PHONES,
   text,
 } from "./shared.mjs"
+import { videoReviews } from "./video-reviews.mjs"
 
 export { locale } from "./shared.mjs"
 
@@ -141,6 +141,11 @@ export const homepage = {
     applicationName: "Нова Посмішка",
     metaRobots: "index,follow",
     canonicalUrl: "/",
+    // A stopgap so a shared link is not a blank card. The design has no
+    // purpose-made 1200x630 image; this is the clinic's own hero photograph at
+    // 1076x610, which the platforms crop a little. Replace it when there is a
+    // proper one — see TODO.md.
+    metaImage: mediaId("hero-1"),
     structuredData: {
       "@context": "https://schema.org",
       "@type": "Dentist",

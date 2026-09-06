@@ -14,7 +14,8 @@ export const EMAIL = "novaposmishka@gmail.com"
  * The first phone in international form, for the messenger links that address
  * a person by number (wa.me, t.me). "093 762 05 00" becomes "380937620500".
  */
-export const PHONE_E164 = "380" + PHONES[0].replace(/[^0-9]/g, "").slice(1)
+export const PHONE_E164 = "380" + PHONES[0].replaceAll(/\D/g, "").slice(1)
+
 export const ADDRESS = "вулиця Івана Сльоти, 50а, м. Житомир"
 
 /** The same address as the footer sets it: city first, over two lines. */
@@ -90,3 +91,9 @@ export const BUTTON_QUIET = {
  * differs per database — see scripts/seed-media.mjs.
  */
 export const image = (name, alt) => ({ __media: name, alt })
+
+/**
+ * The same file, for a plain `media` field rather than a basic-image
+ * component: the seeder swaps this for the uploaded file's id alone.
+ */
+export const mediaId = (name) => ({ __mediaId: name })

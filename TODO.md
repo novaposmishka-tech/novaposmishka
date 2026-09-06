@@ -3,22 +3,15 @@
 Deferred setup steps. Each one is code-complete — only the credentials or
 content are missing.
 
-## Lead form (`/api/lead` → Telegram → Strapi)
+## Lead form (`/api/lead` → Telegram)
 
-- [ ] **Telegram credentials.** Create a bot via [@BotFather](https://t.me/BotFather),
-      add it to the clinic's chat, then set in `apps/ui/.env.local`:
-      `TELEGRAM_BOT_TOKEN` and `TELEGRAM_CHAT_ID`.
+- [x] **Telegram credentials.** `TELEGRAM_BOT_TOKEN` and `TELEGRAM_CHAT_ID`
+      are set in `apps/ui/.env.local`. Without them the form answers `503` and
+      logs `Telegram is not configured`.
 
-      Until both are set the form answers `503` and logs
-      `Telegram is not configured`. Everything else (validation, honeypot,
-      rate limit) already works.
-
-- [ ] **Strapi API token (optional).** Create a Custom API token in Strapi admin
-      (Settings → API Tokens) with `create` permission on `Lead`, and set
-      `STRAPI_REST_CUSTOM_API_KEY` in `apps/ui/.env.local`.
-
-      Without it Telegram still receives every lead — only the copy saved to
-      the admin panel is skipped (logged as `Could not save the lead to Strapi`).
+      Every message sent from anywhere but production is prefixed with a
+      "тестове повідомлення" banner, so a test lead cannot be mistaken for a
+      patient.
 
 ## Blocked on content
 
@@ -55,8 +48,10 @@ content are missing.
       clinic's own number; the other two need handles before they can be linked
       and are not rendered until then.
 
-- [ ] **The Open Graph image** (1200×630). Upload it and set it on the
-      homepage's SEO component; `og:image` is omitted while it is missing.
+- [ ] **A purpose-made Open Graph image** (1200×630). The homepage currently
+      shares the clinic's hero photograph (1076×610), which the platforms crop
+      a little — set as a stopgap so a shared link is not a blank card. Upload a
+      proper one and point `seo.metaImage` at it.
 
 ## Known issues
 
@@ -65,8 +60,8 @@ content are missing.
 e.charAt is not a function`. Reproduced on an unrelated project built
       from the same starter, so it is a Strapi 5.48 bug, not our schemas.
 
-            Until it is fixed, entries in `apps/strapi/types/generated/*.d.ts` must be
-            hand-written after a schema change (add the interface _and_ the registry
-            entry at the bottom of the file). Do **not** run `pnpm sync-types` —
-            `packages/strapi-types/generated` is a symlink to that folder, so its
-            `cp -r` copies the folder into itself.
+              Until it is fixed, entries in `apps/strapi/types/generated/*.d.ts` must be
+              hand-written after a schema change (add the interface _and_ the registry
+              entry at the bottom of the file). Do **not** run `pnpm sync-types` —
+              `packages/strapi-types/generated` is a symlink to that folder, so its
+              `cp -r` copies the folder into itself.
