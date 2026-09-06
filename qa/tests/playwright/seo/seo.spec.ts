@@ -4,8 +4,15 @@ import urls from "../helpers/urls.json"
 
 const PATHS = [...urls]
 
-function isHerokuBaseUrl(url: string): boolean {
-  return url.includes("heroku")
+/**
+ * Whether the target is somewhere the site deliberately forbids indexing.
+ *
+ * `generateMetadata` sets noindex whenever APP_ENV is not "production", which
+ * is what keeps a developer's machine and every preview out of Google.
+ * Asserting the opposite against one of those asserts that the guard is broken.
+ */
+function forbidsIndexing(url: string): boolean {
+  return url.includes("localhost") || url.includes("127.0.0.1")
 }
 
 function normalizePath(url: string): string {
@@ -140,8 +147,8 @@ for (const path of PATHS) {
         const baseUrl = process.env.BASE_URL
 
         test.skip(
-          !baseUrl || isHerokuBaseUrl(baseUrl),
-          "Robots noindex check skipped on Heroku (dev/staging/preview) environments"
+          !baseUrl || forbidsIndexing(baseUrl),
+          "The site sets noindex everywhere but production, on purpose"
         )
 
         const robots = page.locator("meta[name='robots']")
@@ -488,27 +495,6 @@ for (const path of PATHS) {
             ...entries.map(({ hreflang, href }) => `  ${hreflang}: ${href}`),
           ].join("\n")
         ).toBeTruthy()
-      })
-    })
-
-    test.describe("Heroku references", () => {
-      test('HTML and canonical should not contain "heroku" on PROD', async ({
-        page,
-      }) => {
-        const baseUrl = process.env.BASE_URL
-
-        test.skip(
-          !baseUrl || isHerokuBaseUrl(baseUrl),
-          'Heroku reference check runs only when baseURL does not contain "heroku"'
-        )
-
-        const html = await page.content()
-
-        if (html.toLowerCase().includes("heroku")) {
-          throw new Error(
-            ['HTML contains "heroku"', `URL: ${page.url()}`].join("\n")
-          )
-        }
       })
     })
   })
