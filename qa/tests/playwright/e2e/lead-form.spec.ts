@@ -5,9 +5,17 @@ import { expect, test } from "@playwright/test"
  * tests in apps/UI these go through the real Next.js runtime, the real schema
  * and the real rate limiter.
  *
- * Telegram credentials are not set in dev, so a valid submission answers 503
- * rather than delivering anything — that is the documented behaviour and it
- * still proves the request got past validation, the honeypot and the throttle.
+ * A submission that reaches the end of the handler sends a Telegram message
+ * for real once credentials are set, so these tests take care not to. Every
+ * case that does not exist to prove delivery fills the honeypot, which the
+ * handler answers 200 to and notifies nobody — and which it checks *after* the
+ * throttle, so the rate limiter is still exercised.
+ *
+ * Delivery itself is covered by the unit tests in apps/UI, where fetch is
+ * stubbed. The one case here that runs the whole path is deliberately the only
+ * one, and the suite is pinned to a single project: none of this touches a
+ * browser — it is the request fixture throughout — so running it three times
+ * over would only mean three times the messages.
  */
 
 /**
@@ -28,6 +36,12 @@ const freshHeaders = () => ({
 })
 
 test.describe("Lead form endpoint", () => {
+  // Server-side behaviour, identical in every engine; see the note above.
+  test.skip(
+    ({ browserName }) => browserName !== "chromium",
+    "API-only, and each run of it messages Telegram"
+  )
+
   test("rejects a submission with no usable phone number", async ({
     request,
   }) => {
@@ -61,6 +75,9 @@ test.describe("Lead form endpoint", () => {
   })
 
   test("takes a valid submission past validation", async ({ request }) => {
+    // The one case that runs to the end of the handler. With credentials set
+    // it delivers a message, which every environment but production prefixes
+    // with a "тестове повідомлення" banner.
     const response = await request.post("/api/lead", {
       headers: freshHeaders(),
       data: { name: "Іван", phone: "+380671234567" },
@@ -73,18 +90,21 @@ test.describe("Lead form endpoint", () => {
 
   test("throttles a single IP after five submissions", async ({ request }) => {
     const headers = freshHeaders()
+    // Honeypot filled on purpose: the throttle runs before that check, so the
+    // limiter is exercised in full while Telegram hears nothing.
+    const asBot = { phone: "+380671234567", company: "bot inc" }
 
     for (let attempt = 0; attempt < 5; attempt++) {
       const allowed = await request.post("/api/lead", {
         headers,
-        data: { phone: "+380671234567" },
+        data: asBot,
       })
       expect(allowed.status()).not.toBe(429)
     }
 
     const blocked = await request.post("/api/lead", {
       headers,
-      data: { phone: "+380671234567" },
+      data: asBot,
     })
 
     expect(blocked.status()).toBe(429)
