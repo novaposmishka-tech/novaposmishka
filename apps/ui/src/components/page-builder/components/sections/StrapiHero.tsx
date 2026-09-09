@@ -39,12 +39,7 @@ export function StrapiHero({
 
   return (
     <section>
-      <Container
-        className={cn(
-          hasBackground &&
-            "relative isolate overflow-hidden rounded-[50px] text-white"
-        )}
-      >
+      <Wrapper hasBackground={hasBackground}>
         {hasBackground && backgroundImage && (
           <>
             <StrapiBasicImage
@@ -64,7 +59,7 @@ export function StrapiHero({
             "flex flex-col gap-10",
             hasBackground
               ? cn(
-                  "px-8 py-14 md:px-12.5 lg:py-16",
+                  "py-10 lg:py-7.5",
                   hasBottomRow && "lg:min-h-191 lg:justify-between"
                 )
               : "px-4 py-8 lg:py-12",
@@ -170,8 +165,34 @@ export function StrapiHero({
             </div>
           )}
         </div>
-      </Container>
+      </Wrapper>
     </section>
+  )
+}
+
+/**
+ * A photo hero runs edge to edge, as the design draws it — the copy still sits
+ * on the 1320 grid, so the container moves inside. Every other hero is the
+ * container itself.
+ */
+function Wrapper({
+  hasBackground,
+  children,
+}: {
+  readonly hasBackground: boolean
+  readonly children: React.ReactNode
+}) {
+  if (!hasBackground) {
+    return <Container>{children}</Container>
+  }
+
+  return (
+    // Square at the top, where the photo runs under the header, and curved at
+    // the bottom where the white page begins — the mask in the design is
+    // [0, 0, 50, 50].
+    <div className="relative isolate overflow-hidden rounded-b-[50px] text-white">
+      <Container>{children}</Container>
+    </div>
   )
 }
 
