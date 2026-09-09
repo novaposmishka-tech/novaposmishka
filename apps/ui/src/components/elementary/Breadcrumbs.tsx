@@ -1,6 +1,7 @@
 import type { Locale } from "next-intl"
 
 import AppLink from "@/components/elementary/AppLink"
+import { Container } from "@/components/elementary/Container"
 import StrapiStructuredData from "@/components/page-builder/components/seo-utilities/StrapiStructuredData"
 import { generateBreadcrumbListSchema } from "@/lib/metadata/schemas"
 import { cn } from "@/lib/styles"
@@ -23,7 +24,7 @@ export function Breadcrumbs({ breadcrumbs, className, locale }: Props) {
   const breadcrumbListSchema = generateBreadcrumbListSchema(breadcrumbs, locale)
 
   return (
-    <div className={cn("max-w-screen-default mx-auto w-full", className)}>
+    <Container className={cn("mt-6 mb-10 md:mb-20", className)}>
       <StrapiStructuredData structuredData={breadcrumbListSchema} />
       <div>
         {breadcrumbs.map((breadcrumb, index) => (
@@ -59,6 +60,6 @@ export function Breadcrumbs({ breadcrumbs, className, locale }: Props) {
           </span>
         ))}
       </div>
-    </div>
+    </Container>
   )
 }

@@ -5,7 +5,6 @@ import { setRequestLocale } from "next-intl/server"
 import { use } from "react"
 
 import { Breadcrumbs } from "@/components/elementary/Breadcrumbs"
-import { Container } from "@/components/elementary/Container"
 import { ErrorBoundary } from "@/components/elementary/ErrorBoundary"
 import { PageContentComponents } from "@/components/page-builder"
 import StrapiStructuredData from "@/components/page-builder/components/seo-utilities/StrapiStructuredData"
@@ -41,13 +40,10 @@ export default function StrapiPageView({ params, searchParams }: Props) {
       <StrapiStructuredData structuredData={data?.seo?.structuredData} />
 
       <main className={cn("flex w-full flex-col overflow-hidden")}>
-        <Container className="mb-10 md:mb-20">
-          <Breadcrumbs
-            breadcrumbs={response?.meta?.breadcrumbs}
-            className="mt-6 mb-6"
-            locale={locale}
-          />
-        </Container>
+        <Breadcrumbs
+          breadcrumbs={response?.meta?.breadcrumbs}
+          locale={locale}
+        />
 
         {content
           .filter((comp) => comp != null)
