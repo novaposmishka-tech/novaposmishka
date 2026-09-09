@@ -109,7 +109,7 @@ export function LeadForm({
               <p>{t("gdpr")}</p>
               <AppLink
                 openInNewTab={gdpr.newTab}
-                className="p-0 pl-1 font-medium"
+                className="text-brand-teal p-0 pl-1 font-medium underline"
                 href={gdpr.href}
               >
                 {gdpr.label || t("gdprLink")}

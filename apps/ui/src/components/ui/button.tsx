@@ -11,7 +11,12 @@ const buttonVariants = cva(
     // Don't forget to keep in sync with Link component (LinkDecorations) in Strapi
     variants: {
       variant: {
-        default: "bg-primary text-primary-foreground [a]:hover:bg-primary/80",
+        // The base sets transition-all, which tries to animate the gradient
+        // into a flat colour. That cannot interpolate, so the browser holds the
+        // gradient for half the duration and then drops it — read as a blink.
+        // The design draws two discrete states, so the fill simply swaps.
+        default:
+          "bg-brand-gradient text-primary-foreground transition-[color,box-shadow] hover:bg-brand-teal hover:bg-none",
         outline:
           "border-border bg-background hover:bg-muted hover:text-foreground dark:bg-input/30 dark:border-input dark:hover:bg-input/50 aria-expanded:bg-muted aria-expanded:text-foreground",
         secondary:
@@ -20,7 +25,7 @@ const buttonVariants = cva(
           "hover:bg-muted hover:text-foreground dark:hover:bg-muted/50 aria-expanded:bg-muted aria-expanded:text-foreground",
         destructive:
           "bg-destructive/10 hover:bg-destructive/20 focus-visible:ring-destructive/20 dark:focus-visible:ring-destructive/40 dark:bg-destructive/20 text-destructive focus-visible:border-destructive/40 dark:hover:bg-destructive/30",
-        link: "text-primary underline-offset-4 hover:underline",
+        link: "text-primary underline-offset-4",
       },
       size: {
         default:

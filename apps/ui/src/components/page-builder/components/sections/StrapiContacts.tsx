@@ -68,7 +68,7 @@ export function StrapiContacts({
                   return (
                     <dd key={value.id} className="text-lg">
                       {href ? (
-                        <a className="hover:underline" href={href}>
+                        <a className="hover:text-brand-teal" href={href}>
                           {text}
                         </a>
                       ) : (

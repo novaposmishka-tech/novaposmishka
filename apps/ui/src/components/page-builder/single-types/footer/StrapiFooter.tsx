@@ -110,7 +110,7 @@ export function StrapiFooter({ locale }: { readonly locale: Locale }) {
                   <StrapiLink
                     key={link.id}
                     component={link}
-                    className="text-brand-ink w-fit px-0 text-base hover:underline"
+                    className="text-brand-ink hover:text-brand-teal w-fit px-0 text-base"
                   />
                 ))}
               </nav>
@@ -174,7 +174,7 @@ function ContactCell({ item }: { readonly item: Contact }) {
           >
             {Operator && <Operator className="size-5 shrink-0" />}
             {href ? (
-              <a className="hover:underline" href={href}>
+              <a className="hover:text-brand-teal" href={href}>
                 {text}
               </a>
             ) : (

@@ -114,7 +114,7 @@ export function ReviewCard({
         <button
           type="button"
           onClick={() => setExpanded((current) => !current)}
-          className="text-brand-deep w-fit cursor-pointer text-base font-semibold underline-offset-4 hover:underline"
+          className="text-brand-deep hover:text-brand-teal w-fit cursor-pointer text-base font-semibold"
         >
           {labels[expanded ? "less" : "more"]}
         </button>

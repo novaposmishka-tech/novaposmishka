@@ -86,7 +86,7 @@ export async function StrapiCaseStudy({
                 </span>
               </span>
               {videoLabel && (
-                <span className="text-brand-body mt-3 block text-sm group-hover:underline">
+                <span className="text-brand-body group-hover:text-brand-teal mt-3 block text-sm">
                   {videoLabel}
                 </span>
               )}
