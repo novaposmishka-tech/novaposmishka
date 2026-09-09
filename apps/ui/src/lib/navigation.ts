@@ -78,6 +78,13 @@ export const formatHref = (href: string | undefined | null): string => {
     return href
   }
 
+  if (href.startsWith("#")) {
+    // A bare fragment points inside the page the reader is already on. Giving
+    // it a leading slash below would turn every "scroll to the form" link into
+    // a trip back to the homepage.
+    return href
+  }
+
   if (!isAppLink(href)) {
     // External link -> return as is
     return href
