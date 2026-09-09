@@ -82,7 +82,10 @@
   --color-brand-stripe: #fbfbfb;
 
   /* Text */
-  --color-brand-ink: #081725;
+  /* The design sets every piece of dark text in pure black — 679 of them,
+     and #081725 appears nowhere in the file. This was read off a Figma
+     variable that the frames do not actually use. */
+  --color-brand-ink: #000000;
   --color-brand-ink-soft: #1a1a1a;
   --color-brand-body: #5a5a5a;
   /* Only legible on a dark surface: at roughly 2:1 on paper or white this

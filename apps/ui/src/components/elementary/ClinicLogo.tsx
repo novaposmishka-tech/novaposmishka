@@ -24,30 +24,31 @@ export function ClinicLogo({
   return (
     <Link
       href="/"
-      className={cn("flex shrink-0 items-center gap-3", className)}
+      className={cn("flex shrink-0 items-center gap-2.5 lg:gap-4", className)}
     >
       <Image
         src="/images/logo-mark.svg"
         alt=""
         width={40}
         height={38}
-        className="size-9.5 shrink-0"
+        className="h-6.75 w-7 shrink-0 lg:h-11.5 lg:w-11.75"
         priority
       />
-      <span className="flex flex-col leading-tight">
+      <span className="flex flex-col gap-1.5 lg:gap-2.5">
         <span
           className={cn(
-            "text-lg font-bold",
+            "text-[0.656rem]/none font-bold lg:text-lg/none",
             onDark ? "text-brand-inverted" : "text-brand-ink"
           )}
         >
           {t("name")}
         </span>
         <span
-          className={cn(
-            "text-xs",
-            onDark ? "text-brand-on-dark" : "text-brand-body"
-          )}
+          // Named so the accessibility suite can point at it: the design's
+          // colour for this line does not meet the contrast threshold, and the
+          // exclusion has to name something stabler than a utility class.
+          data-logo-tagline
+          className="text-brand-on-dark text-[0.4375rem]/none font-semibold lg:text-xs/none"
         >
           {t("tagline")}
         </span>

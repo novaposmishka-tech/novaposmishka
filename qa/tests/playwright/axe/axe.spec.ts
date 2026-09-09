@@ -9,7 +9,13 @@ import urls from "../helpers/urls.json"
 const GLOBAL_WARNING_RULE_IDS = new Set<string>()
 
 // Selectors to exclude from axe analysis on all pages.
-const GLOBAL_EXCLUDE_SELECTORS: string[] = []
+const GLOBAL_EXCLUDE_SELECTORS: string[] = [
+  // The clinic's tagline under the wordmark. The design sets it in #BFC9D9,
+  // which is 1.67:1 on white against the 4.5:1 the rule wants, and the clinic
+  // chose to keep the design's colour. Excluded so the suite still fails on
+  // contrast problems that nobody has decided about — this one is decided.
+  "[data-logo-tagline]",
+]
 
 // Per-path configuration for excluding selectors or treating rule IDs as warnings.
 const PATH_CONFIGS: Record<

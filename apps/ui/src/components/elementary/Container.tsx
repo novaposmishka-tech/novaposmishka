@@ -18,7 +18,7 @@ export function Container({
         // the gutter is 60px at desktop and 15px on a phone — not a fixed
         // max-width with padding inside it.
         "mx-auto w-full max-w-360",
-        hideDefaultPadding ? "" : "px-4 md:px-15",
+        hideDefaultPadding ? "" : "px-3.75 md:px-15",
         className
       )}
     >
