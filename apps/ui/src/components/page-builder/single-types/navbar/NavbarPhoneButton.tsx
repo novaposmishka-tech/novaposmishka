@@ -35,7 +35,7 @@ export function NavbarPhoneButton({
   }
 
   const button =
-    "border-brand-deep text-brand-deep hover:bg-brand-surface flex size-11.5 shrink-0 items-center justify-center rounded-full border transition-colors"
+    "border-brand-teal text-brand-teal hover:bg-brand-teal hover:text-brand-inverted flex size-11.5 shrink-0 items-center justify-center rounded-full border transition-colors"
 
   const [only] = numbers
 
@@ -80,7 +80,7 @@ export function NavbarPhoneButton({
                 {href ? (
                   <a
                     href={href}
-                    className="text-brand-ink text-lg hover:underline"
+                    className="text-brand-ink hover:text-brand-teal text-lg"
                   >
                     {phone}
                   </a>

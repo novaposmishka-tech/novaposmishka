@@ -120,6 +120,7 @@ export async function fetchNavbar(locale: Locale) {
           navbarItems: "smart",
           phones: "smart",
           bookingForm: "smart",
+          menuButton: "smart",
         },
       },
       {

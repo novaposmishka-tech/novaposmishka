@@ -13,6 +13,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog"
+import { cn } from "@/lib/styles"
 
 /**
  * "Записатись" in the header, which the design opens as a card over the page
@@ -28,8 +29,10 @@ export function BookingDialog({
   title,
   description,
   gdpr,
+  className,
 }: {
   readonly label: string
+  readonly className?: string
   readonly title?: string | null
   readonly description?: string | null
   readonly gdpr?: { href?: string; label?: string; newTab?: boolean }
@@ -47,7 +50,15 @@ export function BookingDialog({
       }}
     >
       <DialogTrigger asChild>
-        <Button size="lg">{label}</Button>
+        <Button
+          size="lg"
+          className={cn(
+            "h-11.5 min-w-46.25 rounded-[30px] px-7.5 text-base font-semibold",
+            className
+          )}
+        >
+          {label}
+        </Button>
       </DialogTrigger>
 
       <DialogContent className="rounded-[26px] p-12.5 sm:max-w-158">

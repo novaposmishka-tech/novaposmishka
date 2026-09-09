@@ -1,152 +1,159 @@
 "use client"
 
 import type { Data } from "@repo/strapi-types"
-import { ChevronLeft, ChevronRight, PhoneIcon, X } from "lucide-react"
-import { useTranslations, type Locale } from "next-intl"
+import { ArrowRight, ChevronLeft, ChevronRight, PhoneIcon } from "lucide-react"
+import { useTranslations } from "next-intl"
 import { useState } from "react"
 
+import { operatorIcon } from "@/components/icons/operators"
 import StrapiLink from "@/components/page-builder/components/utilities/StrapiLink"
-import Typography from "@/components/typography"
-import { Button } from "@/components/ui/button"
 import { contactHref } from "@/lib/contacts"
 import { cn } from "@/lib/styles"
-import type { BetterAuthSessionWithStrapi } from "@/types/better-auth"
 
 interface MobileNavigationProps {
   isOpen: boolean
   setOpen: (open: boolean) => void
-  primaryButtons?: Data.ContentType<"api::navbar.navbar">["primaryButtons"]
+  menuButton?: Data.ContentType<"api::navbar.navbar">["menuButton"]
   navbarItems?: Data.ContentType<"api::navbar.navbar">["navbarItems"]
-  session?: BetterAuthSessionWithStrapi | null
-  locale?: Locale
-  phone?: string | null
+  phones?: readonly (string | null | undefined)[]
 }
 
+/** One row of the list: the design gives each 30px of air above and below. */
+const ROW = "flex h-auto w-full items-center justify-between py-7.5 text-base"
+
+/**
+ * The menu the burger opens on a phone.
+ *
+ * It drops below the header rather than covering it, as the design draws it:
+ * the wordmark and the booking button stay reachable, and the burger becomes
+ * the close control. Services open a second level in place, with a way back.
+ */
 export function MobileNavigation({
   navbarItems,
-  primaryButtons,
+  menuButton,
   isOpen,
   setOpen,
-  session,
-  locale,
-  phone,
+  phones,
 }: MobileNavigationProps) {
   const t = useTranslations("general")
-  const phoneHref = phone ? contactHref("phone", phone) : undefined
-  const [activeItem, setActiveItem] =
+  const [openCategory, setOpenCategory] =
     useState<Data.Component<"layout.navbar-item"> | null>(null)
 
   if (!navbarItems?.length) return null
 
+  const close = () => {
+    setOpenCategory(null)
+    setOpen(false)
+  }
+
+  const numbers = (phones ?? []).filter((phone): phone is string =>
+    Boolean(phone)
+  )
+
   return (
-    <nav
+    <div
+      // Below the header, over everything else. `hidden` rather than a
+      // transform so the list is not in the tab order while it is shut.
       className={cn(
-        "bg-background fixed inset-0 z-50 flex size-full flex-1 flex-col",
-        "transition-transform duration-300 lg:hidden",
-        isOpen ? "translate-x-0" : "translate-x-full"
+        "bg-background fixed inset-x-0 top-15 bottom-0 z-40 overflow-y-auto px-7.5 lg:hidden",
+        isOpen ? "block" : "hidden"
       )}
     >
-      <div className="relative flex h-16 items-center border-b px-6">
-        {/* Back */}
-        {activeItem ? (
-          <Button variant="ghost" onClick={() => setActiveItem(null)}>
-            <ChevronLeft className="h-4 w-4" />
-            {t("back")}
-          </Button>
-        ) : (
-          <span />
-        )}
+      {openCategory ? (
+        <>
+          <button
+            type="button"
+            onClick={() => setOpenCategory(null)}
+            className="text-brand-body border-brand-hairline flex w-full items-center gap-2 border-b py-4 text-base"
+          >
+            <ChevronLeft aria-hidden className="size-5" />
+            {t("menu")}
+          </button>
 
-        {/* Center label */}
-        <Typography className="absolute left-1/2 -translate-x-1/2">
-          {activeItem?.label}
-        </Typography>
-
-        {/* Close */}
-        <Button
-          variant="ghost"
-          onClick={() => {
-            setActiveItem(null)
-            setOpen(false)
-          }}
-          className="ml-auto"
-          aria-label="Close menu"
-        >
-          <X className="h-5 w-5" />
-        </Button>
-      </div>
-
-      {/* CONTENT */}
-      <div className="flex flex-col divide-y overflow-y-auto">
-        {!activeItem &&
-          navbarItems.map((item) => {
-            const hasChildren = !!item.categoryItems?.length
-
-            return (
-              <div key={item.id}>
+          <ul className="list-none">
+            {openCategory.categoryItems?.map((subItem) => (
+              <li key={subItem.id} className="border-brand-hairline border-b">
+                <StrapiLink
+                  component={subItem}
+                  onClick={close}
+                  className={cn(
+                    ROW,
+                    "text-brand-ink justify-start no-underline"
+                  )}
+                />
+              </li>
+            ))}
+          </ul>
+        </>
+      ) : (
+        <>
+          <ul className="list-none">
+            {navbarItems.map((item) => (
+              <li key={item.id} className="border-brand-hairline border-b">
                 {item.isCategoryLink && item.link ? (
                   <StrapiLink
-                    component={{ ...item.link }}
-                    onClick={() => setOpen(false)}
-                    className="flex min-h-17 w-full items-center justify-between px-6 py-5 text-lg"
+                    component={item.link}
+                    onClick={close}
+                    className={cn(
+                      ROW,
+                      "text-brand-ink justify-start no-underline"
+                    )}
                   >
                     {item.link.label}
                   </StrapiLink>
-                ) : hasChildren ? (
-                  <Button
-                    variant="ghost"
-                    onClick={() => setActiveItem(item)}
-                    className="flex h-17 w-full items-center justify-between px-6 py-5 text-lg"
+                ) : item.categoryItems?.length ? (
+                  <button
+                    type="button"
+                    onClick={() => setOpenCategory(item)}
+                    className={cn(ROW, "text-brand-ink cursor-pointer")}
                   >
                     {item.label}
-                    <ChevronRight className="mx-2.5 flex size-5 shrink-0" />
-                  </Button>
+                    <ChevronRight aria-hidden className="size-5 shrink-0" />
+                  </button>
                 ) : (
-                  <Typography className="px-6 py-5 text-lg">
+                  <span className={cn(ROW, "text-brand-body")}>
                     {item.label}
-                  </Typography>
+                  </span>
                 )}
-              </div>
-            )
-          })}
-
-        {/* SUB MENU */}
-        {activeItem &&
-          activeItem.categoryItems?.map((subItem) => (
-            <StrapiLink
-              key={subItem.id}
-              component={subItem}
-              onClick={() => setOpen(false)}
-              className="flex min-h-18 w-full items-center justify-between px-6 py-5 text-lg"
-            />
-          ))}
-      </div>
-      {/* FOOTER */}
-      <div className="mt-auto space-y-4 border-t px-6 py-4">
-        {/* The design closes the menu with the clinic's number — the quickest
-            way to reach it from a phone, which is what this menu is on. */}
-        {phoneHref && (
-          <a
-            href={phoneHref}
-            className="text-brand-ink flex items-center gap-3 text-lg font-medium"
-          >
-            <PhoneIcon aria-hidden className="size-5" />
-            {phone}
-          </a>
-        )}
-        {primaryButtons?.length ? (
-          <div className="space-y-2">
-            {primaryButtons.map((button) => (
-              <StrapiLink
-                key={button.id}
-                component={button}
-                onClick={() => setOpen(false)}
-                className="w-full"
-              />
+              </li>
             ))}
-          </div>
-        ) : null}
-      </div>
-    </nav>
+          </ul>
+
+          {/* The clinic's numbers as chips, each under its operator's mark —
+              the quickest way to reach it from the device this menu is on. */}
+          {numbers.length > 0 && (
+            <ul className="mt-10 flex list-none flex-wrap gap-4.5">
+              {numbers.map((phone) => {
+                const Icon = operatorIcon(phone) ?? PhoneIcon
+                const href = contactHref("phone", phone)
+
+                return (
+                  <li key={phone}>
+                    <a
+                      href={href ?? undefined}
+                      className="bg-brand-mist text-brand-ink flex h-9 items-center gap-1.5 rounded-[21px] px-3 text-sm"
+                    >
+                      <Icon aria-hidden className="size-5 shrink-0" />
+                      {phone}
+                    </a>
+                  </li>
+                )
+              })}
+            </ul>
+          )}
+
+          {menuButton && (
+            <StrapiLink
+              component={menuButton}
+              onClick={close}
+              className="mt-10 h-10 w-full rounded-[30px] text-sm font-semibold"
+            >
+              {menuButton.label}
+              <ArrowRight aria-hidden className="size-5" />
+            </StrapiLink>
+          )}
+        </>
+      )}
+    </div>
   )
 }

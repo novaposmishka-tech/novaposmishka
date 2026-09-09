@@ -73,6 +73,16 @@
           "localized": true
         }
       }
+    },
+    "menuButton": {
+      "type": "component",
+      "repeatable": false,
+      "component": "utilities.link",
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      }
     }
   }
 }

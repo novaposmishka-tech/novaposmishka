@@ -52,11 +52,12 @@ export const navbar = {
     { isCategoryLink: true, link: pageLink("Відгуки", "vidhuky") },
     { isCategoryLink: true, link: pageLink("Контакти", "kontakty") },
   ],
-  primaryButtons: [anchor("Записатись", "/#lead-form-section", BUTTON)],
+  primaryButtons: [anchor("Записатись", "#lead-form-section", BUTTON)],
   // The header answers on both numbers, and opens the booking form over the
   // page; the anchor above stays as the fallback for a reader without script.
   phones: PHONES.map(text),
   phone: PHONES[0],
+  menuButton: anchor("Записатися на прийом", "#lead-form-section", BUTTON),
   bookingForm: {
     title: "Записатися на прийом",
     description:
