@@ -7,6 +7,7 @@ import { getTranslations } from "next-intl/server"
 import { BackgroundVideo } from "@/components/elementary/BackgroundVideo"
 import CkEditorRenderer from "@/components/elementary/ck-editor"
 import { Container } from "@/components/elementary/Container"
+import { PhotoHeroFrame } from "@/components/elementary/PhotoHeroFrame"
 import { StrapiBasicImage } from "@/components/page-builder/components/utilities/StrapiBasicImage"
 import StrapiLink from "@/components/page-builder/components/utilities/StrapiLink"
 import { formatStrapiMediaUrl } from "@/lib/strapi-helpers"
@@ -325,12 +326,9 @@ function Wrapper({
   }
 
   return (
-    // Square at the top, where the photo runs under the header, and curved at
-    // the bottom where the white page begins — the mask in the design is
-    // [0, 0, 50, 50].
-    <div className="relative isolate overflow-hidden rounded-b-[50px] text-white">
+    <PhotoHeroFrame>
       <Container>{children}</Container>
-    </div>
+    </PhotoHeroFrame>
   )
 }
 

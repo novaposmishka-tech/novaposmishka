@@ -31,14 +31,15 @@ export function ClinicLogo({
         alt=""
         width={40}
         height={38}
-        className="h-6.75 w-7 shrink-0 lg:h-11.5 lg:w-11.75"
+        className="h-6.75 w-7 shrink-0 group-has-data-photo-hero-top:brightness-0 group-has-data-photo-hero-top:invert lg:h-11.5 lg:w-11.75"
         priority
       />
       <span className="flex flex-col gap-1.5 lg:gap-2.5">
         <span
           className={cn(
             "text-[0.656rem]/none font-bold lg:text-lg/none",
-            onDark ? "text-brand-inverted" : "text-brand-ink"
+            onDark ? "text-brand-inverted" : "text-brand-ink",
+            "group-has-data-photo-hero-top:text-white"
           )}
         >
           {t("name")}

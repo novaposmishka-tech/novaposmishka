@@ -15,6 +15,7 @@ import {
   NavbarMobileToggle,
 } from "@/components/page-builder/single-types/navbar/NavbarMobileControls"
 import { NavbarPhoneButton } from "@/components/page-builder/single-types/navbar/NavbarPhoneButton"
+import { cn } from "@/lib/styles"
 import type { BetterAuthSessionWithStrapi } from "@/types/better-auth"
 
 import { DesktopNavigation } from "./DesktopNavigation"
@@ -30,7 +31,21 @@ export function NavbarInner({
 }) {
   return (
     <NavbarMobileProvider>
-      <header className="bg-background/60 sticky top-0 z-50 h-15 w-full border-b shadow-sm backdrop-blur-md transition-colors duration-300 lg:h-26.5">
+      <header
+        // Review cards and the like are <header>s too; this is the site's one,
+        // and a photo hero measures it to know when it has stopped covering it.
+        data-site-header
+        className={cn(
+          // The design's "Static header": a solid #f2f4f7 band, no rule under
+          // it and no shadow. The transparent border keeps the height the same
+          // in both states, since the photo hero does draw a rule.
+          "bg-brand-mist sticky top-0 z-50 h-15 w-full border-b border-transparent transition-colors duration-300 lg:h-26.5",
+          // A page that opens on a photo hero carries the header inside it,
+          // white and on nothing — until the picture scrolls out from under it
+          // and the static header takes over.
+          "group-has-data-photo-hero-top:border-white/20 group-has-data-photo-hero-top:bg-transparent group-has-data-photo-hero-top:text-white"
+        )}
+      >
         <div className="flex h-full items-center">
           <Container className="flex h-full items-center justify-between">
             {/* Logo — the clinic's own mark unless an editor uploaded one. */}
@@ -71,6 +86,7 @@ export function NavbarInner({
                     label: navbarData.bookingForm.gdpr?.label ?? undefined,
                     newTab: navbarData.bookingForm.gdpr?.newTab ?? false,
                   }}
+                  className="group-has-data-photo-hero-top:bg-white/10 group-has-data-photo-hero-top:bg-none"
                 />
               ) : (
                 navbarData?.primaryButtons?.map((button) => (
@@ -89,7 +105,7 @@ export function NavbarInner({
                     label: navbarData.bookingForm.gdpr?.label ?? undefined,
                     newTab: navbarData.bookingForm.gdpr?.newTab ?? false,
                   }}
-                  className="h-10 min-w-0 rounded-[30px] px-5 text-sm font-semibold"
+                  className="h-10 min-w-0 rounded-[30px] px-5 text-sm font-semibold group-has-data-photo-hero-top:bg-white/10 group-has-data-photo-hero-top:bg-none"
                 />
               ) : null}
               <NavbarMobileToggle />

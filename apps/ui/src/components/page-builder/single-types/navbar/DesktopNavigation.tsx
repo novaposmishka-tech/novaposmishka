@@ -24,6 +24,9 @@ interface DesktopNavigationProps {
  */
 const LABEL = cn(
   "text-brand-ink h-auto cursor-pointer bg-transparent px-0 py-0 text-base font-normal no-underline",
+  // The frame draws the menu white where the header lies over a photograph;
+  // it does not draw a hover for that case, so the word simply dims.
+  "group-has-data-photo-hero-top:text-white group-has-data-photo-hero-top:hover:text-white/70",
   // The design's menu button has two states and the only difference between
   // them is the colour of the word: no filled pill, no underline, no padding
   // box. Both come from elsewhere — the shadcn trigger paints a background on
@@ -31,14 +34,32 @@ const LABEL = cn(
   // each is turned off explicitly.
   "hover:text-brand-teal hover:bg-transparent hover:no-underline",
   "focus:bg-transparent data-[state=open]:bg-transparent",
-  "data-[state=open]:hover:bg-transparent data-[state=open]:text-brand-teal",
+  // Open *and* focused is a two-variant rule in the primitive, so it outranks
+  // the single-variant resets above and has to be answered in kind.
+  "data-[state=open]:hover:bg-transparent data-[state=open]:focus:bg-transparent",
+  "data-[state=open]:text-brand-teal",
+  "group-has-data-photo-hero-top:data-[state=open]:text-white",
   // The dropdown caret: the design sets it 10px from the word and a size up
   // from the primitive default.
   "[&>svg]:ml-3 [&>svg]:size-4"
 )
 
-/** The page you are on, which the design sets in brand teal and semibold. */
+/** The page you are on, in brand teal and semibold. */
 const ACTIVE = "text-brand-teal! font-semibold"
+
+/**
+ * The same, for the words in the bar itself.
+ *
+ * Those sit on whatever the header is over, and over a photograph the teal
+ * disappears — the frame's menu is one colour there, #f8f8f8, and it draws no
+ * "current page" state at all. So on a photo hero the word keeps the menu's
+ * white and marks itself by weight alone. The dropdown below it is its own
+ * white card either way, so it keeps the teal.
+ */
+const ACTIVE_IN_BAR = cn(
+  ACTIVE,
+  "group-has-data-photo-hero-top:text-brand-inverted!"
+)
 
 export function DesktopNavigation({ navbarItems }: DesktopNavigationProps) {
   if (!navbarItems?.length) return null
@@ -72,7 +93,7 @@ function Menu({
                   className={cn(
                     navigationMenuTriggerStyle(),
                     LABEL,
-                    isCurrent(item.link) && ACTIVE
+                    isCurrent(item.link) && ACTIVE_IN_BAR
                   )}
                 >
                   {item.link.label}
@@ -82,7 +103,7 @@ function Menu({
                   className={cn(
                     navigationMenuTriggerStyle(),
                     LABEL,
-                    item.categoryItems?.some(isCurrent) && ACTIVE
+                    item.categoryItems?.some(isCurrent) && ACTIVE_IN_BAR
                   )}
                 >
                   {item.label}

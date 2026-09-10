@@ -35,7 +35,7 @@ export function NavbarPhoneButton({
   }
 
   const button =
-    "border-brand-teal text-brand-teal hover:bg-brand-teal hover:text-brand-inverted flex size-11.5 shrink-0 items-center justify-center rounded-full border transition-colors"
+    "border-brand-teal text-brand-teal hover:bg-brand-teal hover:text-brand-inverted group-has-data-photo-hero-top:border-white group-has-data-photo-hero-top:bg-white flex size-11.5 shrink-0 items-center justify-center rounded-full border transition-colors"
 
   const [only] = numbers
 

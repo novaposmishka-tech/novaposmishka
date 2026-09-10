@@ -104,12 +104,14 @@ export default async function RootLayout({
         <ServerProviders>
           <StrapiPreviewListener />
           <ClientProviders>
-            <div className="relative flex min-h-screen flex-col">
+            <div className="group relative flex min-h-screen flex-col">
               <ErrorBoundary showErrorMessage>
                 <StrapiNavbar locale={locale} />
               </ErrorBoundary>
 
-              <div className="flex-1">
+              {/* A page that opens on a photo hero starts at the very top,
+                  with the header lying over it. */}
+              <div className="flex-1 group-has-data-photo-hero:-mt-15 lg:group-has-data-photo-hero:-mt-26.5">
                 <div>{children}</div>
               </div>
 
