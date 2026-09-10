@@ -53,6 +53,17 @@
       "type": "component",
       "component": "utilities.basic-image",
       "repeatable": false
+    },
+    "backgroundVideo": {
+      "type": "media",
+      "multiple": false,
+      "required": false,
+      "allowedTypes": [
+        "videos"
+      ]
+    },
+    "videoUrl": {
+      "type": "string"
     }
   }
 }

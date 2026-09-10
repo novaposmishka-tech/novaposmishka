@@ -171,6 +171,7 @@ export const homepage = {
         "hero-1",
         "Лікарка оглядає пацієнтку в кріслі стоматологічної клініки"
       ),
+      backgroundVideo: mediaId("hero-video"),
       tag: "<p>Лікування без болю</p>",
       title: "<h1><strong>Ми лікуємо.<br>Ви усміхаєтесь.</strong></h1>",
       description: "<p>Приватна сімейна стоматологія в Житомирі.</p>",
