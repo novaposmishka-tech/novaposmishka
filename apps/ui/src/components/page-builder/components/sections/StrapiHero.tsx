@@ -1,8 +1,7 @@
 import "server-only"
 
 import type { Data } from "@repo/strapi-types"
-import { ArrowRight, Play } from "lucide-react"
-import { getTranslations } from "next-intl/server"
+import { ArrowRight } from "lucide-react"
 
 import { BackgroundVideo } from "@/components/elementary/BackgroundVideo"
 import CkEditorRenderer from "@/components/elementary/ck-editor"
@@ -14,7 +13,7 @@ import { formatStrapiMediaUrl } from "@/lib/strapi-helpers"
 import { cn } from "@/lib/styles"
 import type { PageBuilderComponentProps } from "@/types/general"
 
-export async function StrapiHero({
+export function StrapiHero({
   component,
 }: PageBuilderComponentProps & { component: Data.Component<"sections.hero"> }) {
   const {
@@ -27,7 +26,6 @@ export async function StrapiHero({
     serviceTags,
     backgroundImage,
     backgroundVideo,
-    videoUrl,
   } = component
 
   // The design has several hero treatments, so the layout follows the content:
@@ -37,14 +35,11 @@ export async function StrapiHero({
   //                          authored before either field existed still renders
   //                          the way it was written.
   const hasBackground = Boolean(backgroundImage || backgroundVideo)
-  const t = await getTranslations("general")
-  const playLabel = t("play")
   const hasImages = !hasBackground && Boolean(images?.length)
   const isCentered = !hasBackground && !hasImages
   // Service pages use the photo hero with copy alone. Without a bottom row to
   // push away, stretching the card just leaves a tall empty half.
-  const hasBottomRow =
-    hasBackground && (Boolean(images?.length) || Boolean(serviceTags?.length))
+  const hasBottomRow = hasBackground && Boolean(serviceTags?.length)
 
   return (
     <section>
@@ -145,14 +140,7 @@ export async function StrapiHero({
             <CkEditorRenderer htmlContent={note} className="pt-6" />
           </div>
 
-          {hasBottomRow && (
-            <BottomRow
-              images={images}
-              serviceTags={serviceTags}
-              videoUrl={videoUrl}
-              playLabel={playLabel}
-            />
-          )}
+          {hasBottomRow && <BottomRow serviceTags={serviceTags} />}
 
           {hasImages && (
             <div className="grid flex-1 grid-cols-2 gap-4">
@@ -219,55 +207,22 @@ const copyClass = ({
   )
 
 /**
- * Over a photo the design closes the hero with its own row: the clinic snapshot
- * on the left, the specialties on the right. The phone frame carries neither,
- * so with no snapshot there is nothing here to hold a gap open.
+ * The row that closes a photo hero: the specialties, ranged right against the
+ * grid. It keeps the 200px the frame gives the row, which the clinic snapshot
+ * used to set before that card was dropped. The phone frame carries no pills at
+ * all, so on a phone the row is not there to hold a gap open.
  */
 function BottomRow({
-  images,
   serviceTags,
-  videoUrl,
-  playLabel,
 }: {
-  readonly images: Data.Component<"sections.hero">["images"]
   readonly serviceTags: Data.Component<"sections.hero">["serviceTags"]
-  readonly videoUrl: string | null | undefined
-  readonly playLabel: string
 }) {
-  const snapshot = images?.[0]
-
   return (
-    <div
-      className={cn(
-        "flex flex-col gap-8 lg:min-h-50 lg:flex-row lg:items-center lg:justify-between",
-        !snapshot && "max-lg:hidden"
-      )}
-    >
-      {snapshot && (
-        <div className="relative w-full lg:w-75">
-          <StrapiBasicImage
-            component={snapshot}
-            className="h-50 w-full rounded-[20px] object-cover"
-          />
-          {videoUrl && (
-            <a
-              href={videoUrl}
-              target="_blank"
-              rel="noreferrer noopener"
-              aria-label={playLabel}
-              className="absolute inset-0 flex items-center justify-center rounded-[20px] focus-visible:outline-2 focus-visible:outline-offset-2"
-            >
-              <span className="flex size-9 items-center justify-center rounded-full bg-black/60">
-                <Play aria-hidden className="size-4 fill-white text-white" />
-              </span>
-            </a>
-          )}
-        </div>
-      )}
+    <div className="hidden lg:flex lg:min-h-50 lg:items-center lg:justify-end">
       <ServiceTags
         serviceTags={serviceTags}
         isCentered={false}
-        className="hidden lg:ml-auto lg:flex lg:max-w-156"
+        className="lg:max-w-156"
       />
     </div>
   )

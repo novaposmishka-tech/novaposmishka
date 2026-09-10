@@ -27,11 +27,11 @@ content are missing.
       three before/after cases the design provides. Every further case needs its
       own pair of photographs.
 
-- [ ] **Video URLs.** Three places in the design offer a film and the file
-      contains none, so each shows its still and no play control:
-      the four filmed reviews (`sections.video-reviews` → `videoUrl`) and the
-      walk-through on each case study (`sections.case-study` → `videoUrl`).
-      Set the URL and the play control appears.
+- [ ] **Video URLs.** Two places offer a film and the design file contains
+      none, so each shows its still and no play control: the four filmed
+      reviews (`sections.video-reviews` → `videoUrl`) and the walk-through on
+      each case study (`sections.case-study` → `videoUrl`). Set the URL and the
+      play control appears.
 
 - [ ] **An H.264 copy of the hero clip.** The homepage background is the old
       site's `hero-video.webm` (VP8/VP9), which Safari cannot decode — those
