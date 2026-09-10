@@ -10,7 +10,6 @@ import {
   FormMessage,
 } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
-import { removeThisWhenYouNeedMe } from "@/lib/general-helpers"
 import { cn } from "@/lib/styles"
 
 import { AppFormDescription } from "./AppFormDescription"
@@ -34,8 +33,6 @@ export function AppField({
   description,
   ...nativeProps
 }: Props) {
-  removeThisWhenYouNeedMe("AppField")
-
   const { control } = useFormContext()
 
   return (
