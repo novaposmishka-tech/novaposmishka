@@ -67,10 +67,10 @@ export function CaseGallery({
   return (
     <div className="flex flex-col gap-10">
       {tags.length > 0 && (
-        <ul className="flex list-none flex-wrap gap-3">
+        <ul className="flex list-none flex-wrap gap-4 lg:gap-5">
           {[null, ...tags].map((tag) => {
             const chip = cn(
-              "block cursor-pointer rounded-full px-7.5 py-3 text-base transition-colors",
+              "flex h-10 cursor-pointer items-center rounded-[30px] px-5 text-base transition-colors lg:h-11.5 lg:px-7.5",
               active === tag
                 ? isGrid
                   ? "bg-brand-deep text-brand-inverted"
@@ -112,28 +112,30 @@ export function CaseGallery({
           <li
             key={item.id}
             className={cn(
-              "rounded-[26px] p-7.5",
+              "rounded-[20px] p-5 lg:rounded-[26px] lg:p-7.5",
               isGrid
                 ? "border-brand-border bg-brand-paper border"
                 : // Two to a row, whatever the container is: the design's fixed
                   // 598px card assumes its own container width and is clipped
                   // in ours.
-                  "w-full shrink-0 snap-start bg-white/5 md:w-[calc(50%-0.75rem)]"
+                  "w-full shrink-0 snap-start border border-white/5 bg-white/5 md:w-[calc(50%-0.75rem)]"
             )}
           >
-            <div className="flex flex-col gap-6">
+            <div className="flex flex-col gap-5 lg:gap-7.5">
               <BeforeAfterSlider
                 before={item.before}
                 after={item.after}
                 labels={labels}
-                className="rounded-2xl"
+                // The frame crops the pair to its own box, which is shallower on a
+                // phone than on a desktop.
+                className="aspect-289/189 rounded-2xl lg:aspect-538/293"
               />
 
-              <div className="flex flex-col gap-5">
+              <div className="flex flex-col gap-4 lg:gap-5">
                 {item.caption && (
                   <p
                     className={cn(
-                      "text-2xl font-semibold",
+                      "text-lg/6.25 font-semibold lg:text-2xl/8.5",
                       isGrid ? "text-brand-ink" : "text-brand-inverted"
                     )}
                   >
@@ -144,19 +146,19 @@ export function CaseGallery({
                 {item.doctorName && (
                   <div
                     className={cn(
-                      "flex items-center gap-4 border-t pt-5",
-                      isGrid ? "border-brand-border" : "border-white/15"
+                      "flex items-center gap-3.75 border-t pt-4 lg:pt-5",
+                      isGrid ? "border-brand-border" : "border-white/20"
                     )}
                   >
                     {item.doctorPhoto && (
                       <StrapiBasicImage
                         component={item.doctorPhoto}
-                        className="size-17.5 rounded-full object-cover"
+                        className="size-12.5 shrink-0 rounded-full object-cover lg:size-17.5"
                       />
                     )}
                     <span
                       className={cn(
-                        "text-xl",
+                        "text-sm/5 lg:text-xl/7",
                         isGrid ? "text-brand-ink" : "text-brand-inverted"
                       )}
                     >
