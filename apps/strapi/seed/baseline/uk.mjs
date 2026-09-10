@@ -191,15 +191,20 @@ export const homepage = {
     {
       __component: "sections.statistics",
       figures: [
-        { number: 10, suffix: "+", description: "<p>Років досвіду</p>" },
+        {
+          number: 10,
+          suffix: "+",
+          description: "<p><strong><em>Років</em></strong> досвіду</p>",
+        },
         {
           number: 20,
           suffix: "К+",
-          description: "<p>Пацієнтів, що довіряють нам</p>",
+          description:
+            "<p><strong><em>Пацієнтів,</em></strong> що довіряють нам</p>",
         },
         {
           number: GOOGLE_RATING,
-          description: "<p>Рейтинг Google</p>",
+          description: "<p>Рейтинг <strong><em>Google</em></strong></p>",
         },
       ],
     },
