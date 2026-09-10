@@ -71,7 +71,9 @@ export function ScrollRow({
         className={cn(
           // The ring is drawn inside: bleeding the row past the grid to make room
           // for it would take the first card off the column with it.
-          "flex snap-x snap-mandatory list-none gap-6 overflow-x-auto pb-2 focus-visible:outline-2 focus-visible:-outline-offset-2",
+          // No scrollbar under the row: the frame draws none, and the arrows,
+          // the tab stop and a touch gesture all still move it.
+          "flex snap-x snap-mandatory [scrollbar-width:none] list-none gap-6 overflow-x-auto focus-visible:outline-2 focus-visible:-outline-offset-2 [&::-webkit-scrollbar]:hidden",
           className
         )}
       >
