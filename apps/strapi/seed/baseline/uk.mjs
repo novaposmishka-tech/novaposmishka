@@ -178,7 +178,6 @@ export const homepage = {
       links: [
         anchor("Записатися на прийом", "#lead-form-section", BUTTON_ON_DARK),
       ],
-      images: [image("hero-2", "Кабінет клініки «Нова Посмішка»")],
       serviceTags: [
         text("Ортодонтія"),
         text("Протезування"),
