@@ -2,10 +2,12 @@ import "server-only"
 
 import type { Data } from "@repo/strapi-types"
 
+import { BackgroundVideo } from "@/components/elementary/BackgroundVideo"
 import CkEditorRenderer from "@/components/elementary/ck-editor"
 import { Container } from "@/components/elementary/Container"
 import { StrapiBasicImage } from "@/components/page-builder/components/utilities/StrapiBasicImage"
 import StrapiLink from "@/components/page-builder/components/utilities/StrapiLink"
+import { formatStrapiMediaUrl } from "@/lib/strapi-helpers"
 import { cn } from "@/lib/styles"
 import type { PageBuilderComponentProps } from "@/types/general"
 
@@ -21,6 +23,7 @@ export function StrapiHero({
     images,
     serviceTags,
     backgroundImage,
+    backgroundVideo,
   } = component
 
   // The design has several hero treatments, so the layout follows the content:
@@ -29,7 +32,7 @@ export function StrapiHero({
   //  - neither             → the original centered layout, so hero content
   //                          authored before either field existed still renders
   //                          the way it was written.
-  const hasBackground = Boolean(backgroundImage)
+  const hasBackground = Boolean(backgroundImage || backgroundVideo)
   const hasImages = !hasBackground && Boolean(images?.length)
   const isCentered = !hasBackground && !hasImages
   // Service pages use the photo hero with copy alone. Without a bottom row to
@@ -40,18 +43,8 @@ export function StrapiHero({
   return (
     <section>
       <Wrapper hasBackground={hasBackground}>
-        {hasBackground && backgroundImage && (
-          <>
-            <StrapiBasicImage
-              component={backgroundImage}
-              fill
-              sizes="100vw"
-              className="-z-20 object-cover"
-            />
-            {/* Black at 40%, as in the design — the copy has to stay legible
-                whatever photo an editor picks. */}
-            <div className="absolute inset-0 -z-10 bg-black/40" />
-          </>
+        {hasBackground && (
+          <Backdrop image={backgroundImage} video={backgroundVideo} />
         )}
 
         <div
@@ -167,6 +160,42 @@ export function StrapiHero({
         </div>
       </Wrapper>
     </section>
+  )
+}
+
+/**
+ * What lies behind the copy on a photo hero: the photograph, the clip that
+ * plays over it where an editor uploaded one, and the wash that keeps the words
+ * legible whatever picture they chose. Black at 40%, as in the design.
+ */
+function Backdrop({
+  image,
+  video,
+}: {
+  readonly image: Data.Component<"sections.hero">["backgroundImage"]
+  readonly video: Data.Component<"sections.hero">["backgroundVideo"]
+}) {
+  return (
+    <>
+      {image && (
+        <StrapiBasicImage
+          component={image}
+          fill
+          sizes="100vw"
+          className="-z-20 object-cover"
+        />
+      )}
+      {video && (
+        <BackgroundVideo
+          src={formatStrapiMediaUrl(video.url)}
+          // The photograph doubles as the clip's poster, so there is something
+          // on screen while it loads and for anyone it never reaches.
+          poster={formatStrapiMediaUrl(image?.media?.url)}
+          className="absolute inset-0 -z-20 size-full object-cover"
+        />
+      )}
+      <div className="absolute inset-0 -z-10 bg-black/40" />
+    </>
   )
 }
 

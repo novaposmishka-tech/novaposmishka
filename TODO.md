@@ -33,6 +33,13 @@ content are missing.
       walk-through on each case study (`sections.case-study` → `videoUrl`).
       Set the URL and the play control appears.
 
+- [ ] **An H.264 copy of the hero clip.** The homepage background is the old
+      site's `hero-video.webm` (VP8/VP9), which Safari cannot decode — those
+      readers get the hero photograph instead, which is a fair fallback but not
+      the design. Ask the clinic for the same footage as `.mp4` (H.264/AAC),
+      drop it in `apps/strapi/seed/media/`, and point the hero's
+      `backgroundVideo` at it.
+
 - [ ] **The real price list.** Every service page carries the design's price
       table, which is a placeholder: the twenty rows are identical on all seven
       pages, every amount is 500 or 200 ГРН, and the group titled "Анестезія"
@@ -56,8 +63,8 @@ content are missing.
 e.charAt is not a function`. Reproduced on an unrelated project built
       from the same starter, so it is a Strapi 5.48 bug, not our schemas.
 
-                  Until it is fixed, entries in `apps/strapi/types/generated/*.d.ts` must be
-                  hand-written after a schema change (add the interface _and_ the registry
-                  entry at the bottom of the file). Do **not** run `pnpm sync-types` —
-                  `packages/strapi-types/generated` is a symlink to that folder, so its
-                  `cp -r` copies the folder into itself.
+                    Until it is fixed, entries in `apps/strapi/types/generated/*.d.ts` must be
+                    hand-written after a schema change (add the interface _and_ the registry
+                    entry at the bottom of the file). Do **not** run `pnpm sync-types` —
+                    `packages/strapi-types/generated` is a symlink to that folder, so its
+                    `cp -r` copies the folder into itself.
