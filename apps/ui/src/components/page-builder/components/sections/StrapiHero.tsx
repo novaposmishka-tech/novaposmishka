@@ -241,13 +241,18 @@ function Backdrop({
   readonly video: Data.Component<"sections.hero">["backgroundVideo"]
 }) {
   return (
-    <>
+    // One positioned layer for the whole backdrop. The copy sits inside the
+    // grid container, which is not positioned, so a `fill` image dropped
+    // alongside it would reach past it to the frame — which is where we want it,
+    // but only by accident, and Next says so. This layer is the frame's size on
+    // purpose, and the wash and the clip stack inside it in source order.
+    <div className="absolute inset-0 -z-10">
       {image && (
         <StrapiBasicImage
           component={image}
           fill
           sizes="100vw"
-          className="-z-20 object-cover"
+          className="object-cover"
         />
       )}
       {video && (
@@ -256,11 +261,11 @@ function Backdrop({
           // The photograph doubles as the clip's poster, so there is something
           // on screen while it loads and for anyone it never reaches.
           poster={formatStrapiMediaUrl(image?.media?.url)}
-          className="absolute inset-0 -z-20 size-full object-cover"
+          className="absolute inset-0 size-full object-cover"
         />
       )}
-      <div className="absolute inset-0 -z-10 bg-black/40" />
-    </>
+      <div className="absolute inset-0 bg-black/40" />
+    </div>
   )
 }
 
