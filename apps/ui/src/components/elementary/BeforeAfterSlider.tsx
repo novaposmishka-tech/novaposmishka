@@ -104,10 +104,10 @@ function Comparison({
         />
       </div>
 
-      <Pill className="left-5" hidden={position < 12}>
+      <Pill className="left-2.5 lg:left-5" hidden={position < 12}>
         {labels.before}
       </Pill>
-      <Pill className="right-5" hidden={position > 88}>
+      <Pill className="right-2.5 lg:right-5" hidden={position > 88}>
         {labels.after}
       </Pill>
 
@@ -137,7 +137,7 @@ function Comparison({
         style={{ left: `${position}%` }}
         className="peer-focus-visible:[&>span]:ring-brand-deep pointer-events-none absolute inset-y-0 z-10 w-0.5 -translate-x-1/2 bg-white shadow-[0_0_8px_rgba(0,0,0,0.35)] peer-focus-visible:[&>span]:ring-4"
       >
-        <span className="text-brand-ink absolute top-1/2 left-1/2 flex size-11 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full bg-white shadow-md">
+        <span className="absolute top-1/2 left-1/2 flex size-7.75 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full bg-white/10 text-white lg:size-12.5">
           <ArrowGlyph className="rotate-180" />
           <ArrowGlyph />
         </span>
@@ -158,7 +158,9 @@ function Pill({
   return (
     <span
       className={cn(
-        "text-brand-ink pointer-events-none absolute top-5 z-10 rounded-full bg-white px-4 py-1 text-sm transition-opacity",
+        // Translucent white over the photograph with a hairline around it, as
+        // the frame draws it — not a solid chip.
+        "text-brand-inverted pointer-events-none absolute top-2.5 z-10 flex h-6.25 items-center rounded-full border border-white bg-white/20 px-2.5 text-xs/[1.0625rem] font-medium transition-opacity lg:top-5 lg:h-7.5 lg:px-5 lg:text-base/5.5",
         hidden && "opacity-0",
         className
       )}
@@ -178,7 +180,7 @@ function ArrowGlyph({ className }: { readonly className?: string }) {
       strokeWidth={2.5}
       strokeLinecap="round"
       strokeLinejoin="round"
-      className={cn("size-3.5", className)}
+      className={cn("size-3.5 lg:size-5", className)}
     >
       <path d="M9 6l6 6-6 6" />
     </svg>

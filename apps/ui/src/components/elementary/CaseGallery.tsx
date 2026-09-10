@@ -153,7 +153,9 @@ export function CaseGallery({
                     {item.doctorPhoto && (
                       <StrapiBasicImage
                         component={item.doctorPhoto}
-                        className="size-12.5 shrink-0 rounded-full object-cover lg:size-17.5"
+                        // The frame sets the portrait on a pale disc, which shows wherever the
+                        // photograph does not fill the circle.
+                        className="bg-brand-on-dark size-12.5 shrink-0 rounded-full object-cover lg:size-17.5"
                       />
                     )}
                     <span
