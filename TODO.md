@@ -59,12 +59,12 @@ content are missing.
 ## Known issues
 
 - [ ] **Strapi typegen is broken** in this environment: `pnpm generate:types`
-      fails with `(Typegen) Failed to generate types for contentTypes:
-e.charAt is not a function`. Reproduced on an unrelated project built
-      from the same starter, so it is a Strapi 5.48 bug, not our schemas.
+      fails with `(Typegen) Failed to generate types for contentTypes: e.charAt is not a function`.
+      Reproduced on an unrelated project built from the same starter, so it is a
+      Strapi 5.48 bug, not our schemas.
 
-                    Until it is fixed, entries in `apps/strapi/types/generated/*.d.ts` must be
-                    hand-written after a schema change (add the interface _and_ the registry
-                    entry at the bottom of the file). Do **not** run `pnpm sync-types` —
-                    `packages/strapi-types/generated` is a symlink to that folder, so its
-                    `cp -r` copies the folder into itself.
+      Until it is fixed, entries in `apps/strapi/types/generated/*.d.ts` must be
+      hand-written after a schema change (add the interface _and_ the registry
+      entry at the bottom of the file). Do **not** run `pnpm sync-types` —
+      `packages/strapi-types/generated` is a symlink to that folder, so its
+      `cp -r` copies the folder into itself.
