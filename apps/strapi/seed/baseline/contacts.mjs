@@ -46,12 +46,23 @@ export const contactsPage = {
       display: "list",
       title: "Контакти",
       items: [
-        { label: "Адреса", kind: "text", values: [text(ADDRESS)] },
-        { label: "Телефон", kind: "phone", values: PHONES.map(text) },
-        { label: "Email", kind: "email", values: [text(EMAIL)] },
+        {
+          label: "Адреса",
+          kind: "text",
+          icon: "map-pin",
+          values: [text(ADDRESS)],
+        },
+        {
+          label: "Телефон",
+          kind: "phone",
+          icon: "phone",
+          values: PHONES.map(text),
+        },
+        { label: "Email", kind: "email", icon: "mail", values: [text(EMAIL)] },
         {
           label: "Графік роботи",
           kind: "text",
+          icon: "clock",
           values: OPENING_HOURS.map(text),
         },
       ],
