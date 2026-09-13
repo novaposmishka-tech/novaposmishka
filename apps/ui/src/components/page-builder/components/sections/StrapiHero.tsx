@@ -108,7 +108,9 @@ export function StrapiHero({
                 className={cn(
                   isCentered && "mx-auto max-w-168.75",
                   hasBackground &&
-                    "mb-10 [&_p]:mb-0 [&_p]:text-lg! [&_p]:text-inherit! lg:[&_p]:text-xl!"
+                    // The frame holds the sentence under the heading to a 632
+                    // column; the heading itself is allowed past it.
+                    "mb-10 lg:max-w-158 [&_p]:mb-0 [&_p]:text-lg! [&_p]:text-inherit! lg:[&_p]:text-xl!"
                 )}
               />
             )}
