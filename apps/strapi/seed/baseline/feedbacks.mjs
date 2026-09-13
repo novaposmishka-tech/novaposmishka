@@ -8,7 +8,14 @@
  */
 
 import { reviews } from "./reviews.mjs"
-import { anchor, BUTTON, CLINIC_NAME, GOOGLE_RATING } from "./shared.mjs"
+import {
+  anchor,
+  BUTTON,
+  BUTTON_ON_DARK,
+  CLINIC_NAME,
+  GOOGLE_RATING,
+  image,
+} from "./shared.mjs"
 import { videoReviews } from "./video-reviews.mjs"
 
 const DESCRIPTION =
@@ -33,11 +40,18 @@ export const feedbacksPage = {
   content: [
     {
       __component: "sections.hero",
-      title: "<h1><strong>Відгуки наших пацієнтів</strong></h1>",
+      // The frame opens the page on the toys from the children's room, with
+      // the heading broken after the first word so it steps in like the
+      // homepage's.
+      backgroundImage: image(
+        "feedbacks-hero",
+        "Іграшки на стоматологічній установці в дитячому кабінеті"
+      ),
+      title: "<h1><strong>Відгуки<br>наших пацієнтів</strong></h1>",
       description: `<p>${DESCRIPTION}</p>`,
       links: [
         {
-          ...anchor("Залишити відгук", GOOGLE_REVIEWS_URL, BUTTON),
+          ...anchor("Залишити відгук", GOOGLE_REVIEWS_URL, BUTTON_ON_DARK),
           newTab: true,
         },
       ],
