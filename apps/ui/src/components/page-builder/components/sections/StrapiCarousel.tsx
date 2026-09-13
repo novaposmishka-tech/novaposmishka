@@ -38,7 +38,7 @@ export function StrapiCarousel({
             >
               <StrapiBasicImage
                 component={item.image}
-                className="aspect-square w-full rounded-[26px] object-cover"
+                className="shadow-brand-card aspect-square w-full rounded-[26px] object-cover"
               />
             </li>
           ))}
