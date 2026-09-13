@@ -34,11 +34,12 @@ export function LeadFormBlock({
   const body = status === "idle" ? description : t(`${status}Body`)
 
   return (
-    <div className="bg-brand-gradient text-brand-inverted relative isolate flex flex-col gap-10 overflow-hidden rounded-[50px] p-8 md:p-12 lg:flex-row lg:gap-25 lg:p-12.5">
+    <div className="bg-brand-gradient text-brand-inverted relative isolate flex flex-col items-center gap-12.5 overflow-hidden px-3.75 pt-7.5 pb-25 lg:flex-row lg:items-stretch lg:gap-25 lg:rounded-[50px] lg:p-12.5">
       {/* The copy and the form sit in one column, as the design lays them out —
-          not side by side. */}
-      <div className="flex w-full flex-col gap-10 lg:max-w-150">
-        <div className="flex flex-col gap-5">
+          not side by side. The phone frame centres the heading over them. */}
+      <div className="flex w-full flex-col gap-7.5 text-center lg:max-w-150 lg:gap-10 lg:text-left">
+        {/* The frame holds the words to 532 inside the 601 column. */}
+        <div className="flex flex-col gap-5 lg:max-w-133">
           {heading && (
             <Typography
               tag="h2"
@@ -63,20 +64,24 @@ export function LeadFormBlock({
           )}
         </div>
 
-        <div className="flex w-full max-w-133">
+        <div className="flex w-full max-w-133 text-left">
           <LeadForm gdpr={gdpr} onStatusChange={setStatus} />
         </div>
       </div>
 
-      {/* The tooth the design watermarks the card with. Decorative, so it is
-          hidden from assistive technology and never steals a tap. */}
+      {/* The tooth the design watermarks the card with. A column of its own in
+          the frame rather than a backdrop, 519 wide beside the 601 of copy.
+          Decorative, so it is hidden from assistive technology and never steals
+          a tap. */}
       <Image
         src="/images/tooth-watermark.svg"
         alt=""
         width={519}
         height={504}
         aria-hidden
-        className="pointer-events-none absolute right-12 bottom-0 -z-10 hidden h-full w-auto max-w-2/5 object-contain object-bottom opacity-60 lg:block"
+        // The frame sets it above the words on a phone and beside them at
+        // desktop, where it is a column of its own.
+        className="pointer-events-none order-first h-37.25 w-38.5 shrink-0 self-center object-contain lg:order-none lg:h-full lg:w-129.75"
       />
     </div>
   )

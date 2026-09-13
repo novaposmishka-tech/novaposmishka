@@ -1,6 +1,7 @@
 "use client"
 
 import { zodResolver } from "@hookform/resolvers/zod"
+import { ArrowRight } from "lucide-react"
 import { useTranslations } from "next-intl"
 import { useSyncExternalStore } from "react"
 import { useForm } from "react-hook-form"
@@ -12,6 +13,7 @@ import { AppField } from "@/components/forms/AppField"
 import { AppForm } from "@/components/forms/AppForm"
 import { Button } from "@/components/ui/button"
 import { readError } from "@/lib/http"
+import { cn } from "@/lib/styles"
 
 /**
  * Posts to /API/lead, which forwards the request to Telegram and stores it in
@@ -75,7 +77,16 @@ export function LeadForm({
         form={form}
         onSubmit={onSubmit}
         id={leadFormName}
-        className="w-full"
+        // The frame gives this form its own shape, and it is the only one that
+        // sits on the dark card: a 54px pill on white at a tenth of a twentieth,
+        // its label above it in the card's own ink. Scoped here rather than in
+        // the shared field so the booking dialog keeps the light one.
+        className={cn(
+          "w-full [&_fieldset]:space-y-7.5",
+          "[&_label]:text-brand-inverted [&_label]:text-sm/5 [&_label]:font-normal lg:[&_label]:text-base/5.5",
+          "[&_input]:text-brand-inverted [&_input]:h-12.5 [&_input]:rounded-[60px] [&_input]:border-0 [&_input]:bg-white/5 [&_input]:px-3.75 [&_input]:text-sm/5 lg:[&_input]:h-13.5 lg:[&_input]:text-lg/6.25",
+          "[&_input]:placeholder:text-brand-muted"
+        )}
       >
         <AppField
           name="name"
@@ -83,6 +94,7 @@ export function LeadForm({
           autoComplete="name"
           label={t("name")}
           placeholder={t("namePlaceholder")}
+          containerClassName="gap-2.5"
         />
         <AppField
           name="phone"
@@ -91,6 +103,7 @@ export function LeadForm({
           required
           label={t("phone")}
           placeholder={t("phonePlaceholder")}
+          containerClassName="gap-2.5"
         />
 
         {/* Honeypot — hidden from people, irresistible to bots. */}
@@ -103,7 +116,8 @@ export function LeadForm({
           {...form.register("company")}
         />
 
-        <div className="flex w-full flex-col gap-4">
+        {/* The frame leaves 50 between the last field and the button. */}
+        <div className="mt-12.5! flex w-full flex-col gap-4">
           {gdpr?.href && (
             <div className="mt-5 flex flex-col items-center sm:flex-row">
               <p>{t("gdpr")}</p>
@@ -129,12 +143,14 @@ export function LeadForm({
           <Button
             type={hydrated ? "submit" : "button"}
             variant="secondary"
-            className="mx-auto mt-4 w-full md:w-fit"
-            size="lg"
+            // White, with the label in ink and the arrow after it — the frame's
+            // button for the dark card.
+            className="text-brand-ink h-10.5 w-full gap-2 rounded-[30px] bg-white px-5 text-base/5.5 font-semibold hover:bg-white/90 lg:h-12.5 lg:w-fit lg:px-7.5"
             isLoading={form.formState.isSubmitting}
             data-hydrated={hydrated || undefined}
           >
             {t("submit")}
+            <ArrowRight aria-hidden className="size-5" />
           </Button>
         </div>
       </AppForm>
