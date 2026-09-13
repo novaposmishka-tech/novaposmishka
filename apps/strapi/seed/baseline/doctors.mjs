@@ -215,10 +215,16 @@ export const doctorsPage = {
   content: [
     {
       __component: "sections.hero",
-      title: "<h1><strong>Наша команда</strong></h1>",
+      // The frame opens the page on the team photograph with no copy over it;
+      // the page title belongs to the panel that overlaps it from below.
+      backgroundImage: image(
+        "team",
+        "Команда клініки «Нова Посмішка» у Житомирі"
+      ),
     },
     {
       __component: "sections.doctors",
+      title: "Наша Команда",
       doctors,
     },
   ],
