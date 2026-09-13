@@ -523,3 +523,11 @@
 @utility bg-brand-gradient {
   background-image: var(--gradient-brand);
 }
+
+/* The pair of soft shadows the design puts under a card that floats on the
+ * page — one below it and a shallower one above. */
+@utility shadow-brand-card {
+  box-shadow:
+    0 5px 8px rgba(13, 22, 155, 0.05),
+    0 -3px 8px rgba(13, 22, 155, 0.05);
+}

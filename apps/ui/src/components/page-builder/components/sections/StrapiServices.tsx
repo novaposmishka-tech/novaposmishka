@@ -16,7 +16,7 @@ import type { PageBuilderComponentProps } from "@/types/general"
  * black links, which is the hover state rather than a card that differs.
  */
 const CARD =
-  "relative flex min-h-42.75 flex-col overflow-hidden rounded-[20px] p-5 shadow-[0_5px_8px_rgba(13,22,155,0.05),0_-3px_8px_rgba(13,22,155,0.05)] lg:min-h-53.5 lg:rounded-[26px] lg:p-7.5"
+  "shadow-brand-card relative flex min-h-42.75 flex-col overflow-hidden rounded-[20px] p-5 lg:min-h-53.5 lg:rounded-[26px] lg:p-7.5"
 
 /**
  * The illustration stands on the card's bottom edge, at the right. The frame
