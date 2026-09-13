@@ -40,16 +40,28 @@ export function StrapiHero({
   // Service pages use the photo hero with copy alone. Without a bottom row to
   // push away, stretching the card just leaves a tall empty half.
   const hasBottomRow = hasBackground && Boolean(serviceTags?.length)
+  // The team page opens on the photograph alone. With nothing to give it
+  // height, a phone would be left with a 160px strip where the frame draws 450.
+  const isBarePhoto = hasBackground && !title && !description && !tag
 
   return (
     <section>
       <Wrapper hasBackground={hasBackground}>
         {hasBackground && (
-          <Backdrop image={backgroundImage} video={backgroundVideo} />
+          <Backdrop
+            image={backgroundImage}
+            video={backgroundVideo}
+            fade={isBarePhoto}
+          />
         )}
 
         <div
-          className={layoutClass({ hasBackground, hasBottomRow, hasImages })}
+          className={layoutClass({
+            hasBackground,
+            hasBottomRow,
+            hasImages,
+            isBarePhoto,
+          })}
         >
           <div className={copyClass({ hasBackground, isCentered })}>
             {tag && (
@@ -168,10 +180,12 @@ const layoutClass = ({
   hasBackground,
   hasBottomRow,
   hasImages,
+  isBarePhoto,
 }: {
   hasBackground: boolean
   hasBottomRow: boolean
   hasImages: boolean
+  isBarePhoto: boolean
 }) =>
   cn(
     "flex flex-col gap-10",
@@ -179,7 +193,8 @@ const layoutClass = ({
       ? cn(
           "gap-24.25 pt-25 pb-15 lg:gap-17.5 lg:pt-[167px] lg:pb-7.5",
           "lg:min-h-217.5",
-          hasBottomRow && "min-h-200"
+          hasBottomRow && "min-h-200",
+          isBarePhoto && "max-lg:min-h-112.5"
         )
       : "px-4 py-8 lg:py-12",
     hasImages && "lg:flex-row lg:items-center lg:gap-16"
@@ -236,9 +251,12 @@ function BottomRow({
 function Backdrop({
   image,
   video,
+  fade,
 }: {
   readonly image: Data.Component<"sections.hero">["backgroundImage"]
   readonly video: Data.Component<"sections.hero">["backgroundVideo"]
+  /** True where the picture is the subject and carries no copy of its own. */
+  readonly fade?: boolean
 }) {
   return (
     // One positioned layer for the whole backdrop. The copy sits inside the
@@ -264,7 +282,16 @@ function Backdrop({
           className="absolute inset-0 size-full object-cover"
         />
       )}
-      <div className="absolute inset-0 bg-black/40" />
+      <div
+        className={cn(
+          "absolute inset-0",
+          // Flat where words sit on the photograph, and a top-down fade where
+          // the photograph is the subject — the frame draws both.
+          fade
+            ? "bg-[linear-gradient(to_bottom,rgba(0,0,0,0.4),transparent)]"
+            : "bg-black/40"
+        )}
+      />
     </div>
   )
 }
