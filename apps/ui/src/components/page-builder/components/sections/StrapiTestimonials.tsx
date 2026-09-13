@@ -4,12 +4,13 @@ import type { Data } from "@repo/strapi-types"
 import { getTranslations } from "next-intl/server"
 
 import { Container } from "@/components/elementary/Container"
+import { GoogleMark } from "@/components/elementary/GoogleMark"
 import { ReviewCard } from "@/components/elementary/ReviewCard"
 import { ReviewTabs } from "@/components/elementary/ReviewTabs"
+import { ScrollRow } from "@/components/elementary/ScrollRow"
 import { VideoReviewList } from "@/components/elementary/VideoReviewList"
 import StrapiLink from "@/components/page-builder/components/utilities/StrapiLink"
 import Typography from "@/components/typography"
-import { cn } from "@/lib/styles"
 import type { PageBuilderComponentProps } from "@/types/general"
 
 export async function StrapiTestimonials({
@@ -37,17 +38,17 @@ export async function StrapiTestimonials({
   // columns rather than a grid: the reviews are different lengths and columns
   // pack them without the ragged bottom a grid would leave.
   const written = (
-    <div
-      tabIndex={0}
-      aria-label={title ?? undefined}
-      className={cn(
-        "-mx-2 flex snap-x snap-mandatory gap-6 overflow-x-auto px-2 pb-2",
-        "md:mx-0 md:block md:gap-0 md:overflow-visible md:px-0",
-        "md:columns-2 md:*:mb-6 lg:columns-3"
-      )}
+    <ScrollRow
+      label={title}
+      // One row that scrolls on a phone and breaks into the frame's three
+      // columns from md up. The reviews are different lengths and columns pack
+      // them without the ragged bottom a grid would leave.
+      className="md:block md:columns-2 md:overflow-visible md:*:mb-6 lg:columns-3"
+      // The frame gives the columns no arrows; they belong to the phone row.
+      controlsClassName="md:hidden"
     >
       {testimonials.map((review) => (
-        <div key={review.id} className="w-4/5 shrink-0 snap-start md:w-auto">
+        <li key={review.id} className="w-full shrink-0 snap-start md:w-auto">
           <ReviewCard
             review={review}
             labels={{
@@ -56,9 +57,9 @@ export async function StrapiTestimonials({
               rating: t("rating"),
             }}
           />
-        </div>
+        </li>
       ))}
-    </div>
+    </ScrollRow>
   )
 
   // The design switches between written and filmed reviews here. Without any
@@ -73,6 +74,8 @@ export async function StrapiTestimonials({
           <ReviewTabs
             heading={heading}
             labels={[writtenLabel ?? "Google", videoLabel ?? t("video")]}
+            // The frame marks the written-reviews tab with Google's own logo.
+            icons={[<GoogleMark key="google" className="size-6" />, null]}
             panels={[
               written,
               <VideoReviewList

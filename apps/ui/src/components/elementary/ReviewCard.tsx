@@ -1,9 +1,10 @@
 "use client"
 
 import type { Data } from "@repo/strapi-types"
-import { StarIcon } from "lucide-react"
+import { StarIcon, UserRound } from "lucide-react"
 import { useEffect, useRef, useState } from "react"
 
+import { GoogleMark } from "@/components/elementary/GoogleMark"
 import { StrapiBasicImage } from "@/components/page-builder/components/utilities/StrapiBasicImage"
 import { cn } from "@/lib/styles"
 
@@ -50,39 +51,41 @@ export function ReviewCard({
   }, [])
 
   return (
-    <article className="border-brand-border bg-brand-paper flex break-inside-avoid flex-col gap-4 rounded-[26px] border p-7.5">
+    <article className="shadow-brand-card flex break-inside-avoid flex-col gap-3.75 rounded-[26px] bg-white p-5 lg:p-7.5">
       <header className="flex items-start justify-between gap-4">
         <div className="flex items-center gap-5">
-          {review.photo && (
+          {review.photo ? (
             <StrapiBasicImage
               component={review.photo}
               className="size-12.5 shrink-0 rounded-full object-cover"
             />
+          ) : (
+            // The frame leaves a ringed circle where a reviewer has no picture
+            // of their own, which is all of them on Google.
+            <span className="border-brand-on-dark text-brand-on-dark flex size-12.5 shrink-0 items-center justify-center rounded-full border">
+              <UserRound aria-hidden className="size-6" />
+            </span>
           )}
           <div className="flex flex-col">
-            <span className="text-brand-ink font-medium">
+            <span className="text-brand-ink text-lg/6.25 font-semibold lg:text-xl/7">
               {review.authorName}
             </span>
             {/* The design sets these greys to brand-muted, which lands at
                 roughly 2:1 on the card — brand-body is the same role, legibly. */}
             {review.authorNote && (
-              <span className="text-brand-body text-sm">
+              <span className="text-brand-body text-sm/5">
                 {review.authorNote}
               </span>
             )}
           </div>
         </div>
 
-        {review.source && (
-          <span className="text-brand-body shrink-0 text-sm">
-            {review.source}
-          </span>
-        )}
+        {review.source && <GoogleMark className="size-6 shrink-0" />}
       </header>
 
       {review.rating != null && (
         <div
-          className="flex gap-1"
+          className="flex gap-0.75"
           role="img"
           aria-label={`${labels.rating}: ${review.rating}`}
         >
@@ -93,7 +96,7 @@ export function ReviewCard({
               className={cn(
                 "size-4",
                 index < score
-                  ? "fill-brand-accent text-brand-accent"
+                  ? "fill-brand-star text-brand-star"
                   : "text-brand-border"
               )}
             />
@@ -103,7 +106,10 @@ export function ReviewCard({
 
       <p
         ref={quoteRef}
-        className={cn("text-brand-body text-base", !expanded && "line-clamp-3")}
+        className={cn(
+          "text-brand-body text-base/5.5",
+          !expanded && "line-clamp-3"
+        )}
       >
         {review.quote}
       </p>
@@ -114,7 +120,7 @@ export function ReviewCard({
         <button
           type="button"
           onClick={() => setExpanded((current) => !current)}
-          className="text-brand-deep hover:text-brand-teal w-fit cursor-pointer text-base font-semibold"
+          className="text-brand-ink hover:text-brand-teal w-fit cursor-pointer text-base/5.5 font-semibold underline underline-offset-4"
         >
           {labels[expanded ? "less" : "more"]}
         </button>
