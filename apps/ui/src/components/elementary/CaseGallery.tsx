@@ -67,16 +67,25 @@ export function CaseGallery({
   return (
     <div className="flex flex-col gap-10">
       {tags.length > 0 && (
-        <ul className="flex list-none flex-wrap gap-4 lg:gap-5">
+        <ul
+          className={cn(
+            "flex list-none flex-wrap gap-4 lg:gap-5",
+            // The listing page centres its filters; the homepage ranges them
+            // against the grid.
+            isGrid && "justify-center"
+          )}
+        >
           {[null, ...tags].map((tag) => {
             const chip = cn(
               "flex h-10 cursor-pointer items-center rounded-[30px] px-5 text-base transition-colors lg:h-11.5 lg:px-7.5",
               active === tag
                 ? isGrid
-                  ? "bg-brand-deep text-brand-inverted"
+                  ? // On the light page the frame fills the chosen chip with
+                    // the brand gradient and outlines the rest in teal.
+                    "bg-brand-gradient text-brand-inverted shadow-brand-card font-semibold"
                   : "text-brand-ink bg-white"
                 : isGrid
-                  ? "bg-brand-surface text-brand-ink hover:bg-brand-border"
+                  ? "border-brand-teal text-brand-ink hover:bg-brand-surface border bg-white"
                   : "text-brand-inverted bg-white/10 hover:bg-white/20"
             )
 
@@ -114,7 +123,7 @@ export function CaseGallery({
             className={cn(
               "rounded-[20px] p-5 lg:rounded-[26px] lg:p-7.5",
               isGrid
-                ? "border-brand-border bg-brand-paper border"
+                ? "shadow-brand-card bg-white"
                 : // Two to a row, whatever the container is: the design's fixed
                   // 598px card assumes its own container width and is clipped
                   // in ours.
