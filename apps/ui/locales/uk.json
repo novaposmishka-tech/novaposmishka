@@ -34,7 +34,8 @@
     "back": "Назад",
     "previous": "Попередні",
     "next": "Наступні",
-    "menu": "Меню"
+    "menu": "Меню",
+    "goToSlide": "Перейти до {number}"
   },
   "tables": {
     "previousPage": "Попередня сторінка",

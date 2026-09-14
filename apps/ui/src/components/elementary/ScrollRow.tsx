@@ -2,7 +2,7 @@
 
 import { ArrowLeft, ArrowRight } from "lucide-react"
 import { useTranslations } from "next-intl"
-import { Children, useCallback, useRef, useState } from "react"
+import { Children, useCallback, useEffect, useRef, useState } from "react"
 
 import { cn } from "@/lib/styles"
 
@@ -36,6 +36,9 @@ export function ScrollRow({
   const [atStart, setAtStart] = useState(true)
   const [atEnd, setAtEnd] = useState(false)
   const [current, setCurrent] = useState(0)
+  // Nothing until it has been measured: the controls only do anything with
+  // script, and only where there is something past the edge to reach.
+  const [scrollable, setScrollable] = useState(false)
   const count = Children.count(children)
   const t = useTranslations("general")
 
@@ -43,22 +46,40 @@ export function ScrollRow({
     const node = row.current
     if (!node) return
     // A fractional scroll width leaves a pixel or two over; round it off.
+    const past = node.scrollWidth - node.clientWidth
+    setScrollable(past > 2)
     setAtStart(node.scrollLeft < 2)
-    setAtEnd(node.scrollLeft + node.clientWidth >= node.scrollWidth - 2)
+    setAtEnd(node.scrollLeft >= past - 2)
 
-    const first = node.firstElementChild
-    const step = first ? first.clientWidth + GAP : node.clientWidth
+    const step = cardStep(node)
     setCurrent(step > 0 ? Math.round(node.scrollLeft / step) : 0)
   }, [])
+
+  // How far the row can scroll changes with the breakpoint, with a picture
+  // finishing its load, and — where the row sits behind a tab — with the panel
+  // being shown at all. None of those is a scroll, so none fires onScroll.
+  useEffect(() => {
+    const node = row.current
+    if (!node) return
+
+    measure()
+    const observer = new ResizeObserver(measure)
+    observer.observe(node)
+    if (node.firstElementChild) observer.observe(node.firstElementChild)
+
+    return () => observer.disconnect()
+  }, [measure, count])
 
   const nudge = (direction: 1 | -1) => {
     const node = row.current
     if (!node) return
-    // One card at a time, measured from the first one so the step follows
-    // whatever the breakpoint decided a card should be.
-    const first = node.firstElementChild
-    const step = first ? first.clientWidth + GAP : node.clientWidth * 0.8
-    node.scrollBy({ left: step * direction, behavior: "smooth" })
+    node.scrollBy({ left: cardStep(node) * direction, behavior: "smooth" })
+  }
+
+  const goTo = (index: number) => {
+    const node = row.current
+    if (!node) return
+    node.scrollTo({ left: cardStep(node) * index, behavior: "smooth" })
   }
 
   return (
@@ -80,51 +101,73 @@ export function ScrollRow({
         {children}
       </ul>
 
-      <div
-        className={cn(
-          "flex items-center justify-center gap-7.5",
-          controlsClassName
-        )}
-      >
-        <Arrow
-          direction={-1}
-          disabled={atStart}
-          label={t("previous")}
-          tone={tone}
-          onClick={nudge}
-        />
+      {scrollable && (
+        <div
+          className={cn(
+            "flex items-center justify-center gap-7.5",
+            controlsClassName
+          )}
+        >
+          <Arrow
+            direction={-1}
+            disabled={atStart}
+            label={t("previous")}
+            tone={tone}
+            onClick={nudge}
+          />
 
-        {/* The frame marks where you are between the arrows. They report the
-            scroll rather than drive it — the row is scrolled, not paged, so
-            there is nothing here for a reader to press. */}
-        {count > 1 && (
-          <span aria-hidden className="flex items-center gap-2.5">
-            {Array.from({ length: count }, (_, index) => (
-              <span
-                key={index}
-                className={cn(
-                  "size-2 rounded-full transition-colors",
-                  index === current
-                    ? tone === "dark"
-                      ? "bg-white"
-                      : "bg-brand-ink"
-                    : "bg-brand-body"
-                )}
-              />
-            ))}
-          </span>
-        )}
+          {/* The frame marks where you are between the arrows. A mark that
+              shows a position is one a reader expects to be able to press, so
+              each is a button — with a target big enough to hit, around a dot
+              the frame's size. */}
+          {count > 1 && (
+            <ul className="flex list-none items-center">
+              {Array.from({ length: count }, (_, index) => (
+                <li key={index}>
+                  <button
+                    type="button"
+                    onClick={() => goTo(index)}
+                    aria-label={t("goToSlide", { number: index + 1 })}
+                    aria-current={index === current ? "true" : undefined}
+                    className="flex cursor-pointer items-center justify-center p-[0.5rem]"
+                  >
+                    <span
+                      className={cn(
+                        "size-2 rounded-full transition-colors",
+                        index === current
+                          ? tone === "dark"
+                            ? "bg-white"
+                            : "bg-brand-ink"
+                          : "bg-brand-body"
+                      )}
+                    />
+                  </button>
+                </li>
+              ))}
+            </ul>
+          )}
 
-        <Arrow
-          direction={1}
-          disabled={atEnd}
-          label={t("next")}
-          tone={tone}
-          onClick={nudge}
-        />
-      </div>
+          <Arrow
+            direction={1}
+            disabled={atEnd}
+            label={t("next")}
+            tone={tone}
+            onClick={nudge}
+          />
+        </div>
+      )}
     </div>
   )
+}
+
+/**
+ * How far one press moves the row: a card and the gap after it, measured from
+ * the first so the step follows whatever the breakpoint decided a card is.
+ */
+function cardStep(node: HTMLUListElement) {
+  const first = node.firstElementChild
+
+  return first ? first.clientWidth + GAP : node.clientWidth * 0.8
 }
 
 function Arrow({
