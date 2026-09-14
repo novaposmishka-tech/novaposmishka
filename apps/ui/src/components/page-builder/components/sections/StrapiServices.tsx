@@ -108,9 +108,11 @@ export function StrapiServices({
 
           {/* The frame closes the grid with a card for the reader who does not
               know which of these they need. It is two columns wide, which
-              squares the grid off at three rows, and it carries no shadow. */}
+              squares the grid off at three rows, and it carries no shadow. The
+              phone frame has no such card — seven cards in a column reach the
+              foot of the section on their own. */}
           {callToAction && (
-            <li className="bg-brand-mist relative flex min-h-42.75 overflow-hidden rounded-[20px] p-5 md:col-span-2 lg:min-h-53.5 lg:rounded-[26px] lg:p-7.5">
+            <li className="bg-brand-mist relative hidden min-h-42.75 overflow-hidden rounded-[20px] p-5 md:col-span-2 md:flex lg:min-h-53.5 lg:rounded-[26px] lg:p-7.5">
               {/* The frame's copy column stops short of the illustration. */}
               <div className="flex max-w-155.5 flex-col gap-5 lg:gap-7.5">
                 <div className="flex flex-col gap-2.5 lg:gap-3.75">
@@ -130,7 +132,7 @@ export function StrapiServices({
                     component={callToAction.link}
                     // Outlined in teal with the label in ink — the frame's
                     // second button, where the hero's is filled.
-                    className="border-brand-teal text-brand-ink hover:bg-brand-teal hover:text-brand-inverted h-11.5 w-fit gap-2 rounded-[30px] border bg-transparent bg-none px-5 text-sm/5 font-semibold shadow-none lg:h-12.5 lg:px-7.5 lg:text-base/5.5"
+                    className="border-brand-teal text-brand-ink hover:bg-brand-gradient! hover:text-brand-inverted h-11.5 w-fit gap-2 rounded-[30px] border bg-transparent bg-none px-5 text-sm/5 font-semibold shadow-none hover:border-transparent lg:h-12.5 lg:px-7.5 lg:text-base/5.5"
                   >
                     {callToAction.link.label}
                     <ArrowRight aria-hidden className="size-5" />
