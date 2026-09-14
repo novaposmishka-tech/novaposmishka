@@ -45,7 +45,7 @@ export async function Breadcrumbs({
     <nav
       aria-label={t("label")}
       className={cn(
-        "flex items-center gap-1.25 py-5 text-sm/5 lg:py-7.5",
+        "flex items-center gap-1.25 py-5 text-xs/[1.0625rem] lg:py-7.5 lg:text-sm/5",
         className
       )}
     >
