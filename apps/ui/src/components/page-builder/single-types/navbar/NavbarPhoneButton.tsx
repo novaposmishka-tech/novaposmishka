@@ -2,6 +2,7 @@
 
 import { PhoneIcon, X } from "lucide-react"
 import { useTranslations } from "next-intl"
+import { Fragment } from "react"
 
 import { operatorIcon } from "@/components/icons/operators"
 import {
@@ -58,45 +59,56 @@ export function NavbarPhoneButton({
         <PhoneIcon aria-hidden className="size-5" />
       </PopoverTrigger>
 
-      <PopoverContent align="end" className="w-61.5 rounded-[26px] p-5">
-        <ul className="flex list-none flex-col">
+      {/* The frame centres the card under the button and drops it 18 below,
+          with the two numbers in a column and the close beside them at the top
+          rather than tucked into the first row. */}
+      <PopoverContent
+        sideOffset={18}
+        className="shadow-brand-card flex w-61.5 gap-5 rounded-[26px] border-0 p-5"
+      >
+        <ul className="flex flex-1 list-none flex-col gap-5">
           {numbers.map((phone, index) => {
             const Icon = operatorIcon(phone)
             const href = contactHref("phone", phone)
 
             return (
-              <li
-                key={phone}
-                className="border-brand-hairline flex items-center gap-4 py-2.5 not-last:border-b"
-              >
-                {Icon ? (
-                  <Icon className="size-6 shrink-0" />
-                ) : (
-                  <PhoneIcon
-                    aria-hidden
-                    className="text-brand-body size-6 shrink-0"
-                  />
+              <Fragment key={phone}>
+                {/* The frame rules a line between the numbers, set 20 clear of
+                    each, which a border on the row itself cannot sit. */}
+                {index > 0 && (
+                  <li aria-hidden className="border-brand-hairline border-t" />
                 )}
-                {href ? (
-                  <a
-                    href={href}
-                    className="text-brand-ink hover:text-brand-teal text-lg"
-                  >
-                    {phone}
-                  </a>
-                ) : (
-                  <span className="text-brand-ink text-lg">{phone}</span>
-                )}
-                {index === 0 && (
-                  <PopoverClose className="text-brand-ink ml-auto cursor-pointer">
-                    <X aria-hidden className="size-5" />
-                    <span className="sr-only">{tGeneral("close")}</span>
-                  </PopoverClose>
-                )}
-              </li>
+                <li className="flex items-center gap-2.5 py-2">
+                  {Icon ? (
+                    <Icon className="size-6 shrink-0" />
+                  ) : (
+                    <PhoneIcon
+                      aria-hidden
+                      className="text-brand-body size-6 shrink-0"
+                    />
+                  )}
+                  {href ? (
+                    <a
+                      href={href}
+                      className="text-brand-ink hover:text-brand-teal text-lg/6.25 font-semibold"
+                    >
+                      {phone}
+                    </a>
+                  ) : (
+                    <span className="text-brand-ink text-lg/6.25 font-semibold">
+                      {phone}
+                    </span>
+                  )}
+                </li>
+              </Fragment>
             )
           })}
         </ul>
+
+        <PopoverClose className="text-brand-ink flex size-8 shrink-0 cursor-pointer items-center justify-center self-start">
+          <X aria-hidden className="size-4.5" />
+          <span className="sr-only">{tGeneral("close")}</span>
+        </PopoverClose>
       </PopoverContent>
     </Popover>
   )
