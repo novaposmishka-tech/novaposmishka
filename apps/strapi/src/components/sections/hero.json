@@ -61,6 +61,11 @@
       "allowedTypes": [
         "videos"
       ]
+    },
+    "figures": {
+      "type": "component",
+      "component": "shared.figure",
+      "repeatable": true
     }
   }
 }
