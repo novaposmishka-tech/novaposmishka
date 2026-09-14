@@ -1,11 +1,12 @@
 import "server-only"
 
 import type { Data } from "@repo/strapi-types"
-import { ChevronRight, Play } from "lucide-react"
+import { ChevronRight } from "lucide-react"
 import { getTranslations } from "next-intl/server"
 
 import { BeforeAfterSlider } from "@/components/elementary/BeforeAfterSlider"
 import { Container } from "@/components/elementary/Container"
+import { PlayableStill } from "@/components/elementary/PlayableStill"
 import { StrapiBasicImage } from "@/components/page-builder/components/utilities/StrapiBasicImage"
 import Typography from "@/components/typography"
 import { caseStudyId } from "@/lib/case-studies"
@@ -102,22 +103,17 @@ export async function StrapiCaseStudy({
                     {videoLabel}
                   </span>
                 )}
-                <a
-                  href={clip}
-                  target="_blank"
-                  rel="noreferrer noopener"
-                  className="group relative w-full shrink-0 rounded-[26px] focus-visible:outline-2 focus-visible:outline-offset-2 lg:w-75"
-                >
-                  <StrapiBasicImage
-                    component={videoPoster}
-                    className="aspect-3/2 w-full rounded-[26px] object-cover"
-                  />
-                  <span className="absolute inset-0 flex items-center justify-center">
-                    <span className="text-brand-deep flex size-12 items-center justify-center rounded-full bg-white/90 shadow-md">
-                      <Play aria-hidden className="size-5 fill-current" />
-                    </span>
-                  </span>
-                </a>
+                <PlayableStill
+                  src={clip}
+                  label={videoLabel}
+                  className="aspect-3/2 w-full shrink-0 overflow-hidden rounded-[26px] lg:w-75"
+                  poster={
+                    <StrapiBasicImage
+                      component={videoPoster}
+                      className="h-full w-full object-cover"
+                    />
+                  }
+                />
               </div>
             )}
           </div>

@@ -1,9 +1,9 @@
 "use client"
 
 import type { Data } from "@repo/strapi-types"
-import { Play } from "lucide-react"
 import { useState } from "react"
 
+import { PlayableStill } from "@/components/elementary/PlayableStill"
 import { ScrollRow } from "@/components/elementary/ScrollRow"
 import { ShowMoreButton } from "@/components/elementary/ShowMoreButton"
 import { StrapiBasicImage } from "@/components/page-builder/components/utilities/StrapiBasicImage"
@@ -108,30 +108,20 @@ function Still({ review }: { readonly review: VideoReview }) {
 
   return (
     <>
-      <div className="relative">
-        {review.poster && (
-          <StrapiBasicImage
-            component={review.poster}
-            className="h-125 w-full rounded-[30px] object-cover"
-          />
-        )}
-
-        {/* The clip itself is only offered once there is one to play; a play
-            button over a still that cannot move is a lie. */}
-        {clip && (
-          <a
-            href={clip}
-            target="_blank"
-            rel="noreferrer noopener"
-            className="absolute inset-0 flex items-center justify-center rounded-[30px] focus-visible:outline-2 focus-visible:outline-offset-2"
-          >
-            <span className="text-brand-deep flex size-15 items-center justify-center rounded-full bg-white/90 shadow-md">
-              <Play aria-hidden className="size-6 fill-current" />
-            </span>
-            <span className="sr-only">{review.quote}</span>
-          </a>
-        )}
-      </div>
+      <PlayableStill
+        src={clip}
+        label={review.quote}
+        className="h-125 overflow-hidden rounded-[30px]"
+        markClassName="size-15"
+        poster={
+          review.poster && (
+            <StrapiBasicImage
+              component={review.poster}
+              className="h-full w-full object-cover"
+            />
+          )
+        }
+      />
 
       {/* The frame insets the quote from the still it sits under. */}
       <blockquote className="text-brand-body px-2.5 text-sm/5 lg:text-base/5.5">
