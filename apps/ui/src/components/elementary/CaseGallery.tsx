@@ -65,7 +65,7 @@ export function CaseGallery({
   const shown = isGrid ? matching.slice(0, limit) : matching
 
   return (
-    <div className="flex flex-col gap-10">
+    <div className="flex flex-col gap-7.5 lg:gap-10">
       {tags.length > 0 && (
         <ul
           className={cn(

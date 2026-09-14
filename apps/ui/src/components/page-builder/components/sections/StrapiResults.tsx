@@ -31,31 +31,40 @@ export async function StrapiResults({
           same teal from edge to edge instead, square and with the page's own
           15px gutters. */}
       <Wrapper isCarousel={isCarousel}>
-        {(title || subtitle) && (
-          <div className="flex max-w-3xl flex-col gap-4">
-            {title && (
-              <Typography
-                tag="h2"
-                className={
-                  isCarousel
-                    ? "text-brand-inverted mb-0!"
-                    : "text-brand-ink mb-0!"
-                }
-              >
-                {title}
-              </Typography>
-            )}
-            {subtitle && (
-              <Typography
-                className={
-                  isCarousel ? "text-brand-on-dark" : "text-brand-body"
-                }
-              >
-                {subtitle}
-              </Typography>
-            )}
-          </div>
-        )}
+        {(title || subtitle) &&
+          (isCarousel ? (
+            <div className="flex max-w-3xl flex-col gap-4">
+              {title && (
+                <Typography tag="h2" className="text-brand-inverted mb-0!">
+                  {title}
+                </Typography>
+              )}
+              {subtitle && (
+                <Typography className="text-brand-on-dark">
+                  {subtitle}
+                </Typography>
+              )}
+            </div>
+          ) : (
+            // The listing page opens on its own title rather than a hero above
+            // it: the frame sets the words, the filters and the cards as one
+            // block, and a section between them would double the gap.
+            <div className="flex flex-col gap-2.5 lg:mx-auto lg:max-w-187.5 lg:items-center lg:gap-5 lg:text-center">
+              {title && (
+                <Typography
+                  tag="h1"
+                  className="lg:bg-brand-gradient mb-0! text-[1.625rem]/7.75! font-normal! lg:bg-clip-text lg:text-[4.5rem]/19.75! lg:font-semibold lg:text-transparent"
+                >
+                  {title}
+                </Typography>
+              )}
+              {subtitle && (
+                <Typography className="text-brand-body mb-0! text-sm/5! lg:text-xl/7.5!">
+                  {subtitle}
+                </Typography>
+              )}
+            </div>
+          ))}
 
         <CaseGallery
           display={display ?? "carousel"}
@@ -99,7 +108,11 @@ function Wrapper({
   readonly children: React.ReactNode
 }) {
   if (!isCarousel) {
-    return <Container className="flex flex-col gap-12.5">{children}</Container>
+    return (
+      <Container className="flex flex-col gap-7.5 lg:gap-12.5">
+        {children}
+      </Container>
+    )
   }
 
   return (

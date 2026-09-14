@@ -53,13 +53,12 @@ export const casesPage = {
   },
   content: [
     {
-      __component: "sections.hero",
-      title: "<h1><strong>Наші роботи</strong></h1>",
-      description: `<p>${DESCRIPTION}</p>`,
-    },
-    {
+      // The frame sets the page title, the filters and the cards as one block,
+      // so the listing carries its own heading rather than a hero above it.
       __component: "sections.results",
       display: "grid",
+      title: "Наші Роботи",
+      subtitle: DESCRIPTION,
       cases,
     },
     ...caseStudies,
