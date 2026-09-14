@@ -4,7 +4,7 @@ import type { Data } from "@repo/strapi-types"
 import { StarIcon, UserRound } from "lucide-react"
 import { useEffect, useRef, useState } from "react"
 
-import { GoogleMark } from "@/components/elementary/GoogleMark"
+import { GoogleMark } from "@/components/icons/GoogleMark"
 import { StrapiBasicImage } from "@/components/page-builder/components/utilities/StrapiBasicImage"
 import { cn } from "@/lib/styles"
 
