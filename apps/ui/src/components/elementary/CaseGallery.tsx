@@ -81,12 +81,15 @@ export function CaseGallery({
               active === tag
                 ? isGrid
                   ? // On the light page the frame fills the chosen chip with
-                    // the brand gradient and outlines the rest in teal.
-                    "bg-brand-gradient text-brand-inverted shadow-brand-card font-semibold"
+                    // the brand gradient and outlines the rest in teal; a
+                    // gradient goes flat teal under the pointer.
+                    "bg-brand-gradient text-brand-inverted shadow-brand-card hover:bg-brand-teal font-semibold hover:bg-none"
                   : "text-brand-ink bg-white"
                 : isGrid
-                  ? "border-brand-teal text-brand-ink hover:bg-brand-surface border bg-white"
-                  : "text-brand-inverted bg-white/10 hover:bg-white/20"
+                  ? "border-brand-teal text-brand-ink hover:bg-brand-gradient hover:text-brand-inverted border bg-white hover:border-transparent"
+                  : // On the dark band the frame whitens the chip rather than
+                    // deepening it.
+                    "text-brand-inverted hover:text-brand-ink bg-white/10 hover:bg-white"
             )
 
             return (

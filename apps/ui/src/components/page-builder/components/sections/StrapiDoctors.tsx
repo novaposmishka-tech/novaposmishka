@@ -112,7 +112,7 @@ export function StrapiDoctors({
             component={link}
             // Outlined in teal, the full width of the phone frame and hugging
             // its words on a desktop — the frame's second button again.
-            className="border-brand-teal text-brand-ink hover:bg-brand-teal hover:text-brand-inverted h-10 w-full justify-center gap-2 rounded-[30px] border bg-transparent bg-none px-5 text-sm/5 font-semibold shadow-none lg:col-start-2 lg:row-start-1 lg:h-12.5 lg:w-fit lg:px-7.5 lg:text-base/5.5"
+            className="border-brand-teal text-brand-ink hover:bg-brand-gradient! hover:text-brand-inverted h-10 w-full justify-center gap-2 rounded-[30px] border bg-transparent bg-none px-5 text-sm/5 font-semibold shadow-none hover:border-transparent lg:col-start-2 lg:row-start-1 lg:h-12.5 lg:w-fit lg:px-7.5 lg:text-base/5.5"
           >
             {link.label}
             <ArrowRight aria-hidden className="size-5" />

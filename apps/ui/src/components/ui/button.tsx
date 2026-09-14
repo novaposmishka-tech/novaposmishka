@@ -19,8 +19,10 @@ const buttonVariants = cva(
           "bg-brand-gradient text-primary-foreground transition-[color,box-shadow] hover:bg-brand-teal hover:bg-none",
         outline:
           "border-border bg-background hover:bg-muted hover:text-foreground dark:bg-input/30 dark:border-input dark:hover:bg-input/50 aria-expanded:bg-muted aria-expanded:text-foreground",
+        // The frame's button for a dark surface: white, turning teal under
+        // the pointer. Both places it is used stand on the brand gradient.
         secondary:
-          "bg-secondary text-secondary-foreground hover:bg-secondary/80 aria-expanded:bg-secondary aria-expanded:text-secondary-foreground",
+          "bg-white text-brand-ink hover:bg-brand-teal hover:text-brand-inverted aria-expanded:bg-white aria-expanded:text-brand-ink",
         ghost:
           "hover:bg-muted hover:text-foreground dark:hover:bg-muted/50 aria-expanded:bg-muted aria-expanded:text-foreground",
         destructive:
