@@ -10,6 +10,8 @@ import { contactHref } from "@/lib/contacts"
 import { cn } from "@/lib/styles"
 import type { PageBuilderComponentProps } from "@/types/general"
 
+type Item = NonNullable<Data.Component<"sections.contacts">["items"]>[number]
+
 export function StrapiContacts({
   component,
 }: PageBuilderComponentProps & {
@@ -29,92 +31,133 @@ export function StrapiContacts({
     <section id="contacts" className="scroll-mt-24">
       <Container
         className={cn(
-          "flex flex-col gap-10 lg:flex-row lg:gap-12.5",
+          "flex flex-col gap-7.5 lg:gap-12.5",
           isCard &&
             "bg-brand-deep text-brand-inverted rounded-[50px] p-8 md:p-12 lg:p-12.5"
         )}
       >
-        <div className="flex flex-col gap-7.5 lg:w-134.5 lg:shrink-0">
-          {title && (
-            <Typography
-              tag="h2"
-              className={isCard ? "text-brand-inverted" : "text-brand-ink"}
-            >
-              {title}
-            </Typography>
-          )}
+        {title && (
+          // The frame sets the page title across the grid, with both columns
+          // under it — not beside the photograph.
+          <Typography
+            tag="h2"
+            className={cn(
+              "mb-0!",
+              isCard ? "text-brand-inverted" : "text-brand-ink"
+            )}
+          >
+            {title}
+          </Typography>
+        )}
 
-          <dl className={cn("flex flex-col", isCard ? "gap-6" : "gap-5")}>
+        <div className="flex flex-col gap-7.5 lg:flex-row lg:gap-12.5">
+          <dl
+            className={cn(
+              "flex flex-col lg:w-134.5 lg:shrink-0",
+              isCard ? "gap-6" : "gap-5"
+            )}
+          >
             {items.map((item) => (
-              <div
-                key={item.id}
-                className={cn(
-                  "flex flex-col gap-2.5",
-                  // The frame gives each detail a white card on the page's own
-                  // card shadow, not a bordered one.
-                  !isCard && "shadow-brand-card rounded-[20px] bg-white p-5"
-                )}
-              >
-                <dt
-                  className={cn(
-                    "flex items-center gap-2.5",
-                    isCard
-                      ? "text-brand-muted text-sm"
-                      : "text-brand-ink text-lg/6.25 font-semibold lg:text-xl/7"
-                  )}
-                >
-                  {!isCard && (
-                    <ContactIcon icon={item.icon} className="text-brand-teal" />
-                  )}
-                  {item.label}
-                </dt>
-                {/* The frame runs several values along one line rather than
-                    stacking them, which is what keeps every card the same
-                    height beside the photograph. */}
-                <div
-                  className={cn(
-                    isCard ? "contents" : "flex flex-wrap gap-x-5 gap-y-1"
-                  )}
-                >
-                  {item.values?.map((value) => {
-                    const text = value.text ?? ""
-                    const href = contactHref(item.kind, text)
-
-                    return (
-                      <dd
-                        key={value.id}
-                        className={cn(
-                          isCard
-                            ? "text-lg"
-                            : "text-brand-ink text-sm/5 lg:text-base/5.5"
-                        )}
-                      >
-                        {href ? (
-                          <a className="hover:text-brand-teal" href={href}>
-                            {text}
-                          </a>
-                        ) : (
-                          text
-                        )}
-                      </dd>
-                    )
-                  })}
-                </div>
-              </div>
+              <ContactCard key={item.id} item={item} isCard={isCard} />
             ))}
           </dl>
-        </div>
 
-        {image && (
-          <div className="w-full lg:flex-1">
-            <StrapiBasicImage
-              component={image}
-              className="aspect-732/460 w-full rounded-[26px] object-cover"
-            />
-          </div>
-        )}
+          {image && (
+            // The phone frame opens on the photograph and puts the details
+            // under it; the desktop sets it beside them.
+            <div className="w-full max-lg:order-first lg:flex-1">
+              <StrapiBasicImage
+                component={image}
+                className="aspect-33/20 w-full rounded-[20px] object-cover lg:aspect-732/460 lg:rounded-[26px]"
+              />
+            </div>
+          )}
+        </div>
       </Container>
     </section>
+  )
+}
+
+/**
+ * One detail of the clinic's: what it is, then what it says. The design gives
+ * each its own white card beside the photograph, and rules a hairline between
+ * values that sit on one line.
+ */
+function ContactCard({
+  item,
+  isCard,
+}: {
+  readonly item: Item
+  readonly isCard: boolean
+}) {
+  const values = item.values ?? []
+  // Three of them will not sit on one line of a phone, and the frame stacks
+  // them there rather than letting them wrap through the rules.
+  const stacks = !isCard && values.length > 2
+
+  return (
+    <div
+      className={cn(
+        "flex flex-col gap-2.5",
+        // The frame gives each detail a white card on the page's own card
+        // shadow, not a bordered one.
+        !isCard && "shadow-brand-card rounded-[20px] bg-white p-5"
+      )}
+    >
+      <dt
+        className={cn(
+          "flex items-center gap-2.5",
+          isCard
+            ? "text-brand-muted text-sm"
+            : "text-brand-ink text-lg/6.25 font-semibold lg:text-xl/7"
+        )}
+      >
+        {!isCard && (
+          <ContactIcon icon={item.icon} className="text-brand-teal" />
+        )}
+        {item.label}
+      </dt>
+
+      {/* The frame runs several values along one line rather than stacking
+          them, which is what keeps every card the same height beside the
+          photograph. */}
+      <div
+        className={cn(
+          isCard ? "contents" : "flex flex-wrap items-center gap-x-5 gap-y-2.5",
+          stacks && "max-lg:flex-col max-lg:items-start max-lg:gap-x-0"
+        )}
+      >
+        {values.map((value) => {
+          const text = value.text ?? ""
+          const href = contactHref(item.kind, text)
+
+          return (
+            <dd
+              key={value.id}
+              className={cn(
+                isCard
+                  ? "text-lg"
+                  : cn(
+                      "text-brand-ink text-sm/5 lg:text-base/5.5",
+                      // A hairline between the values, as the frame rules them.
+                      "not-first:border-brand-hairline not-first:border-l not-first:pl-5",
+                      stacks &&
+                        "max-lg:not-first:border-l-0 max-lg:not-first:pl-0"
+                    )
+              )}
+            >
+              {href ? (
+                <a className="hover:text-brand-teal" href={href}>
+                  {text}
+                </a>
+              ) : (
+                text
+              )}
+            </dd>
+          )
+        })}
+      </div>
+    </div>
   )
 }
 
