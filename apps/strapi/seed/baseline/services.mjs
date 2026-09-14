@@ -17,11 +17,41 @@ import {
   PHONES,
 } from "./shared.mjs"
 
-/** The card on the homepage each page belongs to, and its path. */
-const HERO_IMAGE = image(
-  "hero-1",
-  "Лікарка оглядає пацієнтку в кріслі стоматологічної клініки"
-)
+/**
+ * The photograph each page opens on. The design gives all seven a frame of
+ * their own and a different picture in each, chosen for what that speciality
+ * actually does, so they are named by the page rather than shared.
+ */
+const HERO_IMAGES = {
+  terapiia: image(
+    "service-hero-terapiia",
+    "Лікар оглядає зуб пацієнта через стоматологічний мікроскоп"
+  ),
+  ortopediia: image(
+    "service-hero-ortopediia",
+    "Лікар у бінокулярах із підсвіткою під час протезування"
+  ),
+  khirurhiia: image(
+    "service-hero-khirurhiia",
+    "Лікар вивчає комп'ютерну томографію щелеп на екрані ноутбука"
+  ),
+  ortodontiia: image(
+    "service-hero-ortodontiia",
+    "Лікар оглядає пацієнтку в кріслі стоматологічної клініки"
+  ),
+  parodontolohiia: image(
+    "service-hero-parodontolohiia",
+    "Лікарка чистить зуби пацієнтці ультразвуковим скейлером"
+  ),
+  "dytiacha-stomatolohiia": image(
+    "service-hero-dytiacha-stomatolohiia",
+    "Лікарка лікує зуби дівчинці в дитячому кабінеті"
+  ),
+  hnatolohiia: image(
+    "service-hero-hnatolohiia",
+    "Лицьова дуга, встановлена на обличчі пацієнта, для запису положення щелепи"
+  ),
+}
 
 /** The card on the homepage each page belongs to, and its path. */
 export const SERVICE_SLUGS = [
@@ -63,7 +93,7 @@ export const servicePages = [
     content: [
       {
         __component: "sections.hero",
-        backgroundImage: HERO_IMAGE,
+        backgroundImage: HERO_IMAGES.terapiia,
         title: "<h1><strong>Стоматолог-терапевт в Житомирі</strong></h1>",
         description:
           "<p>Наша мета – забезпечити Вас здоровими та естетично гарними зубами, дбаючи про Ваш комфорт та безболісність процедур. Довіртеся нашим фахівцям для досягнення найкращих результатів у терапевтичній стоматології.</p>",
@@ -130,7 +160,7 @@ export const servicePages = [
     content: [
       {
         __component: "sections.hero",
-        backgroundImage: HERO_IMAGE,
+        backgroundImage: HERO_IMAGES.ortopediia,
         title: "<h1><strong>Протезування зубів в Житомирі</strong></h1>",
         description:
           "<p>Посмішка – це Ваша візитна картка, і ми зробимо все, щоб вона була ідеальною!</p>",
@@ -197,7 +227,7 @@ export const servicePages = [
     content: [
       {
         __component: "sections.hero",
-        backgroundImage: HERO_IMAGE,
+        backgroundImage: HERO_IMAGES.khirurhiia,
         title: "<h1><strong>Стоматолог-хірург в Житомирі</strong></h1>",
         description:
           "<p>Наша клініка пропонує передові методи хірургічної стоматології для Вас і Вашої сім’ї. Ми розуміємо, що зуби – це важлива частина Вашого життя, і ми готові надати Вам найкращі рішення.</p>",
@@ -264,7 +294,7 @@ export const servicePages = [
     content: [
       {
         __component: "sections.hero",
-        backgroundImage: HERO_IMAGE,
+        backgroundImage: HERO_IMAGES.ortodontiia,
         title: "<h1><strong>Ортодонт в Житомирі</strong></h1>",
         description:
           "<p>Ортодонтичне лікування може змінити Вашу посмішку та покращити функцію щелеп. Наші професійні ортодонти допоможуть Вам вибрати найкращий метод для досягнення Ваших цілей.</p>",
@@ -331,7 +361,7 @@ export const servicePages = [
     content: [
       {
         __component: "sections.hero",
-        backgroundImage: HERO_IMAGE,
+        backgroundImage: HERO_IMAGES.parodontolohiia,
         title: "<h1><strong>Пародонтологія в Житомирі</strong></h1>",
         description:
           "<p>Захворювання ясен – це не вирок, ваша посмішка знову може стати ідеальною.</p>",
@@ -398,7 +428,7 @@ export const servicePages = [
     content: [
       {
         __component: "sections.hero",
-        backgroundImage: HERO_IMAGE,
+        backgroundImage: HERO_IMAGES["dytiacha-stomatolohiia"],
         title: "<h1><strong>Дитячий стоматолог в Житомирі</strong></h1>",
         description:
           "<p>У нашій клініці ми розуміємо, що здоров’я зубів Вашої дитини – це справа важлива та відповідальна. Наша команда досвідчених дитячих стоматологів пропонує найкращий догляд для маленьких пацієнтів, роблячи їх перші знайомства зі стоматологією приємними та безболісними.</p>",
@@ -465,7 +495,7 @@ export const servicePages = [
     content: [
       {
         __component: "sections.hero",
-        backgroundImage: HERO_IMAGE,
+        backgroundImage: HERO_IMAGES.hnatolohiia,
         title: "<h1><strong>Гнатолог в Житомирі</strong></h1>",
         description:
           "<p>Гнатологічне лікування може усунути біль та дискомфорт у щелепі, відновивши її правильну функцію. Наш гнатолог допоможе Вам визначити причину проблеми та підібрати оптимальний метод для Вашого одужання.</p>",
