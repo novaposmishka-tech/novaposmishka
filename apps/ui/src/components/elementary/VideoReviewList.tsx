@@ -7,6 +7,7 @@ import { useState } from "react"
 import { ScrollRow } from "@/components/elementary/ScrollRow"
 import { ShowMoreButton } from "@/components/elementary/ShowMoreButton"
 import { StrapiBasicImage } from "@/components/page-builder/components/utilities/StrapiBasicImage"
+import { formatStrapiMediaUrl } from "@/lib/strapi-helpers"
 import { cn } from "@/lib/styles"
 
 type VideoReview = NonNullable<
@@ -101,6 +102,10 @@ export function VideoReviewList({
 
 /** One filmed review: the still, and the patient's words under it. */
 function Still({ review }: { readonly review: VideoReview }) {
+  // A clip uploaded to Strapi is stored as a path; one an editor pasted from
+  // elsewhere is already whole. This completes the first and leaves the second.
+  const clip = formatStrapiMediaUrl(review.videoUrl)
+
   return (
     <>
       <div className="relative">
@@ -113,9 +118,9 @@ function Still({ review }: { readonly review: VideoReview }) {
 
         {/* The clip itself is only offered once there is one to play; a play
             button over a still that cannot move is a lie. */}
-        {review.videoUrl && (
+        {clip && (
           <a
-            href={review.videoUrl}
+            href={clip}
             target="_blank"
             rel="noreferrer noopener"
             className="absolute inset-0 flex items-center justify-center rounded-[30px] focus-visible:outline-2 focus-visible:outline-offset-2"

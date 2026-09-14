@@ -9,6 +9,7 @@ import { Container } from "@/components/elementary/Container"
 import { StrapiBasicImage } from "@/components/page-builder/components/utilities/StrapiBasicImage"
 import Typography from "@/components/typography"
 import { caseStudyId } from "@/lib/case-studies"
+import { formatStrapiMediaUrl } from "@/lib/strapi-helpers"
 import { cn } from "@/lib/styles"
 import type { PageBuilderComponentProps } from "@/types/general"
 
@@ -42,6 +43,9 @@ export async function StrapiCaseStudy({
   } = component
 
   const t = await getTranslations("results")
+  // A clip uploaded to Strapi is stored as a path; one an editor pasted from
+  // elsewhere is already whole. This completes the first and leaves the second.
+  const clip = formatStrapiMediaUrl(videoUrl)
 
   return (
     <section id={caseStudyId(title)} className="scroll-mt-24">
@@ -91,7 +95,7 @@ export async function StrapiCaseStudy({
 
             {/* The filmed walk-through, offered only when there is a film. The
                 still on its own would be a play button that does nothing. */}
-            {videoUrl && videoPoster && (
+            {clip && videoPoster && (
               <div className={cn(RULE, "flex flex-col gap-5 pt-5 lg:pt-9.75")}>
                 {videoLabel && (
                   <span className="text-brand-body text-sm/5 lg:text-base/5.5">
@@ -99,7 +103,7 @@ export async function StrapiCaseStudy({
                   </span>
                 )}
                 <a
-                  href={videoUrl}
+                  href={clip}
                   target="_blank"
                   rel="noreferrer noopener"
                   className="group relative w-full shrink-0 rounded-[26px] focus-visible:outline-2 focus-visible:outline-offset-2 lg:w-75"

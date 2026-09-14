@@ -97,3 +97,9 @@ export const image = (name, alt) => ({ __media: name, alt })
  * component: the seeder swaps this for the uploaded file's id alone.
  */
 export const mediaId = (name) => ({ __mediaId: name })
+
+/**
+ * The same file again, for a string field that holds a link to a file rather
+ * than a relation to one: the seeder swaps this for the uploaded file's path.
+ */
+export const mediaUrl = (name) => ({ __mediaUrl: name })

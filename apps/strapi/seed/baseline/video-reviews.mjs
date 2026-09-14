@@ -5,12 +5,12 @@
  * and behind a tab beside the written reviews on the homepage. They live here
  * so the two cannot drift apart.
  *
- * These are stills, not clips — the design has no video files, and `videoUrl`
- * stays empty until the clinic supplies them. A card is a still with a quote
- * until then.
+ * The clinic has not filmed these yet. Until it does, every card plays the
+ * clip from the homepage hero so the button on the still does something —
+ * a placeholder, to be replaced one file at a time as the real ones arrive.
  */
 
-import { image } from "./shared.mjs"
+import { image, mediaUrl } from "./shared.mjs"
 
 export const videoReviews = [
   "Сам процес пройшов максимально комфортно, безболісно. Лікар коментував кожен свій крок, питав, переживав",
@@ -23,4 +23,5 @@ export const videoReviews = [
     `video-review-${index + 1}`,
     "Пацієнт розповідає про лікування"
   ),
+  videoUrl: mediaUrl("hero-video"),
 }))

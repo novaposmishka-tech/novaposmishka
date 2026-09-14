@@ -11,7 +11,7 @@
  * the chips jump to them; the content is the same, the interaction is simpler.
  */
 
-import { image, text } from "./shared.mjs"
+import { image, mediaUrl, text } from "./shared.mjs"
 
 const PREPARATION_INTRO =
   "Перед тим як приступити до імплантації необхідно усунути всі запальні вогнища та інфекції, та максимально очистити ротову порожнину, інакше є ризик що інфекція перекинеться на місце приживлення імпланта."
@@ -61,6 +61,7 @@ export const caseStudies = [
     ].map(text),
     videoLabel: "Дивіться відеоогляд випадку",
     videoPoster: image("case1-cover-1", "Кадр з відеоогляду випадку"),
+    videoUrl: mediaUrl("hero-video"),
     before: image("case1-cover-2", "Посмішка пацієнтки до лікування"),
     after: image("case1-cover-3", "Посмішка пацієнтки після лікування"),
     stages: [
@@ -136,6 +137,7 @@ export const caseStudies = [
     quote:
       "“Процедура імплантації пройшла дуже комфортно, безболісно, хоча перед цим я дуже сильно хвилювався – але все пройшло на вищому рівні”",
     videoPoster: image("case2-cover-1", "Кадр з відеоогляду випадку"),
+    videoUrl: mediaUrl("hero-video"),
     before: image("case2-cover-2", "Посмішка пацієнта до лікування"),
     after: image("case2-cover-3", "Посмішка пацієнта після лікування"),
     stages: [

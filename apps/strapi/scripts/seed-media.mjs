@@ -24,8 +24,12 @@ const MIME_BY_EXTENSION = {
 }
 
 /**
- * @returns {Promise<Map<string, number>>} media name (file name without its
- * extension) to the id of the uploaded file.
+ * The second half of each entry is there for the string fields that hold a
+ * link to a file rather than a relation to one.
+ *
+ * @returns {Promise<Map<string, {id: number, path: string}>>} media name (file
+ * name without its extension) to the uploaded file's id and the path Strapi
+ * serves it from.
  */
 export async function ensureMedia(strapi, mediaDir, { log = () => {} } = {}) {
   const byName = new Map()
@@ -53,10 +57,10 @@ export async function ensureMedia(strapi, mediaDir, { log = () => {} } = {}) {
     const name = path.basename(file, path.extname(file))
     const existing = await strapi
       .documents("plugin::upload.file")
-      .findFirst({ filters: { name }, fields: ["id"] })
+      .findFirst({ filters: { name }, fields: ["id", "url"] })
 
     if (existing) {
-      byName.set(name, existing.id)
+      byName.set(name, { id: existing.id, path: existing.url })
       continue
     }
 
@@ -71,7 +75,7 @@ export async function ensureMedia(strapi, mediaDir, { log = () => {} } = {}) {
       },
     })
 
-    byName.set(name, created.id)
+    byName.set(name, { id: created.id, path: created.url })
     uploaded += 1
   }
 
@@ -104,28 +108,41 @@ export function resolveMediaMarkers(value, mediaByName, missing = new Set()) {
   // A bare media field (seo.metaImage and the like) takes the id on its own,
   // where a basic-image component takes { media, alt }.
   if (typeof value.__mediaId === "string") {
-    const id = mediaByName.get(value.__mediaId)
+    const file = mediaByName.get(value.__mediaId)
 
-    if (id == null) {
+    if (file == null) {
       missing.add(value.__mediaId)
 
       return
     }
 
-    return id
+    return file.id
+  }
+
+  // A string field holding a link to a file rather than a relation to one.
+  if (typeof value.__mediaUrl === "string") {
+    const file = mediaByName.get(value.__mediaUrl)
+
+    if (file == null) {
+      missing.add(value.__mediaUrl)
+
+      return
+    }
+
+    return file.path
   }
 
   if (typeof value.__media === "string") {
-    const id = mediaByName.get(value.__media)
+    const file = mediaByName.get(value.__media)
 
-    if (id == null) {
+    if (file == null) {
       missing.add(value.__media)
 
       // Undefined, so the callers above drop the key or the array entry.
       return
     }
 
-    return { media: id, alt: value.alt ?? null }
+    return { media: file.id, alt: value.alt ?? null }
   }
 
   const out = {}
