@@ -4,11 +4,11 @@ import type { Data } from "@repo/strapi-types"
 import { getTranslations } from "next-intl/server"
 
 import { Container } from "@/components/elementary/Container"
-import { GoogleMark } from "@/components/elementary/GoogleMark"
 import { ReviewCard } from "@/components/elementary/ReviewCard"
 import { ReviewTabs } from "@/components/elementary/ReviewTabs"
 import { ScrollRow } from "@/components/elementary/ScrollRow"
 import { VideoReviewList } from "@/components/elementary/VideoReviewList"
+import { GoogleMark } from "@/components/icons/GoogleMark"
 import StrapiLink from "@/components/page-builder/components/utilities/StrapiLink"
 import Typography from "@/components/typography"
 import type { PageBuilderComponentProps } from "@/types/general"
@@ -82,6 +82,7 @@ export async function StrapiTestimonials({
                 key="video"
                 reviews={videoReviews}
                 label={videoLabel}
+                moreLabel={t("showMore")}
               />,
             ]}
           />
