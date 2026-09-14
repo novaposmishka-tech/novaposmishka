@@ -121,7 +121,10 @@ export function ScrollRow({
               each is a button — with a target big enough to hit, around a dot
               the frame's size. */}
           {count > 1 && (
-            <ul className="flex list-none items-center">
+            // Nine reviews make nine marks, and nine of them will not sit
+            // between the arrows on a 360px phone — they wrap rather than push
+            // the row off the screen.
+            <ul className="flex min-w-0 list-none flex-wrap items-center justify-center">
               {Array.from({ length: count }, (_, index) => (
                 <li key={index}>
                   <button
@@ -138,7 +141,9 @@ export function ScrollRow({
                           ? tone === "dark"
                             ? "bg-white"
                             : "bg-brand-ink"
-                          : "bg-brand-body"
+                          : tone === "dark"
+                            ? "bg-brand-body"
+                            : "bg-brand-on-dark"
                       )}
                     />
                   </button>
@@ -192,10 +197,10 @@ function Arrow({
       disabled={disabled}
       aria-label={label}
       className={cn(
-        "flex size-12.5 cursor-pointer items-center justify-center rounded-full border transition-colors disabled:cursor-default disabled:opacity-40",
+        "flex size-12.5 shrink-0 cursor-pointer items-center justify-center rounded-full border transition-colors disabled:cursor-default disabled:opacity-40",
         tone === "dark"
-          ? "text-brand-inverted border-brand-on-dark hover:bg-white/10"
-          : "border-brand-border text-brand-ink hover:bg-brand-surface"
+          ? "text-brand-inverted border-brand-on-dark hover:bg-brand-teal"
+          : "border-brand-on-dark text-brand-ink hover:bg-brand-gradient hover:text-brand-inverted hover:border-transparent"
       )}
     >
       <Icon aria-hidden className="size-5" />
