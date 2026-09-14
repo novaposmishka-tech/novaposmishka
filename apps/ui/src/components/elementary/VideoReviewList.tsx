@@ -1,9 +1,11 @@
 "use client"
 
 import type { Data } from "@repo/strapi-types"
-import { ArrowRight, Play } from "lucide-react"
+import { Play } from "lucide-react"
 import { useState } from "react"
 
+import { ScrollRow } from "@/components/elementary/ScrollRow"
+import { ShowMoreButton } from "@/components/elementary/ShowMoreButton"
 import { StrapiBasicImage } from "@/components/page-builder/components/utilities/StrapiBasicImage"
 import { cn } from "@/lib/styles"
 
@@ -30,17 +32,37 @@ export function VideoReviewList({
   reviews,
   label,
   moreLabel,
+  layout = "grid",
   className,
 }: {
   readonly reviews: readonly VideoReview[]
   readonly label?: string | null
   readonly moreLabel?: string
+  /** "grid" is the reviews page; "carousel" is the homepage's tab. */
+  readonly layout?: "grid" | "carousel"
   readonly className?: string
 }) {
   const [expanded, setExpanded] = useState(false)
 
   if (reviews.length === 0) {
     return null
+  }
+
+  // The homepage keeps them in a row that scrolls, with the frame's arrows and
+  // dots under it, because they sit in a tab beside the written reviews there.
+  if (layout === "carousel") {
+    return (
+      <ScrollRow label={label} className={className}>
+        {reviews.map((review) => (
+          <li
+            key={review.id}
+            className="flex w-2/3 shrink-0 snap-start flex-col gap-2.5 sm:w-2/5 lg:w-78 lg:gap-5"
+          >
+            <Still review={review} />
+          </li>
+        ))}
+      </ScrollRow>
+    )
   }
 
   const hidesOnPhone = reviews.length > VISIBLE.phone
@@ -61,53 +83,56 @@ export function VideoReviewList({
               !expanded && index >= VISIBLE.desktop && "hidden"
             )}
           >
-            <div className="relative">
-              {review.poster && (
-                <StrapiBasicImage
-                  component={review.poster}
-                  className="h-125 w-full rounded-[30px] object-cover"
-                />
-              )}
-
-              {/* The clip itself is only offered once there is one to play; a
-                  play button over a still that cannot move is a lie. */}
-              {review.videoUrl && (
-                <a
-                  href={review.videoUrl}
-                  target="_blank"
-                  rel="noreferrer noopener"
-                  className="absolute inset-0 flex items-center justify-center rounded-[30px] focus-visible:outline-2 focus-visible:outline-offset-2"
-                >
-                  <span className="text-brand-deep flex size-15 items-center justify-center rounded-full bg-white/90 shadow-md">
-                    <Play aria-hidden className="size-6 fill-current" />
-                  </span>
-                  <span className="sr-only">{review.quote}</span>
-                </a>
-              )}
-            </div>
-
-            {/* The frame insets the quote from the still it sits under. */}
-            <blockquote className="text-brand-body px-2.5 text-sm/5 lg:text-base/5.5">
-              {review.quote}
-            </blockquote>
+            <Still review={review} />
           </li>
         ))}
       </ul>
 
       {moreLabel && !expanded && hidesOnPhone && (
-        <button
-          type="button"
+        <ShowMoreButton
+          label={moreLabel}
           onClick={() => setExpanded(true)}
-          className={cn(
-            "text-brand-ink flex h-10 w-full cursor-pointer items-center justify-center gap-2 rounded-[30px] bg-white text-sm/5 font-semibold lg:mx-auto lg:h-12.5 lg:w-fit lg:px-7.5 lg:text-base/5.5",
-            !hidesOnDesktop && "lg:hidden"
-          )}
-        >
-          {moreLabel}
-          <ArrowRight aria-hidden className="size-5" />
-        </button>
+          className={cn(!hidesOnDesktop && "lg:hidden")}
+        />
       )}
     </div>
+  )
+}
+
+/** One filmed review: the still, and the patient's words under it. */
+function Still({ review }: { readonly review: VideoReview }) {
+  return (
+    <>
+      <div className="relative">
+        {review.poster && (
+          <StrapiBasicImage
+            component={review.poster}
+            className="h-125 w-full rounded-[30px] object-cover"
+          />
+        )}
+
+        {/* The clip itself is only offered once there is one to play; a play
+            button over a still that cannot move is a lie. */}
+        {review.videoUrl && (
+          <a
+            href={review.videoUrl}
+            target="_blank"
+            rel="noreferrer noopener"
+            className="absolute inset-0 flex items-center justify-center rounded-[30px] focus-visible:outline-2 focus-visible:outline-offset-2"
+          >
+            <span className="text-brand-deep flex size-15 items-center justify-center rounded-full bg-white/90 shadow-md">
+              <Play aria-hidden className="size-6 fill-current" />
+            </span>
+            <span className="sr-only">{review.quote}</span>
+          </a>
+        )}
+      </div>
+
+      {/* The frame insets the quote from the still it sits under. */}
+      <blockquote className="text-brand-body px-2.5 text-sm/5 lg:text-base/5.5">
+        {review.quote}
+      </blockquote>
+    </>
   )
 }
 

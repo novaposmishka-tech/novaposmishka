@@ -5,6 +5,7 @@ import { getTranslations } from "next-intl/server"
 
 import { Container } from "@/components/elementary/Container"
 import { ReviewCard } from "@/components/elementary/ReviewCard"
+import { ReviewColumns } from "@/components/elementary/ReviewColumns"
 import { ReviewTabs } from "@/components/elementary/ReviewTabs"
 import { ScrollRow } from "@/components/elementary/ScrollRow"
 import { VideoReviewList } from "@/components/elementary/VideoReviewList"
@@ -33,30 +34,24 @@ export async function StrapiTestimonials({
     </Typography>
   ) : null
 
-  // On a phone these scroll sideways, as the design does — nine cards stacked
-  // make the page twice as long as it should be. From md up they are CSS
-  // columns rather than a grid: the reviews are different lengths and columns
-  // pack them without the ragged bottom a grid would leave.
+  const cardLabels = {
+    more: t("readMore"),
+    less: t("readLess"),
+    rating: t("rating"),
+  }
+
+  // Inside the homepage's tab the reviews keep the frame's scrolling row, with
+  // its arrows and dots; from md up they break into its columns.
   const written = (
     <ScrollRow
       label={title}
-      // One row that scrolls on a phone and breaks into the frame's three
-      // columns from md up. The reviews are different lengths and columns pack
-      // them without the ragged bottom a grid would leave.
       className="md:block md:columns-2 md:overflow-visible md:*:mb-6 lg:columns-3"
       // The frame gives the columns no arrows; they belong to the phone row.
       controlsClassName="md:hidden"
     >
       {testimonials.map((review) => (
         <li key={review.id} className="w-full shrink-0 snap-start md:w-auto">
-          <ReviewCard
-            review={review}
-            labels={{
-              more: t("readMore"),
-              less: t("readLess"),
-              rating: t("rating"),
-            }}
-          />
+          <ReviewCard review={review} labels={cardLabels} />
         </li>
       ))}
     </ScrollRow>
@@ -82,7 +77,7 @@ export async function StrapiTestimonials({
                 key="video"
                 reviews={videoReviews}
                 label={videoLabel}
-                moreLabel={t("showMore")}
+                layout="carousel"
               />,
             ]}
           />
@@ -100,7 +95,12 @@ export async function StrapiTestimonials({
               )}
             </div>
 
-            {written}
+            {/* The reviews page stacks them instead, five at a time. */}
+            <ReviewColumns
+              testimonials={testimonials}
+              label={title}
+              labels={{ ...cardLabels, showMore: t("showMore") }}
+            />
           </>
         )}
       </Container>
