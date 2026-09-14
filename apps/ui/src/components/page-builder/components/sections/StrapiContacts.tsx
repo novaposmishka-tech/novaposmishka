@@ -38,12 +38,19 @@ export function StrapiContacts({
       >
         {title && (
           // The frame sets the page title across the grid, with both columns
-          // under it — not beside the photograph.
+          // under it — not beside the photograph. On the contacts page this
+          // is the page's own title, and the only heading it has: rendered as
+          // an h2 the page would have no first-level heading at all.
           <Typography
-            tag="h2"
+            tag={isCard ? "h2" : "h1"}
             className={cn(
               "mb-0!",
-              isCard ? "text-brand-inverted" : "text-brand-ink"
+              isCard
+                ? "text-brand-inverted"
+                : // The frame sets this line at the second level's size even
+                  // though it is the page's first heading, so the scale is
+                  // stated over the one the tag carries.
+                  "text-brand-ink text-[1.625rem]/7.75! font-normal! lg:text-[2.5rem]/12!"
             )}
           >
             {title}
