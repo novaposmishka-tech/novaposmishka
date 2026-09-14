@@ -121,6 +121,9 @@ export const footer = {
     label: "Рейтинг Google",
     score: GOOGLE_RATING,
   },
+  // The design closes the footer on the contact details; there is no line of
+  // copyright under them.
+  copyRight: null,
   leadForm: {
     title: "Маєте запитання? Почнімо з консультації",
     description:

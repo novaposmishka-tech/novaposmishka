@@ -25,18 +25,20 @@ export function RatingBadge({
   const isGoogle = /google/i.test(label)
 
   return (
-    <div className={cn("flex items-center gap-3", className)}>
-      {isGoogle && <GoogleMark className="size-10 shrink-0" />}
+    <div className={cn("flex items-center gap-3.75 lg:gap-5", className)}>
+      {isGoogle && <GoogleMark className="size-10 shrink-0 lg:size-15" />}
 
-      <div className="flex flex-col gap-1">
-        <span className="text-brand-ink font-semibold">{label}</span>
-        <div className="flex items-center gap-2">
-          <span className="text-brand-body text-sm">
+      <div className="flex flex-col gap-1 lg:gap-2.5">
+        <span className="text-brand-ink text-base/5.5 font-semibold lg:text-xl/7">
+          {label}
+        </span>
+        <div className="flex items-center gap-2.5 lg:gap-3.75">
+          <span className="text-brand-body text-sm/5 lg:text-base/5.5">
             {/* One decimal, as in the design: 4.8 rather than 4.80 or 5. */}
             {score.toFixed(1)}
           </span>
           <div
-            className="flex items-center gap-0.5"
+            className="flex items-center gap-0.75"
             // The stars repeat the score visually, so they are decorative — the
             // number beside them is what a screen reader should read out.
             aria-hidden
