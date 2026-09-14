@@ -25,9 +25,17 @@ export async function StrapiMap({
 
   return (
     <section id="map" className="scroll-mt-24">
-      <Container className="flex flex-col gap-10">
+      {/* The phone frame runs the map from edge to edge and centres the line
+          over it; the desktop keeps both on the grid. */}
+      <Container
+        hideDefaultPadding
+        className="flex flex-col gap-7.5 px-3.75 lg:gap-12.5 lg:px-15"
+      >
         {title && (
-          <Typography tag="h2" className="text-brand-ink">
+          <Typography
+            tag="h2"
+            className="text-brand-ink mb-0! text-center lg:text-left"
+          >
             {title}
           </Typography>
         )}
@@ -36,7 +44,7 @@ export async function StrapiMap({
             "output=embed" URL redirects to Google's keyless embed endpoint,
             which sets neither X-Frame-Options nor frame-ancestors. The address
             and the directions link work with or without it. */}
-        <div className={cn(embedUrl && "relative")}>
+        <div className={cn("-mx-3.75 lg:mx-0", embedUrl && "relative")}>
           {embedUrl && (
             <iframe
               src={embedUrl}
@@ -44,7 +52,7 @@ export async function StrapiMap({
               loading="lazy"
               sandbox="allow-scripts allow-same-origin allow-popups"
               referrerPolicy="no-referrer-when-downgrade"
-              className="aspect-4/3 w-full rounded-[50px] border-0 md:aspect-21/10"
+              className="aspect-36/35 w-full border-0 lg:aspect-1320/639 lg:rounded-[50px]"
             />
           )}
 
@@ -55,9 +63,9 @@ export async function StrapiMap({
             // from the left, clear of theirs.
             <div
               className={cn(
-                "bg-brand-paper border-brand-border flex max-w-79 flex-col gap-4 rounded-[20px] border p-5",
+                "bg-brand-inverted shadow-brand-card flex max-w-70.75 flex-col gap-4 rounded-[20px] px-3.75 py-5 lg:max-w-79 lg:gap-5 lg:p-5",
                 embedUrl &&
-                  "absolute bottom-6 left-6 shadow-sm md:bottom-12 md:left-12"
+                  "absolute bottom-5 left-5 lg:bottom-12.5 lg:left-12.5"
               )}
             >
               <ClinicLogo />
