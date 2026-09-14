@@ -6,8 +6,11 @@ import { LeadFormBlock } from "@/components/elementary/forms/LeadFormBlock"
 
 export function StrapiLeadForm({
   component,
+  phones,
 }: {
   readonly component: Data.Component<"forms.lead-form">
+  /** Offered beside the apology when a request could not be sent. */
+  readonly phones?: readonly string[]
 }) {
   return (
     <div id="lead-form-section" className="scroll-mt-24">
@@ -22,6 +25,7 @@ export function StrapiLeadForm({
             label: component.gdpr?.label ?? undefined,
             newTab: component.gdpr?.newTab ?? false,
           }}
+          phones={phones}
         />
       </div>
     </div>

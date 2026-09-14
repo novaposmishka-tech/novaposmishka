@@ -1,8 +1,11 @@
 import { expect, test } from "@playwright/test"
 
 /**
- * The CTA block replaces the clinic's pitch with the outcome once the form has
- * been submitted, rather than a toast that is gone before it is read.
+ * The CTA block replaces the clinic's pitch — and the fields with it — once the
+ * form has been submitted, rather than a toast that is gone before it is read.
+ * The design draws both outcomes that way: a mark, a line saying what happened,
+ * and one button under it. What that button does follows the outcome: home
+ * after a send that worked, back to the filled-in form after one that did not.
  *
  * The success path is driven by a stubbed response: Telegram is not configured
  * in this environment, so a real submission always fails.
@@ -31,11 +34,13 @@ test.describe("Lead form outcome", () => {
       "Дякуємо, ваш запит надіслано!"
     )
     await expect(block.getByRole("link", { name: /головну/ })).toBeVisible()
-    // The form is cleared, so a second person on the same device starts fresh.
-    await expect(block.locator("input[name=phone]")).toHaveValue("")
+    // Nothing is left to fill in: the request is with the clinic.
+    await expect(block.locator("input[name=phone]")).toBeHidden()
   })
 
-  test("explains the failure and keeps what was typed", async ({ page }) => {
+  test("offers the clinic's numbers when the request fails", async ({
+    page,
+  }) => {
     await page.route("**/api/lead", (route) =>
       route.fulfill({
         status: 503,
@@ -55,7 +60,13 @@ test.describe("Lead form outcome", () => {
     await submit.click()
 
     await expect(block.getByRole("heading")).toHaveText("Щось пішло не так!")
-    // Nothing was sent, so the number stays for a retry.
+    // The apology tells the reader to call, so the numbers are there to call.
+    await expect(block.locator("a[href^='tel:']")).not.toHaveCount(0)
+
+    // Nothing was sent, so another go costs a press rather than a retype.
+    const retry = block.getByRole("button", { name: /ще раз/ })
+    await expect(retry).toBeVisible()
+    await retry.click()
     await expect(block.locator("input[name=phone]")).toHaveValue("0937620500")
   })
 })

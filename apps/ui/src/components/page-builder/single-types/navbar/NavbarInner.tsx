@@ -86,6 +86,11 @@ export function NavbarInner({
                     label: navbarData.bookingForm.gdpr?.label ?? undefined,
                     newTab: navbarData.bookingForm.gdpr?.newTab ?? false,
                   }}
+                  phones={
+                    navbarData?.phones
+                      ?.map((entry) => entry.text)
+                      .filter((text): text is string => Boolean(text)) ?? []
+                  }
                   className="group-has-data-photo-hero-top:bg-white/10 group-has-data-photo-hero-top:bg-none"
                 />
               ) : (

@@ -65,6 +65,12 @@ export function StrapiFooter({ locale }: { readonly locale: Locale }) {
   const contacts = footer.contacts ?? []
   const inlineContacts = contacts.filter((item) => item.icon !== "mail")
   const mailContact = contacts.find((item) => item.icon === "mail")
+  // The form above offers these when a request could not be sent.
+  const phones =
+    contacts
+      .find((item) => item.kind === "phone")
+      ?.values?.map((value) => value.text)
+      .filter((text): text is string => Boolean(text)) ?? []
 
   // A real `footer` element, not a div: it makes this the page's `contentinfo`
   // landmark. Without it the CTA form, the contact list and the copyright all
@@ -74,7 +80,7 @@ export function StrapiFooter({ locale }: { readonly locale: Locale }) {
     <footer className="w-full">
       {footer.leadForm && (
         <div className="pt-20 lg:pt-22.5">
-          <StrapiLeadForm component={footer.leadForm} />
+          <StrapiLeadForm component={footer.leadForm} phones={phones} />
         </div>
       )}
 

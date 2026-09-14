@@ -97,6 +97,9 @@
 
   /* Required-field / error marker */
   --color-brand-danger: #d4544f;
+  /* The brick the design marks a failed submission with — a shade deeper
+   * than the red it flags a required field in. */
+  --color-brand-alert: #a54434;
 
   /* Gradient/1 — the dark teal wash behind CTA and hero sections.
    * Exposed as the `bg-brand-gradient` utility (defined below); a raw custom

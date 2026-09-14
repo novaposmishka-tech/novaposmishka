@@ -1,14 +1,16 @@
 "use client"
 
 import Image from "next/image"
-import { useTranslations } from "next-intl"
 import { useState } from "react"
 
-import AppLink from "@/components/elementary/AppLink"
 import { LeadForm } from "@/components/elementary/forms/LeadForm"
+import {
+  type LeadFormStatus,
+  LeadFormOutcome,
+} from "@/components/elementary/forms/LeadFormOutcome"
 import { Typography } from "@/components/typography"
 
-export type LeadFormStatus = "idle" | "sent" | "failed"
+export type { LeadFormStatus }
 
 /**
  * The call-to-action block: the clinic's pitch on one side, the form on the
@@ -22,50 +24,50 @@ export function LeadFormBlock({
   title,
   description,
   gdpr,
+  phones,
 }: Readonly<{
   title?: string | null
   description?: string | null
   gdpr?: { href?: string; label?: string; newTab?: boolean }
+  /** Offered beside the apology when the request could not be sent. */
+  phones?: readonly string[]
 }>) {
-  const t = useTranslations("leadForm")
   const [status, setStatus] = useState<LeadFormStatus>("idle")
-
-  const heading = status === "idle" ? title : t(`${status}Title`)
-  const body = status === "idle" ? description : t(`${status}Body`)
 
   return (
     <div className="bg-brand-gradient text-brand-inverted relative isolate flex flex-col items-center gap-12.5 overflow-hidden px-3.75 pt-7.5 pb-25 lg:flex-row lg:items-stretch lg:gap-25 lg:rounded-[50px] lg:p-12.5">
       {/* The copy and the form sit in one column, as the design lays them out —
           not side by side. The phone frame centres the heading over them. */}
       <div className="flex w-full flex-col gap-7.5 text-center lg:max-w-150 lg:gap-10 lg:text-left">
-        {/* The frame holds the words to 532 inside the 601 column. */}
-        <div className="flex flex-col gap-5 lg:max-w-133">
-          {heading && (
-            <Typography
-              tag="h2"
-              className="text-brand-inverted"
-              // The outcome replaces the pitch, so it has to be announced.
-              {...(status !== "idle" ? { role: "status" } : {})}
-            >
-              {heading}
-            </Typography>
-          )}
-          {body && (
-            <Typography className="text-brand-inverted">{body}</Typography>
-          )}
+        {status !== "idle" && (
+          <LeadFormOutcome
+            status={status}
+            phones={phones}
+            // Only a failure has anything to go back to.
+            onRetry={status === "failed" ? () => setStatus("idle") : undefined}
+          />
+        )}
 
-          {status !== "idle" && (
-            <AppLink
-              href="/"
-              className="text-brand-inverted w-fit p-0 underline"
-            >
-              {t("backHome")}
-            </AppLink>
-          )}
-        </div>
+        {/* Hidden rather than unmounted while the outcome shows: a failed send
+            keeps what was typed, so going back is a press rather than a retype. */}
+        <div hidden={status !== "idle"} className="contents">
+          {/* The frame holds the words to 532 inside the 601 column. */}
+          <div className="flex flex-col gap-5 lg:max-w-133">
+            {title && (
+              <Typography tag="h2" className="text-brand-inverted">
+                {title}
+              </Typography>
+            )}
+            {description && (
+              <Typography className="text-brand-inverted">
+                {description}
+              </Typography>
+            )}
+          </div>
 
-        <div className="flex w-full max-w-133 text-left">
-          <LeadForm gdpr={gdpr} onStatusChange={setStatus} />
+          <div className="flex w-full max-w-133 text-left">
+            <LeadForm gdpr={gdpr} onStatusChange={setStatus} />
+          </div>
         </div>
       </div>
 
