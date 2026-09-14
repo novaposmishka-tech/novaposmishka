@@ -16,6 +16,13 @@ type Stage = NonNullable<
   Data.Component<"sections.case-study">["stages"]
 >[number]
 
+/** The white card the design sets every part of a case study on. */
+const CARD =
+  "shadow-brand-card flex flex-col gap-5 rounded-[20px] bg-white p-5 lg:flex-row lg:rounded-[26px] lg:p-12.5"
+
+/** A hairline across a column, as the design rules these cards. */
+const RULE = "border-brand-hairline border-t"
+
 export async function StrapiCaseStudy({
   component,
 }: PageBuilderComponentProps & {
@@ -38,80 +45,102 @@ export async function StrapiCaseStudy({
 
   return (
     <section id={caseStudyId(title)} className="scroll-mt-24">
-      <Container className="flex flex-col gap-8">
-        <div className="flex flex-col gap-6 lg:flex-row lg:items-start lg:justify-between">
-          <div className="flex flex-col gap-4">
-            <Typography tag="h2" className="text-brand-ink">
-              {title}
-            </Typography>
+      {/* The frame tells a case as a stack of white cards, 20 apart on a phone
+          and 30 at desktop — the first naming the case, the rest walking
+          through the treatment a step at a time. */}
+      <Container className="flex flex-col gap-5 lg:gap-7.5">
+        <article className={cn(CARD, "lg:gap-15")}>
+          {/* The frame holds this column to 572 and pushes the filmed
+              walk-through to the foot of it, level with the photographs. */}
+          <div className="flex flex-col gap-5 lg:w-143 lg:justify-between lg:gap-0">
+            <div className="flex flex-col gap-4 lg:gap-7.5">
+              <div className="flex flex-col gap-2.5 lg:gap-5">
+                <Typography
+                  tag="h2"
+                  className="text-brand-ink mb-0! text-lg/6.25! font-semibold lg:text-2xl/8.5!"
+                >
+                  {title}
+                </Typography>
 
-            {patient && <p className="text-brand-body text-lg">{patient}</p>}
+                {patient && (
+                  <p className="text-brand-body text-sm/5 lg:text-lg/6.25">
+                    {patient}
+                  </p>
+                )}
+              </div>
 
-            {tags && tags.length > 0 && (
-              <ul className="flex list-none flex-wrap gap-3">
-                {tags.map((tag) => (
-                  <li
-                    key={tag.id}
-                    className="bg-brand-surface text-brand-ink rounded-full px-5 py-2 text-sm"
-                  >
-                    {tag.text}
-                  </li>
-                ))}
-              </ul>
-            )}
+              {tags && tags.length > 0 && (
+                <ul className="flex list-none flex-wrap gap-2.5">
+                  {tags.map((tag) => (
+                    <li
+                      key={tag.id}
+                      className="bg-brand-mist text-brand-ink flex h-10 items-center rounded-full px-5 text-sm/5"
+                    >
+                      {tag.text}
+                    </li>
+                  ))}
+                </ul>
+              )}
 
-            {quote && (
-              <blockquote className="text-brand-ink max-w-176 text-lg">
-                {quote}
-              </blockquote>
+              {quote && (
+                <blockquote className="text-brand-ink text-sm/5 lg:text-base/5.5">
+                  {quote}
+                </blockquote>
+              )}
+            </div>
+
+            {/* The filmed walk-through, offered only when there is a film. The
+                still on its own would be a play button that does nothing. */}
+            {videoUrl && videoPoster && (
+              <div className={cn(RULE, "flex flex-col gap-5 pt-5 lg:pt-9.75")}>
+                {videoLabel && (
+                  <span className="text-brand-body text-sm/5 lg:text-base/5.5">
+                    {videoLabel}
+                  </span>
+                )}
+                <a
+                  href={videoUrl}
+                  target="_blank"
+                  rel="noreferrer noopener"
+                  className="group relative w-full shrink-0 rounded-[26px] focus-visible:outline-2 focus-visible:outline-offset-2 lg:w-75"
+                >
+                  <StrapiBasicImage
+                    component={videoPoster}
+                    className="aspect-3/2 w-full rounded-[26px] object-cover"
+                  />
+                  <span className="absolute inset-0 flex items-center justify-center">
+                    <span className="text-brand-deep flex size-12 items-center justify-center rounded-full bg-white/90 shadow-md">
+                      <Play aria-hidden className="size-5 fill-current" />
+                    </span>
+                  </span>
+                </a>
+              </div>
             )}
           </div>
 
-          {/* The filmed walk-through, offered only when there is a film. The
-              still on its own would be a play button that does nothing. */}
-          {videoUrl && videoPoster && (
-            <a
-              href={videoUrl}
-              target="_blank"
-              rel="noreferrer noopener"
-              className="group relative w-full shrink-0 rounded-2xl focus-visible:outline-2 focus-visible:outline-offset-2 lg:w-75"
-            >
-              <StrapiBasicImage
-                component={videoPoster}
-                className="aspect-3/2 w-full rounded-2xl object-cover"
-              />
-              <span className="absolute inset-0 flex items-center justify-center">
-                <span className="text-brand-deep flex size-12 items-center justify-center rounded-full bg-white/90 shadow-md">
-                  <Play aria-hidden className="size-5 fill-current" />
-                </span>
-              </span>
-              {videoLabel && (
-                <span className="text-brand-body group-hover:text-brand-teal mt-3 block text-sm">
-                  {videoLabel}
-                </span>
-              )}
-            </a>
+          {/* The whole treatment in one drag, before the stages break it
+              down. The frame gives it the wider half of the card. */}
+          {before && after && (
+            <BeforeAfterSlider
+              before={before}
+              after={after}
+              labels={{
+                before: t("before"),
+                after: t("after"),
+                compare: t("compare"),
+              }}
+              className="rounded-[26px] lg:flex-1"
+            />
           )}
-        </div>
+        </article>
 
-        {/* The whole treatment in one drag, before the stages break it down. */}
-        {before && after && (
-          <BeforeAfterSlider
-            before={before}
-            after={after}
-            labels={{
-              before: t("before"),
-              after: t("after"),
-              compare: t("compare"),
-            }}
-            className="rounded-[26px]"
-          />
-        )}
-
-        {stages?.map((stage) => (
+        {stages?.map((stage, index) => (
           <CaseStage
             key={stage.id}
             stage={stage}
+            // The frame turns the card over at every step: photographs left,
+            // then words left, then photographs again.
+            imagesFirst={index % 2 === 0}
             labels={{ before: t("before"), after: t("after") }}
           />
         ))}
@@ -121,32 +150,36 @@ export async function StrapiCaseStudy({
 }
 
 /**
- * One numbered step: the photographs on the left, what was done on the right,
- * and the dentist who did it along the bottom — as the design lays it out.
+ * One numbered step: the photographs on one side, what was done on the other,
+ * and the dentist who did it under the words — as the design lays it out. On a
+ * phone the words come first at every step and the photographs follow.
  */
 function CaseStage({
   stage,
+  imagesFirst,
   labels,
 }: {
   readonly stage: Stage
+  readonly imagesFirst: boolean
   readonly labels: { before: string; after: string }
 }) {
   const images = stage.images ?? []
   const pair = stage.showBeforeAfter && images.length === 2
-  // A pair sits side by side from the small breakpoint up; more than two are
-  // a grid at every width, as the design lays the diagnosis photographs out.
-  const columns =
-    images.length > 2 ? "grid-cols-2" : "grid-cols-1 sm:grid-cols-2"
 
   return (
-    <article className="bg-brand-paper border-brand-border grid grid-cols-1 gap-8 rounded-[26px] border p-7.5 lg:grid-cols-2 lg:gap-12.5">
+    <article className={cn(CARD, "lg:items-center lg:gap-12.5")}>
       {images.length > 0 && (
-        <ul className={cn("order-2 grid list-none gap-4 lg:order-1", columns)}>
+        <ul
+          className={cn(
+            "grid list-none grid-cols-2 gap-5 lg:w-146 lg:gap-6",
+            imagesFirst ? "order-2 lg:order-1" : "order-2"
+          )}
+        >
           {images.map((img, index) => (
             <li key={img.id} className="relative">
               <StrapiBasicImage
                 component={img}
-                className="aspect-3/2 w-full rounded-[26px] object-cover"
+                className="aspect-140/93 w-full rounded-[20px] object-cover lg:rounded-[26px]"
               />
               {pair && (
                 <span className="text-brand-ink absolute top-4 left-4 rounded-full bg-white px-3 py-1 text-sm">
@@ -158,45 +191,63 @@ function CaseStage({
         </ul>
       )}
 
-      <div className="order-1 flex flex-col gap-4 lg:order-2">
-        <Typography tag="h3" className="text-brand-ink text-2xl">
-          {stage.title}
-        </Typography>
-
-        {stage.intro && (
-          <p className="text-brand-body text-base">{stage.intro}</p>
+      <div
+        className={cn(
+          "flex flex-col gap-4 lg:gap-7.5",
+          imagesFirst ? "order-1 lg:order-2 lg:w-134" : "order-1 lg:w-134"
         )}
+      >
+        <div className="flex flex-col gap-4 lg:gap-5">
+          <Typography
+            tag="h3"
+            className="text-brand-ink mb-0! text-lg/6.25! font-semibold lg:text-2xl/8.5!"
+          >
+            {stage.title}
+          </Typography>
 
-        {stage.bullets && stage.bullets.length > 0 && (
-          <ul className="flex list-none flex-col gap-2">
-            {stage.bullets.map((bullet) => (
-              <li
-                key={bullet.id}
-                className="text-brand-body flex items-start gap-2 text-base"
-              >
-                <ChevronRight
-                  aria-hidden
-                  className="text-brand-accent mt-1 size-4 shrink-0"
-                />
-                {bullet.text}
-              </li>
-            ))}
-          </ul>
-        )}
+          {stage.intro && (
+            <p className="text-brand-body text-sm/5 lg:text-base/5.5">
+              {stage.intro}
+            </p>
+          )}
 
-        {stage.note && (
-          <p className="text-brand-body text-base">{stage.note}</p>
-        )}
+          {stage.bullets && stage.bullets.length > 0 && (
+            <ul className="flex list-none flex-col gap-2.5">
+              {stage.bullets.map((bullet) => (
+                <li
+                  key={bullet.id}
+                  className="text-brand-body flex items-start gap-1.25 text-sm/5 lg:text-base/5.5"
+                >
+                  <ChevronRight
+                    aria-hidden
+                    className="text-brand-body size-5.5 shrink-0"
+                  />
+                  {bullet.text}
+                </li>
+              ))}
+            </ul>
+          )}
+
+          {stage.note && (
+            <p className="text-brand-body text-sm/5 lg:text-base/5.5">
+              {stage.note}
+            </p>
+          )}
+        </div>
 
         {stage.doctorName && (
-          <div className="border-brand-border mt-auto flex items-center gap-4 border-t pt-5">
+          <div
+            className={cn(RULE, "flex items-center gap-3.75 pt-4 lg:pt-7.5")}
+          >
             {stage.doctorPhoto && (
               <StrapiBasicImage
                 component={stage.doctorPhoto}
-                className="size-12.5 rounded-full object-cover"
+                className="bg-brand-on-dark size-12.5 shrink-0 rounded-full object-cover"
               />
             )}
-            <span className="text-brand-ink text-base">{stage.doctorName}</span>
+            <span className="text-brand-body text-sm/5 lg:text-lg/6.25">
+              {stage.doctorName}
+            </span>
           </div>
         )}
       </div>
