@@ -45,7 +45,7 @@ export async function Breadcrumbs({
     <nav
       aria-label={t("label")}
       className={cn(
-        "flex items-center gap-1.25 py-5 text-xs/[1.0625rem] lg:py-7.5 lg:text-sm/5",
+        "flex items-center gap-1.25 px-3.75 py-5 text-xs/[1.0625rem] lg:px-0 lg:py-7.5 lg:text-sm/5",
         className
       )}
     >
@@ -86,6 +86,22 @@ export async function Breadcrumbs({
         </span>
       ))}
     </nav>
+  )
+}
+
+/**
+ * Whether this page has a trail to draw at all. The homepage is the one that
+ * does not: it is the only crumb it would carry, and a trail pointing at the
+ * page you are on tells the reader nothing.
+ *
+ * Callers need this before rendering, because the frame measures the space
+ * under the header differently depending on whether the trail is there.
+ */
+export function hasBreadcrumbTrail(breadcrumbs?: BreadCrumb[]) {
+  return (
+    breadcrumbs?.some(
+      (crumb) => crumb.fullPath && crumb.fullPath !== ROOT_PAGE_PATH
+    ) ?? false
   )
 }
 

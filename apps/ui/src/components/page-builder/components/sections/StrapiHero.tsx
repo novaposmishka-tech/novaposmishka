@@ -4,7 +4,10 @@ import type { Data } from "@repo/strapi-types"
 import { ArrowRight } from "lucide-react"
 
 import { BackgroundVideo } from "@/components/elementary/BackgroundVideo"
-import { Breadcrumbs } from "@/components/elementary/Breadcrumbs"
+import {
+  Breadcrumbs,
+  hasBreadcrumbTrail,
+} from "@/components/elementary/Breadcrumbs"
 import CkEditorRenderer from "@/components/elementary/ck-editor"
 import { Container } from "@/components/elementary/Container"
 import { PhotoHeroFrame } from "@/components/elementary/PhotoHeroFrame"
@@ -52,21 +55,17 @@ export function StrapiHero({
   // The frame runs the trail under the header, inside the hero, and starts the
   // copy a measured distance below it — so whether it is there changes where
   // the hero's first line lands.
-  const trail =
-    breadcrumbs && pageParams ? (
-      <Breadcrumbs
-        breadcrumbs={breadcrumbs}
-        locale={pageParams.locale}
-        onPhoto={hasBackground}
-      />
-    ) : null
+  // Whether the trail is drawn is asked of the data, not of the element: a
+  // page that carries only itself renders nothing, and the hero has to know
+  // that before it sets its own padding.
+  const hasTrail = Boolean(pageParams) && hasBreadcrumbTrail(breadcrumbs)
 
   return (
     <section>
       <Wrapper
         hasBackground={hasBackground}
         hasBottomRow={hasBottomRow && !hasFigures}
-        hasTrail={Boolean(trail)}
+        hasTrail={hasTrail}
         isBarePhoto={isBarePhoto}
       >
         {hasBackground && (
@@ -77,14 +76,20 @@ export function StrapiHero({
           />
         )}
 
-        {trail}
+        {hasTrail && pageParams && (
+          <Breadcrumbs
+            breadcrumbs={breadcrumbs}
+            locale={pageParams.locale}
+            onPhoto={hasBackground}
+          />
+        )}
 
         <div
           className={layoutClass({
             hasBackground,
             hasFigures,
             hasImages,
-            hasTrail: Boolean(trail),
+            hasTrail,
           })}
         >
           <div className={copyClass({ hasBackground, isCentered })}>
@@ -120,7 +125,7 @@ export function StrapiHero({
                     // homepage, which is the one page with no trail above it.
                     cn(
                       "mb-10 lg:max-w-158 [&_p]:mb-0 [&_p]:text-inherit! lg:[&_p]:text-xl/7.5!",
-                      trail ? "[&_p]:text-sm/5!" : "[&_p]:text-lg/6.25!"
+                      hasTrail ? "[&_p]:text-sm/5!" : "[&_p]:text-lg/6.25!"
                     )
                 )}
               />
@@ -250,13 +255,18 @@ const layoutClass = ({
       ? cn(
           "gap-24.25 pb-15 lg:gap-17.5 lg:pb-7.5",
           // Where the trail is drawn it has already cleared the header and set
-          // its own margin, so all that is left is the frame's gap under it.
-          hasTrail ? "pt-5 lg:pt-7.5" : "pt-25 lg:pt-[167px]",
+          // its own margin, so all that is left is the frame's gap under it —
+          // 70, or 20 and 30 on a hero that has cards to fit in as well.
+          hasTrail
+            ? hasFigures
+              ? "pt-5 lg:pt-7.5"
+              : "pt-17.5"
+            : "pt-25 lg:pt-[167px]",
           // The cards stand off the floor of the frame rather than on it: 92
           // on a phone, 95 on a desktop, where the pills sit 30 up.
           hasFigures && "pb-23 max-lg:gap-17.5 lg:pb-23.75"
         )
-      : "px-4 py-8 lg:py-12",
+      : cn("py-8 lg:py-12", hasTrail && "pt-7.5! pb-0! lg:pt-2.5!"),
     hasImages && "lg:flex-row lg:items-center lg:gap-16"
   )
 
@@ -436,6 +446,9 @@ function Wrapper({
         className={cn(
           "flex flex-col lg:min-h-217.5",
           hasTrail && "pt-15 lg:pt-26.5",
+          // Every subpage's photo hero is the same height on a phone, whether
+          // or not its copy fills it.
+          hasTrail && !isBarePhoto && "max-lg:min-h-186.5",
           hasBottomRow && "min-h-200",
           isBarePhoto && "max-lg:min-h-112.5"
         )}
