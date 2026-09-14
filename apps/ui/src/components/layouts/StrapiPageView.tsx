@@ -75,9 +75,9 @@ export default function StrapiPageView({ params, searchParams }: Props) {
 
             return (
               <ErrorBoundary key={key}>
-                {/* The design spaces every section 90px apart at desktop,
-                    not the starter's 160px. */}
-                <div className={cn("mb-12 md:mb-16 lg:mb-22.5")}>
+                {/* The design spaces every section 80px apart on a phone and
+                    90 at desktop, not the starter's 160. */}
+                <div className={cn("mb-20 lg:mb-22.5")}>
                   <Component
                     component={comp}
                     pageParams={params}

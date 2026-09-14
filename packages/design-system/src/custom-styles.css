@@ -43,7 +43,9 @@ h1 {
 .tip-tap-editor-wrapper h2,
 .tip-tap-editor-wrapper .typo-h2,
 h2 {
-  @apply mb-1.5 text-3xl md:text-4xl lg:text-[2.5rem] lg:leading-[1.2];
+  /* The frame sets a second-level heading 26/31 on a phone and 40/48 on a
+     desktop. */
+  @apply mb-1.5 text-[1.625rem]/[1.9375rem] md:text-4xl lg:text-[2.5rem] lg:leading-[1.2];
 }
 
 .ck-editor-rich-text-page h3,
