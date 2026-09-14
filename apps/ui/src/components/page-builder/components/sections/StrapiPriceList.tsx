@@ -22,22 +22,24 @@ export function StrapiPriceList({
 
   return (
     <section id="prices" className="scroll-mt-24">
-      <Container className="flex flex-col gap-12.5">
+      <Container className="flex flex-col gap-7.5 lg:gap-12.5">
         {title && (
           <Typography tag="h2" className="text-brand-ink">
             {title}
           </Typography>
         )}
 
-        <div className="flex flex-col gap-12.5">
+        <div className="flex flex-col gap-5 lg:gap-7.5">
           {groups.map((group) => (
             <div
               key={group.id}
-              className="border-brand-hairline overflow-hidden rounded-[20px] border bg-white"
+              // The frame floats each group on the page's own card shadow
+              // rather than ruling a border around it.
+              className="shadow-brand-card overflow-hidden rounded-[20px] bg-white"
             >
               <Typography
                 tag="h3"
-                className="text-brand-ink border-brand-hairline mb-0 border-b px-7.5 py-6 text-2xl"
+                className="text-brand-ink border-brand-hairline mb-0 border-b px-5 py-5 text-lg/6.25! font-semibold lg:px-7.5 lg:py-7.5 lg:text-2xl/8.5!"
               >
                 {group.title}
               </Typography>
@@ -50,17 +52,17 @@ export function StrapiPriceList({
                   <div
                     key={row.id}
                     className={[
-                      "border-brand-hairline flex flex-wrap items-baseline justify-between gap-x-6 gap-y-1 px-7.5 py-4.5",
+                      "border-brand-hairline flex flex-wrap items-baseline justify-between gap-x-6 gap-y-1 px-5 py-4 lg:px-7.5",
                       "not-last:border-b",
                       // The design stripes alternate rows, starting with the
                       // first one under the heading.
                       index % 2 === 0 ? "bg-brand-stripe" : "bg-white",
                     ].join(" ")}
                   >
-                    <dt className="text-brand-ink flex-1 text-lg">
+                    <dt className="text-brand-ink flex-1 text-sm/5 lg:text-lg/6.25">
                       {row.label}
                     </dt>
-                    <dd className="text-brand-body text-lg whitespace-nowrap">
+                    <dd className="text-brand-body text-base/5.5 font-semibold whitespace-nowrap lg:text-lg/6.75 lg:font-normal">
                       <Price value={row.price} />
                     </dd>
                   </div>
