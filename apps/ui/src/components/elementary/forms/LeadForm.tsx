@@ -84,7 +84,11 @@ export function LeadForm({
         className={cn(
           "w-full [&_fieldset]:space-y-7.5",
           "[&_label]:text-brand-inverted [&_label]:text-sm/5 [&_label]:font-normal lg:[&_label]:text-base/5.5",
-          "[&_input]:text-brand-inverted [&_input]:h-12.5 [&_input]:rounded-[60px] [&_input]:border-0 [&_input]:bg-white/5 [&_input]:px-3.75 [&_input]:text-sm/5 lg:[&_input]:h-13.5 lg:[&_input]:text-lg/6.25",
+          // A hairline of teal once the field is being used, as the frame
+          // draws a field that has something in it — transparent otherwise, so
+          // the pill keeps its height either way.
+          "[&_input]:text-brand-inverted [&_input]:h-12.5 [&_input]:rounded-[60px] [&_input]:border [&_input]:border-transparent [&_input]:bg-white/5 [&_input]:px-3.75 [&_input]:text-sm/5 lg:[&_input]:h-13.5 lg:[&_input]:text-lg/6.25",
+          "[&_input:focus]:border-brand-teal [&_input:not(:placeholder-shown)]:border-brand-teal",
           "[&_input]:placeholder:text-brand-muted"
         )}
       >
@@ -145,7 +149,9 @@ export function LeadForm({
             variant="secondary"
             // White, with the label in ink and the arrow after it — the frame's
             // button for the dark card.
-            className="text-brand-ink h-10.5 w-full gap-2 rounded-[30px] bg-white px-5 text-base/5.5 font-semibold hover:bg-white/90 lg:h-12.5 lg:w-fit lg:px-7.5"
+            // White with the label in ink, turning teal under the pointer —
+            // the frame's pair for a button on the dark card.
+            className="text-brand-ink hover:bg-brand-teal hover:text-brand-inverted h-10.5 w-full gap-2 rounded-[30px] bg-white px-5 text-base/5.5 font-semibold lg:h-12.5 lg:w-fit lg:px-7.5"
             isLoading={form.formState.isSubmitting}
             data-hydrated={hydrated || undefined}
           >
