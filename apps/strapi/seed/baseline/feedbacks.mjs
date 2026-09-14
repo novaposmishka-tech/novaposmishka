@@ -55,9 +55,9 @@ export const feedbacksPage = {
           newTab: true,
         },
       ],
-    },
-    {
-      __component: "sections.statistics",
+      // The frame stands the clinic's numbers on the photograph itself, as
+      // glass cards along the foot of the hero, rather than on a band of their
+      // own below it.
       figures: [
         { number: GOOGLE_RATING, description: "<p>Рейтинг Google</p>" },
         { number: 210, suffix: "+", description: "<p>Чесних відгуків</p>" },
@@ -74,12 +74,11 @@ export const feedbacksPage = {
       reviews: videoReviews,
     },
     {
+      // No button beside this heading: the frame gives the section the reviews
+      // alone, and the invitation to write one of your own is the band below.
       __component: "sections.testimonials",
       title: "Google відгуки",
       testimonials: reviews,
-      links: [
-        { ...anchor("Google", GOOGLE_REVIEWS_URL, BUTTON), newTab: true },
-      ],
     },
     {
       __component: "sections.heading-with-cta-button",

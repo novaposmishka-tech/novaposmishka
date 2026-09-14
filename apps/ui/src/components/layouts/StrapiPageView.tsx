@@ -5,6 +5,7 @@ import { setRequestLocale } from "next-intl/server"
 import { use } from "react"
 
 import { Breadcrumbs } from "@/components/elementary/Breadcrumbs"
+import { Container } from "@/components/elementary/Container"
 import { ErrorBoundary } from "@/components/elementary/ErrorBoundary"
 import { PageContentComponents } from "@/components/page-builder"
 import StrapiStructuredData from "@/components/page-builder/components/seo-utilities/StrapiStructuredData"
@@ -34,20 +35,29 @@ export default function StrapiPageView({ params, searchParams }: Props) {
   }
 
   const { content, ...restPageData } = data
+  const opensOnHero = content[0]?.__component === "sections.hero"
 
   return (
     <>
       <StrapiStructuredData structuredData={data?.seo?.structuredData} />
 
       <main className={cn("flex w-full flex-col overflow-hidden")}>
-        <Breadcrumbs
-          breadcrumbs={response?.meta?.breadcrumbs}
-          locale={locale}
-        />
+        {/* The design puts the trail inside the hero, over the photograph, so
+            a page that opens on one hands it down instead of drawing it here.
+            Anything else keeps it above the content, where it used to be. */}
+        {!opensOnHero && (
+          <Container>
+            <Breadcrumbs
+              breadcrumbs={response?.meta?.breadcrumbs}
+              locale={locale}
+              className="mb-10 md:mb-20"
+            />
+          </Container>
+        )}
 
         {content
           .filter((comp) => comp != null)
-          .map((comp) => {
+          .map((comp, index) => {
             const name = comp.__component
             const id = comp.id
             const key = `${name}-${id}`
@@ -73,6 +83,9 @@ export default function StrapiPageView({ params, searchParams }: Props) {
                     pageParams={params}
                     page={restPageData}
                     searchParams={searchParams}
+                    breadcrumbs={
+                      index === 0 ? response?.meta?.breadcrumbs : undefined
+                    }
                   />
                 </div>
               </ErrorBoundary>

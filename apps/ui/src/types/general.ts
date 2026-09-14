@@ -2,6 +2,8 @@ import type { Data } from "@repo/strapi-types"
 import type { Metadata } from "next"
 import type { Locale } from "next-intl"
 
+import type { BreadCrumb } from "@/types/api"
+
 // Use type safe message keys with `next-intl`
 // eslint-disable-next-line @typescript-eslint/consistent-type-imports
 type Messages = typeof import("../../locales/uk.json")
@@ -47,4 +49,10 @@ export type PageBuilderComponentProps = {
   }
   readonly page?: Data.ContentType<"api::page.page"> | null
   readonly searchParams?: Record<string, string | string[] | undefined>
+  /**
+   * The page's breadcrumb trail, handed to the section that opens the page.
+   * The design draws it inside the photo hero, over the photograph, so the
+   * hero has to draw it rather than the page dropping it in above.
+   */
+  readonly breadcrumbs?: BreadCrumb[]
 }

@@ -273,6 +273,10 @@
       "withGithub": "Увійти через GitHub"
     }
   },
+  "breadcrumbs": {
+    "label": "Навігаційний ланцюжок",
+    "home": "Головна"
+  },
   "testimonials": {
     "readMore": "Читати далі",
     "video": "Відеовідгуки",
