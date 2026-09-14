@@ -141,9 +141,9 @@ function DoctorsPage({
   return (
     <section id="doctors" className="scroll-mt-24">
       {/* The frame laps the pane 60 over the photograph on a phone and 200 on
-          a desktop. The page-builder already sets the sections 48 and 90 apart,
+          a desktop. The page-builder already sets the sections 80 and 90 apart,
           so the pull has to swallow that gap as well as the overlap. */}
-      <Container className="group-has-data-photo-hero:-mt-27 lg:group-has-data-photo-hero:-mt-72.5">
+      <Container className="group-has-data-photo-hero:-mt-35 lg:group-has-data-photo-hero:-mt-72.5">
         <div className="bg-brand-mist/20 flex flex-col gap-7.5 rounded-[20px] p-2.5 backdrop-blur-md lg:gap-12.5 lg:rounded-[50px] lg:px-12.5 lg:py-7.5">
           {title && (
             <Typography
