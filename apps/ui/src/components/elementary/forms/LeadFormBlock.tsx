@@ -58,8 +58,10 @@ export function LeadFormBlock({
                 {title}
               </Typography>
             )}
+            {/* The phone frame carries the heading and the fields alone —
+                the sentence under it is a desktop line. */}
             {description && (
-              <Typography className="text-brand-inverted">
+              <Typography className="text-brand-inverted max-lg:hidden">
                 {description}
               </Typography>
             )}
