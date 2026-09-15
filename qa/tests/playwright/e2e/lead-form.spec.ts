@@ -5,17 +5,19 @@ import { expect, test } from "@playwright/test"
  * tests in apps/UI these go through the real Next.js runtime, the real schema
  * and the real rate limiter.
  *
- * A submission that reaches the end of the handler sends a Telegram message
- * for real once credentials are set, so these tests take care not to. Every
- * case that does not exist to prove delivery fills the honeypot, which the
- * handler answers 200 to and notifies nobody — and which it checks *after* the
- * throttle, so the rate limiter is still exercised.
+ * Nothing here delivers. A submission that reaches the end of the handler
+ * writes into the clinic's own chat, and a suite that runs on every change
+ * would fill it with requests nobody is meant to answer. So every case fills
+ * the honeypot, which the handler answers 200 to and notifies nobody.
+ *
+ * That costs no coverage, because of the order the handler works in: the
+ * throttle, then the schema, then the honeypot, then Telegram. A filled
+ * honeypot still runs the limiter and still runs validation in full — a
+ * malformed phone is a 400 whether or not the honeypot is set — and only the
+ * last step is skipped.
  *
  * Delivery itself is covered by the unit tests in apps/UI, where fetch is
- * stubbed. The one case here that runs the whole path is deliberately the only
- * one, and the suite is pinned to a single project: none of this touches a
- * browser — it is the request fixture throughout — so running it three times
- * over would only mean three times the messages.
+ * stubbed and the message can be read back.
  */
 
 /**
@@ -39,15 +41,17 @@ test.describe("Lead form endpoint", () => {
   // Server-side behaviour, identical in every engine; see the note above.
   test.skip(
     ({ browserName }) => browserName !== "chromium",
-    "API-only, and each run of it messages Telegram"
+    "API-only: the same server answers whatever engine asked"
   )
 
   test("rejects a submission with no usable phone number", async ({
     request,
   }) => {
+    // Honeypot filled, as everywhere here — and it changes nothing, because
+    // the schema runs first. A 400 rather than the honeypot's 200 says so.
     const response = await request.post("/api/lead", {
       headers: freshHeaders(),
-      data: { phone: "12" },
+      data: { phone: "12", company: "bot inc" },
     })
 
     expect(response.status()).toBe(400)
@@ -74,18 +78,20 @@ test.describe("Lead form endpoint", () => {
     expect(await response.json()).toEqual({ ok: true })
   })
 
-  test("takes a valid submission past validation", async ({ request }) => {
-    // The one case that runs to the end of the handler. With credentials set
-    // it delivers a message, which every environment but production prefixes
-    // with a "тестове повідомлення" banner.
+  test("takes a well-formed submission past validation", async ({
+    request,
+  }) => {
+    // The honeypot is what stops this at the doorstep of Telegram, and it
+    // stops it *after* the schema has had the whole payload — so reaching the
+    // honeypot's 200 is itself the proof that name and phone were accepted.
+    // The rejection above, sent the same way, is what makes that meaningful:
+    // a bad phone never gets this far.
     const response = await request.post("/api/lead", {
       headers: freshHeaders(),
-      data: { name: "Іван", phone: "+380671234567" },
+      data: { name: "Іван", phone: "+380671234567", company: "bot inc" },
     })
 
-    // 200 once Telegram is configured, 503 until then — either way the payload
-    // was accepted, which is what this test is about.
-    expect([200, 503]).toContain(response.status())
+    expect(response.status()).toBe(200)
   })
 
   test("throttles a single IP after five submissions", async ({ request }) => {
