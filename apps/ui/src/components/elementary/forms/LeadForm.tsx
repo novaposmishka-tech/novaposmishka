@@ -80,7 +80,7 @@ export function LeadForm({
         // The frame gives this form its own shape, and it is the only one that
         // sits on the dark card: a 54px pill on white at a tenth of a twentieth,
         // its label above it in the card's own ink. Scoped here rather than in
-        // the shared field so the booking dialog keeps the light one.
+        // the shared field, which every light form on the site still uses.
         className={cn(
           "w-full [&_fieldset]:space-y-7.5",
           "[&_label]:text-brand-inverted [&_label]:text-sm/5 [&_label]:font-normal lg:[&_label]:text-base/5.5",
@@ -89,6 +89,11 @@ export function LeadForm({
           // the pill keeps its height either way.
           "[&_input]:text-brand-inverted [&_input]:h-12.5 [&_input]:rounded-[60px] [&_input]:border [&_input]:border-transparent [&_input]:bg-white/5 [&_input]:px-3.75 [&_input]:text-sm/5 lg:[&_input]:h-13.5 lg:[&_input]:text-lg/6.25",
           "[&_input:focus]:border-brand-teal [&_input:not(:placeholder-shown)]:border-brand-teal",
+          // The shared field halos itself on focus with a 3px ring, which on
+          // this dark card reads as a pale smear around the pill. The frame
+          // marks a field in use with the hairline above and nothing else, and
+          // that hairline is what shows the focus.
+          "[&_input]:shadow-none [&_input:focus-visible]:ring-0",
           "[&_input]:placeholder:text-brand-muted"
         )}
       >
