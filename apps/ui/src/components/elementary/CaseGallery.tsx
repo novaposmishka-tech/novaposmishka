@@ -53,7 +53,16 @@ export function CaseGallery({
       }
     }
 
-    return [...seen]
+    // The frame puts every filter first and the write-ups after them, on a
+    // row of their own. Taken in the order the cases carry them the two kinds
+    // interleave, and a write-up's long name lands between two categories and
+    // breaks the row apart. The order within each kind is still the CMS's.
+    const all = [...seen]
+
+    return [
+      ...all.filter((tag) => !tag.startsWith(WRITTEN_UP)),
+      ...all.filter((tag) => tag.startsWith(WRITTEN_UP)),
+    ]
   }, [cases])
 
   const [active, setActive] = useState<string | null>(null)
@@ -77,7 +86,11 @@ export function CaseGallery({
         >
           {[null, ...tags].map((tag) => {
             const chip = cn(
-              "flex h-10 cursor-pointer items-center rounded-[30px] px-5 text-base transition-colors lg:h-11.5 lg:px-7.5",
+              // A minimum rather than a fixed height: the frame's chips are all
+              // 40 because its labels are all one line, and a longer one — a
+              // write-up's name on a phone — spilled out of the pill instead of
+              // making it taller. The padding keeps a single line at 40.
+              "flex min-h-10 cursor-pointer items-center rounded-[30px] px-5 py-1.75 text-center text-base transition-colors lg:min-h-11.5 lg:px-7.5",
               active === tag
                 ? isGrid
                   ? // On the light page the frame fills the chosen chip with
