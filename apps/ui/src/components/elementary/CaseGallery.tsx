@@ -167,7 +167,10 @@ export function CaseGallery({
                         component={item.doctorPhoto}
                         // The frame sets the portrait on a pale disc, which shows wherever the
                         // photograph does not fill the circle.
-                        className="bg-brand-on-dark size-12.5 shrink-0 rounded-full object-cover lg:size-17.5"
+                        // The portraits are half-body and begin at the hairline, so a
+                        // centred square crop takes the top of the head off. Ranged
+                        // to the top it comes off the chest instead.
+                        className="bg-brand-on-dark size-12.5 shrink-0 rounded-full object-cover object-top lg:size-17.5"
                       />
                     )}
                     <span

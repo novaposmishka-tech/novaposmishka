@@ -57,7 +57,9 @@ export function ReviewCard({
           {review.photo ? (
             <StrapiBasicImage
               component={review.photo}
-              className="size-12.5 shrink-0 rounded-full object-cover"
+              // Ranged to the top, as the doctors' portraits are: a square
+              // one is unaffected, and a tall one keeps its face.
+              className="size-12.5 shrink-0 rounded-full object-cover object-top"
             />
           ) : (
             // The frame leaves a ringed circle where a reviewer has no picture

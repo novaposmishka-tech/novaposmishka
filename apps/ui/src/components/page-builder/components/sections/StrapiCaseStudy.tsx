@@ -242,7 +242,9 @@ function CaseStage({
             {stage.doctorPhoto && (
               <StrapiBasicImage
                 component={stage.doctorPhoto}
-                className="bg-brand-on-dark size-12.5 shrink-0 rounded-full object-cover"
+                // Ranged to the top: a centred square crop of a half-body
+                // portrait takes the top of the head off.
+                className="bg-brand-on-dark size-12.5 shrink-0 rounded-full object-cover object-top"
               />
             )}
             <span className="text-brand-body text-sm/5 lg:text-lg/6.25">
