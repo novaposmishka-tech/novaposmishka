@@ -168,7 +168,12 @@ export function StrapiFooter({ locale }: { readonly locale: Locale }) {
                       // Ranged against the foot of the grid on a desktop; on a
                       // phone the marks take a rule and a row of their own.
                       "lg:col-start-3 lg:justify-end lg:gap-7.5 lg:self-end",
-                      "border-brand-hairline max-lg:col-span-2 max-lg:mt-1.25 max-lg:justify-between max-lg:border-t max-lg:pt-7.5"
+                      // The gap is fixed at both widths — 60 on a phone, 30 at
+                      // desktop — rather than spread across the row. The frame
+                      // draws four marks packed to the left; spreading them
+                      // only matches that by accident at four, and the clinic
+                      // has two, which sends them to opposite corners.
+                      "border-brand-hairline max-lg:col-span-2 max-lg:mt-1.25 max-lg:gap-15 max-lg:border-t max-lg:pt-7.5"
                     )}
                   >
                     {footer.socials.map((social) => (
