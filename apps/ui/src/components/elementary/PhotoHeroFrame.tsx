@@ -5,25 +5,25 @@ import { useEffect, useRef, useState } from "react"
 /**
  * The frame around a hero that opens on a photograph.
  *
- * The header lies inside it, drawn white on nothing, and stays readable only
- * for as long as the picture is behind it. The design has a second header for
- * everywhere else — the light "Static header" the rest of the site already
- * uses — so this frame says whether the header is still over the photograph and
- * the header takes its colours from that.
+ * The header lies inside it, drawn white on nothing while the page is at rest
+ * at the top. A photograph is not a background: it has light patches, and the
+ * words of the header fall on whatever happens to be under them as the reader
+ * moves. So the transparency lasts exactly as long as the page has not been
+ * scrolled — at the first movement the header takes the light "Static header"
+ * the rest of the site uses.
  *
  * The two markers are deliberately separate. `data-photo-hero` stands for the
  * whole life of the page: it also pulls the layout up under the header, which
  * must not move as the reader scrolls. `data-photo-hero-top` is the one that
- * comes and goes. It is set on the server as well, so a page that opens at the
- * top draws the transparent header immediately rather than flashing the light
- * one.
+ * comes and goes. It is set on the server as well, so a page opens on the
+ * transparent header immediately rather than flashing the light one.
  */
 export function PhotoHeroFrame({
   children,
 }: {
   readonly children: React.ReactNode
 }) {
-  const [overHeader, setOverHeader] = useState(true)
+  const [atTop, setAtTop] = useState(true)
   const sentinelRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
@@ -32,35 +32,25 @@ export function PhotoHeroFrame({
       return
     }
 
-    let observer: IntersectionObserver | undefined
+    // The sentinel is the first pixel of the page, and the page counts as at
+    // rest only while the whole of it shows — hence the threshold. Asking
+    // merely that it be on screen would leave the header transparent for the
+    // first pixel of the scroll, since a box is still intersecting when only a
+    // sliver of it is left. An observer rather than a scroll listener: the
+    // browser reports the crossing itself instead of us asking on every frame.
+    const observer = new IntersectionObserver(
+      (entries) => {
+        const last = entries.at(-1)
+        if (last) {
+          setAtTop(last.intersectionRatio >= 1)
+        }
+      },
+      { threshold: 1 }
+    )
 
-    // The header is 60px tall on a phone and 106 on a desktop, so the line the
-    // hero stops covering it at moves with the viewport.
-    const watch = () => {
-      observer?.disconnect()
-      const headerHeight =
-        document.querySelector("[data-site-header]")?.getBoundingClientRect()
-          .height ?? 0
+    observer.observe(sentinel)
 
-      observer = new IntersectionObserver(
-        (entries) => {
-          const last = entries.at(-1)
-          if (last) {
-            setOverHeader(last.boundingClientRect.top > headerHeight)
-          }
-        },
-        { rootMargin: `-${Math.round(headerHeight)}px 0px 0px 0px` }
-      )
-      observer.observe(sentinel)
-    }
-
-    watch()
-    addEventListener("resize", watch)
-
-    return () => {
-      observer?.disconnect()
-      removeEventListener("resize", watch)
-    }
+    return () => observer.disconnect()
   }, [])
 
   return (
@@ -69,16 +59,16 @@ export function PhotoHeroFrame({
     // [0, 0, 50, 50].
     <div
       data-photo-hero
-      data-photo-hero-top={overHeader ? "" : undefined}
+      data-photo-hero-top={atTop ? "" : undefined}
       className="relative isolate overflow-hidden rounded-b-[50px] text-white"
     >
-      {children}
-      {/* The bottom edge of the picture, watched rather than measured. */}
+      {/* The top edge of the page, watched rather than measured. */}
       <div
         ref={sentinelRef}
         aria-hidden
-        className="absolute inset-x-0 bottom-0 h-px"
+        className="absolute inset-x-0 top-0 h-px"
       />
+      {children}
     </div>
   )
 }
