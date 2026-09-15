@@ -20,6 +20,11 @@ minimumReleaseAgeExclude:
 overrides:
   "@types/react": 19.2.17
   "@types/react-dom": 19.2.3
+  # CodeMirror checks its extensions with instanceof, so two copies of its
+  # state package break the admin with "Unrecognized extension value in
+  # extension set". The tree carried 6.6.0, asked for directly, alongside the
+  # 6.5.4 that autocomplete, language, lint, search and view pull in.
+  "@codemirror/state": 6.6.0
 
 packageExtensions:
   "@hookform/resolvers":
