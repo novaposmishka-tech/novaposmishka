@@ -15,7 +15,8 @@ const SIZES = {
     mark: "h-6.75 w-7 group-has-data-photo-hero-top:brightness-0 group-has-data-photo-hero-top:invert lg:h-11.5 lg:w-11.75",
     stack: "gap-1.5 lg:gap-2.5",
     name: "text-[0.656rem]/none group-has-data-photo-hero-top:text-white lg:text-lg/none",
-    tagline: "text-[0.4375rem]/none lg:text-xs/none",
+    tagline:
+      "text-[0.4375rem]/none group-has-data-photo-hero-top:text-brand-on-dark lg:text-xs/none",
   },
   footer: {
     root: "gap-3.75 lg:gap-5.75",
@@ -31,8 +32,8 @@ const SIZES = {
  * type.
  *
  * The mark is the only part that is artwork — the name is left as text so it
- * stays selectable, searchable and legible to a screen reader, and so the
- * second line can take its colour from the surface it sits on.
+ * stays selectable, searchable and legible to a screen reader, and so both
+ * lines can take their colour from the surface they sit on.
  */
 export function ClinicLogo({
   className,
@@ -70,11 +71,15 @@ export function ClinicLogo({
           {t("name")}
         </span>
         <span
-          // Named so the accessibility suite can point at it: the design's
-          // colour for this line does not meet the contrast threshold, and the
-          // exclusion has to name something stabler than a utility class.
-          data-logo-tagline
-          className={cn("text-brand-on-dark font-semibold", size.tagline)}
+          className={cn(
+            "font-semibold",
+            size.tagline,
+            // brand-on-dark is what the design colours this line, and it is
+            // 1.67:1 on white — on the light header and in the footer the
+            // words all but disappear. It is kept for the one surface it was
+            // drawn for: a dark one.
+            onDark ? "text-brand-on-dark" : "text-brand-body"
+          )}
         >
           {t("tagline")}
         </span>
