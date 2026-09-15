@@ -3,6 +3,7 @@
 import type { Data } from "@repo/strapi-types"
 import { Menu, X } from "lucide-react"
 
+import StrapiLink from "@/components/page-builder/components/utilities/StrapiLink"
 import { MobileNavigation } from "@/components/page-builder/single-types/navbar/MobileNavigation"
 import { Button } from "@/components/ui/button"
 import { useNavbarMobile } from "@/hooks/useNavbarMobile"
@@ -23,6 +24,33 @@ export function NavbarMobileToggle() {
     >
       {mobileOpen ? <X /> : <Menu />}
     </Button>
+  )
+}
+
+/**
+ * The header's booking button: an ordinary link down to the form at the foot
+ * of the page, which is the site's only form.
+ *
+ * It also shuts the mobile menu, because on a phone the button sits in the
+ * header beside the burger and stays pressable while the menu is open —
+ * leaving it open would scroll the page behind a panel that covers it. At
+ * desktop the menu is never open and closing it does nothing.
+ */
+export function NavbarBookingLink({
+  component,
+  className,
+}: {
+  readonly component: Data.Component<"utilities.link">
+  readonly className?: string
+}) {
+  const [, setMobileOpen] = useNavbarMobile()
+
+  return (
+    <StrapiLink
+      component={component}
+      onClick={() => setMobileOpen(false)}
+      className={className}
+    />
   )
 }
 

@@ -5,11 +5,10 @@ import type { Locale } from "next-intl"
 
 import { ClinicLogo } from "@/components/elementary/ClinicLogo"
 import { Container } from "@/components/elementary/Container"
-import { BookingDialog } from "@/components/elementary/forms/BookingDialog"
 import { StrapiBasicImage } from "@/components/page-builder/components/utilities/StrapiBasicImage"
 import StrapiImageWithLink from "@/components/page-builder/components/utilities/StrapiImageWithLink"
-import StrapiLink from "@/components/page-builder/components/utilities/StrapiLink"
 import {
+  NavbarBookingLink,
   NavbarMobileNavigation,
   NavbarMobileProvider,
   NavbarMobileToggle,
@@ -73,43 +72,22 @@ export function NavbarInner({
                     : [navbarData?.phone]
                 }
               />
-              {/* The design opens the booking form over the page rather
-                  than sending the reader down to the footer. Without a form
-                  configured the buttons stay ordinary links. */}
-              {navbarData?.bookingForm && navbarData.primaryButtons?.[0] ? (
-                <BookingDialog
-                  label={navbarData.primaryButtons[0].label ?? ""}
-                  title={navbarData.bookingForm.title}
-                  description={navbarData.bookingForm.description}
-                  gdpr={{
-                    href: navbarData.bookingForm.gdpr?.href ?? undefined,
-                    label: navbarData.bookingForm.gdpr?.label ?? undefined,
-                    newTab: navbarData.bookingForm.gdpr?.newTab ?? false,
-                  }}
-                  phones={
-                    navbarData?.phones
-                      ?.map((entry) => entry.text)
-                      .filter((text): text is string => Boolean(text)) ?? []
-                  }
+              {/* The button goes down to the form at the foot of the page.
+                  The site has one form and it lives there — a second copy of
+                  it over the page would be the same two fields posting to the
+                  same place. */}
+              {navbarData?.primaryButtons?.map((button) => (
+                <NavbarBookingLink
+                  key={button.id}
+                  component={button}
                   className="group-has-data-photo-hero-top:bg-white/10 group-has-data-photo-hero-top:bg-none"
                 />
-              ) : (
-                navbarData?.primaryButtons?.map((button) => (
-                  <StrapiLink key={button.id} component={button} />
-                ))
-              )}
+              ))}
             </div>
             <div className="flex items-center gap-5 lg:hidden">
-              {navbarData?.bookingForm && navbarData.primaryButtons?.[0] ? (
-                <BookingDialog
-                  label={navbarData.primaryButtons[0].label ?? ""}
-                  title={navbarData.bookingForm.title}
-                  description={navbarData.bookingForm.description}
-                  gdpr={{
-                    href: navbarData.bookingForm.gdpr?.href ?? undefined,
-                    label: navbarData.bookingForm.gdpr?.label ?? undefined,
-                    newTab: navbarData.bookingForm.gdpr?.newTab ?? false,
-                  }}
+              {navbarData?.primaryButtons?.[0] ? (
+                <NavbarBookingLink
+                  component={navbarData.primaryButtons[0]}
                   className="h-10 min-w-0 rounded-[30px] px-5 text-sm font-semibold group-has-data-photo-hero-top:bg-white/10 group-has-data-photo-hero-top:bg-none"
                 />
               ) : null}
