@@ -74,8 +74,13 @@ export function StrapiServices({
 
               {service.description && (
                 // The frame holds the words clear of the illustration rather
-                // than letting them wrap around it.
-                <Typography className={`${CARD_TEXT} max-w-57 lg:max-w-65`}>
+                // than letting them wrap around it — so the words stop where
+                // the illustration's box begins, with a gutter between them.
+                // The frame can be freer, because each of its illustrations is
+                // placed by hand and carries its own margin; art an editor
+                // uploads may be cropped to its edges, and then anything that
+                // reaches under the box is covered by it.
+                <Typography className={`${CARD_TEXT} max-w-44.75 lg:max-w-57`}>
                   {service.description}
                 </Typography>
               )}
