@@ -71,6 +71,10 @@ const prepareAwsS3Config = (env: EnvGetter) => {
             secretAccessKey: awsAccessSecret,
           },
           region: awsRegion,
+          // A custom endpoint for an S3-compatible store — DigitalOcean
+          // Spaces, for one. Left unset for real AWS S3, where the SDK works
+          // the endpoint out from the region on its own.
+          endpoint: env("AWS_ENDPOINT"),
           params: {
             ACL: env("AWS_ACL", "public-read"),
             signedUrlExpires: env("AWS_SIGNED_URL_EXPIRES", 15 * 60),
