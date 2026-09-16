@@ -39,6 +39,9 @@ export function NavbarInner({
           // it and no shadow. The transparent border keeps the height the same
           // in both states, since the photo hero does draw a rule.
           "bg-brand-mist sticky top-0 z-50 h-15 w-full border-b border-transparent transition-colors duration-300 lg:h-26.5",
+          // The frame draws 404 and 500 bare: no header, no footer, and the
+          // page's own button as the only way on.
+          "group-has-data-error-page:hidden",
           // A page that opens on a photo hero carries the header inside it,
           // white and on nothing — until the picture scrolls out from under it
           // and the static header takes over.

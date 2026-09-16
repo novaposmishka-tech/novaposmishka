@@ -76,8 +76,10 @@ export function StrapiFooter({ locale }: { readonly locale: Locale }) {
   // landmark. Without it the CTA form, the contact list and the copyright all
   // sit outside any landmark, which is an axe `region` violation and leaves
   // screen-reader users no way to jump here.
+  // Off on the error pages, which the frame draws bare — there the page's own
+  // button is the only way on.
   return (
-    <footer className="w-full">
+    <footer className="w-full group-has-data-error-page:hidden">
       {footer.leadForm && (
         <div className="pt-20 lg:pt-22.5">
           <StrapiLeadForm component={footer.leadForm} phones={phones} />
