@@ -2,49 +2,45 @@
 
 // Error boundaries must be Client Components - https://nextjs.org/docs/app/api-reference/file-conventions/error#error
 import * as Sentry from "@sentry/nextjs"
+import { ArrowLeft } from "lucide-react"
 import { useTranslations } from "next-intl"
 import { useEffect } from "react"
 
-import { Button } from "@/components/ui/button"
-import { isDevelopment } from "@/lib/general-helpers"
+import {
+  ERROR_ACTION_PRIMARY,
+  ERROR_ACTION_SECONDARY,
+  ErrorPage,
+} from "@/components/elementary/ErrorPage"
+import { Link } from "@/lib/navigation"
 
 interface Props {
   readonly error: Error
   readonly reset: () => void
 }
 
-export default function ErrorPage({ error, reset }: Props) {
-  const t = useTranslations("errors.global")
+export default function ErrorPageRoute({ error, reset }: Props) {
+  const t = useTranslations("errors.serverError")
 
   useEffect(() => {
     Sentry.captureException(error)
   }, [error])
 
-  const handleTryAgain = () => {
-    // Attempt to recover by trying to re-render the segment
-    reset()
-  }
-
-  const isDev = isDevelopment()
-
   return (
-    <div className="w-full overflow-x-hidden">
-      <h1 className="text-xl font-semibold tracking-tight">
-        {t("somethingWentWrong")}
-      </h1>
-      <p className="mt-1 text-sm text-gray-600">
-        {t("invalidContent")}
-        {isDev ? `: ${error.message}` : null}
-      </p>
-      {isDev && (
-        <p className="mt-2 w-full overflow-x-auto bg-gray-100 p-3 text-xs">
-          <pre>{error.stack?.split("\n").slice(0, 7).join("\n")}</pre>
-        </p>
-      )}
+    <ErrorPage
+      illustration={{ src: "/images/error-500.png", alt: t("imageAlt") }}
+      title={t("title")}
+      description={t("description")}
+    >
+      <Link href="/" className={ERROR_ACTION_PRIMARY}>
+        <ArrowLeft aria-hidden className="size-5 lg:size-6" />
+        {t("backHome")}
+      </Link>
 
-      <Button type="button" size="sm" onClick={handleTryAgain} className="mt-2">
+      {/* What the frame's second button is for: re-rendering the segment that
+          threw, which is the one thing this page can do about the error. */}
+      <button type="button" onClick={reset} className={ERROR_ACTION_SECONDARY}>
         {t("tryAgain")}
-      </Button>
-    </div>
+      </button>
+    </ErrorPage>
   )
 }
