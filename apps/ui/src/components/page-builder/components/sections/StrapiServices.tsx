@@ -137,7 +137,7 @@ export function StrapiServices({
                     component={callToAction.link}
                     // Outlined in teal with the label in ink — the frame's
                     // second button, where the hero's is filled.
-                    className="border-brand-teal text-brand-ink hover:bg-brand-gradient! hover:text-brand-inverted h-11.5 w-fit gap-2 rounded-[30px] border bg-transparent bg-none px-5 text-sm/5 font-semibold shadow-none hover:border-transparent lg:h-12.5 lg:px-7.5 lg:text-base/5.5"
+                    className="border-brand-teal text-brand-ink hover:bg-brand-gradient! hover:shadow-brand-button hover:text-brand-inverted h-11.5 w-fit gap-2 rounded-[30px] border bg-transparent bg-none px-5 text-sm/5 font-semibold shadow-none hover:border-transparent lg:h-12.5 lg:px-7.5 lg:text-base/5.5"
                   >
                     {callToAction.link.label}
                     <ArrowRight aria-hidden className="size-5" />

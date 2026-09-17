@@ -65,7 +65,7 @@ export function ReviewTabs({
                 // button on the page takes.
                 "flex h-10 cursor-pointer items-center gap-2.5 rounded-[30px] px-5 text-base/5.5 font-semibold transition-colors lg:h-12.5 lg:px-7.5",
                 active === index
-                  ? "bg-brand-gradient text-brand-inverted shadow-brand-card"
+                  ? "bg-brand-gradient text-brand-inverted shadow-brand-button"
                   : "border-brand-teal text-brand-ink hover:bg-brand-surface border bg-white"
               )}
             >

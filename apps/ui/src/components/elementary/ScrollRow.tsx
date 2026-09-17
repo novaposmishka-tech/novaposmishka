@@ -200,7 +200,7 @@ function Arrow({
         "flex size-12.5 shrink-0 cursor-pointer items-center justify-center rounded-full border transition-colors disabled:cursor-default disabled:opacity-40",
         tone === "dark"
           ? "text-brand-inverted border-brand-on-dark hover:bg-brand-teal"
-          : "border-brand-on-dark text-brand-ink hover:bg-brand-gradient hover:text-brand-inverted hover:border-transparent"
+          : "border-brand-on-dark text-brand-ink hover:bg-brand-gradient hover:shadow-brand-button hover:text-brand-inverted hover:border-transparent"
       )}
     >
       <Icon aria-hidden className="size-5" />

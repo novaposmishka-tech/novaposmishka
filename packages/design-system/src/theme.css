@@ -527,6 +527,13 @@
   background-image: var(--gradient-brand);
 }
 
+/* The shadow the design puts under a button filled with the brand gradient.
+ * Every such button carries it; a card's pair of shadows is a different thing,
+ * below. */
+@utility shadow-brand-button {
+  box-shadow: 0 4px 8px rgba(9, 70, 86, 0.3);
+}
+
 /* The pair of soft shadows the design puts under a card that floats on the
  * page — one below it and a shallower one above. */
 @utility shadow-brand-card {

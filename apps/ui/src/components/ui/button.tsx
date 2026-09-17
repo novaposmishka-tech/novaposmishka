@@ -16,7 +16,7 @@ const buttonVariants = cva(
         // gradient for half the duration and then drops it — read as a blink.
         // The design draws two discrete states, so the fill simply swaps.
         default:
-          "bg-brand-gradient text-primary-foreground transition-[color,box-shadow] hover:bg-brand-teal hover:bg-none",
+          "bg-brand-gradient shadow-brand-button text-primary-foreground transition-[color,box-shadow] hover:bg-brand-teal hover:bg-none",
         outline:
           "border-border bg-background hover:bg-muted hover:text-foreground dark:bg-input/30 dark:border-input dark:hover:bg-input/50 aria-expanded:bg-muted aria-expanded:text-foreground",
         // The frame's button for a dark surface: white, turning teal under

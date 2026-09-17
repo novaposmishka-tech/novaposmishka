@@ -64,7 +64,7 @@ export function ErrorPage({
 
 /** The frame's filled button: the gradient, going flat teal under a pointer. */
 export const ERROR_ACTION_PRIMARY =
-  "bg-brand-gradient text-brand-inverted hover:bg-brand-teal flex h-10.5 w-full cursor-pointer items-center justify-center gap-1.5 rounded-[30px] text-base/5.5 font-semibold transition-colors hover:bg-none lg:h-12.5 lg:w-72.5"
+  "bg-brand-gradient shadow-brand-button text-brand-inverted hover:bg-brand-teal flex h-10.5 w-full cursor-pointer items-center justify-center gap-1.5 rounded-[30px] text-base/5.5 font-semibold transition-colors hover:bg-none lg:h-12.5 lg:w-72.5"
 
 /** Its outlined pair, which the frame gives no arrow. */
 export const ERROR_ACTION_SECONDARY =

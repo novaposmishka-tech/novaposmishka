@@ -96,7 +96,7 @@ export function CaseGallery({
                   ? // On the light page the frame fills the chosen chip with
                     // the brand gradient and outlines the rest in teal; a
                     // gradient goes flat teal under the pointer.
-                    "bg-brand-gradient text-brand-inverted shadow-brand-card hover:bg-brand-teal font-semibold hover:bg-none"
+                    "bg-brand-gradient text-brand-inverted shadow-brand-button hover:bg-brand-teal font-semibold hover:bg-none"
                   : "text-brand-ink bg-white"
                 : isGrid
                   ? "border-brand-teal text-brand-ink hover:bg-brand-gradient hover:text-brand-inverted border bg-white hover:border-transparent"

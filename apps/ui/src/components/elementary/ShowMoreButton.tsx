@@ -25,7 +25,7 @@ export function ShowMoreButton({
       type="button"
       onClick={onClick}
       className={cn(
-        "text-brand-ink hover:bg-brand-gradient hover:text-brand-inverted flex h-10 w-full cursor-pointer items-center justify-center gap-2 rounded-[30px] bg-white text-sm/5 font-semibold transition-colors lg:mx-auto lg:h-12.5 lg:w-fit lg:px-7.5 lg:text-base/5.5",
+        "text-brand-ink hover:bg-brand-gradient hover:shadow-brand-button hover:text-brand-inverted flex h-10 w-full cursor-pointer items-center justify-center gap-2 rounded-[30px] bg-white text-sm/5 font-semibold transition-colors lg:mx-auto lg:h-12.5 lg:w-fit lg:px-7.5 lg:text-base/5.5",
         className
       )}
     >
