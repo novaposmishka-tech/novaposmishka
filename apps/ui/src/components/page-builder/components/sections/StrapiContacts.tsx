@@ -28,7 +28,7 @@ export function StrapiContacts({
   const isCard = display !== "list"
 
   return (
-    <section id="contacts" className="scroll-mt-24">
+    <section id="contacts" className="scroll-mt-15 lg:scroll-mt-26.5">
       <Container
         className={cn(
           "flex flex-col gap-7.5 lg:gap-12.5",

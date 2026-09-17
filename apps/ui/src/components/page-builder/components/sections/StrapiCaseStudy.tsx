@@ -49,7 +49,7 @@ export async function StrapiCaseStudy({
   const clip = formatStrapiMediaUrl(videoUrl)
 
   return (
-    <section id={caseStudyId(title)} className="scroll-mt-24">
+    <section id={caseStudyId(title)} className="scroll-mt-15 lg:scroll-mt-26.5">
       {/* The frame tells a case as a stack of white cards, 20 apart on a phone
           and 30 at desktop — the first naming the case, the rest walking
           through the treatment a step at a time. */}

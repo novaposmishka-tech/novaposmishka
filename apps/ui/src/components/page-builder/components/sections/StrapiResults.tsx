@@ -25,7 +25,7 @@ export async function StrapiResults({
   const t = await getTranslations("results")
 
   return (
-    <section id="results" className="scroll-mt-24">
+    <section id="results" className="scroll-mt-15 lg:scroll-mt-26.5">
       {/* On a desktop the cases sit on the same rounded dark card as the
           why-us section, inset on the 1320 grid. The phone frame runs the
           same teal from edge to edge instead, square and with the page's own

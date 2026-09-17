@@ -57,7 +57,7 @@ export function StrapiDoctors({
   }
 
   return (
-    <section id="doctors" className="scroll-mt-24">
+    <section id="doctors" className="scroll-mt-15 lg:scroll-mt-26.5">
       {/* The frame sets the link beside the heading on a desktop and under the
           carousel on a phone, so the grid moves it rather than a second copy of
           it in the markup. */}
@@ -139,7 +139,7 @@ function DoctorsPage({
   readonly doctors: Doctors
 }) {
   return (
-    <section id="doctors" className="scroll-mt-24">
+    <section id="doctors" className="scroll-mt-15 lg:scroll-mt-26.5">
       {/* The frame laps the pane 60 over the photograph on a phone and 200 on
           a desktop. The page-builder already sets the sections 80 and 90 apart,
           so the pull has to swallow that gap as well as the overlap. */}

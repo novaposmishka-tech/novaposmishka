@@ -20,7 +20,7 @@ export function StrapiCarousel({
   }
 
   return (
-    <section id="gallery" className="scroll-mt-24">
+    <section id="gallery" className="scroll-mt-15 lg:scroll-mt-26.5">
       <Container className="flex flex-col gap-12.5">
         {title && (
           <Typography tag="h2" className="text-brand-ink text-center">

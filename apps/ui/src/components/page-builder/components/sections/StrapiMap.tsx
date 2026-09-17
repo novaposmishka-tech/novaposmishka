@@ -24,7 +24,7 @@ export async function StrapiMap({
   const t = await getTranslations("map")
 
   return (
-    <section id="map" className="scroll-mt-24">
+    <section id="map" className="scroll-mt-15 lg:scroll-mt-26.5">
       {/* The phone frame runs the map from edge to edge and centres the line
           over it; the desktop keeps both on the grid. */}
       <Container

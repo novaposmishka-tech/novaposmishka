@@ -47,7 +47,7 @@ export function StrapiServices({
   }
 
   return (
-    <section id="services" className="scroll-mt-24">
+    <section id="services" className="scroll-mt-15 lg:scroll-mt-26.5">
       <Container className="flex flex-col gap-7.5 lg:gap-12.5">
         {(title || subtitle) && (
           <div className="flex max-w-203 flex-col gap-4">

@@ -20,7 +20,7 @@ export function StrapiWhyUs({
   }
 
   return (
-    <section id="why-us" className="scroll-mt-24">
+    <section id="why-us" className="scroll-mt-15 lg:scroll-mt-26.5">
       {/* One dark band on the brand gradient holding the whole section, as in
           the design — the reasons are cards within it, not a list beside a
           photograph. It sits on the grid at desktop with the frame's 50px

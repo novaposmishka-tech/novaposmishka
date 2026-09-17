@@ -13,7 +13,7 @@ export function StrapiLeadForm({
   readonly phones?: readonly string[]
 }) {
   return (
-    <div id="lead-form-section" className="scroll-mt-24">
+    <div id="lead-form-section" className="scroll-mt-15 lg:scroll-mt-26.5">
       {/* Gradient/1 on a 50px radius at desktop, where the frame insets it on
           the 1320 grid; a square full-bleed band on a phone. */}
       <div className="lg:mx-auto lg:w-full lg:max-w-360 lg:px-15">

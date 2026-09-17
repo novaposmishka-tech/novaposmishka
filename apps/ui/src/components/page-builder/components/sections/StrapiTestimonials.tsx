@@ -63,7 +63,7 @@ export async function StrapiTestimonials({
   const hasVideo = Boolean(videoReviews?.length)
 
   return (
-    <section id="testimonials" className="scroll-mt-24">
+    <section id="testimonials" className="scroll-mt-15 lg:scroll-mt-26.5">
       <Container className="flex flex-col gap-12.5">
         {hasVideo && videoReviews ? (
           <ReviewTabs
