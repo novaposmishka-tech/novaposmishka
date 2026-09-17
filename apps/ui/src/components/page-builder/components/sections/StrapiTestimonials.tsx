@@ -81,7 +81,24 @@ export async function StrapiTestimonials({
               />,
             ]}
           />
-        ) : (
+        ) : null}
+
+        {/* The way through to every review. In the tabbed branch it stands
+            under the panel; without tabs it sits beside the heading, where the
+            frame draws it. */}
+        {hasVideo && links && links.length > 0 && (
+          <div className="flex justify-center">
+            {links.map((link) => (
+              <StrapiLink
+                key={link.id}
+                component={link}
+                className="border-brand-teal text-brand-ink hover:bg-brand-gradient hover:shadow-brand-button hover:text-brand-inverted flex h-10 w-full items-center justify-center gap-2 rounded-[30px] border bg-white text-sm/5 font-semibold transition-colors hover:border-transparent lg:h-12.5 lg:w-fit lg:px-7.5 lg:text-base/5.5"
+              />
+            ))}
+          </div>
+        )}
+
+        {!hasVideo && (
           <>
             <div className="flex flex-wrap items-center justify-between gap-4">
               {heading}

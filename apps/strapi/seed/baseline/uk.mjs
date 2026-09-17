@@ -313,10 +313,13 @@ export const homepage = {
       __component: "sections.testimonials",
       title: "Відгуки",
       testimonials: reviews,
-      // The design switches between the two here rather than linking out.
+      // The block switches between written and filmed reviews here; the link
+      // below it is the way through to all of them, which the design review
+      // asked for.
       writtenLabel: "Google",
       videoLabel: "Відеовідгуки",
       videoReviews,
+      links: [pageLink("Показати більше", "vidhuky")],
     },
     {
       __component: "sections.carousel",
