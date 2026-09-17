@@ -85,7 +85,7 @@ export function StrapiDoctors({
                 {doctor.photo && (
                   <Portrait
                     photo={doctor.photo}
-                    className="shadow-brand-card bg-brand-inverted lg:bg-brand-mist h-66.75 rounded-[20px] px-7 pt-9.75 lg:h-92.25 lg:rounded-[30px]"
+                    className="shadow-brand-card bg-brand-inverted hover:bg-brand-mist h-66.75 rounded-[20px] px-7 pt-9.75 transition-colors lg:h-92.25 lg:rounded-[30px]"
                   />
                 )}
 

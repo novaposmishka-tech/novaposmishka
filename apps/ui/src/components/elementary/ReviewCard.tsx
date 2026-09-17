@@ -51,7 +51,9 @@ export function ReviewCard({
   }, [])
 
   return (
-    <article className="shadow-brand-card flex break-inside-avoid flex-col gap-3.75 rounded-[26px] bg-white p-5 lg:p-7.5">
+    // The grey under a pointer is the one the doctors' cards take, so a card
+    // answers the same way wherever the reader meets one.
+    <article className="shadow-brand-card hover:bg-brand-mist flex break-inside-avoid flex-col gap-3.75 rounded-[26px] bg-white p-5 transition-colors lg:p-7.5">
       <header className="flex items-start justify-between gap-4">
         <div className="flex items-center gap-5">
           {review.photo ? (

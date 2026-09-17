@@ -84,7 +84,7 @@ export async function StrapiResults({
             component={link}
             // White on the teal, and the full width of the phone frame where
             // the desktop one hugs its words.
-            className="text-brand-ink h-10 w-full justify-center gap-2 rounded-[30px] bg-white px-5 text-base/5.5 font-semibold hover:bg-white/90 lg:mx-auto lg:h-12.5 lg:w-fit lg:px-7.5"
+            className="text-brand-ink hover:bg-brand-teal hover:text-brand-inverted h-10 w-full justify-center gap-2 rounded-[30px] bg-white px-5 text-base/5.5 font-semibold lg:mx-auto lg:h-12.5 lg:w-fit lg:px-7.5"
           >
             {link.label}
             <ArrowRight aria-hidden className="size-5" />
