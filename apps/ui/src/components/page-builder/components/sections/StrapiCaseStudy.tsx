@@ -7,6 +7,7 @@ import { getTranslations } from "next-intl/server"
 import { BeforeAfterSlider } from "@/components/elementary/BeforeAfterSlider"
 import { Container } from "@/components/elementary/Container"
 import { PlayableStill } from "@/components/elementary/PlayableStill"
+import { ZoomableImage } from "@/components/elementary/ZoomableImage"
 import { StrapiBasicImage } from "@/components/page-builder/components/utilities/StrapiBasicImage"
 import Typography from "@/components/typography"
 import { caseStudyId } from "@/lib/case-studies"
@@ -186,19 +187,36 @@ function CaseStage({
             imagesFirst ? "order-2 lg:order-1" : "order-2"
           )}
         >
-          {images.map((img, index) => (
-            <li key={img.id} className="relative">
+          {images.map((img, index) => {
+            const photo = (
               <StrapiBasicImage
                 component={img}
                 className="aspect-140/93 w-full rounded-[20px] object-cover lg:rounded-[26px]"
               />
-              {pair && (
-                <span className="text-brand-ink absolute top-4 left-4 rounded-full bg-white px-3 py-1 text-sm">
-                  {labels[index === 0 ? "before" : "after"]}
-                </span>
-              )}
-            </li>
-          ))}
+            )
+
+            return (
+              <li key={img.id} className="relative">
+                {/* A photograph on its own opens over the page, as the design
+                    review asked. A before-and-after pair does not: the two are
+                    read against each other, and taking one out of the pair is
+                    the opposite of what it is there for. */}
+                {pair ? (
+                  photo
+                ) : (
+                  <ZoomableImage label={img.alt ?? stage.title}>
+                    {photo}
+                  </ZoomableImage>
+                )}
+
+                {pair && (
+                  <span className="text-brand-ink absolute top-4 left-4 rounded-full bg-white px-3 py-1 text-sm">
+                    {labels[index === 0 ? "before" : "after"]}
+                  </span>
+                )}
+              </li>
+            )
+          })}
         </ul>
       )}
 

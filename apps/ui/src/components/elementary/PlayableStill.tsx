@@ -3,6 +3,7 @@
 import { Play } from "lucide-react"
 import { useState } from "react"
 
+import { MediaViewer } from "@/components/elementary/MediaViewer"
 import { cn } from "@/lib/styles"
 
 /**
@@ -35,28 +36,31 @@ export function PlayableStill({
     return <div className={cn("relative", className)}>{poster}</div>
   }
 
-  if (playing) {
-    return (
-      // No caption track: the clinic has none for these yet, and the quote
-      // beside each card carries what is said. One goes on each clip when the
-      // real films arrive.
-      <video
-        src={src}
-        controls
-        autoPlay
-        playsInline
-        aria-label={label ?? undefined}
-        // Less curve than the still it replaces: the browser draws its own
-        // controls hard into the corners, and the frame's 30 was cutting the
-        // fullscreen and picture-in-picture marks and the ends of the scrubber.
-        className={cn("w-full bg-black object-cover", className, "rounded-xl")}
-      />
-    )
-  }
-
   return (
     <div className={cn("relative", className)}>
       {poster}
+
+      <MediaViewer
+        open={playing}
+        onClose={() => setPlaying(false)}
+        label={label}
+      >
+        {/* No caption track: the clinic has none for these yet, and the quote
+            beside each card carries what is said. One goes on each clip when
+            the real films arrive.
+
+            Less curve than the still: the browser draws its own controls hard
+            into the corners, and the frame's 30 was cutting the fullscreen and
+            picture-in-picture marks and the ends of the scrubber. */}
+        <video
+          src={src}
+          controls
+          autoPlay
+          playsInline
+          aria-label={label ?? undefined}
+          className="max-h-[80vh] w-full rounded-xl bg-black object-contain"
+        />
+      </MediaViewer>
 
       <a
         href={src}
