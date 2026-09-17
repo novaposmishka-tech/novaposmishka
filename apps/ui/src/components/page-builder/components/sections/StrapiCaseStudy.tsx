@@ -179,7 +179,10 @@ function CaseStage({
       {images.length > 0 && (
         <ul
           className={cn(
-            "grid list-none grid-cols-2 gap-5 lg:w-146 lg:gap-6",
+            // One to a row on a phone, where the frame draws each 289 across
+            // — the full width of the column — rather than a pair of 135s too
+            // small to read. Side by side again at desktop.
+            "grid list-none grid-cols-1 gap-5 lg:w-146 lg:grid-cols-2 lg:gap-6",
             imagesFirst ? "order-2 lg:order-1" : "order-2"
           )}
         >
