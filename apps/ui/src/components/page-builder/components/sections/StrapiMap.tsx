@@ -52,7 +52,11 @@ export async function StrapiMap({
               loading="lazy"
               sandbox="allow-scripts allow-same-origin allow-popups"
               referrerPolicy="no-referrer-when-downgrade"
-              className="aspect-36/35 w-full border-0 lg:aspect-1320/639 lg:rounded-[50px]"
+              // The frame rounds the map at 50, but it draws a picture; a live
+              // embed keeps Google's own place card tight in the corner, and 50
+              // of curve cuts its edge off. 20 clears it — at the card's inset
+              // the curve takes under three pixels rather than twenty.
+              className="aspect-36/35 w-full border-0 lg:aspect-1320/639 lg:rounded-[20px]"
             />
           )}
 
