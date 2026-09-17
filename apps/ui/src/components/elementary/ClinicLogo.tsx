@@ -8,15 +8,19 @@ import { cn } from "@/lib/styles"
  * The two sizes the design draws the wordmark at: 240 wide in the header, 340
  * in the footer, with everything inside scaled to match. Only the header one
  * ever stands on a photograph, so only it adapts to one.
+ *
+ * The frame draws its wordmark as outlines rather than live text, so the type
+ * sizes here are the ones that set the same run of letters to the frame's
+ * width — 103 on a phone and 177 at desktop, measured rather than guessed.
  */
 const SIZES = {
   header: {
     root: "gap-2.5 lg:gap-4",
     mark: "h-6.75 w-7 group-has-data-photo-hero-top:brightness-0 group-has-data-photo-hero-top:invert lg:h-11.5 lg:w-11.75",
     stack: "gap-1.5 lg:gap-2.5",
-    name: "text-[0.656rem]/none group-has-data-photo-hero-top:text-white lg:text-lg/none",
+    name: "text-[0.8rem]/none group-has-data-photo-hero-top:text-white lg:text-[1.365rem]/none",
     tagline:
-      "text-[0.4375rem]/none group-has-data-photo-hero-top:text-brand-on-dark lg:text-xs/none",
+      "text-[0.53rem]/none group-has-data-photo-hero-top:text-brand-on-dark lg:text-[0.91rem]/none",
   },
   footer: {
     root: "gap-3.75 lg:gap-5.75",

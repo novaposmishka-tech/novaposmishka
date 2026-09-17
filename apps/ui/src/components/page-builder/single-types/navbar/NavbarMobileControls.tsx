@@ -22,7 +22,9 @@ export function NavbarMobileToggle() {
       aria-label="Toggle menu"
       onClick={() => setMobileOpen((open) => !open)}
     >
-      {mobileOpen ? <X /> : <Menu />}
+      {/* The frame draws the mark 26 across inside its 32 of target; the
+          button's own default is 16, which is what "дуже манюсіньке" was. */}
+      {mobileOpen ? <X className="size-6.5" /> : <Menu className="size-6.5" />}
     </Button>
   )
 }
@@ -39,9 +41,13 @@ export function NavbarMobileToggle() {
 export function NavbarBookingLink({
   component,
   className,
+  children,
 }: {
   readonly component: Data.Component<"utilities.link">
   readonly className?: string
+  /** The frame puts an arrow after the label; without children the label
+   *  stands alone, which is what the phone header wants. */
+  readonly children?: React.ReactNode
 }) {
   const [, setMobileOpen] = useNavbarMobile()
 
@@ -50,7 +56,9 @@ export function NavbarBookingLink({
       component={component}
       onClick={() => setMobileOpen(false)}
       className={className}
-    />
+    >
+      {children}
+    </StrapiLink>
   )
 }
 

@@ -35,7 +35,8 @@
     "previous": "Попередні",
     "next": "Наступні",
     "menu": "Меню",
-    "goToSlide": "Перейти до {number}"
+    "goToSlide": "Перейти до {number}",
+    "bookShort": "Запис"
   },
   "tables": {
     "previousPage": "Попередня сторінка",
