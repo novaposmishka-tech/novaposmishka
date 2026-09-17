@@ -39,7 +39,10 @@ export function StrapiPriceList({
             >
               <Typography
                 tag="h3"
-                className="text-brand-ink border-brand-hairline mb-0 border-b px-5 py-5 text-lg/6.25! font-semibold lg:px-7.5 lg:py-7.5 lg:text-2xl/8.5!"
+                // Half the room below the heading that the frame gives it:
+                // the design review asked for the group's name to sit closer
+                // to the first price than it was drawn.
+                className="text-brand-ink border-brand-hairline mb-0 border-b px-5 pt-5 pb-2.5 text-lg/6.25! font-semibold lg:px-7.5 lg:pt-7.5 lg:pb-3.75 lg:text-2xl/8.5!"
               >
                 {group.title}
               </Typography>
