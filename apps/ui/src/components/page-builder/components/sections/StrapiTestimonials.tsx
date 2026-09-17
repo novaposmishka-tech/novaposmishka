@@ -112,12 +112,16 @@ export async function StrapiTestimonials({
               )}
             </div>
 
-            {/* The reviews page stacks them instead, five at a time. */}
-            <ReviewColumns
-              testimonials={testimonials}
-              label={title}
-              labels={{ ...cardLabels, showMore: t("showMore") }}
-            />
+            {/* The reviews page stacks them a page at a time instead. An
+                empty list is caught here rather than inside, where the guard
+                would have to sit below the hooks. */}
+            {testimonials.length > 0 && (
+              <ReviewColumns
+                testimonials={testimonials}
+                label={title}
+                labels={{ ...cardLabels, showMore: t("showMore") }}
+              />
+            )}
           </>
         )}
       </Container>
