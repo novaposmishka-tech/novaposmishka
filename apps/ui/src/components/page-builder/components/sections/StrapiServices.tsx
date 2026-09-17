@@ -27,7 +27,7 @@ const CARD =
  * exported at twice their drawn size — back at the scale the frame shows them.
  */
 const ILLUSTRATION =
-  "pointer-events-none absolute right-0 bottom-0 h-42.75 w-30.75 object-contain object-bottom lg:h-53.5 lg:w-39.5"
+  "pointer-events-none absolute right-0 bottom-0 h-42.75 w-18.5 object-contain object-bottom lg:h-53.5 lg:w-39.5"
 
 // The design system gives every h3 a 1.4 leading and a bottom margin; the
 // frame sets 34px and no margin.
@@ -80,7 +80,7 @@ export function StrapiServices({
                 // placed by hand and carries its own margin; art an editor
                 // uploads may be cropped to its edges, and then anything that
                 // reaches under the box is covered by it.
-                <Typography className={`${CARD_TEXT} max-w-44.75 lg:max-w-57`}>
+                <Typography className={`${CARD_TEXT} max-w-57 lg:max-w-57`}>
                   {service.description}
                 </Typography>
               )}
