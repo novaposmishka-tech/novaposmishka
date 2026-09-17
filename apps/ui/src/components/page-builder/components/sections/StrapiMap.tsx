@@ -70,7 +70,11 @@ export async function StrapiMap({
             >
               <ClinicLogo />
 
-              {address && (
+              {/* Google's own place card carries the address, a few pixels
+                  away, so ours does not repeat it where the live map is
+                  embedded — the mark and the way there are what is left. On a
+                  static image there is no other card, and the address stays. */}
+              {address && !embedUrl && (
                 <Typography className="text-brand-ink text-sm">
                   {address}
                 </Typography>
