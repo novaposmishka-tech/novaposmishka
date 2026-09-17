@@ -59,12 +59,20 @@ export const feedbacksPage = {
       // glass cards along the foot of the hero, rather than on a band of their
       // own below it.
       figures: [
-        { number: GOOGLE_RATING, description: "<p>Рейтинг Google</p>" },
-        { number: 210, suffix: "+", description: "<p>Чесних відгуків</p>" },
+        {
+          number: GOOGLE_RATING,
+          description: "<p>Рейтинг <strong><em>Google</em></strong></p>",
+        },
+        {
+          number: 210,
+          suffix: "+",
+          description: "<p><strong><em>Чесних</em></strong> відгуків</p>",
+        },
         {
           number: 20,
           suffix: "К+",
-          description: "<p>Пацієнтів, що довіряють нам</p>",
+          description:
+            "<p><strong><em>Пацієнтів,</em></strong> що довіряють нам</p>",
         },
       ],
     },
