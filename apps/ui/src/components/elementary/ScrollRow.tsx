@@ -95,6 +95,18 @@ export function ScrollRow({
           // No scrollbar under the row: the frame draws none, and the arrows,
           // the tab stop and a touch gesture all still move it.
           "flex snap-x snap-mandatory [scrollbar-width:none] list-none gap-6 overflow-x-auto focus-visible:outline-2 focus-visible:-outline-offset-2 [&::-webkit-scrollbar]:hidden",
+          // Asking for one axis to scroll makes the other one clip as well —
+          // the CSS says a box cannot be visible on one axis and scrollable on
+          // the other — so the cards' shadows were cut off against all four
+          // edges of the row. The padding gives the shadow its room and the
+          // negative margin takes that room back out of the layout, which
+          // leaves every card exactly where the grid had it. Three on the
+          // sides, not four: a phone's gutter is fifteen, and the row must not
+          // reach past it and set the page scrolling sideways.
+          // scroll-padding as well as padding: snapping aligns a card to the
+          // scrollport edge, which would otherwise scroll straight past these
+          // twelve pixels and put the first card back against the clip.
+          "-mx-3 -my-4 scroll-px-3 px-3 py-4",
           className
         )}
       >
