@@ -97,7 +97,15 @@ export async function StrapiCaseStudy({
             {/* The filmed walk-through, offered only when there is a film. The
                 still on its own would be a play button that does nothing. */}
             {clip && videoPoster && (
-              <div className={cn(RULE, "flex flex-col gap-5 pt-5 lg:pt-9.75")}>
+              // The column is pushed apart at desktop, so where the words fill it
+              // the rule had nothing between itself and them. The margin is the
+              // least it may sit at — the same distance it keeps below.
+              <div
+                className={cn(
+                  RULE,
+                  "mt-5 flex flex-col gap-5 pt-5 lg:mt-9.75 lg:pt-9.75"
+                )}
+              >
                 {videoLabel && (
                   <span className="text-brand-body text-sm/5 lg:text-base/5.5">
                     {videoLabel}

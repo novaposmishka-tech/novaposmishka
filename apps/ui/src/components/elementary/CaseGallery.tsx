@@ -172,7 +172,9 @@ export function CaseGallery({
                   <div
                     className={cn(
                       "flex items-center gap-3.75 border-t pt-4 lg:pt-5",
-                      isGrid ? "border-brand-border" : "border-white/20"
+                      // Grey, not the pale blue of brand-border: the frame rules a card in
+                      // the same hairline the rest of the site uses.
+                      isGrid ? "border-brand-hairline" : "border-white/20"
                     )}
                   >
                     {item.doctorPhoto && (
