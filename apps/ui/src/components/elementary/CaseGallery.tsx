@@ -35,7 +35,6 @@ export function CaseGallery({
 }: {
   readonly cases: Case[]
   readonly labels: {
-    all: string
     before: string
     after: string
     list: string
@@ -65,8 +64,14 @@ export function CaseGallery({
     ]
   }, [cases])
 
-  const [active, setActive] = useState<string | null>(null)
+  // The frame opens on the first tab rather than on everything at once. The
+  // design review asked for that back: the tabs exist to separate one case
+  // from the next, and a list of all of them together loses where each begins.
+  const [chosen, setChosen] = useState<string | null>(null)
   const [limit, setLimit] = useState(PAGE_SIZE)
+
+  const firstFilter = tags.find((tag) => !tag.startsWith(WRITTEN_UP))
+  const active = chosen ?? firstFilter ?? null
 
   const matching = active
     ? cases.filter((item) => item.tags?.some((tag) => tag.text === active))
@@ -84,7 +89,7 @@ export function CaseGallery({
             isGrid && "justify-center"
           )}
         >
-          {[null, ...tags].map((tag) => {
+          {tags.map((tag) => {
             const chip = cn(
               // A minimum rather than a fixed height: the frame's chips are all
               // 40 because its labels are all one line, and a longer one — a
@@ -115,13 +120,13 @@ export function CaseGallery({
                   <button
                     type="button"
                     onClick={() => {
-                      setActive(tag)
+                      setChosen(tag)
                       setLimit(PAGE_SIZE)
                     }}
                     aria-pressed={active === tag}
                     className={chip}
                   >
-                    {tag ?? labels.all}
+                    {tag}
                   </button>
                 )}
               </li>

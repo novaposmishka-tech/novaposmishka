@@ -70,7 +70,6 @@ export async function StrapiResults({
           display={display ?? "carousel"}
           cases={cases}
           labels={{
-            all: t("all"),
             before: t("before"),
             after: t("after"),
             list: t("list"),
