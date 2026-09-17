@@ -39,6 +39,13 @@ export function ScrollRow({
   // Nothing until it has been measured: the controls only do anything with
   // script, and only where there is something past the edge to reach.
   const [scrollable, setScrollable] = useState(false)
+  // How many places the row can actually come to rest. Not the number of
+  // cards: where two fit side by side, three cards are only two positions,
+  // and a mark for a position that does not exist is a mark that does nothing
+  // when pressed.
+  const [steps, setSteps] = useState(Children.count(children))
+  // Only to re-measure when the row gains or loses a card; the marks below
+  // count positions, not children.
   const count = Children.count(children)
   const t = useTranslations("general")
 
@@ -53,6 +60,7 @@ export function ScrollRow({
 
     const step = cardStep(node)
     setCurrent(step > 0 ? Math.round(node.scrollLeft / step) : 0)
+    setSteps(restingPlaces(past, step))
   }, [])
 
   // How far the row can scroll changes with the breakpoint, with a picture
@@ -132,12 +140,12 @@ export function ScrollRow({
               shows a position is one a reader expects to be able to press, so
               each is a button — with a target big enough to hit, around a dot
               the frame's size. */}
-          {count > 1 && (
+          {steps > 1 && (
             // Nine reviews make nine marks, and nine of them will not sit
             // between the arrows on a 360px phone — they wrap rather than push
             // the row off the screen.
             <ul className="flex min-w-0 list-none flex-wrap items-center justify-center">
-              {Array.from({ length: count }, (_, index) => (
+              {Array.from({ length: steps }, (_, index) => (
                 <li key={index}>
                   <button
                     type="button"
@@ -178,6 +186,26 @@ export function ScrollRow({
 }
 
 /**
+ * How many places the row can come to rest, which is what the marks count.
+ *
+ * The card starts within reach are one each, the first included. Past the last
+ * of them the row can still be dragged to its end, where the browser holds it
+ * short of the next card — that is a place too, and the one the last mark
+ * stands for. Where the end all but lands on a card start, the two are the
+ * same place and only one mark is drawn.
+ */
+function restingPlaces(past: number, step: number) {
+  if (step <= 0 || past <= 0) {
+    return 1
+  }
+
+  const wholeCards = Math.floor(past / step)
+  const remainder = past - wholeCards * step
+
+  return wholeCards + 1 + (remainder > 4 ? 1 : 0)
+}
+
+/**
  * How far one press moves the row: a card and the gap after it, measured from
  * the first so the step follows whatever the breakpoint decided a card is.
  */
@@ -211,7 +239,7 @@ function Arrow({
       className={cn(
         "flex size-12.5 shrink-0 cursor-pointer items-center justify-center rounded-full border transition-colors disabled:cursor-default disabled:opacity-40",
         tone === "dark"
-          ? "text-brand-inverted border-brand-on-dark hover:bg-brand-teal"
+          ? "text-brand-inverted border-brand-on-dark hover:bg-brand-teal hover:border-transparent"
           : "border-brand-on-dark text-brand-ink hover:bg-brand-gradient hover:shadow-brand-button hover:text-brand-inverted hover:border-transparent"
       )}
     >
