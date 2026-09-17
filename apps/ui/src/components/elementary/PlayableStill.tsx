@@ -46,7 +46,10 @@ export function PlayableStill({
         autoPlay
         playsInline
         aria-label={label ?? undefined}
-        className={cn("w-full bg-black object-cover", className)}
+        // Less curve than the still it replaces: the browser draws its own
+        // controls hard into the corners, and the frame's 30 was cutting the
+        // fullscreen and picture-in-picture marks and the ends of the scrubber.
+        className={cn("w-full bg-black object-cover", className, "rounded-xl")}
       />
     )
   }
