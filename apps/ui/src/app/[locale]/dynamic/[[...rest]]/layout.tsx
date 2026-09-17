@@ -10,5 +10,5 @@ export default function Layout({
 
   setRequestLocale(locale)
 
-  return <div className="flex items-center pb-8">{children}</div>
+  return <div className="flex items-center">{children}</div>
 }

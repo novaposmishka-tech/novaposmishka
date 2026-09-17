@@ -80,10 +80,12 @@ export function StrapiFooter({ locale }: { readonly locale: Locale }) {
   // button is the only way on.
   return (
     <footer className="w-full group-has-data-error-page:hidden">
+      {/* No space of its own above the form: every section on the page
+          already ends with the design's 80 on a phone and 90 at desktop, and
+          adding the same again put the form more than twice as far from the
+          page as any two blocks stand from each other. */}
       {footer.leadForm && (
-        <div className="pt-20 lg:pt-22.5">
-          <StrapiLeadForm component={footer.leadForm} phones={phones} />
-        </div>
+        <StrapiLeadForm component={footer.leadForm} phones={phones} />
       )}
 
       <Container>
