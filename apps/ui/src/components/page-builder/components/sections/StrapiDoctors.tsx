@@ -177,7 +177,12 @@ function DoctorsPage({
                     </Typography>
                     {doctor.specialty && (
                       // Outlined in teal, as the frame draws it — not filled.
-                      <span className="border-brand-teal text-brand-ink flex h-6.75 w-fit items-center rounded-full border px-4 text-xs/[1.0625rem] lg:h-8.5 lg:px-5 lg:text-base/5.5">
+                      // A minimum rather than a fixed height: the frame's roles
+                      // are all one line, and a longer one — "Дитячий
+                      // стоматолог" on a narrow card — spilled out of the pill
+                      // instead of making it taller. The padding keeps a single
+                      // line at the frame's 27 and 34.
+                      <span className="border-brand-teal text-brand-ink flex min-h-6.75 w-fit items-center rounded-full border px-4 py-1 text-xs/[1.0625rem] lg:min-h-8.5 lg:px-5 lg:py-1.25 lg:text-base/5.5">
                         {doctor.specialty}
                       </span>
                     )}

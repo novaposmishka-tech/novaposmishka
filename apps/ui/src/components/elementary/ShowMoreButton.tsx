@@ -25,7 +25,9 @@ export function ShowMoreButton({
       type="button"
       onClick={onClick}
       className={cn(
-        "text-brand-ink hover:bg-brand-gradient hover:shadow-brand-button hover:text-brand-inverted flex h-10 w-full cursor-pointer items-center justify-center gap-2 rounded-[30px] bg-white text-sm/5 font-semibold transition-colors lg:mx-auto lg:h-12.5 lg:w-fit lg:px-7.5 lg:text-base/5.5",
+        // Outlined in teal, as the frame draws a secondary button: white on
+        // white had left it looking like a line of text with an arrow after it.
+        "border-brand-teal text-brand-ink hover:bg-brand-gradient hover:shadow-brand-button hover:text-brand-inverted flex h-10 w-full cursor-pointer items-center justify-center gap-2 rounded-[30px] border bg-white text-sm/5 font-semibold transition-colors hover:border-transparent lg:mx-auto lg:h-12.5 lg:w-fit lg:px-7.5 lg:text-base/5.5",
         className
       )}
     >

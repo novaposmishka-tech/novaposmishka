@@ -94,6 +94,11 @@ export function LeadForm({
           // marks a field in use with the hairline above and nothing else, and
           // that hairline is what shows the focus.
           "[&_input]:shadow-none [&_input:focus-visible]:ring-0",
+          // The mark at the right of a filled-in field is the browser's own
+          // autofill affordance, not ours, and it cannot be coloured directly.
+          // What it does follow is the field's colour scheme: told the field is
+          // dark, the browser draws its mark light instead of black.
+          "[&_input]:[color-scheme:dark]",
           "[&_input]:placeholder:text-brand-muted"
         )}
       >
