@@ -94,7 +94,7 @@ export const servicePages = [
       {
         __component: "sections.hero",
         backgroundImage: HERO_IMAGES.terapiia,
-        title: "<h1><strong>Стоматолог-терапевт в Житомирі</strong></h1>",
+        title: "<h1>Стоматолог-терапевт<br><strong>в Житомирі</strong></h1>",
         description:
           "<p>Наша мета – забезпечити Вас здоровими та естетично гарними зубами, дбаючи про Ваш комфорт та безболісність процедур. Довіртеся нашим фахівцям для досягнення найкращих результатів у терапевтичній стоматології.</p>",
         links: [
@@ -161,7 +161,7 @@ export const servicePages = [
       {
         __component: "sections.hero",
         backgroundImage: HERO_IMAGES.ortopediia,
-        title: "<h1><strong>Протезування зубів в Житомирі</strong></h1>",
+        title: "<h1>Протезування зубів<br><strong>в Житомирі</strong></h1>",
         description:
           "<p>Посмішка – це Ваша візитна картка, і ми зробимо все, щоб вона була ідеальною!</p>",
         links: [
@@ -228,7 +228,7 @@ export const servicePages = [
       {
         __component: "sections.hero",
         backgroundImage: HERO_IMAGES.khirurhiia,
-        title: "<h1><strong>Стоматолог-хірург в Житомирі</strong></h1>",
+        title: "<h1>Стоматолог-хірург<br><strong>в Житомирі</strong></h1>",
         description:
           "<p>Наша клініка пропонує передові методи хірургічної стоматології для Вас і Вашої сім’ї. Ми розуміємо, що зуби – це важлива частина Вашого життя, і ми готові надати Вам найкращі рішення.</p>",
         links: [
@@ -295,7 +295,7 @@ export const servicePages = [
       {
         __component: "sections.hero",
         backgroundImage: HERO_IMAGES.ortodontiia,
-        title: "<h1><strong>Ортодонт в Житомирі</strong></h1>",
+        title: "<h1>Ортодонт<br><strong>в Житомирі</strong></h1>",
         description:
           "<p>Ортодонтичне лікування може змінити Вашу посмішку та покращити функцію щелеп. Наші професійні ортодонти допоможуть Вам вибрати найкращий метод для досягнення Ваших цілей.</p>",
         links: [
@@ -362,7 +362,7 @@ export const servicePages = [
       {
         __component: "sections.hero",
         backgroundImage: HERO_IMAGES.parodontolohiia,
-        title: "<h1><strong>Пародонтологія в Житомирі</strong></h1>",
+        title: "<h1>Пародонтологія<br><strong>в Житомирі</strong></h1>",
         description:
           "<p>Захворювання ясен – це не вирок, ваша посмішка знову може стати ідеальною.</p>",
         links: [
@@ -429,7 +429,7 @@ export const servicePages = [
       {
         __component: "sections.hero",
         backgroundImage: HERO_IMAGES["dytiacha-stomatolohiia"],
-        title: "<h1><strong>Дитячий стоматолог в Житомирі</strong></h1>",
+        title: "<h1>Дитячий стоматолог<br><strong>в Житомирі</strong></h1>",
         description:
           "<p>У нашій клініці ми розуміємо, що здоров’я зубів Вашої дитини – це справа важлива та відповідальна. Наша команда досвідчених дитячих стоматологів пропонує найкращий догляд для маленьких пацієнтів, роблячи їх перші знайомства зі стоматологією приємними та безболісними.</p>",
         links: [
@@ -496,7 +496,7 @@ export const servicePages = [
       {
         __component: "sections.hero",
         backgroundImage: HERO_IMAGES.hnatolohiia,
-        title: "<h1><strong>Гнатолог в Житомирі</strong></h1>",
+        title: "<h1>Гнатолог<br><strong>в Житомирі</strong></h1>",
         description:
           "<p>Гнатологічне лікування може усунути біль та дискомфорт у щелепі, відновивши її правильну функцію. Наш гнатолог допоможе Вам визначити причину проблеми та підібрати оптимальний метод для Вашого одужання.</p>",
         links: [

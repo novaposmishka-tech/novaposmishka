@@ -100,7 +100,12 @@ export function StrapiHero({
               className={cn(
                 hasBackground &&
                   cn(
-                    "[&_h1]:text-inherit!",
+                    // The frame sets what the page is about in the muted
+                    // tone and the place — "в Житомирі" — in white beside it.
+                    // What an editor marks as strong is the white half; a
+                    // title that is strong throughout, as the home page's is,
+                    // stays white throughout.
+                    "[&_h1]:text-brand-on-dark! [&_h1_strong]:text-brand-inverted",
                     "[&_h1]:pl-7.5 [&_h1]:-indent-7.5 lg:[&_h1]:pl-17.5 lg:[&_h1]:-indent-17.5",
                     // The frame runs the stepped line past the column rather
                     // than folding it: on a phone it ends 14px off the edge of
