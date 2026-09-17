@@ -140,9 +140,11 @@ export function StrapiHero({
               <div
                 className={cn(
                   "flex w-full flex-col gap-2 lg:flex-row lg:gap-4",
-                  // The phone frame ends on the button, above the hero's own
-                  // 60px of floor.
-                  hasBackground && "max-lg:mt-auto",
+                  // The copy above already keeps forty below itself, which is
+                  // the distance the frame puts between the words and this
+                  // button. It used to be pushed to the hero's floor instead,
+                  // and on a phone whose browser keeps a bar at the bottom it
+                  // fell below the fold — the "ховається" of the design review.
                   isCentered ? "mx-auto md:w-fit" : "lg:w-auto"
                 )}
               >
