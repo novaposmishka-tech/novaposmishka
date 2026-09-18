@@ -1,6 +1,8 @@
 import { setPluginConfig } from "@_sh/strapi-plugin-ckeditor"
 import type { StrapiApp } from "@strapi/strapi/admin"
 
+// eslint-disable-next-line import-x/order
+import { uk } from "./uk"
 import "@repo/design-system/styles.css"
 
 import { defaultCkEditorConfig, simpleCkEditorConfig } from "./ckeditor/configs"
@@ -10,8 +12,12 @@ import Hierarchy from "./extensions/Hierarchy"
 export default {
   config: {
     // Admin panel UI language — unrelated to content locales. Ukrainian is
-    // bundled with Strapi, so no custom translations are needed.
+    // bundled with Strapi and covers nearly all of it; the file beside this one
+    // carries only the handful of strings it leaves in English.
     locales: ["uk", "en"],
+    translations: {
+      uk,
+    },
   },
   async bootstrap(app: StrapiApp) {
     app
