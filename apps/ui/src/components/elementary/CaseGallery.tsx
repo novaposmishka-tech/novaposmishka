@@ -3,7 +3,7 @@
 import type { Data } from "@repo/strapi-types"
 import { useMemo, useState } from "react"
 
-import { BeforeAfterSlider } from "@/components/elementary/BeforeAfterSlider"
+import { BeforeAfterRow } from "@/components/elementary/BeforeAfterRow"
 import { ScrollRow } from "@/components/elementary/ScrollRow"
 import { StrapiBasicImage } from "@/components/page-builder/components/utilities/StrapiBasicImage"
 import { caseStudyId } from "@/lib/case-studies"
@@ -39,7 +39,6 @@ export function CaseGallery({
     after: string
     list: string
     more: string
-    compare: string
   }
   readonly display?: "carousel" | "grid"
 }) {
@@ -157,7 +156,7 @@ export function CaseGallery({
                 card and the name sits on its floor, so the room shows above
                 the rule where the frame has it. */}
             <div className="flex h-full flex-col gap-5 lg:gap-7.5">
-              <BeforeAfterSlider
+              <BeforeAfterRow
                 before={item.before}
                 after={item.after}
                 labels={labels}

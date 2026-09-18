@@ -4,7 +4,7 @@ import type { Data } from "@repo/strapi-types"
 import { ChevronRight } from "lucide-react"
 import { getTranslations } from "next-intl/server"
 
-import { BeforeAfterSlider } from "@/components/elementary/BeforeAfterSlider"
+import { BeforeAfterRow } from "@/components/elementary/BeforeAfterRow"
 import { Container } from "@/components/elementary/Container"
 import { PlayableStill } from "@/components/elementary/PlayableStill"
 import { ZoomableImage } from "@/components/elementary/ZoomableImage"
@@ -130,14 +130,10 @@ export async function StrapiCaseStudy({
           {/* The whole treatment in one drag, before the stages break it
               down. The frame gives it the wider half of the card. */}
           {before && after && (
-            <BeforeAfterSlider
+            <BeforeAfterRow
               before={before}
               after={after}
-              labels={{
-                before: t("before"),
-                after: t("after"),
-                compare: t("compare"),
-              }}
+              labels={{ before: t("before"), after: t("after") }}
               className="rounded-[26px] lg:flex-1"
             />
           )}
