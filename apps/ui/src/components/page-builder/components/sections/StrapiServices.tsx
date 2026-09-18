@@ -19,15 +19,20 @@ const CARD =
   "shadow-brand-card relative flex min-h-42.75 flex-col overflow-hidden rounded-[20px] p-5 lg:min-h-53.5 lg:rounded-[26px] lg:p-7.5"
 
 /**
- * The illustration stands on the card's bottom edge, at the right. The frame
- * places each one by hand and lets some bleed past the edge; a single rule has
- * to hold for whatever art an editor uploads, and one that sits them all on the
- * floor keeps a wide, short illustration from disappearing under it. The box is
- * the frame's 158 wide and the full height of the card, which puts our assets —
- * exported at twice their drawn size — back at the scale the frame shows them.
+ * The illustration stands on the card's bottom edge, at the right, in the
+ * frame's box: 123 across on a phone and 158 at desktop, the full height of
+ * the card. A single rule has to hold for whatever art an editor uploads, and
+ * one that sits them all on the floor keeps a wide, short illustration from
+ * disappearing under it.
+ *
+ * The box can be the frame's full width because the artwork now carries the
+ * margins the frame's own does — the tooth occupies about four fifths of its
+ * canvas, so the box reaching under the words costs the words nothing. It was
+ * narrowed to 74 while the art was cropped to its edges and every pixel of box
+ * covered text.
  */
 const ILLUSTRATION =
-  "pointer-events-none absolute right-0 bottom-0 h-42.75 w-18.5 object-contain object-bottom lg:h-53.5 lg:w-39.5"
+  "pointer-events-none absolute right-0 bottom-0 h-42.75 w-30.75 object-contain object-bottom lg:h-53.5 lg:w-39.5"
 
 // The design system gives every h3 a 1.4 leading and a bottom margin; the
 // frame sets 34px and no margin.
