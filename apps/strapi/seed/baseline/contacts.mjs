@@ -66,7 +66,13 @@ export const contactsPage = {
           values: OPENING_HOURS.map(text),
         },
       ],
-      image: image("gallery-1", "Стоматологічний кабінет клініки"),
+      // The frame puts the clinic's own frontage here rather than a room
+      // inside it: the design review chose it so a patient looking for the
+      // place recognises it from the street.
+      image: image(
+        "clinic-building",
+        "Фасад стоматологічної клініки «Нова Посмішка» у Житомирі"
+      ),
     },
     {
       __component: "sections.map",
