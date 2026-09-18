@@ -44,8 +44,8 @@ const LABEL = cn(
   "[&>svg]:ml-3 [&>svg]:size-4"
 )
 
-/** The page you are on, in brand teal and semibold. */
-const ACTIVE = "text-brand-teal! font-semibold"
+/** The page you are on: the frame's pill, in brand teal and semibold. */
+const ACTIVE = "bg-brand-mist text-brand-teal! font-semibold"
 
 /**
  * The same, for the words in the bar itself.
@@ -112,15 +112,20 @@ function Menu({
                 <span>{item.label}</span>
               )}
 
+              {/* Measured off the frame: a 363-wide panel at a 24 radius with
+                  20 of padding, each service 54 tall inside a 10-radius pill
+                  with 20 of its own. The starter's popover chrome — a 6
+                  radius, a border, 8 of padding — is what made it look
+                  "зліплено" in the design review. */}
               {hasSubItems && (
-                <NavigationMenuContent className="z-50">
-                  <ul>
+                <NavigationMenuContent className="shadow-brand-card! z-50 min-w-90.75 rounded-3xl! border-0! bg-white p-5">
+                  <ul className="list-none">
                     {item?.categoryItems?.map((subItem) => (
                       <li key={subItem.id} className="list-none">
                         <StrapiLink
                           component={subItem}
                           className={cn(
-                            "text-brand-ink hover:text-brand-teal w-full justify-start text-base font-normal no-underline",
+                            "text-brand-ink hover:bg-brand-mist hover:text-brand-teal flex h-13.5 w-full items-center justify-start rounded-[10px] px-5 text-base font-normal no-underline transition-colors",
                             isCurrent(subItem) && ACTIVE
                           )}
                         />
