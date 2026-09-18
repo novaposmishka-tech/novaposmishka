@@ -151,7 +151,12 @@ export function CaseGallery({
                   "w-full shrink-0 snap-start border border-white/5 bg-white/5 md:w-[calc(50%-0.75rem)]"
             )}
           >
-            <div className="flex flex-col gap-5 lg:gap-7.5">
+            {/* Cards in a row are all as tall as the tallest. Left to itself
+                the spare height fell below the doctor's name, which is the
+                "нижній відступ" of the design review; the column now fills the
+                card and the name sits on its floor, so the room shows above
+                the rule where the frame has it. */}
+            <div className="flex h-full flex-col gap-5 lg:gap-7.5">
               <BeforeAfterSlider
                 before={item.before}
                 after={item.after}
@@ -161,7 +166,9 @@ export function CaseGallery({
                 className="aspect-289/189 rounded-2xl lg:aspect-538/293"
               />
 
-              <div className="flex flex-col gap-4 lg:gap-5">
+              {/* Fills what the slider leaves, so the doctor's row below can
+                  reach the card's floor. */}
+              <div className="flex flex-1 flex-col gap-4 lg:gap-5">
                 {item.caption && (
                   <p
                     className={cn(
@@ -176,7 +183,7 @@ export function CaseGallery({
                 {item.doctorName && (
                   <div
                     className={cn(
-                      "flex items-center gap-3.75 border-t pt-4 lg:pt-5",
+                      "mt-auto flex items-center gap-3.75 border-t pt-4 lg:pt-5",
                       // Grey, not the pale blue of brand-border: the frame rules a card in
                       // the same hairline the rest of the site uses.
                       isGrid ? "border-brand-hairline" : "border-white/20"
