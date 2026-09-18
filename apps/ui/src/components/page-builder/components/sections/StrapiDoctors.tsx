@@ -167,7 +167,7 @@ function DoctorsPage({
                       // The frame rounds the portrait at 10 on a phone, not 26: measured
                       // off a 1:1 render of the mobile doctors frame, where the
                       // 100-wide photo turns its corner in ten pixels.
-                      className="bg-brand-mist h-23.75 w-25 shrink-0 rounded-[10px] px-2.5 pt-2.5 lg:h-60.75 lg:w-64 lg:rounded-[26px] lg:pt-5"
+                      className="bg-brand-mist h-23.75 w-21.25 shrink-0 rounded-[10px] px-2.5 pt-2.5 lg:h-60.75 lg:w-64 lg:rounded-[26px] lg:pt-5"
                     />
                   )}
 
