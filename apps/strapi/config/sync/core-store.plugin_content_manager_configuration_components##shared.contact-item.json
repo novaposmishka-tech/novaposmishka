@@ -22,42 +22,42 @@
       },
       "label": {
         "edit": {
-          "label": "label",
+          "label": "Підпис",
           "description": "",
           "placeholder": "",
           "visible": true,
           "editable": true
         },
         "list": {
-          "label": "label",
+          "label": "Підпис",
           "searchable": true,
           "sortable": true
         }
       },
       "kind": {
         "edit": {
-          "label": "kind",
+          "label": "Тип значення",
           "description": "",
           "placeholder": "",
           "visible": true,
           "editable": true
         },
         "list": {
-          "label": "kind",
+          "label": "Тип значення",
           "searchable": true,
           "sortable": true
         }
       },
       "values": {
         "edit": {
-          "label": "values",
+          "label": "Значення",
           "description": "",
           "placeholder": "",
           "visible": true,
           "editable": true
         },
         "list": {
-          "label": "values",
+          "label": "Значення",
           "searchable": false,
           "sortable": false
         }

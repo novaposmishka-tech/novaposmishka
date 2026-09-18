@@ -21,28 +21,28 @@
       },
       "images": {
         "edit": {
-          "label": "images",
+          "label": "Зображення",
           "description": "",
           "placeholder": "",
           "visible": true,
           "editable": true
         },
         "list": {
-          "label": "images",
+          "label": "Зображення",
           "searchable": false,
           "sortable": false
         }
       },
       "radius": {
         "edit": {
-          "label": "radius",
+          "label": "Скруглення",
           "description": "",
           "placeholder": "",
           "visible": true,
           "editable": true
         },
         "list": {
-          "label": "radius",
+          "label": "Скруглення",
           "searchable": true,
           "sortable": true
         }

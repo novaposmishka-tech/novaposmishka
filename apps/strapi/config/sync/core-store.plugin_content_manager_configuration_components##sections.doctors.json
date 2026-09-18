@@ -22,42 +22,42 @@
       },
       "title": {
         "edit": {
-          "label": "title",
+          "label": "Заголовок",
           "description": "",
           "placeholder": "",
           "visible": true,
           "editable": true
         },
         "list": {
-          "label": "title",
+          "label": "Заголовок",
           "searchable": true,
           "sortable": true
         }
       },
       "subtitle": {
         "edit": {
-          "label": "subtitle",
+          "label": "Підзаголовок",
           "description": "",
           "placeholder": "",
           "visible": true,
           "editable": true
         },
         "list": {
-          "label": "subtitle",
+          "label": "Підзаголовок",
           "searchable": true,
           "sortable": true
         }
       },
       "doctors": {
         "edit": {
-          "label": "doctors",
+          "label": "Лікарі",
           "description": "",
           "placeholder": "",
           "visible": true,
           "editable": true
         },
         "list": {
-          "label": "doctors",
+          "label": "Лікарі",
           "searchable": false,
           "sortable": false
         }

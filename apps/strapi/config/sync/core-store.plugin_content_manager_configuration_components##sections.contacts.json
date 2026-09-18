@@ -22,42 +22,42 @@
       },
       "title": {
         "edit": {
-          "label": "title",
+          "label": "Заголовок",
           "description": "",
           "placeholder": "",
           "visible": true,
           "editable": true
         },
         "list": {
-          "label": "title",
+          "label": "Заголовок",
           "searchable": true,
           "sortable": true
         }
       },
       "items": {
         "edit": {
-          "label": "items",
+          "label": "Елементи",
           "description": "",
           "placeholder": "",
           "visible": true,
           "editable": true
         },
         "list": {
-          "label": "items",
+          "label": "Елементи",
           "searchable": false,
           "sortable": false
         }
       },
       "image": {
         "edit": {
-          "label": "image",
+          "label": "Зображення",
           "description": "",
           "placeholder": "",
           "visible": true,
           "editable": true
         },
         "list": {
-          "label": "image",
+          "label": "Зображення",
           "searchable": false,
           "sortable": false
         }

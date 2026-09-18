@@ -22,56 +22,56 @@
       },
       "name": {
         "edit": {
-          "label": "name",
+          "label": "Назва",
           "description": "",
           "placeholder": "",
           "visible": true,
           "editable": true
         },
         "list": {
-          "label": "name",
+          "label": "Назва",
           "searchable": true,
           "sortable": true
         }
       },
       "description": {
         "edit": {
-          "label": "description",
+          "label": "Опис",
           "description": "",
           "placeholder": "",
           "visible": true,
           "editable": true
         },
         "list": {
-          "label": "description",
+          "label": "Опис",
           "searchable": true,
           "sortable": true
         }
       },
       "icon": {
         "edit": {
-          "label": "icon",
+          "label": "Іконка",
           "description": "",
           "placeholder": "",
           "visible": true,
           "editable": true
         },
         "list": {
-          "label": "icon",
+          "label": "Іконка",
           "searchable": false,
           "sortable": false
         }
       },
       "link": {
         "edit": {
-          "label": "link",
+          "label": "Посилання",
           "description": "",
           "placeholder": "",
           "visible": true,
           "editable": true
         },
         "list": {
-          "label": "link",
+          "label": "Посилання",
           "searchable": false,
           "sortable": false
         }

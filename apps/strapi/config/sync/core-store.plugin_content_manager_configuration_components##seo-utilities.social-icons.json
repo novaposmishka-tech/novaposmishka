@@ -21,28 +21,28 @@
       },
       "title": {
         "edit": {
-          "label": "title",
+          "label": "Заголовок",
           "description": "",
           "placeholder": "",
           "visible": true,
           "editable": true
         },
         "list": {
-          "label": "title",
+          "label": "Заголовок",
           "searchable": true,
           "sortable": true
         }
       },
       "socials": {
         "edit": {
-          "label": "socials",
+          "label": "Соцмережі",
           "description": "",
           "placeholder": "",
           "visible": true,
           "editable": true
         },
         "list": {
-          "label": "socials",
+          "label": "Соцмережі",
           "searchable": false,
           "sortable": false
         }

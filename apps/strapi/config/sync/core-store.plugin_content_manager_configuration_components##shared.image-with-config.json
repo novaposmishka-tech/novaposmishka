@@ -21,28 +21,28 @@
       },
       "image": {
         "edit": {
-          "label": "image",
+          "label": "Зображення",
           "description": "",
           "placeholder": "",
           "visible": true,
           "editable": true
         },
         "list": {
-          "label": "image",
+          "label": "Зображення",
           "searchable": false,
           "sortable": false
         }
       },
       "position": {
         "edit": {
-          "label": "position",
+          "label": "Розташування",
           "description": "",
           "placeholder": "",
           "visible": true,
           "editable": true
         },
         "list": {
-          "label": "position",
+          "label": "Розташування",
           "searchable": true,
           "sortable": true
         }

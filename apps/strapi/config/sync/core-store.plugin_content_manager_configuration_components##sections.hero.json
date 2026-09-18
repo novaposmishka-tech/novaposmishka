@@ -21,112 +21,112 @@
       },
       "links": {
         "edit": {
-          "label": "links",
+          "label": "Посилання",
           "description": "",
           "placeholder": "",
           "visible": true,
           "editable": true
         },
         "list": {
-          "label": "links",
+          "label": "Посилання",
           "searchable": false,
           "sortable": false
         }
       },
       "description": {
         "edit": {
-          "label": "description",
+          "label": "Опис",
           "description": "",
           "placeholder": "",
           "visible": true,
           "editable": true
         },
         "list": {
-          "label": "description",
+          "label": "Опис",
           "searchable": false,
           "sortable": false
         }
       },
       "tag": {
         "edit": {
-          "label": "tag",
+          "label": "Мітка",
           "description": "",
           "placeholder": "",
           "visible": true,
           "editable": true
         },
         "list": {
-          "label": "tag",
+          "label": "Мітка",
           "searchable": false,
           "sortable": false
         }
       },
       "note": {
         "edit": {
-          "label": "note",
+          "label": "Примітка",
           "description": "",
           "placeholder": "",
           "visible": true,
           "editable": true
         },
         "list": {
-          "label": "note",
+          "label": "Примітка",
           "searchable": false,
           "sortable": false
         }
       },
       "title": {
         "edit": {
-          "label": "title",
+          "label": "Заголовок",
           "description": "",
           "placeholder": "",
           "visible": true,
           "editable": true
         },
         "list": {
-          "label": "title",
+          "label": "Заголовок",
           "searchable": false,
           "sortable": false
         }
       },
       "images": {
         "edit": {
-          "label": "images",
+          "label": "Зображення",
           "description": "",
           "placeholder": "",
           "visible": true,
           "editable": true
         },
         "list": {
-          "label": "images",
+          "label": "Зображення",
           "searchable": false,
           "sortable": false
         }
       },
       "serviceTags": {
         "edit": {
-          "label": "serviceTags",
+          "label": "Теги послуг",
           "description": "",
           "placeholder": "",
           "visible": true,
           "editable": true
         },
         "list": {
-          "label": "serviceTags",
+          "label": "Теги послуг",
           "searchable": false,
           "sortable": false
         }
       },
       "backgroundImage": {
         "edit": {
-          "label": "backgroundImage",
+          "label": "Фонове зображення",
           "description": "",
           "placeholder": "",
           "visible": true,
           "editable": true
         },
         "list": {
-          "label": "backgroundImage",
+          "label": "Фонове зображення",
           "searchable": false,
           "sortable": false
         }

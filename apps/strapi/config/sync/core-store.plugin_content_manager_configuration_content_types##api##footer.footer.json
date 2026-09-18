@@ -21,112 +21,112 @@
       },
       "sections": {
         "edit": {
-          "label": "sections",
+          "label": "Секції",
           "description": "",
           "placeholder": "",
           "visible": true,
           "editable": true
         },
         "list": {
-          "label": "sections",
+          "label": "Секції",
           "searchable": false,
           "sortable": false
         }
       },
       "links": {
         "edit": {
-          "label": "links",
+          "label": "Посилання",
           "description": "",
           "placeholder": "",
           "visible": true,
           "editable": true
         },
         "list": {
-          "label": "links",
+          "label": "Посилання",
           "searchable": false,
           "sortable": false
         }
       },
       "copyRight": {
         "edit": {
-          "label": "copyRight",
+          "label": "Текст копірайту",
           "description": "",
           "placeholder": "",
           "visible": true,
           "editable": true
         },
         "list": {
-          "label": "copyRight",
+          "label": "Текст копірайту",
           "searchable": true,
           "sortable": true
         }
       },
       "logoImage": {
         "edit": {
-          "label": "logoImage",
+          "label": "Логотип",
           "description": "",
           "placeholder": "",
           "visible": true,
           "editable": true
         },
         "list": {
-          "label": "logoImage",
+          "label": "Логотип",
           "searchable": false,
           "sortable": false
         }
       },
       "leadForm": {
         "edit": {
-          "label": "leadForm",
+          "label": "Форма заявки",
           "description": "",
           "placeholder": "",
           "visible": true,
           "editable": true
         },
         "list": {
-          "label": "leadForm",
+          "label": "Форма заявки",
           "searchable": false,
           "sortable": false
         }
       },
       "description": {
         "edit": {
-          "label": "description",
+          "label": "Опис",
           "description": "",
           "placeholder": "",
           "visible": true,
           "editable": true
         },
         "list": {
-          "label": "description",
+          "label": "Опис",
           "searchable": true,
           "sortable": true
         }
       },
       "contacts": {
         "edit": {
-          "label": "contacts",
+          "label": "Контакти",
           "description": "",
           "placeholder": "",
           "visible": true,
           "editable": true
         },
         "list": {
-          "label": "contacts",
+          "label": "Контакти",
           "searchable": false,
           "sortable": false
         }
       },
       "rating": {
         "edit": {
-          "label": "rating",
+          "label": "Рейтинг",
           "description": "",
           "placeholder": "",
           "visible": true,
           "editable": true
         },
         "list": {
-          "label": "rating",
+          "label": "Рейтинг",
           "searchable": false,
           "sortable": false
         }

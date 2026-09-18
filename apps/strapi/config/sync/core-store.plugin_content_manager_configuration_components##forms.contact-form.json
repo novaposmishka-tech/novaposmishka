@@ -21,42 +21,42 @@
       },
       "title": {
         "edit": {
-          "label": "title",
+          "label": "Заголовок",
           "description": "",
           "placeholder": "",
           "visible": true,
           "editable": true
         },
         "list": {
-          "label": "title",
+          "label": "Заголовок",
           "searchable": true,
           "sortable": true
         }
       },
       "description": {
         "edit": {
-          "label": "description",
+          "label": "Опис",
           "description": "",
           "placeholder": "",
           "visible": true,
           "editable": true
         },
         "list": {
-          "label": "description",
+          "label": "Опис",
           "searchable": true,
           "sortable": true
         }
       },
       "gdpr": {
         "edit": {
-          "label": "gdpr",
+          "label": "Згода на обробку даних",
           "description": "",
           "placeholder": "",
           "visible": true,
           "editable": true
         },
         "list": {
-          "label": "gdpr",
+          "label": "Згода на обробку даних",
           "searchable": false,
           "sortable": false
         }

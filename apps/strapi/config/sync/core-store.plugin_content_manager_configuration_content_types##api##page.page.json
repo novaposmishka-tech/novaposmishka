@@ -21,77 +21,77 @@
       },
       "title": {
         "edit": {
-          "label": "title",
+          "label": "Заголовок",
           "description": "",
           "placeholder": "",
           "visible": true,
           "editable": true
         },
         "list": {
-          "label": "title",
+          "label": "Заголовок",
           "searchable": true,
           "sortable": true
         }
       },
       "breadcrumbTitle": {
         "edit": {
-          "label": "breadcrumbTitle",
+          "label": "Заголовок у хлібних крихтах",
           "description": "",
           "placeholder": "",
           "visible": true,
           "editable": true
         },
         "list": {
-          "label": "breadcrumbTitle",
+          "label": "Заголовок у хлібних крихтах",
           "searchable": true,
           "sortable": true
         }
       },
       "slug": {
         "edit": {
-          "label": "slug",
+          "label": "URL-адреса (slug)",
           "description": "",
           "placeholder": "",
           "visible": true,
           "editable": true
         },
         "list": {
-          "label": "slug",
+          "label": "URL-адреса (slug)",
           "searchable": true,
           "sortable": true
         }
       },
       "fullPath": {
         "edit": {
-          "label": "fullPath",
+          "label": "Повна адреса сторінки",
           "description": "Full path will be calculated by system",
           "placeholder": "",
           "visible": true,
           "editable": false
         },
         "list": {
-          "label": "fullPath",
+          "label": "Повна адреса сторінки",
           "searchable": true,
           "sortable": true
         }
       },
       "content": {
         "edit": {
-          "label": "content",
+          "label": "Контент сторінки",
           "description": "",
           "placeholder": "",
           "visible": true,
           "editable": true
         },
         "list": {
-          "label": "content",
+          "label": "Контент сторінки",
           "searchable": false,
           "sortable": false
         }
       },
       "children": {
         "edit": {
-          "label": "children",
+          "label": "Дочірні сторінки",
           "description": "",
           "placeholder": "",
           "visible": true,
@@ -99,14 +99,14 @@
           "mainField": "title"
         },
         "list": {
-          "label": "children",
+          "label": "Дочірні сторінки",
           "searchable": false,
           "sortable": false
         }
       },
       "parent": {
         "edit": {
-          "label": "parent",
+          "label": "Батьківська сторінка",
           "description": "",
           "placeholder": "",
           "visible": true,
@@ -114,21 +114,21 @@
           "mainField": "title"
         },
         "list": {
-          "label": "parent",
+          "label": "Батьківська сторінка",
           "searchable": true,
           "sortable": true
         }
       },
       "seo": {
         "edit": {
-          "label": "seo",
+          "label": "SEO",
           "description": "",
           "placeholder": "",
           "visible": true,
           "editable": true
         },
         "list": {
-          "label": "seo",
+          "label": "SEO",
           "searchable": false,
           "sortable": false
         }

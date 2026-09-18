@@ -21,84 +21,84 @@
       },
       "variant": {
         "edit": {
-          "label": "variant",
+          "label": "Варіант оформлення",
           "description": "",
           "placeholder": "",
           "visible": true,
           "editable": true
         },
         "list": {
-          "label": "variant",
+          "label": "Варіант оформлення",
           "searchable": true,
           "sortable": true
         }
       },
       "size": {
         "edit": {
-          "label": "size",
+          "label": "Розмір",
           "description": "",
           "placeholder": "",
           "visible": true,
           "editable": true
         },
         "list": {
-          "label": "size",
+          "label": "Розмір",
           "searchable": true,
           "sortable": true
         }
       },
       "hasIcons": {
         "edit": {
-          "label": "hasIcons",
+          "label": "Показувати іконки",
           "description": "",
           "placeholder": "",
           "visible": true,
           "editable": true
         },
         "list": {
-          "label": "hasIcons",
+          "label": "Показувати іконки",
           "searchable": true,
           "sortable": true
         }
       },
       "leftIcon": {
         "edit": {
-          "label": "leftIcon",
+          "label": "Іконка зліва",
           "description": "",
           "placeholder": "",
           "visible": true,
           "editable": true
         },
         "list": {
-          "label": "leftIcon",
+          "label": "Іконка зліва",
           "searchable": false,
           "sortable": false
         }
       },
       "rightIcon": {
         "edit": {
-          "label": "rightIcon",
+          "label": "Іконка справа",
           "description": "",
           "placeholder": "",
           "visible": true,
           "editable": true
         },
         "list": {
-          "label": "rightIcon",
+          "label": "Іконка справа",
           "searchable": false,
           "sortable": false
         }
       },
       "disableAnimations": {
         "edit": {
-          "label": "disableAnimations",
+          "label": "Вимкнути анімації",
           "description": "",
           "placeholder": "",
           "visible": true,
           "editable": true
         },
         "list": {
-          "label": "disableAnimations",
+          "label": "Вимкнути анімації",
           "searchable": true,
           "sortable": true
         }

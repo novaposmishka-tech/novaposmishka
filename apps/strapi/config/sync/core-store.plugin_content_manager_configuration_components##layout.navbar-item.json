@@ -21,56 +21,56 @@
       },
       "isCategoryLink": {
         "edit": {
-          "label": "isCategoryLink",
+          "label": "Випадаюче меню категорій",
           "description": "",
           "placeholder": "",
           "visible": true,
           "editable": false
         },
         "list": {
-          "label": "isCategoryLink",
+          "label": "Випадаюче меню категорій",
           "searchable": true,
           "sortable": true
         }
       },
       "link": {
         "edit": {
-          "label": "link",
+          "label": "Посилання",
           "description": "",
           "placeholder": "",
           "visible": true,
           "editable": true
         },
         "list": {
-          "label": "link",
+          "label": "Посилання",
           "searchable": false,
           "sortable": false
         }
       },
       "categoryItems": {
         "edit": {
-          "label": "categoryItems",
+          "label": "Пункти списку",
           "description": "",
           "placeholder": "",
           "visible": true,
           "editable": true
         },
         "list": {
-          "label": "categoryItems",
+          "label": "Пункти списку",
           "searchable": false,
           "sortable": false
         }
       },
       "label": {
         "edit": {
-          "label": "label",
+          "label": "Підпис",
           "description": "",
           "placeholder": "",
           "visible": true,
           "editable": true
         },
         "list": {
-          "label": "label",
+          "label": "Підпис",
           "searchable": true,
           "sortable": true
         }

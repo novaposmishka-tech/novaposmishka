@@ -21,28 +21,28 @@
       },
       "logos": {
         "edit": {
-          "label": "logos",
+          "label": "Логотипи",
           "description": "",
           "placeholder": "",
           "visible": true,
           "editable": true
         },
         "list": {
-          "label": "logos",
+          "label": "Логотипи",
           "searchable": false,
           "sortable": false
         }
       },
       "title": {
         "edit": {
-          "label": "title",
+          "label": "Заголовок",
           "description": "",
           "placeholder": "",
           "visible": true,
           "editable": true
         },
         "list": {
-          "label": "title",
+          "label": "Заголовок",
           "searchable": false,
           "sortable": false
         }

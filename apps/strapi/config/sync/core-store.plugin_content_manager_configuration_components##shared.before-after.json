@@ -22,42 +22,42 @@
       },
       "caption": {
         "edit": {
-          "label": "caption",
+          "label": "Підпис",
           "description": "",
           "placeholder": "",
           "visible": true,
           "editable": true
         },
         "list": {
-          "label": "caption",
+          "label": "Підпис",
           "searchable": true,
           "sortable": true
         }
       },
       "before": {
         "edit": {
-          "label": "before",
+          "label": "До",
           "description": "",
           "placeholder": "",
           "visible": true,
           "editable": true
         },
         "list": {
-          "label": "before",
+          "label": "До",
           "searchable": false,
           "sortable": false
         }
       },
       "after": {
         "edit": {
-          "label": "after",
+          "label": "Після",
           "description": "",
           "placeholder": "",
           "visible": true,
           "editable": true
         },
         "list": {
-          "label": "after",
+          "label": "Після",
           "searchable": false,
           "sortable": false
         }

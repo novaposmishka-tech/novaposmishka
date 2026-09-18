@@ -22,28 +22,28 @@
       },
       "title": {
         "edit": {
-          "label": "title",
+          "label": "Заголовок",
           "description": "",
           "placeholder": "",
           "visible": true,
           "editable": true
         },
         "list": {
-          "label": "title",
+          "label": "Заголовок",
           "searchable": true,
           "sortable": true
         }
       },
       "testimonials": {
         "edit": {
-          "label": "testimonials",
+          "label": "Відгуки",
           "description": "",
           "placeholder": "",
           "visible": true,
           "editable": true
         },
         "list": {
-          "label": "testimonials",
+          "label": "Відгуки",
           "searchable": false,
           "sortable": false
         }

@@ -21,70 +21,70 @@
       },
       "title": {
         "edit": {
-          "label": "title",
+          "label": "Заголовок",
           "description": "",
           "placeholder": "",
           "visible": true,
           "editable": true
         },
         "list": {
-          "label": "title",
+          "label": "Заголовок",
           "searchable": false,
           "sortable": false
         }
       },
       "description": {
         "edit": {
-          "label": "description",
+          "label": "Опис",
           "description": "",
           "placeholder": "",
           "visible": true,
           "editable": true
         },
         "list": {
-          "label": "description",
+          "label": "Опис",
           "searchable": false,
           "sortable": false
         }
       },
       "listStyle": {
         "edit": {
-          "label": "listStyle",
+          "label": "Стиль списку",
           "description": "",
           "placeholder": "",
           "visible": true,
           "editable": true
         },
         "list": {
-          "label": "listStyle",
+          "label": "Стиль списку",
           "searchable": true,
           "sortable": true
         }
       },
       "features": {
         "edit": {
-          "label": "features",
+          "label": "Переваги",
           "description": "",
           "placeholder": "",
           "visible": true,
           "editable": true
         },
         "list": {
-          "label": "features",
+          "label": "Переваги",
           "searchable": false,
           "sortable": false
         }
       },
       "mainImage": {
         "edit": {
-          "label": "mainImage",
+          "label": "Головне зображення",
           "description": "",
           "placeholder": "",
           "visible": true,
           "editable": true
         },
         "list": {
-          "label": "mainImage",
+          "label": "Головне зображення",
           "searchable": false,
           "sortable": false
         }

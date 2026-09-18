@@ -22,42 +22,42 @@
       },
       "name": {
         "edit": {
-          "label": "name",
+          "label": "Назва",
           "description": "",
           "placeholder": "",
           "visible": true,
           "editable": true
         },
         "list": {
-          "label": "name",
+          "label": "Назва",
           "searchable": true,
           "sortable": true
         }
       },
       "specialty": {
         "edit": {
-          "label": "specialty",
+          "label": "Спеціальність",
           "description": "",
           "placeholder": "",
           "visible": true,
           "editable": true
         },
         "list": {
-          "label": "specialty",
+          "label": "Спеціальність",
           "searchable": true,
           "sortable": true
         }
       },
       "photo": {
         "edit": {
-          "label": "photo",
+          "label": "Фото",
           "description": "",
           "placeholder": "",
           "visible": true,
           "editable": true
         },
         "list": {
-          "label": "photo",
+          "label": "Фото",
           "searchable": false,
           "sortable": false
         }

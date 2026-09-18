@@ -21,14 +21,14 @@
       },
       "content": {
         "edit": {
-          "label": "content",
+          "label": "Контент сторінки",
           "description": "",
           "placeholder": "",
           "visible": true,
           "editable": true
         },
         "list": {
-          "label": "content",
+          "label": "Контент сторінки",
           "searchable": false,
           "sortable": false
         }

@@ -21,140 +21,140 @@
       },
       "metaTitle": {
         "edit": {
-          "label": "metaTitle",
+          "label": "SEO-заголовок",
           "description": "",
           "placeholder": "",
           "visible": true,
           "editable": true
         },
         "list": {
-          "label": "metaTitle",
+          "label": "SEO-заголовок",
           "searchable": true,
           "sortable": true
         }
       },
       "metaDescription": {
         "edit": {
-          "label": "metaDescription",
+          "label": "SEO-опис",
           "description": "",
           "placeholder": "",
           "visible": true,
           "editable": true
         },
         "list": {
-          "label": "metaDescription",
+          "label": "SEO-опис",
           "searchable": true,
           "sortable": true
         }
       },
       "metaImage": {
         "edit": {
-          "label": "metaImage",
+          "label": "Зображення для соцмереж",
           "description": "",
           "placeholder": "",
           "visible": true,
           "editable": true
         },
         "list": {
-          "label": "metaImage",
+          "label": "Зображення для соцмереж",
           "searchable": false,
           "sortable": false
         }
       },
       "keywords": {
         "edit": {
-          "label": "keywords",
+          "label": "Ключові слова",
           "description": "",
           "placeholder": "",
           "visible": true,
           "editable": true
         },
         "list": {
-          "label": "keywords",
+          "label": "Ключові слова",
           "searchable": true,
           "sortable": true
         }
       },
       "twitter": {
         "edit": {
-          "label": "twitter",
+          "label": "Twitter-картка",
           "description": "",
           "placeholder": "",
           "visible": true,
           "editable": true
         },
         "list": {
-          "label": "twitter",
+          "label": "Twitter-картка",
           "searchable": false,
           "sortable": false
         }
       },
       "og": {
         "edit": {
-          "label": "og",
+          "label": "Open Graph",
           "description": "",
           "placeholder": "",
           "visible": true,
           "editable": true
         },
         "list": {
-          "label": "og",
+          "label": "Open Graph",
           "searchable": false,
           "sortable": false
         }
       },
       "applicationName": {
         "edit": {
-          "label": "applicationName",
+          "label": "Назва застосунку",
           "description": "",
           "placeholder": "",
           "visible": true,
           "editable": true
         },
         "list": {
-          "label": "applicationName",
+          "label": "Назва застосунку",
           "searchable": true,
           "sortable": true
         }
       },
       "canonicalUrl": {
         "edit": {
-          "label": "canonicalUrl",
+          "label": "Канонічний URL",
           "description": "",
           "placeholder": "",
           "visible": true,
           "editable": true
         },
         "list": {
-          "label": "canonicalUrl",
+          "label": "Канонічний URL",
           "searchable": true,
           "sortable": true
         }
       },
       "metaRobots": {
         "edit": {
-          "label": "metaRobots",
+          "label": "Індексація пошуковиками",
           "description": "",
           "placeholder": "",
           "visible": true,
           "editable": true
         },
         "list": {
-          "label": "metaRobots",
+          "label": "Індексація пошуковиками",
           "searchable": true,
           "sortable": true
         }
       },
       "structuredData": {
         "edit": {
-          "label": "structuredData",
+          "label": "Структуровані дані (JSON-LD)",
           "description": "",
           "placeholder": "",
           "visible": true,
           "editable": true
         },
         "list": {
-          "label": "structuredData",
+          "label": "Структуровані дані (JSON-LD)",
           "searchable": false,
           "sortable": false
         }

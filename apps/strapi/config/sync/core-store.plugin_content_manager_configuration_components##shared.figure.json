@@ -21,56 +21,56 @@
       },
       "number": {
         "edit": {
-          "label": "number",
+          "label": "Номер кроку",
           "description": "",
           "placeholder": "",
           "visible": true,
           "editable": true
         },
         "list": {
-          "label": "number",
+          "label": "Номер кроку",
           "searchable": true,
           "sortable": true
         }
       },
       "prefix": {
         "edit": {
-          "label": "prefix",
+          "label": "Префікс",
           "description": "",
           "placeholder": "",
           "visible": true,
           "editable": true
         },
         "list": {
-          "label": "prefix",
+          "label": "Префікс",
           "searchable": true,
           "sortable": true
         }
       },
       "suffix": {
         "edit": {
-          "label": "suffix",
+          "label": "Суфікс",
           "description": "",
           "placeholder": "",
           "visible": true,
           "editable": true
         },
         "list": {
-          "label": "suffix",
+          "label": "Суфікс",
           "searchable": true,
           "sortable": true
         }
       },
       "description": {
         "edit": {
-          "label": "description",
+          "label": "Опис",
           "description": "",
           "placeholder": "",
           "visible": true,
           "editable": true
         },
         "list": {
-          "label": "description",
+          "label": "Опис",
           "searchable": false,
           "sortable": false
         }

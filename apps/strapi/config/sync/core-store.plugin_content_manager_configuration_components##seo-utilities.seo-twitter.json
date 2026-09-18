@@ -21,98 +21,98 @@
       },
       "card": {
         "edit": {
-          "label": "card",
+          "label": "Тип картки",
           "description": "",
           "placeholder": "",
           "visible": true,
           "editable": true
         },
         "list": {
-          "label": "card",
+          "label": "Тип картки",
           "searchable": true,
           "sortable": true
         }
       },
       "title": {
         "edit": {
-          "label": "title",
+          "label": "Заголовок",
           "description": "",
           "placeholder": "",
           "visible": true,
           "editable": true
         },
         "list": {
-          "label": "title",
+          "label": "Заголовок",
           "searchable": true,
           "sortable": true
         }
       },
       "description": {
         "edit": {
-          "label": "description",
+          "label": "Опис",
           "description": "",
           "placeholder": "",
           "visible": true,
           "editable": true
         },
         "list": {
-          "label": "description",
+          "label": "Опис",
           "searchable": true,
           "sortable": true
         }
       },
       "siteId": {
         "edit": {
-          "label": "siteId",
+          "label": "ID сайту в Twitter",
           "description": "",
           "placeholder": "",
           "visible": true,
           "editable": true
         },
         "list": {
-          "label": "siteId",
+          "label": "ID сайту в Twitter",
           "searchable": true,
           "sortable": true
         }
       },
       "creator": {
         "edit": {
-          "label": "creator",
+          "label": "Автор",
           "description": "",
           "placeholder": "",
           "visible": true,
           "editable": true
         },
         "list": {
-          "label": "creator",
+          "label": "Автор",
           "searchable": true,
           "sortable": true
         }
       },
       "creatorId": {
         "edit": {
-          "label": "creatorId",
+          "label": "ID автора в Twitter",
           "description": "",
           "placeholder": "",
           "visible": true,
           "editable": true
         },
         "list": {
-          "label": "creatorId",
+          "label": "ID автора в Twitter",
           "searchable": true,
           "sortable": true
         }
       },
       "images": {
         "edit": {
-          "label": "images",
+          "label": "Зображення",
           "description": "",
           "placeholder": "",
           "visible": true,
           "editable": true
         },
         "list": {
-          "label": "images",
+          "label": "Зображення",
           "searchable": false,
           "sortable": false
         }

@@ -22,56 +22,56 @@
       },
       "quote": {
         "edit": {
-          "label": "quote",
+          "label": "Цитата",
           "description": "",
           "placeholder": "",
           "visible": true,
           "editable": true
         },
         "list": {
-          "label": "quote",
+          "label": "Цитата",
           "searchable": true,
           "sortable": true
         }
       },
       "authorName": {
         "edit": {
-          "label": "authorName",
+          "label": "Ім'я автора",
           "description": "",
           "placeholder": "",
           "visible": true,
           "editable": true
         },
         "list": {
-          "label": "authorName",
+          "label": "Ім'я автора",
           "searchable": true,
           "sortable": true
         }
       },
       "authorNote": {
         "edit": {
-          "label": "authorNote",
+          "label": "Підпис під автором",
           "description": "",
           "placeholder": "",
           "visible": true,
           "editable": true
         },
         "list": {
-          "label": "authorNote",
+          "label": "Підпис під автором",
           "searchable": true,
           "sortable": true
         }
       },
       "photo": {
         "edit": {
-          "label": "photo",
+          "label": "Фото",
           "description": "",
           "placeholder": "",
           "visible": true,
           "editable": true
         },
         "list": {
-          "label": "photo",
+          "label": "Фото",
           "searchable": false,
           "sortable": false
         }

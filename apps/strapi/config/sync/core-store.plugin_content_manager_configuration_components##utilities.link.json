@@ -21,63 +21,63 @@
       },
       "type": {
         "edit": {
-          "label": "type",
+          "label": "Тип контенту",
           "description": "",
           "placeholder": "",
           "visible": true,
           "editable": true
         },
         "list": {
-          "label": "type",
+          "label": "Тип контенту",
           "searchable": true,
           "sortable": true
         }
       },
       "label": {
         "edit": {
-          "label": "label",
+          "label": "Підпис",
           "description": "",
           "placeholder": "",
           "visible": true,
           "editable": true
         },
         "list": {
-          "label": "label",
+          "label": "Підпис",
           "searchable": true,
           "sortable": true
         }
       },
       "newTab": {
         "edit": {
-          "label": "newTab",
+          "label": "Відкривати в новій вкладці",
           "description": "",
           "placeholder": "",
           "visible": true,
           "editable": true
         },
         "list": {
-          "label": "newTab",
+          "label": "Відкривати в новій вкладці",
           "searchable": true,
           "sortable": true
         }
       },
       "href": {
         "edit": {
-          "label": "href",
+          "label": "Посилання",
           "description": "",
           "placeholder": "",
           "visible": true,
           "editable": true
         },
         "list": {
-          "label": "href",
+          "label": "Посилання",
           "searchable": true,
           "sortable": true
         }
       },
       "page": {
         "edit": {
-          "label": "page",
+          "label": "Сторінка",
           "description": "",
           "placeholder": "",
           "visible": true,
@@ -85,21 +85,21 @@
           "mainField": "title"
         },
         "list": {
-          "label": "page",
+          "label": "Сторінка",
           "searchable": true,
           "sortable": true
         }
       },
       "decorations": {
         "edit": {
-          "label": "decorations",
+          "label": "Стиль оформлення",
           "description": "",
           "placeholder": "",
           "visible": true,
           "editable": true
         },
         "list": {
-          "label": "decorations",
+          "label": "Стиль оформлення",
           "searchable": false,
           "sortable": false
         }

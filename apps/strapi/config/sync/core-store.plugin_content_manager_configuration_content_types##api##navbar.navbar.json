@@ -21,42 +21,42 @@
       },
       "logoImage": {
         "edit": {
-          "label": "logoImage",
+          "label": "Логотип",
           "description": "",
           "placeholder": "",
           "visible": true,
           "editable": true
         },
         "list": {
-          "label": "logoImage",
+          "label": "Логотип",
           "searchable": false,
           "sortable": false
         }
       },
       "navbarItems": {
         "edit": {
-          "label": "navbarItems",
+          "label": "Пункти меню",
           "description": "",
           "placeholder": "",
           "visible": true,
           "editable": true
         },
         "list": {
-          "label": "navbarItems",
+          "label": "Пункти меню",
           "searchable": false,
           "sortable": false
         }
       },
       "primaryButtons": {
         "edit": {
-          "label": "primaryButtons",
+          "label": "Кнопки",
           "description": "",
           "placeholder": "",
           "visible": true,
           "editable": true
         },
         "list": {
-          "label": "primaryButtons",
+          "label": "Кнопки",
           "searchable": false,
           "sortable": false
         }

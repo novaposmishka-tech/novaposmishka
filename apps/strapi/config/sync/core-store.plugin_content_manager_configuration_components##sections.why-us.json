@@ -22,56 +22,56 @@
       },
       "title": {
         "edit": {
-          "label": "title",
+          "label": "Заголовок",
           "description": "",
           "placeholder": "",
           "visible": true,
           "editable": true
         },
         "list": {
-          "label": "title",
+          "label": "Заголовок",
           "searchable": true,
           "sortable": true
         }
       },
       "subtitle": {
         "edit": {
-          "label": "subtitle",
+          "label": "Підзаголовок",
           "description": "",
           "placeholder": "",
           "visible": true,
           "editable": true
         },
         "list": {
-          "label": "subtitle",
+          "label": "Підзаголовок",
           "searchable": true,
           "sortable": true
         }
       },
       "reasons": {
         "edit": {
-          "label": "reasons",
+          "label": "Причини",
           "description": "",
           "placeholder": "",
           "visible": true,
           "editable": true
         },
         "list": {
-          "label": "reasons",
+          "label": "Причини",
           "searchable": false,
           "sortable": false
         }
       },
       "image": {
         "edit": {
-          "label": "image",
+          "label": "Зображення",
           "description": "",
           "placeholder": "",
           "visible": true,
           "editable": true
         },
         "list": {
-          "label": "image",
+          "label": "Зображення",
           "searchable": false,
           "sortable": false
         }

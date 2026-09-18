@@ -22,42 +22,42 @@
       },
       "label": {
         "edit": {
-          "label": "label",
+          "label": "Підпис",
           "description": "",
           "placeholder": "",
           "visible": true,
           "editable": true
         },
         "list": {
-          "label": "label",
+          "label": "Підпис",
           "searchable": true,
           "sortable": true
         }
       },
       "score": {
         "edit": {
-          "label": "score",
+          "label": "Оцінка",
           "description": "",
           "placeholder": "",
           "visible": true,
           "editable": true
         },
         "list": {
-          "label": "score",
+          "label": "Оцінка",
           "searchable": true,
           "sortable": true
         }
       },
       "link": {
         "edit": {
-          "label": "link",
+          "label": "Посилання",
           "description": "",
           "placeholder": "",
           "visible": true,
           "editable": true
         },
         "list": {
-          "label": "link",
+          "label": "Посилання",
           "searchable": false,
           "sortable": false
         }

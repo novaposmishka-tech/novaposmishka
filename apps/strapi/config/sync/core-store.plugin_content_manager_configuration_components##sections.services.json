@@ -22,42 +22,42 @@
       },
       "title": {
         "edit": {
-          "label": "title",
+          "label": "Заголовок",
           "description": "",
           "placeholder": "",
           "visible": true,
           "editable": true
         },
         "list": {
-          "label": "title",
+          "label": "Заголовок",
           "searchable": true,
           "sortable": true
         }
       },
       "subtitle": {
         "edit": {
-          "label": "subtitle",
+          "label": "Підзаголовок",
           "description": "",
           "placeholder": "",
           "visible": true,
           "editable": true
         },
         "list": {
-          "label": "subtitle",
+          "label": "Підзаголовок",
           "searchable": true,
           "sortable": true
         }
       },
       "services": {
         "edit": {
-          "label": "services",
+          "label": "Послуги",
           "description": "",
           "placeholder": "",
           "visible": true,
           "editable": true
         },
         "list": {
-          "label": "services",
+          "label": "Послуги",
           "searchable": false,
           "sortable": false
         }

@@ -21,42 +21,42 @@
       },
       "title": {
         "edit": {
-          "label": "title",
+          "label": "Заголовок",
           "description": "",
           "placeholder": "",
           "visible": true,
           "editable": true
         },
         "list": {
-          "label": "title",
+          "label": "Заголовок",
           "searchable": true,
           "sortable": true
         }
       },
       "subText": {
         "edit": {
-          "label": "subText",
+          "label": "Додатковий текст",
           "description": "",
           "placeholder": "",
           "visible": true,
           "editable": true
         },
         "list": {
-          "label": "subText",
+          "label": "Додатковий текст",
           "searchable": true,
           "sortable": true
         }
       },
       "cta": {
         "edit": {
-          "label": "cta",
+          "label": "Заклик до дії",
           "description": "",
           "placeholder": "",
           "visible": true,
           "editable": true
         },
         "list": {
-          "label": "cta",
+          "label": "Заклик до дії",
           "searchable": false,
           "sortable": false
         }

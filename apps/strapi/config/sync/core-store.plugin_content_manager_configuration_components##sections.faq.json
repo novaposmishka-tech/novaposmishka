@@ -21,42 +21,42 @@
       },
       "title": {
         "edit": {
-          "label": "title",
+          "label": "Заголовок",
           "description": "",
           "placeholder": "",
           "visible": true,
           "editable": true
         },
         "list": {
-          "label": "title",
+          "label": "Заголовок",
           "searchable": true,
           "sortable": true
         }
       },
       "subTitle": {
         "edit": {
-          "label": "subTitle",
+          "label": "Підзаголовок",
           "description": "",
           "placeholder": "",
           "visible": true,
           "editable": true
         },
         "list": {
-          "label": "subTitle",
+          "label": "Підзаголовок",
           "searchable": true,
           "sortable": true
         }
       },
       "accordions": {
         "edit": {
-          "label": "accordions",
+          "label": "Блоки-акордеони",
           "description": "",
           "placeholder": "",
           "visible": true,
           "editable": true
         },
         "list": {
-          "label": "accordions",
+          "label": "Блоки-акордеони",
           "searchable": false,
           "sortable": false
         }

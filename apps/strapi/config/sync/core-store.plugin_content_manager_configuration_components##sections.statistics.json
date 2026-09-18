@@ -21,14 +21,14 @@
       },
       "figures": {
         "edit": {
-          "label": "figures",
+          "label": "Цифри",
           "description": "",
           "placeholder": "",
           "visible": true,
           "editable": true
         },
         "list": {
-          "label": "figures",
+          "label": "Цифри",
           "searchable": false,
           "sortable": false
         }

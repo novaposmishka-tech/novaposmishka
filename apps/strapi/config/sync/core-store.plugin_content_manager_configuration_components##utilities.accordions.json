@@ -21,28 +21,28 @@
       },
       "question": {
         "edit": {
-          "label": "question",
+          "label": "Питання",
           "description": "",
           "placeholder": "",
           "visible": true,
           "editable": true
         },
         "list": {
-          "label": "question",
+          "label": "Питання",
           "searchable": true,
           "sortable": true
         }
       },
       "answer": {
         "edit": {
-          "label": "answer",
+          "label": "Відповідь",
           "description": "",
           "placeholder": "",
           "visible": true,
           "editable": true
         },
         "list": {
-          "label": "answer",
+          "label": "Відповідь",
           "searchable": true,
           "sortable": true
         }

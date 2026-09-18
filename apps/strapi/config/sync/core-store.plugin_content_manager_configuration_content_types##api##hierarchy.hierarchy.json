@@ -22,14 +22,14 @@
       },
       "lastRecalculationAt": {
         "edit": {
-          "label": "lastRecalculationAt",
+          "label": "Останній перерахунок",
           "description": "",
           "placeholder": "",
           "visible": true,
           "editable": true
         },
         "list": {
-          "label": "lastRecalculationAt",
+          "label": "Останній перерахунок",
           "searchable": true,
           "sortable": true
         }
