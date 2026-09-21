@@ -38,17 +38,26 @@ export function NavbarInner({
         // and a photo hero measures it to know when it has stopped covering it.
         data-site-header
         className={cn(
-          // The design's "Static header": a solid #f2f4f7 band, no rule under
-          // it and no shadow. The rule the photo hero draws is on the grid
-          // inside, not here, so the band's height never depends on it.
-          "bg-brand-mist sticky top-0 z-50 h-15 w-full transition-colors duration-300 lg:h-26.5",
+          // The design's "Static header": a solid #f2f4f7 band with no rule
+          // under it. The rule the photo hero draws is on the grid inside, not
+          // here, so the band's height never depends on it.
+          //
+          // The shadow is the one place this departs from the frame, which
+          // carries no effect on either Static header. The design review asks
+          // for it by name — the band and the page under it are both near-white
+          // and the edge between them is otherwise invisible once the page
+          // scrolls — so it is kept deliberately faint, in the same blue the
+          // cards' shadows use.
+          "bg-brand-mist sticky top-0 z-50 h-15 w-full shadow-[0_4px_12px_rgba(13,22,155,0.06)] transition-[color,background-color,box-shadow] duration-300 lg:h-26.5",
           // The frame draws 404 and 500 bare: no header, no footer, and the
           // page's own button as the only way on.
           "group-has-data-error-page:hidden",
           // A page that opens on a photo hero carries the header inside it,
           // white and on nothing — until the picture scrolls out from under it
           // and the static header takes over.
-          "group-has-data-photo-hero-top:bg-transparent group-has-data-photo-hero-top:text-white"
+          // Over the photograph the band is not there at all, so neither is the
+          // edge the shadow exists to draw.
+          "group-has-data-photo-hero-top:bg-transparent group-has-data-photo-hero-top:text-white group-has-data-photo-hero-top:shadow-none"
         )}
       >
         <div className="flex h-full items-center">
