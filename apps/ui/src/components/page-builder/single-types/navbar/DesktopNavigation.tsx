@@ -24,9 +24,11 @@ interface DesktopNavigationProps {
  */
 const LABEL = cn(
   "text-brand-ink h-auto cursor-pointer bg-transparent px-0 py-0 text-base font-normal no-underline",
-  // The frame draws the menu white where the header lies over a photograph;
-  // it does not draw a hover for that case, so the word simply dims.
-  "group-has-data-photo-hero-top:text-white group-has-data-photo-hero-top:hover:text-white/70",
+  // The frame draws the menu white where the header lies over a photograph —
+  // #f8f8f8, a shade off pure white, which is what leaves the current page
+  // room to be #ffffff and be told apart at all. It does not draw a hover for
+  // that case, so the word simply dims.
+  "group-has-data-photo-hero-top:text-brand-inverted group-has-data-photo-hero-top:hover:text-brand-inverted/70",
   // The design's menu button has two states and the only difference between
   // them is the colour of the word: no filled pill, no underline, no padding
   // box. Both come from elsewhere — the shadcn trigger paints a background on
@@ -66,15 +68,20 @@ const ACTIVE = "bg-brand-mist text-brand-teal! font-semibold"
 /**
  * The same, for the words in the bar itself.
  *
- * Those sit on whatever the header is over, and over a photograph the teal
- * disappears — the frame's menu is one colour there, #f8f8f8, and it draws no
- * "current page" state at all. So on a photo hero the word keeps the menu's
- * white and marks itself by weight alone. The dropdown below it is its own
- * white card either way, so it keeps the teal.
+ * The bar marks the page you are on by the word alone. No menu item in the
+ * file carries a fill — checked across every desktop frame — so the pill above
+ * belongs to the dropdown's white card and not here: over a photograph it put
+ * a near-white patch on the picture, which is what it looked like.
+ *
+ * What the frame does instead is a shift the width of a hair. Over a
+ * photograph the menu is #f8f8f8 and the current page is pure #ffffff;
+ * on the light band the menu is black and the current page is the brand teal.
+ * Both go to semibold while their neighbours stay regular, and that weight is
+ * most of what the eye actually catches.
  */
 const ACTIVE_IN_BAR = cn(
-  ACTIVE,
-  "group-has-data-photo-hero-top:text-brand-inverted!"
+  "text-brand-teal! font-semibold",
+  "group-has-data-photo-hero-top:text-white!"
 )
 
 export function DesktopNavigation({ navbarItems }: DesktopNavigationProps) {
