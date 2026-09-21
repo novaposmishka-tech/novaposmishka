@@ -34,6 +34,15 @@ const LABEL = cn(
   // each is turned off explicitly.
   "hover:text-brand-teal hover:bg-transparent hover:no-underline",
   "focus:bg-transparent data-[state=open]:bg-transparent",
+  // Closing the menu hands focus back to the word that opened it, and the
+  // primitive paints a focused trigger in `accent-foreground` — near-black,
+  // which over a photograph reads as a word gone grey while its neighbours
+  // stay white. Only the colour is reset, and only while the menu is shut:
+  // open *and* focused is the ordinary state of an open menu and keeps the
+  // teal below. The focus ring is a separate rule and is left alone, so the
+  // word is still visibly focused when arriving by keyboard.
+  "data-[state=closed]:focus:text-brand-ink",
+  "group-has-data-photo-hero-top:data-[state=closed]:focus:text-white",
   // Open *and* focused is a two-variant rule in the primitive, so it outranks
   // the single-variant resets above and has to be answered in kind.
   "data-[state=open]:hover:bg-transparent data-[state=open]:focus:bg-transparent",
