@@ -64,13 +64,33 @@ export function MobileNavigation({
           <button
             type="button"
             onClick={() => setOpenCategory(null)}
-            className="text-brand-body border-brand-hairline flex w-full items-center gap-2 border-b py-4 text-base"
+            // The frame draws the way back as a band rather than a row: 360 by
+            // 48 of #f2f4f7 across the full width of the phone, with no rule
+            // under it, and the word set quieter than the list it leads back
+            // to — 14px in #aeaeae against the list's 16 in ink.
+            //
+            // The negative margin is what lets it reach both edges from inside
+            // a menu padded by 30, and the 15 it takes back is the frame's own
+            // gutter for this row. The width is spelled out because a button
+            // shrinks to its content whatever its display, so `w-full` would
+            // measure the padded 300 and leave the band 60 short of the edges
+            // the margins just reached for.
+            className="bg-brand-mist text-brand-muted -mx-7.5 flex w-[calc(100%+3.75rem)] items-center gap-2.5 px-3.75 py-3 text-sm"
           >
-            <ChevronLeft aria-hidden className="size-5" />
+            <ChevronLeft aria-hidden className="size-6" />
             {t("menu")}
           </button>
 
-          <ul className="list-none">
+          {/* The frame gives the two levels different gutters: the top-level
+              list sits at 30 with its rules 300 wide, and the services it
+              opens sit at 15. Pulling the list 15 back out of the menu's own
+              padding puts it there, and the rules come with it.
+
+              The frame draws those rules 298 wide from 15, which would leave
+              47 on the right against 15 on the left; that lopsidedness reads
+              as a slip in the drawing rather than the intent, so here they run
+              the full width between equal gutters. */}
+          <ul className="-mx-3.75 list-none">
             {openCategory.categoryItems?.map((subItem) => (
               <li key={subItem.id} className="border-brand-hairline border-b">
                 <StrapiLink
