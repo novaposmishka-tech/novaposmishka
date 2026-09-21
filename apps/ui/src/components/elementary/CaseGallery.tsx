@@ -219,7 +219,14 @@ export function CaseGallery({
         <button
           type="button"
           onClick={() => setLimit((current) => current + PAGE_SIZE)}
-          className="bg-brand-deep text-brand-inverted hover:bg-brand-mid mx-auto cursor-pointer rounded-full px-7.5 py-3 text-base transition-colors"
+          // The frame's "Button state" sheet gives a filled button on a light
+          // page the brand gradient and its shadow, and turns it flat teal
+          // under the pointer. This one was drawn with the gradient's darkest
+          // stop alone and moved to its middle stop instead — near enough to
+          // look deliberate, but the only button on the site that did not
+          // follow the sheet. `hover:bg-none` drops the gradient image so the
+          // flat colour underneath can show.
+          className="bg-brand-gradient text-brand-inverted shadow-brand-button hover:bg-brand-teal mx-auto cursor-pointer rounded-full px-7.5 py-3 text-base transition-colors hover:bg-none"
         >
           {labels.more}
         </button>
