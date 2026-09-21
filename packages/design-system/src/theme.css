@@ -541,3 +541,54 @@
     0 5px 8px rgba(13, 22, 155, 0.05),
     0 -3px 8px rgba(13, 22, 155, 0.05);
 }
+
+/* The frame gives the header's button Figma's Glass effect, which the file
+ * does not describe beyond its name — there are no parameters to read, only
+ * `{"type":"GLASS"}`. What it draws is a refracted rim: measured off a 1.94x
+ * render of Home page/Mobile over a near-black photograph, the rim is one
+ * design pixel wide and reaches luminance 174 on the top-left edge and 106 on
+ * the bottom-right, while the other two edges step straight from the
+ * photograph into the fill. That is light falling from the upper left, so the
+ * rim is a diagonal rather than an even outline.
+ *
+ * The fill already matches the frame and is kept: white at a tenth reads as
+ * luminance 30 over that photograph, which is what the frame measures.
+ *
+ * The rim is a ring drawn on a pseudo-element and cut out with a mask, not a
+ * gradient border. A border cannot hold a gradient and keep a radius, and the
+ * usual two-background substitute — gradient on `border-box` under an opaque
+ * fill on `padding-box` — needs that fill to be opaque to hide the gradient
+ * it covers. This one is a tenth of white, so the gradient would show through
+ * the whole button instead of only its edge. Masking paints the ring itself:
+ * the two mask layers cover the border box and the content box, and excluding
+ * one from the other leaves exactly the 1px band between them. */
+@utility glass-rim {
+  position: relative;
+  background-color: rgba(255, 255, 255, 0.1);
+  background-image: none;
+
+  &::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    border-radius: inherit;
+    padding: 1px;
+    background: linear-gradient(
+      135deg,
+      rgba(255, 255, 255, 0.65) 0%,
+      rgba(255, 255, 255, 0.08) 38%,
+      rgba(255, 255, 255, 0.08) 62%,
+      rgba(255, 255, 255, 0.45) 100%
+    );
+    -webkit-mask:
+      linear-gradient(#000 0 0) content-box,
+      linear-gradient(#000 0 0);
+    mask:
+      linear-gradient(#000 0 0) content-box,
+      linear-gradient(#000 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+    pointer-events: none;
+  }
+}

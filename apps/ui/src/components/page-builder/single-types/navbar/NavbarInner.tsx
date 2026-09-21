@@ -106,7 +106,7 @@ export function NavbarInner({
                     // padding. Over a photograph the fill becomes glass: white
                     // at a tenth over a blur, and the shadow goes with the
                     // gradient that cast it.
-                    className="h-11.5 min-w-46.25 gap-1.5 rounded-[30px] px-7.5 text-base/5.5 font-semibold group-has-data-photo-hero-top:bg-white/10 group-has-data-photo-hero-top:bg-none group-has-data-photo-hero-top:shadow-none group-has-data-photo-hero-top:backdrop-blur-md"
+                    className="group-has-data-photo-hero-top:glass-rim h-11.5 min-w-46.25 gap-1.5 rounded-[30px] px-7.5 text-base/5.5 font-semibold group-has-data-photo-hero-top:shadow-none group-has-data-photo-hero-top:backdrop-blur-md"
                   >
                     {button.label}
                     <ArrowRight aria-hidden className="size-6" />
@@ -117,7 +117,7 @@ export function NavbarInner({
                 {navbarData?.primaryButtons?.[0] ? (
                   <NavbarBookingLink
                     component={navbarData.primaryButtons[0]}
-                    className="h-10 min-w-0 rounded-[30px] px-5 text-sm/5 font-semibold group-has-data-photo-hero-top:bg-white/10 group-has-data-photo-hero-top:bg-none group-has-data-photo-hero-top:shadow-none group-has-data-photo-hero-top:backdrop-blur-md"
+                    className="group-has-data-photo-hero-top:glass-rim h-10 min-w-0 rounded-[30px] px-5 text-sm/5 font-semibold group-has-data-photo-hero-top:shadow-none group-has-data-photo-hero-top:backdrop-blur-md"
                   >
                     {/* The frame shortens the label on a phone, where the row
                         has the wordmark and the burger to fit beside it. */}
