@@ -34,15 +34,22 @@ const LABEL = cn(
   // each is turned off explicitly.
   "hover:text-brand-teal hover:bg-transparent hover:no-underline",
   "focus:bg-transparent data-[state=open]:bg-transparent",
-  // Closing the menu hands focus back to the word that opened it, and the
-  // primitive paints a focused trigger in `accent-foreground` — near-black,
-  // which over a photograph reads as a word gone grey while its neighbours
-  // stay white. Only the colour is reset, and only while the menu is shut:
-  // open *and* focused is the ordinary state of an open menu and keeps the
-  // teal below. The focus ring is a separate rule and is left alone, so the
-  // word is still visibly focused when arriving by keyboard.
-  "data-[state=closed]:focus:text-brand-ink",
-  "group-has-data-photo-hero-top:data-[state=closed]:focus:text-white",
+  // Clicking a word leaves it focused, and the primitive paints a focused
+  // item in `accent-foreground` — near-black, so over a photograph the word
+  // sits dark among white ones until focus moves elsewhere. Closing a dropdown
+  // does the same, because it hands focus back to the word that opened it.
+  //
+  // The reset has to be written as "not open" rather than "closed": only the
+  // dropdown trigger is a Radix button and carries `data-state` at all, and
+  // the four plain links have no such attribute, so a `data-[state=closed]`
+  // rule passes straight over them. `not-data-[state=open]` holds for both —
+  // it is true of a shut trigger and of anything with no state to speak of —
+  // while still leaving an open menu its teal.
+  //
+  // Only the colour is reset. The focus ring is a separate rule and is left
+  // alone, so the word is still visibly focused when arriving by keyboard.
+  "not-data-[state=open]:focus:text-brand-ink",
+  "group-has-data-photo-hero-top:not-data-[state=open]:focus:text-brand-inverted",
   // Open *and* focused is a two-variant rule in the primitive, so it outranks
   // the single-variant resets above and has to be answered in kind.
   "data-[state=open]:hover:bg-transparent data-[state=open]:focus:bg-transparent",
