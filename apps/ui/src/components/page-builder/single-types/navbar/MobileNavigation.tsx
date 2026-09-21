@@ -78,7 +78,12 @@ export function MobileNavigation({
                   onClick={close}
                   className={cn(
                     ROW,
-                    "text-brand-ink justify-start no-underline"
+                    // StrapiLink is a button underneath and brings the variant's own 10px
+                    // of side padding with it. The frame sets every row of this menu flush
+                    // to one line — 30 from the edge of a 360 phone, the container's own
+                    // gutter — and the row that is a plain button already sat there, so
+                    // the links were the odd ones out.
+                    "text-brand-ink justify-start px-0 no-underline"
                   )}
                 />
               </li>
@@ -96,7 +101,12 @@ export function MobileNavigation({
                     onClick={close}
                     className={cn(
                       ROW,
-                      "text-brand-ink justify-start no-underline"
+                      // StrapiLink is a button underneath and brings the variant's own 10px
+                      // of side padding with it. The frame sets every row of this menu flush
+                      // to one line — 30 from the edge of a 360 phone, the container's own
+                      // gutter — and the row that is a plain button already sat there, so
+                      // the links were the odd ones out.
+                      "text-brand-ink justify-start px-0 no-underline"
                     )}
                   >
                     {item.link.label}
