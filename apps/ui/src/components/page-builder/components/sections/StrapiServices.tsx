@@ -22,33 +22,34 @@ const CARD =
  * The illustration stands on the card's bottom edge, at the right.
  *
  * The box sits on the card's floor and the art sits on the box's. That only
- * reads as "on the floor" if the file's own edge is the art's edge: with
- * `object-bottom` what lands on the floor is the bottom of the *image*, so
- * any transparent margin the file carries becomes a gap under the drawing.
- * The seeded illustrations are trimmed to their art for exactly this reason.
+ * reads as "on the floor" if the file's bottom edge is the drawing's bottom
+ * edge: with `object-bottom` what lands on the floor is the bottom of the
+ * *image*, so a transparent margin under the drawing becomes a gap. The
+ * seeded illustrations are cut back to the drawing at the bottom for this,
+ * and only at the bottom — the margins they keep above and to the left are
+ * what holds the drawing off the words, exactly as the frame's own art does.
  *
  * The frame places each of its seven boxes by hand — 53 tall for the braces
  * against 238 for the gum, one of them not reaching the floor at all — so
- * there is no single overhang to copy. Uploads by an editor are unknown art
+ * there is no single overhang to copy, and an editor's upload is unknown art
  * besides. Standing every illustration on the floor is the rule that holds
  * for all of them and clips none.
  *
- * The box is the one that comes closest to the seven the frame draws. Fitting
- * every trimmed illustration into a box and comparing what comes out against
- * what the frame measures, averaged over both dimensions of all seven cards,
- * bottoms out at 160 by 144 here and 125 by 111 on the phone. It is a shallow
- * bottom — the full height of the card is only a couple of pixels worse on
- * average, though it is the setting that ran the crown and the bear up into
- * the title, which the average does not show.
+ * The size is the largest that keeps every drawing out of every line of type.
+ * Checked against the alpha of each file row by row, not against its bounding
+ * box: the second line of a description is usually much shorter than the
+ * first — 69 against 288 on the orthopaedics card — and a rule written to the
+ * longest line alone costs the illustrations half their size for nothing. The
+ * box still passes under the text by some 30, as the frame's does; it is the
+ * drawing that stays clear.
  *
- * What is left cannot be fixed by any box: our art is not the frame's crop of
- * the same subject. The implant we seed is 195 by 488 where the frame's is
- * 142 by 213, so it comes out a thin screw against a broad one whatever it is
- * fitted into. Closing that gap means re-cutting the illustrations, not
- * moving the box.
+ * What is left over cannot be fixed by any box: our art is not the frame's
+ * crop of the same subject. The implant we seed is 195 by 488 where the
+ * frame's is 142 by 213, so it reads as a thin screw against a broad one
+ * however it is fitted. Closing that needs the illustrations re-cut.
  */
 const ILLUSTRATION =
-  "pointer-events-none absolute right-0 bottom-0 h-27.75 w-31.25 object-contain object-bottom lg:h-36 lg:w-40"
+  "pointer-events-none absolute right-0 bottom-0 h-37 w-30.5 object-contain object-bottom lg:h-52 lg:w-42.5"
 
 // The design system gives every h3 a 1.4 leading and a bottom margin; the
 // frame sets 34px and no margin.
