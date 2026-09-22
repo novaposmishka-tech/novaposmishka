@@ -105,8 +105,18 @@ export function CaseGallery({
                 : isGrid
                   ? "border-brand-teal text-brand-ink hover:bg-brand-gradient hover:text-brand-inverted border bg-white hover:border-transparent"
                   : // On the dark band the frame whitens the chip rather than
-                    // deepening it.
-                    "text-brand-inverted hover:text-brand-ink bg-white/10 hover:bg-white"
+                    // deepening it: white at a tenth, ringed in white at about
+                    // a half.
+                    //
+                    // An even ring, not the header button's. Figma's glass
+                    // refracts what is behind it, so the same effect reads
+                    // differently in the two places: over a photograph it
+                    // lights one corner and leaves the opposite sides bare,
+                    // while over this flat gradient it comes out level all the
+                    // way round — measured off the frame at luminance 170 on
+                    // the top and left against 145 on the bottom and right,
+                    // over a ground of 60.
+                    "text-brand-inverted hover:text-brand-ink border border-white/50 bg-white/10 hover:bg-white"
             )
 
             return (
