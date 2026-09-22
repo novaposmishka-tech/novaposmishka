@@ -164,8 +164,10 @@ export function StrapiServices({
                     // second button, where the hero's is filled.
                     className="border-brand-teal text-brand-ink hover:bg-brand-gradient! hover:shadow-brand-button hover:text-brand-inverted h-11.5 w-fit gap-2 rounded-[30px] border bg-transparent bg-none px-5 text-sm/5 font-semibold shadow-none hover:border-transparent lg:h-12.5 lg:px-7.5 lg:text-base/5.5"
                   >
+                    {/* No arrow on this one. The frame's button carries the
+                        layer but switched off, where the "Детальніше" on every
+                        service card has it on. */}
                     {callToAction.link.label}
-                    <ArrowRight aria-hidden className="size-5" />
                   </StrapiLink>
                 )}
               </div>
