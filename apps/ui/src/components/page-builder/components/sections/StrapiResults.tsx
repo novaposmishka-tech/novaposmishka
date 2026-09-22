@@ -1,7 +1,6 @@
 import "server-only"
 
 import type { Data } from "@repo/strapi-types"
-import { ArrowRight } from "lucide-react"
 import { getTranslations } from "next-intl/server"
 
 import { CaseGallery } from "@/components/elementary/CaseGallery"
@@ -84,8 +83,9 @@ export async function StrapiResults({
             // the desktop one hugs its words.
             className="text-brand-ink hover:bg-brand-teal hover:text-brand-inverted h-10 w-full justify-center gap-2 rounded-[30px] bg-white px-5 text-base/5.5 font-semibold lg:mx-auto lg:h-12.5 lg:w-fit lg:px-7.5"
           >
+            {/* No arrow: the frame's button here carries the layer switched
+                off, the same way the services block's own button does. */}
             {link.label}
-            <ArrowRight aria-hidden className="size-5" />
           </StrapiLink>
         )}
       </Wrapper>
