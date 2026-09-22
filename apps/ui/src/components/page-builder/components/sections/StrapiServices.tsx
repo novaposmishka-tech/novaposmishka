@@ -19,20 +19,36 @@ const CARD =
   "shadow-brand-card relative flex min-h-42.75 flex-col overflow-hidden rounded-[20px] p-5 lg:min-h-53.5 lg:rounded-[26px] lg:p-7.5"
 
 /**
- * The illustration stands on the card's bottom edge, at the right, in the
- * frame's box: 123 across on a phone and 158 at desktop, the full height of
- * the card. A single rule has to hold for whatever art an editor uploads, and
- * one that sits them all on the floor keeps a wide, short illustration from
- * disappearing under it.
+ * The illustration stands on the card's bottom edge, at the right.
  *
- * The box can be the frame's full width because the artwork now carries the
- * margins the frame's own does — the tooth occupies about four fifths of its
- * canvas, so the box reaching under the words costs the words nothing. It was
- * narrowed to 74 while the art was cropped to its edges and every pixel of box
- * covered text.
+ * The box sits on the card's floor and the art sits on the box's. That only
+ * reads as "on the floor" if the file's own edge is the art's edge: with
+ * `object-bottom` what lands on the floor is the bottom of the *image*, so
+ * any transparent margin the file carries becomes a gap under the drawing.
+ * The seeded illustrations are trimmed to their art for exactly this reason.
+ *
+ * The frame places each of its seven boxes by hand — 53 tall for the braces
+ * against 238 for the gum, one of them not reaching the floor at all — so
+ * there is no single overhang to copy. Uploads by an editor are unknown art
+ * besides. Standing every illustration on the floor is the rule that holds
+ * for all of them and clips none.
+ *
+ * The box is the one that comes closest to the seven the frame draws. Fitting
+ * every trimmed illustration into a box and comparing what comes out against
+ * what the frame measures, averaged over both dimensions of all seven cards,
+ * bottoms out at 160 by 144 here and 125 by 111 on the phone. It is a shallow
+ * bottom — the full height of the card is only a couple of pixels worse on
+ * average, though it is the setting that ran the crown and the bear up into
+ * the title, which the average does not show.
+ *
+ * What is left cannot be fixed by any box: our art is not the frame's crop of
+ * the same subject. The implant we seed is 195 by 488 where the frame's is
+ * 142 by 213, so it comes out a thin screw against a broad one whatever it is
+ * fitted into. Closing that gap means re-cutting the illustrations, not
+ * moving the box.
  */
 const ILLUSTRATION =
-  "pointer-events-none absolute right-0 bottom-0 h-42.75 w-30.75 object-contain object-bottom lg:h-53.5 lg:w-39.5"
+  "pointer-events-none absolute right-0 bottom-0 h-27.75 w-31.25 object-contain object-bottom lg:h-36 lg:w-40"
 
 // The design system gives every h3 a 1.4 leading and a bottom margin; the
 // frame sets 34px and no margin.
@@ -85,10 +101,10 @@ export function StrapiServices({
                 // placed by hand and carries its own margin; art an editor
                 // uploads may be cropped to its edges, and then anything that
                 // reaches under the box is covered by it.
-                // The two widths are the frame's own: 228 on the phone card and
-                // 260 on the desktop one. Both were held at 228, which is where a
-                // description like the children's broke into three lines on a
-                // desktop the frame sets at two.
+                // The two widths are the frame's own: 228 on the phone card
+                // and 260 on the desktop one. They were both held at 228,
+                // which is where a description like the children's one broke
+                // into three lines on a desktop the frame sets at two.
                 <Typography className={`${CARD_TEXT} max-w-57 lg:max-w-65`}>
                   {service.description}
                 </Typography>
