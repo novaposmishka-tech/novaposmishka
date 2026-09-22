@@ -85,7 +85,11 @@ export function StrapiServices({
                 // placed by hand and carries its own margin; art an editor
                 // uploads may be cropped to its edges, and then anything that
                 // reaches under the box is covered by it.
-                <Typography className={`${CARD_TEXT} max-w-57 lg:max-w-57`}>
+                // The two widths are the frame's own: 228 on the phone card and
+                // 260 on the desktop one. Both were held at 228, which is where a
+                // description like the children's broke into three lines on a
+                // desktop the frame sets at two.
+                <Typography className={`${CARD_TEXT} max-w-57 lg:max-w-65`}>
                   {service.description}
                 </Typography>
               )}
