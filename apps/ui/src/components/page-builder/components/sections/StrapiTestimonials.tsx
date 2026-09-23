@@ -1,6 +1,7 @@
 import "server-only"
 
 import type { Data } from "@repo/strapi-types"
+import { ArrowRight } from "lucide-react"
 import { getTranslations } from "next-intl/server"
 
 import { Container } from "@/components/elementary/Container"
@@ -93,7 +94,12 @@ export async function StrapiTestimonials({
                 key={link.id}
                 component={link}
                 className="border-brand-teal text-brand-ink hover:bg-brand-gradient hover:shadow-brand-button hover:text-brand-inverted flex h-10 w-full items-center justify-center gap-2 rounded-[30px] border bg-white text-sm/5 font-semibold transition-colors hover:border-transparent lg:h-12.5 lg:w-fit lg:px-7.5 lg:text-base/5.5"
-              />
+              >
+                {/* The frame keeps the arrow on this one, where the blocks
+                    ending in their own button switch it off. */}
+                {link.label}
+                <ArrowRight aria-hidden className="size-5" />
+              </StrapiLink>
             ))}
           </div>
         )}
