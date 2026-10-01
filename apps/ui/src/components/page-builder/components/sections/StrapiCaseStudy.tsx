@@ -128,7 +128,10 @@ export async function StrapiCaseStudy({
           </div>
 
           {/* The whole treatment in one drag, before the stages break it
-              down. The frame gives it the wider half of the card. */}
+              down. The frame gives it the wider half of the card — and on a
+              phone stands it nearly square, 289 by 310, so the whole face is
+              in it; at the desktop's proportion the phone showed a strip from
+              the eyes to the mouth. */}
           {before && after && (
             <BeforeAfterSlider
               before={before}
@@ -138,7 +141,7 @@ export async function StrapiCaseStudy({
                 after: t("after"),
                 compare: t("compare"),
               }}
-              className="rounded-[26px] lg:flex-1"
+              className="aspect-289/310 rounded-[26px] sm:aspect-1076/610 lg:flex-1"
             />
           )}
         </article>
