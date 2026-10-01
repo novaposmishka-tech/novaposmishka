@@ -19,8 +19,16 @@ import { useEffect, useRef, useState } from "react"
  * transparent header immediately rather than flashing the light one.
  */
 export function PhotoHeroFrame({
+  headerOverFromLg = false,
   children,
 }: {
+  /**
+   * True where only the desktop lays the header over the photograph: the
+   * phone frame of a hero that is a photograph alone keeps the header light
+   * and starts the picture under it. The markers then carry "lg", which the
+   * `photo-hero` variants in globals.css read as "from lg up".
+   */
+  readonly headerOverFromLg?: boolean
   readonly children: React.ReactNode
 }) {
   const [atTop, setAtTop] = useState(true)
@@ -58,8 +66,8 @@ export function PhotoHeroFrame({
     // the bottom where the white page begins — the mask in the design is
     // [0, 0, 50, 50].
     <div
-      data-photo-hero
-      data-photo-hero-top={atTop ? "" : undefined}
+      data-photo-hero={headerOverFromLg ? "lg" : ""}
+      data-photo-hero-top={atTop ? (headerOverFromLg ? "lg" : "") : undefined}
       className="relative isolate overflow-hidden rounded-b-[50px] text-white"
     >
       {/* The top edge of the page, watched rather than measured. */}

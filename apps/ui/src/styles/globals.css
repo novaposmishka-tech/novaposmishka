@@ -66,6 +66,36 @@
 /* this enabled the dark mode variant */
 @custom-variant dark (&:where(.dark, .dark *));
 
+/* A page that opens on a photograph marks its frame with `data-photo-hero`
+   for the whole life of the page and `data-photo-hero-top` while the page is
+   at rest at the top; the header and the layout read them to lie over the
+   picture. A frame that is a photograph alone — the team page — sets both to
+   "lg": its phone frame keeps the header light and starts the photo under it,
+   and only the desktop lays the header over the picture. These variants read
+   either marking, so a component states its on-photo styles once. */
+@custom-variant photo-hero {
+  &:is(:where(.group):has([data-photo-hero]:not([data-photo-hero="lg"])) *) {
+    @slot;
+  }
+  @media (width >= 64rem) {
+    &:is(:where(.group):has([data-photo-hero="lg"]) *) {
+      @slot;
+    }
+  }
+}
+@custom-variant photo-hero-top {
+  &:is(
+    :where(.group):has([data-photo-hero-top]:not([data-photo-hero-top="lg"])) *
+  ) {
+    @slot;
+  }
+  @media (width >= 64rem) {
+    &:is(:where(.group):has([data-photo-hero-top="lg"]) *) {
+      @slot;
+    }
+  }
+}
+
 @keyframes scrollHorizontal {
   to {
     transform: translate(calc(-50% - 1.75rem));

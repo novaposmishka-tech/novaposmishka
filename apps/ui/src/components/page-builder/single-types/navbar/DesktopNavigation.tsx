@@ -28,7 +28,7 @@ const LABEL = cn(
   // #f8f8f8, a shade off pure white, which is what leaves the current page
   // room to be #ffffff and be told apart at all. It does not draw a hover for
   // that case, so the word simply dims.
-  "group-has-data-photo-hero-top:text-brand-inverted group-has-data-photo-hero-top:hover:text-brand-inverted/70",
+  "photo-hero-top:text-brand-inverted photo-hero-top:hover:text-brand-inverted/70",
   // The design's menu button has two states and the only difference between
   // them is the colour of the word: no filled pill, no underline, no padding
   // box. Both come from elsewhere — the shadcn trigger paints a background on
@@ -51,12 +51,12 @@ const LABEL = cn(
   // Only the colour is reset. The focus ring is a separate rule and is left
   // alone, so the word is still visibly focused when arriving by keyboard.
   "not-data-[state=open]:focus:text-brand-ink",
-  "group-has-data-photo-hero-top:not-data-[state=open]:focus:text-brand-inverted",
+  "photo-hero-top:not-data-[state=open]:focus:text-brand-inverted",
   // Open *and* focused is a two-variant rule in the primitive, so it outranks
   // the single-variant resets above and has to be answered in kind.
   "data-[state=open]:hover:bg-transparent data-[state=open]:focus:bg-transparent",
   "data-[state=open]:text-brand-teal",
-  "group-has-data-photo-hero-top:data-[state=open]:text-white",
+  "photo-hero-top:data-[state=open]:text-white",
   // The dropdown caret: the design sets it 10px from the word and a size up
   // from the primitive default.
   "[&>svg]:ml-3 [&>svg]:size-4"
@@ -81,7 +81,7 @@ const ACTIVE = "bg-brand-mist text-brand-teal! font-semibold"
  */
 const ACTIVE_IN_BAR = cn(
   "text-brand-teal! font-semibold",
-  "group-has-data-photo-hero-top:text-white!"
+  "photo-hero-top:text-white!"
 )
 
 export function DesktopNavigation({ navbarItems }: DesktopNavigationProps) {

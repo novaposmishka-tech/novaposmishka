@@ -62,6 +62,16 @@ export function StrapiHero({
 
   return (
     <section>
+      {/* The phone frame of a hero that is a photograph alone keeps its header
+          light and draws the trail on white above the picture; only the
+          desktop lays both over it. So on a phone the trail stands here, ahead
+          of the frame, and the one inside is for the desktop. */}
+      {hasTrail && pageParams && isBarePhoto && (
+        <Container className="lg:hidden">
+          <Breadcrumbs breadcrumbs={breadcrumbs} locale={pageParams.locale} />
+        </Container>
+      )}
+
       <Wrapper
         hasBackground={hasBackground}
         hasBottomRow={hasBottomRow && !hasFigures}
@@ -81,6 +91,7 @@ export function StrapiHero({
             breadcrumbs={breadcrumbs}
             locale={pageParams.locale}
             onPhoto={hasBackground}
+            className={isBarePhoto ? "max-lg:hidden" : undefined}
           />
         )}
 
@@ -456,14 +467,15 @@ function Wrapper({
   }
 
   return (
-    <PhotoHeroFrame>
+    <PhotoHeroFrame headerOverFromLg={isBarePhoto}>
       {/* The frame's own height, and — where a trail is drawn under it — the
           room the header takes out of that, since the header floats over the
-          photograph rather than standing above it. */}
+          photograph rather than standing above it. Not on the phone frame of a
+          bare photograph, which starts under the header instead. */}
       <Container
         className={cn(
           "flex flex-col lg:min-h-217.5",
-          hasTrail && "pt-15 lg:pt-26.5",
+          hasTrail && (isBarePhoto ? "lg:pt-26.5" : "pt-15 lg:pt-26.5"),
           // Every subpage's photo hero is the same height on a phone, whether
           // or not its copy fills it.
           hasTrail && !isBarePhoto && "max-lg:min-h-186.5",

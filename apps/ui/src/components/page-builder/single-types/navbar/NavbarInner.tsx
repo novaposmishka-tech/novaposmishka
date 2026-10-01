@@ -57,7 +57,7 @@ export function NavbarInner({
           // and the static header takes over.
           // Over the photograph the band is not there at all, so neither is the
           // edge the shadow exists to draw.
-          "group-has-data-photo-hero-top:bg-transparent group-has-data-photo-hero-top:text-white group-has-data-photo-hero-top:shadow-none"
+          "photo-hero-top:bg-transparent photo-hero-top:text-white photo-hero-top:shadow-none"
         )}
       >
         <div className="flex h-full items-center">
@@ -67,7 +67,7 @@ export function NavbarInner({
                 is 1320 at desktop and 330 on a phone. The Container is the
                 window's width and keeps the gutter inside it, so the rule
                 belongs to this row rather than to it. */}
-            <div className="flex h-full items-center justify-between group-has-data-photo-hero-top:border-b group-has-data-photo-hero-top:border-white/20">
+            <div className="photo-hero-top:border-b photo-hero-top:border-white/20 flex h-full items-center justify-between">
               {/* Logo — the clinic's own mark unless an editor uploaded one. */}
               {navbarData?.logoImage?.image && navbarData.logoImage.link ? (
                 <StrapiImageWithLink component={navbarData.logoImage} />
@@ -106,7 +106,7 @@ export function NavbarInner({
                     // padding. Over a photograph the fill becomes glass: white
                     // at a tenth over a blur, and the shadow goes with the
                     // gradient that cast it.
-                    className="group-has-data-photo-hero-top:glass-rim h-11.5 min-w-46.25 gap-1.5 rounded-[30px] px-7.5 text-base/5.5 font-semibold group-has-data-photo-hero-top:shadow-none group-has-data-photo-hero-top:backdrop-blur-md"
+                    className="photo-hero-top:glass-rim photo-hero-top:shadow-none photo-hero-top:backdrop-blur-md h-11.5 min-w-46.25 gap-1.5 rounded-[30px] px-7.5 text-base/5.5 font-semibold"
                   >
                     {button.label}
                     <ArrowRight aria-hidden className="size-6" />
@@ -117,7 +117,7 @@ export function NavbarInner({
                 {navbarData?.primaryButtons?.[0] ? (
                   <NavbarBookingLink
                     component={navbarData.primaryButtons[0]}
-                    className="group-has-data-photo-hero-top:glass-rim h-10 min-w-0 rounded-[30px] px-5 text-sm/5 font-semibold group-has-data-photo-hero-top:shadow-none group-has-data-photo-hero-top:backdrop-blur-md"
+                    className="photo-hero-top:glass-rim photo-hero-top:shadow-none photo-hero-top:backdrop-blur-md h-10 min-w-0 rounded-[30px] px-5 text-sm/5 font-semibold"
                   >
                     {/* The frame shortens the label on a phone, where the row
                         has the wordmark and the burger to fit beside it. */}

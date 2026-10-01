@@ -111,7 +111,7 @@ export default async function RootLayout({
 
               {/* A page that opens on a photo hero starts at the very top,
                   with the header lying over it. */}
-              <div className="flex-1 group-has-data-photo-hero:-mt-15 lg:group-has-data-photo-hero:-mt-26.5">
+              <div className="photo-hero:-mt-15 lg:photo-hero:-mt-26.5 flex-1">
                 <div>{children}</div>
               </div>
 
