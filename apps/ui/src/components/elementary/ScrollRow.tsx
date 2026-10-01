@@ -152,7 +152,11 @@ export function ScrollRow({
                     onClick={() => goTo(index)}
                     aria-label={t("goToSlide", { number: index + 1 })}
                     aria-current={index === current ? "true" : undefined}
-                    className="flex cursor-pointer items-center justify-center p-[0.5rem]"
+                    // A narrower target on a phone: at 24 a mark, the nine
+                    // reviews came to 216 against the 170 a 360 screen leaves
+                    // between the arrows, and the ninth wrapped onto a row of
+                    // its own. At 18 they sit on one line.
+                    className="flex cursor-pointer items-center justify-center p-1.25 sm:p-2"
                   >
                     <span
                       className={cn(
