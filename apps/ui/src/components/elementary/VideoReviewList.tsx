@@ -51,13 +51,15 @@ export function VideoReviewList({
 
   // The homepage keeps them in a row that scrolls, with the frame's arrows and
   // dots under it, because they sit in a tab beside the written reviews there.
+  // On a phone the frame gives each film the column's full width, one at a
+  // time — at two-thirds the still was a sliver of a 500-tall portrait.
   if (layout === "carousel") {
     return (
       <ScrollRow label={label} className={className}>
         {reviews.map((review) => (
           <li
             key={review.id}
-            className="flex w-2/3 shrink-0 snap-start flex-col gap-2.5 sm:w-2/5 lg:w-78 lg:gap-5"
+            className="flex w-full shrink-0 snap-start flex-col gap-2.5 sm:w-2/5 lg:w-78 lg:gap-5"
           >
             <Still review={review} />
           </li>
