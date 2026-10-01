@@ -105,10 +105,10 @@ export function StrapiServices({
               key={service.id}
               className={`${CARD} hover:bg-brand-stripe gap-2.5 bg-white transition-colors lg:gap-3.75`}
             >
-              <Typography
-                tag="h3"
-                className={`${CARD_TITLE} ${CLEAR_OF_ILLUSTRATION}`}
-              >
+              {/* The title keeps the card's full width: it stands at the top,
+                  clear of the illustration on the floor, and the frame runs
+                  "Дитяча стоматологія" on one line. */}
+              <Typography tag="h3" className={CARD_TITLE}>
                 {service.name}
               </Typography>
 
