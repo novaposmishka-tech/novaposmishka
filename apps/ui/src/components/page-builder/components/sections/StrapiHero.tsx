@@ -122,7 +122,14 @@ export function StrapiHero({
                     // than folding it: on a phone it ends 14px off the edge of
                     // the screen, which the grid's own margin cannot give it.
                     "[&_h1]:-mr-4 lg:[&_h1]:mr-0",
-                    "[&_h1]:leading-[43px] lg:[&_h1]:leading-[79px]",
+                    // The frames' own leadings at their widths; between them
+                    // the type is already 60px, and the phone's 43px leading
+                    // stacked the lines through one another.
+                    "[&_h1]:leading-[43px] md:[&_h1]:leading-[66px] lg:[&_h1]:leading-[79px]",
+                    // Under 360 the stepped second line — "Ви усміхаєтесь."
+                    // after its 30px indent — no longer fits at 36px and
+                    // broke in two; a size down keeps the frame's two lines.
+                    "max-[359px]:[&_h1]:text-[2rem]! max-[359px]:[&_h1]:leading-[38px]",
                     "[&_h1]:mb-2.5! lg:[&_h1]:mb-5!",
                     "[&_h1]:first-line:text-brand-on-dark"
                   )
