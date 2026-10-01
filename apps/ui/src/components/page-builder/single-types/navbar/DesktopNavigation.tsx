@@ -104,7 +104,10 @@ function Menu({
 
   return (
     <NavigationMenu viewport={false} className="hidden lg:flex">
-      <NavigationMenuList className="flex items-center gap-12.5">
+      {/* The frame's 50 between words from xl; between lg and xl the row
+          does not fit at that — at 1024 the booking button ran past the
+          screen — so the words close up to 28. */}
+      <NavigationMenuList className="flex items-center gap-7 xl:gap-12.5">
         {navbarItems.map((item) => {
           const hasSubItems = !!item.categoryItems?.length
 

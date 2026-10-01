@@ -106,10 +106,19 @@ export function NavbarInner({
                     // padding. Over a photograph the fill becomes glass: white
                     // at a tenth over a blur, and the shadow goes with the
                     // gradient that cast it.
-                    className="photo-hero-top:glass-rim photo-hero-top:shadow-none photo-hero-top:backdrop-blur-md h-11.5 min-w-46.25 gap-1.5 rounded-[30px] px-7.5 text-base/5.5 font-semibold"
+                    //
+                    // Between lg and xl the row is too narrow for all of
+                    // that — at 1024 the button ran 93px past the screen and
+                    // set the page scrolling sideways — so there it takes the
+                    // phone's short label and no arrow, at the phone's padding.
+                    className="photo-hero-top:glass-rim photo-hero-top:shadow-none photo-hero-top:backdrop-blur-md h-11.5 min-w-0 gap-1.5 rounded-[30px] px-5 text-base/5.5 font-semibold xl:min-w-46.25 xl:px-7.5"
                   >
-                    {button.label}
-                    <ArrowRight aria-hidden className="size-6" />
+                    <span className="xl:hidden">{t("bookShort")}</span>
+                    <span className="hidden xl:inline">{button.label}</span>
+                    <ArrowRight
+                      aria-hidden
+                      className="hidden size-6 xl:block"
+                    />
                   </NavbarBookingLink>
                 ))}
               </div>
