@@ -55,10 +55,13 @@ export async function StrapiCaseStudy({
           and 30 at desktop — the first naming the case, the rest walking
           through the treatment a step at a time. */}
       <Container className="flex flex-col gap-5 lg:gap-7.5">
-        <article className={cn(CARD, "lg:gap-15")}>
+        {/* Side by side from xl; between lg and xl the frame's 572 column left
+            the before-and-after a 172px strip at 1024, so there the card
+            keeps the tablet's stack with the picture under the words. */}
+        <article className={cn(CARD, "lg:gap-15 lg:max-xl:flex-col")}>
           {/* The frame holds this column to 572 and pushes the filmed
               walk-through to the foot of it, level with the photographs. */}
-          <div className="flex flex-col gap-5 lg:w-143 lg:justify-between lg:gap-0">
+          <div className="flex flex-col gap-5 lg:w-143 lg:justify-between lg:gap-0 lg:max-xl:w-full lg:max-xl:gap-5">
             <div className="flex flex-col gap-4 lg:gap-7.5">
               <div className="flex flex-col gap-2.5 lg:gap-5">
                 <Typography
@@ -141,7 +144,7 @@ export async function StrapiCaseStudy({
                 after: t("after"),
                 compare: t("compare"),
               }}
-              className="aspect-289/310 rounded-[26px] sm:aspect-1076/610 lg:flex-1"
+              className="aspect-289/310 rounded-[26px] sm:aspect-1076/610 lg:flex-1 lg:max-xl:flex-none"
             />
           )}
         </article>
