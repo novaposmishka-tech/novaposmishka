@@ -137,9 +137,10 @@ function Menu({
 
               {/* Measured off the frame: a 363-wide panel at a 24 radius with
                   20 of padding, each service 54 tall inside a 10-radius pill
-                  with 20 of its own. The starter's popover chrome — a 6
-                  radius, a border, 8 of padding — is what made it look
-                  "зліплено" in the design review. */}
+                  with 20 of its own, set semibold — every item, not only the
+                  current one. The starter's popover chrome — a 6 radius, a
+                  border, 8 of padding — is what made it look "зліплено" in
+                  the design review. */}
               {hasSubItems && (
                 <NavigationMenuContent className="shadow-brand-card! z-50 min-w-90.75 rounded-3xl! border-0! bg-white p-5">
                   <ul className="list-none">
@@ -148,7 +149,7 @@ function Menu({
                         <StrapiLink
                           component={subItem}
                           className={cn(
-                            "text-brand-ink hover:bg-brand-mist hover:text-brand-teal flex h-13.5 w-full items-center justify-start rounded-[10px] px-5 text-base font-normal no-underline transition-colors",
+                            "text-brand-ink hover:bg-brand-mist hover:text-brand-teal flex h-13.5 w-full items-center justify-start rounded-[10px] px-5 text-base font-semibold no-underline transition-colors",
                             isCurrent(subItem) && ACTIVE
                           )}
                         />
