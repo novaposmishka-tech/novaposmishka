@@ -20,7 +20,13 @@ export function StrapiCarousel({
   }
 
   return (
-    <section id="gallery" className="scroll-mt-15 lg:scroll-mt-26.5">
+    // Clipped sideways so the row's bleed below cannot set the page scrolling:
+    // 100vw counts a desktop scrollbar the page does not have room for.
+    // `clip`, not `hidden`, which would clip the shadows above and below too.
+    <section
+      id="gallery"
+      className="scroll-mt-15 overflow-x-clip lg:scroll-mt-26.5"
+    >
       <Container className="flex flex-col gap-12.5">
         {title && (
           <Typography tag="h2" className="text-brand-ink text-center">
@@ -29,8 +35,17 @@ export function StrapiCarousel({
         )}
 
         {/* Square tiles, four across at desktop as in the design, scrolling
-            on narrower screens rather than shrinking to stamps. */}
-        <ScrollRow label={title}>
+            on narrower screens rather than shrinking to stamps.
+
+            The frame runs the row out past the column to the edge of the
+            screen, where the next tile is cut by the screen itself. Stopped
+            at the column, that tile was cut off square in the white margin
+            beside it, which read as a clipped shadow. The padding matching
+            the bleed lets the last tile still scroll back to the column. */}
+        <ScrollRow
+          label={title}
+          className="mr-[calc(50%-50vw)] pr-[calc(50vw-50%)]"
+        >
           {images.map((item) => (
             <li
               key={item.id}
