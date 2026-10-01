@@ -26,7 +26,12 @@ export function StrapiStatistics({
   return (
     <section>
       <Container>
-        <ul className="flex list-none flex-col gap-5 lg:flex-row lg:items-center lg:gap-10">
+        {/* The frame's row is measured for its 1320 grid, which holds from
+            1360 up. Narrower than that the same figures at the same size ran
+            past the screen at 1024 and folded the middle label onto three
+            lines at 1280, so until then everything is a step smaller: the
+            gaps, the figures and their words. */}
+        <ul className="flex list-none flex-col gap-5 lg:flex-row lg:items-center lg:gap-6 min-[85rem]:gap-10">
           {figures.map((figure, index) => (
             <Fragment key={figure.id}>
               {index > 0 && (
@@ -62,13 +67,13 @@ function StrapiFigure({
   return (
     <li
       className={cn(
-        "flex items-center lg:gap-5",
+        "flex items-center lg:gap-3 min-[85rem]:gap-5",
         grows ? "lg:flex-1 lg:justify-center" : "lg:shrink-0"
       )}
     >
       {/* On a phone the frame lines every label up at the same offset, so the
           figure takes a column of its own rather than a gap after it. */}
-      <p className="bg-brand-gradient w-30 shrink-0 bg-clip-text text-[2.5rem]/11 font-semibold text-transparent lg:w-auto lg:text-[4.375rem]/[4.8125rem]">
+      <p className="bg-brand-gradient w-30 shrink-0 bg-clip-text text-[2.5rem]/11 font-semibold text-transparent lg:w-auto lg:text-[3.5rem]/[3.85rem] min-[85rem]:text-[4.375rem]/[4.8125rem]">
         {prefix}
         {number}
         {suffix}
@@ -81,7 +86,7 @@ function StrapiFigure({
         htmlContent={description}
         // The rich-text styles set their own size and colour, so the frame's
         // have to be asserted over them.
-        className="[&_p]:text-brand-body! mb-0 [&_p]:mb-0! [&_p]:text-sm/[1.3125rem]! lg:[&_p]:text-xl/7.5! [&_strong]:font-bold"
+        className="[&_p]:text-brand-body! mb-0 [&_p]:mb-0! [&_p]:text-sm/[1.3125rem]! lg:[&_p]:text-base/6! min-[85rem]:[&_p]:text-xl/7.5! [&_strong]:font-bold"
       />
     </li>
   )

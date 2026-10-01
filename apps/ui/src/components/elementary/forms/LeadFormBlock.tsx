@@ -35,10 +35,14 @@ export function LeadFormBlock({
   const [status, setStatus] = useState<LeadFormStatus>("idle")
 
   return (
-    <div className="bg-brand-gradient text-brand-inverted relative isolate flex flex-col items-center gap-12.5 overflow-hidden px-3.75 pt-7.5 pb-25 lg:flex-row lg:items-stretch lg:gap-25 lg:rounded-[50px] lg:p-12.5">
+    <div className="bg-brand-gradient text-brand-inverted relative isolate flex flex-col items-center gap-12.5 overflow-hidden px-3.75 pt-7.5 pb-25 lg:flex-row lg:items-stretch lg:gap-12.5 lg:rounded-[50px] lg:p-12.5 min-[85rem]:gap-25">
       {/* The copy and the form sit in one column, as the design lays them out —
-          not side by side. The phone frame centres the heading over them. */}
-      <div className="flex w-full flex-col gap-7.5 text-center lg:max-w-150 lg:gap-10 lg:text-left">
+          not side by side. The phone frame centres the heading over them.
+          The frame's 601 column holds from 1360 up; narrower than that the
+          tooth beside it kept its full 519 and the copy was squeezed to 185
+          at 1024, so until then the copy keeps at least 460 — the heading's
+          two lines — and the tooth takes what is left. */}
+      <div className="flex w-full flex-col gap-7.5 text-center lg:min-w-115 lg:flex-1 lg:gap-10 lg:text-left min-[85rem]:max-w-150 min-[85rem]:flex-none">
         {status !== "idle" && (
           <LeadFormOutcome
             status={status}
@@ -89,7 +93,7 @@ export function LeadFormBlock({
         aria-hidden
         // The frame sets it above the words on a phone and beside them at
         // desktop, where it is a column of its own.
-        className="pointer-events-none order-first h-37.25 w-38.5 shrink-0 self-center object-contain lg:order-none lg:h-full lg:w-129.75"
+        className="pointer-events-none order-first h-37.25 w-38.5 shrink-0 self-center object-contain lg:order-none lg:h-full lg:w-auto lg:min-w-0 lg:flex-1 min-[85rem]:w-129.75 min-[85rem]:flex-none"
       />
     </div>
   )
