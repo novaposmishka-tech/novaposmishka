@@ -57,6 +57,18 @@ const CARD_TITLE =
   "text-brand-ink mb-0! text-lg/6.25! font-semibold lg:text-2xl/8.5!"
 const CARD_TEXT = "text-brand-body mb-0! text-sm/5! lg:text-base/5.5!"
 
+// The illustration is laid absolutely against the card's right edge, so it
+// pushes nothing: a column capped at a fixed width keeps that width while the
+// card narrows and the picture comes to meet it. So the words are held off the
+// right edge by the illustration's width less the card padding it already
+// covers — and less 20 of its box, the transparent margin every seeded
+// drawing keeps on its left. The frame lets the words run further in (50 on
+// the phone card, 36 on the desktop one), but that is placed by hand per
+// drawing: at 50 the implant, the tooth and the jaw all reach the words on a
+// narrow card. At the frame's widths the max-widths below still decide; on a
+// narrower card this margin does.
+const CLEAR_OF_ILLUSTRATION = "mr-20.5 lg:mr-30"
+
 export function StrapiServices({
   component,
 }: PageBuilderComponentProps & {
@@ -84,13 +96,19 @@ export function StrapiServices({
           </div>
         )}
 
-        <ul className="grid list-none grid-cols-1 gap-5 md:grid-cols-2 lg:grid-cols-3 lg:gap-6">
+        {/* Three across only from xl. At lg a third of the row is some 300,
+            and once the illustration has its 140 the words are left a column
+            too narrow for a single word of "нижньощелепного". */}
+        <ul className="grid list-none grid-cols-1 gap-5 md:grid-cols-2 lg:gap-6 xl:grid-cols-3">
           {services.map((service) => (
             <li
               key={service.id}
               className={`${CARD} hover:bg-brand-stripe gap-2.5 bg-white transition-colors lg:gap-3.75`}
             >
-              <Typography tag="h3" className={CARD_TITLE}>
+              <Typography
+                tag="h3"
+                className={`${CARD_TITLE} ${CLEAR_OF_ILLUSTRATION}`}
+              >
                 {service.name}
               </Typography>
 
@@ -106,7 +124,9 @@ export function StrapiServices({
                 // and 260 on the desktop one. They were both held at 228,
                 // which is where a description like the children's one broke
                 // into three lines on a desktop the frame sets at two.
-                <Typography className={`${CARD_TEXT} max-w-57 lg:max-w-65`}>
+                <Typography
+                  className={`${CARD_TEXT} ${CLEAR_OF_ILLUSTRATION} max-w-57 lg:max-w-65`}
+                >
                   {service.description}
                 </Typography>
               )}
@@ -143,9 +163,16 @@ export function StrapiServices({
               phone frame has no such card — seven cards in a column reach the
               foot of the section on their own. */}
           {callToAction && (
-            <li className="bg-brand-mist relative hidden min-h-42.75 overflow-hidden rounded-[20px] p-5 md:col-span-2 md:flex lg:min-h-53.5 lg:rounded-[26px] lg:p-7.5">
-              {/* The frame's copy column stops short of the illustration. */}
-              <div className="flex max-w-155.5 flex-col gap-5 lg:gap-7.5">
+            // The room the illustration needs is taken out of the card's own
+            // padding rather than capped on the words. The illustration is
+            // laid absolutely against the right edge — 170 wide, 30 clear of
+            // it — so it pushes nothing, and a column held to a fixed width
+            // went on holding it while the card narrowed and the picture came
+            // to meet it. 220 of padding is those 200 and a gutter: on the
+            // widest card it leaves the words the 622 the frame measures, and
+            // on a narrower one they give way instead of running underneath.
+            <li className="bg-brand-mist relative hidden min-h-42.75 overflow-hidden rounded-[20px] p-5 md:col-span-2 md:flex lg:min-h-53.5 lg:rounded-[26px] lg:p-7.5 lg:pr-55">
+              <div className="flex flex-col gap-5 lg:gap-7.5">
                 <div className="flex flex-col gap-2.5 lg:gap-3.75">
                   <Typography tag="h3" className={CARD_TITLE}>
                     {callToAction.name}
