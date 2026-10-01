@@ -1,6 +1,7 @@
 import "server-only"
 
 import type { Data } from "@repo/strapi-types"
+import { ArrowRight } from "lucide-react"
 
 import { Container } from "@/components/elementary/Container"
 import { ScrollRow } from "@/components/elementary/ScrollRow"
@@ -113,10 +114,11 @@ export function StrapiDoctors({
             // its words on a desktop — the frame's second button again.
             className="border-brand-teal text-brand-ink hover:bg-brand-gradient! hover:shadow-brand-button hover:text-brand-inverted h-10 w-full justify-center gap-2 rounded-[30px] border bg-transparent bg-none px-5 text-sm/5 font-semibold shadow-none hover:border-transparent lg:col-start-2 lg:row-start-1 lg:h-12.5 lg:w-fit lg:px-7.5 lg:text-base/5.5"
           >
-            {/* No arrow. The frame draws this one both ways across its
-                frames — on in one, off in two — and the call is that it is
-                off, like the cases and services blocks' own buttons. */}
+            {/* The frame draws this one both ways across its frames — on in
+                one, off in two — and the call is that it is on, like the
+                reviews block's. */}
             {link.label}
+            <ArrowRight aria-hidden className="size-5" />
           </StrapiLink>
         )}
       </Container>
