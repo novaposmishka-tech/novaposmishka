@@ -48,7 +48,9 @@ export async function StrapiResults({
             // The listing page opens on its own title rather than a hero above
             // it: the frame sets the words, the filters and the cards as one
             // block, and a section between them would double the gap.
-            <div className="flex flex-col gap-2.5 lg:mx-auto lg:max-w-187.5 lg:items-center lg:gap-5 lg:text-center">
+            // Centred on both frames — the phone's too, unlike the rest of
+            // its headings.
+            <div className="mx-auto flex flex-col items-center gap-2.5 text-center lg:max-w-187.5 lg:gap-5">
               {title && (
                 <Typography
                   tag="h1"
