@@ -16,18 +16,21 @@ import { cn } from "@/lib/styles"
 const SIZES = {
   header: {
     root: "gap-2.5 lg:gap-4",
-    mark: "h-6.75 w-7 group-has-data-photo-hero-top:brightness-0 group-has-data-photo-hero-top:invert lg:h-11.5 lg:w-11.75",
+    mark: "h-6.75 w-7 photo-hero-top:brightness-0 photo-hero-top:invert lg:h-11.5 lg:w-11.75",
     stack: "gap-1.5 lg:gap-2.5",
-    name: "text-[0.8rem]/none group-has-data-photo-hero-top:text-white lg:text-[1.365rem]/none",
+    name: "text-[0.8rem]/none photo-hero-top:text-white lg:text-[1.365rem]/none",
     tagline:
-      "text-[0.53rem]/none group-has-data-photo-hero-top:text-brand-on-dark lg:text-[0.91rem]/none",
+      "text-[0.53rem]/none photo-hero-top:text-brand-on-dark lg:text-[0.91rem]/none",
   },
   footer: {
     root: "gap-3.75 lg:gap-5.75",
     mark: "h-10.75 w-11 lg:h-16.25 lg:w-16.75",
     stack: "gap-2.25 lg:gap-3.75",
     name: "text-[1.0625rem]/none lg:text-[1.5625rem]/none",
-    tagline: "text-[0.6875rem]/none lg:text-[1.0625rem]/none",
+    // The frame sets the footer's line regular and in the pale blue it gives
+    // the header's over a photograph — the only light surface it draws it on.
+    tagline:
+      "text-brand-on-dark font-normal text-[0.6875rem]/none lg:text-[1.0625rem]/none",
   },
 }
 
@@ -77,12 +80,12 @@ export function ClinicLogo({
         <span
           className={cn(
             "font-semibold",
-            size.tagline,
             // brand-on-dark is what the design colours this line, and it is
-            // 1.67:1 on white — on the light header and in the footer the
-            // words all but disappear. It is kept for the one surface it was
-            // drawn for: a dark one.
-            onDark ? "text-brand-on-dark" : "text-brand-body"
+            // 1.67:1 on white — on the light header the words all but
+            // disappear. It is kept for the surface it was drawn for, a dark
+            // one; the footer's size above sets its own, as the frame does.
+            onDark ? "text-brand-on-dark" : "text-brand-body",
+            size.tagline
           )}
         >
           {t("tagline")}

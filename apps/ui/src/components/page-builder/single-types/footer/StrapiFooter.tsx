@@ -136,7 +136,9 @@ export function StrapiFooter({ locale }: { readonly locale: Locale }) {
                     <StrapiLink
                       key={link.id}
                       component={link}
-                      className="text-brand-ink hover:text-brand-teal h-auto w-fit p-0 text-base/5.5"
+                      // Regular, as the frame sets them; the link variant
+                      // would make them medium.
+                      className="text-brand-ink hover:text-brand-teal h-auto w-fit p-0 text-base/5.5 font-normal"
                     />
                   ))}
                 </nav>
