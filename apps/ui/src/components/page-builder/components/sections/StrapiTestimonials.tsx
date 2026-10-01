@@ -46,12 +46,23 @@ export async function StrapiTestimonials({
   const written = (
     <ScrollRow
       label={title}
-      className="md:block md:columns-2 md:overflow-visible md:*:mb-6 lg:columns-3"
+      // The columns' spacing is padding on each review rather than a margin
+      // under it and a column gap between them. Safari paints nothing outside
+      // a column box, so a card flush with its column lost the top and sides
+      // of its shadow; and it carries a column's last bottom margin over to
+      // the head of the next one, which dropped the middle column by that
+      // margin. The padding is room for the shadow inside the column, and
+      // the narrower gap and wider bleed give the cards back the 24 between
+      // them and the edges they had.
+      className="md:-mx-5 md:block md:columns-2 md:gap-2 md:overflow-visible md:px-3 md:pt-1 md:pb-7 lg:columns-3"
       // The frame gives the columns no arrows; they belong to the phone row.
       controlsClassName="md:hidden"
     >
       {testimonials.map((review) => (
-        <li key={review.id} className="w-full shrink-0 snap-start md:w-auto">
+        <li
+          key={review.id}
+          className="w-full shrink-0 snap-start md:w-auto md:break-inside-avoid md:px-2 md:py-3"
+        >
           <ReviewCard review={review} labels={cardLabels} />
         </li>
       ))}

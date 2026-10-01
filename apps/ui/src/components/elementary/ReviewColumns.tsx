@@ -69,10 +69,14 @@ export function ReviewColumns({
     <div ref={top} className="flex scroll-mt-24 flex-col gap-7.5 lg:gap-12.5">
       <ul
         aria-label={label ?? undefined}
-        className="flex list-none flex-col gap-5 md:block md:columns-2 md:gap-6 md:*:mb-6 lg:columns-3"
+        // Padding on each review rather than a margin under it, for Safari:
+        // it clips a card's shadow to its column box and carries a column's
+        // last margin over to the top of the next. The bleed and the narrower
+        // gap give the padding back, so the cards sit 24 apart as before.
+        className="flex list-none flex-col gap-5 md:-mx-2 md:-mt-3 md:block md:columns-2 md:gap-2 md:pb-3 lg:columns-3"
       >
         {shown.map((review) => (
-          <li key={review.id}>
+          <li key={review.id} className="md:break-inside-avoid md:px-2 md:py-3">
             <ReviewCard review={review} labels={labels} />
           </li>
         ))}
