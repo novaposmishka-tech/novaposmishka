@@ -124,7 +124,9 @@ export function ScrollRow({
       {scrollable && (
         <div
           className={cn(
-            "flex items-center justify-center gap-7.5",
+            // Under 360 the nine marks and the arrows no longer fit at 30
+            // apart even with the marks at their phone size.
+            "flex items-center justify-center gap-7.5 max-[359px]:gap-4",
             controlsClassName
           )}
         >
@@ -156,7 +158,7 @@ export function ScrollRow({
                     // reviews came to 216 against the 170 a 360 screen leaves
                     // between the arrows, and the ninth wrapped onto a row of
                     // its own. At 18 they sit on one line.
-                    className="flex cursor-pointer items-center justify-center p-1.25 sm:p-2"
+                    className="flex cursor-pointer items-center justify-center p-1.25 max-[359px]:p-1 sm:p-2"
                   >
                     <span
                       className={cn(

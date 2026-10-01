@@ -149,7 +149,9 @@ export function StrapiFooter({ locale }: { readonly locale: Locale }) {
               {/* Each line of details is its own description list: a single
                   list around all of them would have the messenger marks inside
                   it, which is not something a list of terms may contain. */}
-              <div className="grid w-full grid-cols-2 gap-x-10 gap-y-6.25 lg:grid-cols-3 lg:gap-x-0 lg:gap-y-8.25">
+              {/* Two columns from 360, as the frame has them; under that a
+                  column is 125 wide and the hours broke across lines. */}
+              <div className="grid w-full grid-cols-2 gap-x-10 gap-y-6.25 max-[359px]:grid-cols-1 lg:grid-cols-3 lg:gap-x-0 lg:gap-y-8.25">
                 {inlineContacts.map((item, index) => (
                   <ContactCell
                     key={item.id}
