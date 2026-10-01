@@ -16,6 +16,22 @@ import { readError } from "@/lib/http"
 import { cn } from "@/lib/styles"
 
 /**
+ * The contacts card Safari puts in a name field, and the key it puts in a
+ * credentials field, ignore the colour scheme the fields are given: each is a
+ * mask filled with a black background — a black mark on this form's dark pill.
+ * The background is the one thing that can be set, so it is set white.
+ *
+ * Inline rather than in a stylesheet because the build drops these rules from
+ * one — as a Tailwind variant and as plain CSS in globals.css alike — while
+ * keeping the other `-webkit-` pseudo-elements. One rule per pseudo-element: a
+ * browser that does not know one drops every selector in the same rule.
+ */
+const SAFARI_AUTOFILL_MARKS = `
+.lead-form-on-dark input::-webkit-contacts-auto-fill-button { background-color: white; }
+.lead-form-on-dark input::-webkit-credentials-auto-fill-button { background-color: white; }
+`
+
+/**
  * Posts to /API/lead, which forwards the request to Telegram and stores it in
  * Strapi. The form never talks to Strapi directly — the bot token and the API
  * token both stay server-side.
@@ -73,6 +89,9 @@ export function LeadForm({
 
   return (
     <div className="flex w-full flex-col">
+      <style href="lead-form-safari-autofill" precedence="default">
+        {SAFARI_AUTOFILL_MARKS}
+      </style>
       <AppForm
         form={form}
         onSubmit={onSubmit}
@@ -99,6 +118,8 @@ export function LeadForm({
           // What it does follow is the field's colour scheme: told the field is
           // dark, the browser draws its mark light instead of black.
           "[&_input]:[color-scheme:dark]",
+          // Safari's own ignores it; see SAFARI_AUTOFILL_MARKS above.
+          "lead-form-on-dark",
           "[&_input]:placeholder:text-brand-muted"
         )}
       >
