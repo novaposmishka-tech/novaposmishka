@@ -163,21 +163,32 @@ function DoctorsPage({
                 key={doctor.id}
                 className="shadow-brand-card flex flex-col gap-5 rounded-[20px] bg-white p-5 lg:gap-7.5 lg:p-7.5"
               >
-                <div className="flex items-center gap-3.75 lg:gap-7.5">
+                <div className="flex items-center gap-3.75 lg:gap-5 xl:gap-7.5">
                   {doctor.photo && (
                     <Portrait
                       photo={doctor.photo}
                       // The frame rounds the portrait at 10 on a phone, not 26: measured
                       // off a 1:1 render of the mobile doctors frame, where the
                       // 100-wide photo turns its corner in ten pixels.
-                      className="bg-brand-mist h-23.75 w-21.25 shrink-0 rounded-[10px] px-2.5 pt-2.5 lg:h-60.75 lg:w-64 lg:rounded-[26px] lg:pt-5"
+                      // From lg two cards share a row, and below about 1360
+                      // that row is narrower than any the frame draws: its
+                      // 256 photo left the name under a hundred pixels, and
+                      // "Миколайович" ran out past the card. So the photo
+                      // steps up with the room — 144, then 200 from xl — and
+                      // is the frame's own 256 only where the longest
+                      // patronymic still fits whole beside it.
+                      className="bg-brand-mist h-23.75 w-21.25 shrink-0 rounded-[10px] px-2.5 pt-2.5 lg:h-34.25 lg:w-36 lg:rounded-[26px] lg:pt-3.75 xl:h-47.5 xl:w-50 min-[85rem]:h-60.75 min-[85rem]:w-64 min-[85rem]:pt-5"
                     />
                   )}
 
-                  <div className="flex flex-col gap-2.5 lg:gap-5">
+                  {/* min-w-0 so the column can be narrower than its longest
+                      word, and break-words so such a word breaks inside the
+                      card rather than running past it — a last resort the
+                      sizes above are chosen to keep from happening. */}
+                  <div className="flex min-w-0 flex-col gap-2.5 lg:gap-5">
                     <Typography
                       tag="h2"
-                      className="text-brand-ink mb-0! text-base/5.5! font-semibold lg:text-2xl/8.5!"
+                      className="text-brand-ink mb-0! text-base/5.5! font-semibold break-words lg:text-xl/7! xl:text-2xl/8.5!"
                     >
                       {doctor.name}
                     </Typography>
