@@ -104,7 +104,9 @@ export function CaseGallery({
                     "bg-brand-gradient text-brand-inverted shadow-brand-button hover:bg-brand-teal font-semibold hover:bg-none"
                   : "text-brand-ink bg-white"
                 : isGrid
-                  ? "border-brand-teal text-brand-ink hover:bg-brand-gradient hover:text-brand-inverted border bg-white hover:border-transparent"
+                  ? // Under the pointer it takes the gradient and, with it, the
+                    // shadow every gradient button carries.
+                    "border-brand-teal text-brand-ink hover:bg-brand-gradient hover:text-brand-inverted hover:shadow-brand-button border bg-white hover:border-transparent"
                   : // On the dark band the frame whitens the chip rather than
                     // deepening it: white at a tenth, ringed in white at about
                     // a half.
