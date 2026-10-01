@@ -54,7 +54,11 @@ export function LeadFormBlock({
           {/* The frame holds the words to 532 inside the 601 column. */}
           <div className="flex flex-col gap-5 lg:max-w-133">
             {title && (
-              <Typography tag="h2" className="text-brand-inverted">
+              // Narrower than the column: the frame breaks the heading after
+              // its question — "Маєте запитання?" — and at 532 the next word
+              // still fit on the first line. 480 holds the question alone and
+              // still takes the whole second line.
+              <Typography tag="h2" className="text-brand-inverted lg:max-w-120">
                 {title}
               </Typography>
             )}
