@@ -28,8 +28,10 @@ export function StrapiCarousel({
       className="scroll-mt-15 overflow-x-clip lg:scroll-mt-26.5"
     >
       <Container className="flex flex-col gap-12.5">
+        {/* Centred on a desktop; the phone frame ranges it left with the
+            rest of the page's headings. */}
         {title && (
-          <Typography tag="h2" className="text-brand-ink text-center">
+          <Typography tag="h2" className="text-brand-ink lg:text-center">
             {title}
           </Typography>
         )}
