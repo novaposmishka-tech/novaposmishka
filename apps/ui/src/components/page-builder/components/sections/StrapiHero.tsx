@@ -159,7 +159,14 @@ export function StrapiHero({
                     className="h-10 w-full gap-2 rounded-[30px] px-5 text-sm font-semibold lg:h-12.5 lg:w-fit lg:px-7.5 lg:text-base"
                   >
                     {link.label}
-                    <ArrowRight aria-hidden className="size-5" />
+                    {/* The arrow points on through the site. The one hero
+                        button the frame draws without it is the reviews
+                        page's, which leaves for Google — so a link that goes
+                        off the site carries none. The booking buttons are
+                        "external" too, but to an anchor on the page. */}
+                    {!leavesSite(link) && (
+                      <ArrowRight aria-hidden className="size-5" />
+                    )}
                   </StrapiLink>
                 ))}
               </div>
@@ -243,6 +250,10 @@ function HeroTag({
     </div>
   )
 }
+
+/** True of a link to another site — an absolute URL, not a page or an anchor. */
+const leavesSite = (link: Data.Component<"utilities.link">) =>
+  link.type === "external" && /^https?:\/\//i.test(link.href ?? "")
 
 /** How the hero stacks: the photo frame's measurements, or the older layouts. */
 const layoutClass = ({
