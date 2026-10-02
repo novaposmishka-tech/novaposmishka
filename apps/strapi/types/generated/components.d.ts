@@ -443,12 +443,11 @@ export interface SharedSocialLink extends Struct.ComponentSchema {
 export interface SharedVideoReview extends Struct.ComponentSchema {
   collectionName: "components_shared_video_reviews"
   info: {
-    description: "A patient filmed review: the still, the quote, and the clip."
+    description: "A patient's filmed review: the clip, and the quote under it."
     displayName: "VideoReview"
     icon: "play"
   }
   attributes: {
-    poster: Schema.Attribute.Component<"utilities.basic-image", false>
     quote: Schema.Attribute.Text & Schema.Attribute.Required
     videoUrl: Schema.Attribute.String
   }
