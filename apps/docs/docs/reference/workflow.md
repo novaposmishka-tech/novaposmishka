@@ -41,26 +41,6 @@ For the interactive Commitizen prompt, run:
 pnpm commit
 ```
 
-## Environment Variables in Commits
-
-:::warning Work in progress
-This is a lightweight helper, not a complete environment-management solution yet. Treat the extracted list as a reminder to review required variables manually before deployment.
-:::
-
-When introducing new environment variables, mention them in commit messages using `env.VARIABLE_NAME` or `VARIABLE_NAME` in `CONSTANT_CASE`.
-
-The `.github/workflows/auto-pr.yml` extracts these names from commit messages and lists them in the pull request description under "Required Environment Variables". See [GitHub Actions](./deployment/github-actions.md#auto-pr) for the full Auto PR workflow behavior.
-
-Example commit body:
-
-```text
-Added error tracking with Sentry.
-
-New environment variables:
-- env.SENTRY_DSN
-- env.SENTRY_AUTH_TOKEN
-```
-
 ## Release Notes
 
 Release automation is driven by [semantic-release](https://semantic-release.gitbook.io/) and the shared [`@repo/semantic-release-config`](./packages/semantic-release-config.md) package.

@@ -22,13 +22,12 @@ Use the shared setup action when adding new workflows so pnpm, Node, and depende
 
 ## Workflows
 
-| Workflow                    | File                            | Trigger                                  | Purpose                                                       |
-| --------------------------- | ------------------------------- | ---------------------------------------- | ------------------------------------------------------------- |
-| CI                          | `.github/workflows/ci.yml`      | Pull requests to `main` or `dev`         | Lint, format-check, unit test, build UI, and build Strapi.    |
-| QA (manual)                 | `.github/workflows/qa.yml`      | Manual `workflow_dispatch`               | Run selected browser QA suites against a supplied `BASE_URL`. |
-| Deploy Docs to GitHub Pages | `.github/workflows/docs.yml`    | Push to `main` touching docs, or manual  | Build Docusaurus and deploy docs to GitHub Pages.             |
-| Release                     | `.github/workflows/release.yml` | Push to `main`                           | Run semantic-release and publish a GitHub release.            |
-| Auto Create Pull Requests   | `.github/workflows/auto-pr.yml` | Push to `dev`, daily schedule, or manual | Create or update a `dev` to `main` pull request.              |
+| Workflow                    | File                            | Trigger                                 | Purpose                                                       |
+| --------------------------- | ------------------------------- | --------------------------------------- | ------------------------------------------------------------- |
+| CI                          | `.github/workflows/ci.yml`      | Pull requests to `main` or `dev`        | Lint, format-check, unit test, build UI, and build Strapi.    |
+| QA (manual)                 | `.github/workflows/qa.yml`      | Manual `workflow_dispatch`              | Run selected browser QA suites against a supplied `BASE_URL`. |
+| Deploy Docs to GitHub Pages | `.github/workflows/docs.yml`    | Push to `main` touching docs, or manual | Build Docusaurus and deploy docs to GitHub Pages.             |
+| Release                     | `.github/workflows/release.yml` | Push to `main`                          | Run semantic-release and publish a GitHub release.            |
 
 ## CI
 
@@ -94,30 +93,6 @@ pnpm exec semantic-release --extends @repo/semantic-release-config
 
 :::info Release permissions
 The workflow uses `GITHUB_TOKEN` and has write permissions for contents, issues, and pull requests so semantic-release can create GitHub releases and comment on related issues or PRs.
-:::
-
-## Auto PR
-
-`.github/workflows/auto-pr.yml` keeps a production-sync PR open from `dev` to `main`.
-
-It runs on:
-
-- pushes to `dev`
-- a daily schedule at 09:00 UTC
-- manual dispatch
-
-The workflow:
-
-1. Confirms `main` exists.
-2. Checks whether `dev` differs from `main`.
-3. Detects an existing open `dev` to `main` PR.
-4. Extracts required environment variable names from commit bodies using the format documented in [Environment Variables in Commits](../workflow.md#environment-variables-in-commits).
-5. Creates or updates the sync PR body with recent commits, changed files, env vars, and a checklist.
-
-The `.github/workflows/auto-pr.yml` extraction is intentionally lightweight; see [Git Hooks and Conventions](../workflow.md#environment-variables-in-commits) for the commit-message format and current limitations.
-
-:::warning Merge method
-The generated PR body explicitly asks maintainers to use a merge commit. Do not squash or rebase this PR unless your project intentionally changes the release workflow assumptions.
 :::
 
 ## Docs Deployment

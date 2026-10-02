@@ -45,7 +45,7 @@ Start with [Documentation Overview](apps/docs/docs/getting-started/features.md) 
 Use these pages for common coding-agent tasks:
 
 - [Commands Reference](apps/docs/docs/reference/commands.md) — Root scripts, package filters, worktrees, tests, and cleanup commands
-- [Workflow](apps/docs/docs/reference/workflow.md) — Git hooks, branch naming, Conventional Commits, env vars in commits, and release notes
+- [Workflow](apps/docs/docs/reference/workflow.md) — Git hooks, branch naming, Conventional Commits, and release notes
 - [Quick Start](apps/docs/docs/getting-started/quick-start.md) — Local setup flow
 - [Add Content Type](apps/docs/docs/getting-started/add-content-type.md) — Strapi schema-to-UI implementation workflow
 - [Page Builder](apps/docs/docs/page-builder/introduction.md) — Dynamic zones, component registry, rendering, and population rules
@@ -73,8 +73,6 @@ Manual format:
 ```text
 type(scope): subject
 ```
-
-When adding environment variables, mention them in the commit body as `env.VARIABLE_NAME` or `VARIABLE_NAME` in `CONSTANT_CASE` so the Auto PR workflow can surface them. See [Workflow](apps/docs/docs/reference/workflow.md) for details.
 
 ## Agent skills
 

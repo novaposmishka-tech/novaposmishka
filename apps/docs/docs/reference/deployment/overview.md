@@ -9,12 +9,12 @@ This starter is deployment-provider agnostic. The repository includes GitHub Act
 
 ## Deployment Surfaces
 
-| Surface        | Purpose                                     | Docs                                                                                             |
-| -------------- | ------------------------------------------- | ------------------------------------------------------------------------------------------------ |
-| GitHub Actions | CI, QA, docs publishing, releases, auto PRs | [GitHub Actions](./github-actions.md)                                                            |
-| Heroku         | Optional hosting target for Strapi and UI   | [Heroku](./heroku.md)                                                                            |
-| Vercel         | Optional hosting target for the UI only     | [Vercel](./vercel.md)                                                                            |
-| Docker         | Containerized UI and Strapi builds          | [UI Docker Build](../../ui/docker-build.md), [Strapi Docker Build](../../strapi/docker-build.md) |
+| Surface        | Purpose                                   | Docs                                                                                             |
+| -------------- | ----------------------------------------- | ------------------------------------------------------------------------------------------------ |
+| GitHub Actions | CI, QA, docs publishing, releases         | [GitHub Actions](./github-actions.md)                                                            |
+| Heroku         | Optional hosting target for Strapi and UI | [Heroku](./heroku.md)                                                                            |
+| Vercel         | Optional hosting target for the UI only   | [Vercel](./vercel.md)                                                                            |
+| Docker         | Containerized UI and Strapi builds        | [UI Docker Build](../../ui/docker-build.md), [Strapi Docker Build](../../strapi/docker-build.md) |
 
 ## General Checklist
 
