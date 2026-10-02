@@ -9,19 +9,15 @@ import { ClinicLogo } from "@/components/elementary/ClinicLogo"
 import { Container } from "@/components/elementary/Container"
 import { RatingBadge } from "@/components/elementary/RatingBadge"
 import { operatorIcon } from "@/components/icons/operators"
-import {
-  InstagramIcon,
-  MessengerIcon,
-  TelegramIcon,
-  WhatsAppIcon,
-} from "@/components/icons/social"
 import StrapiLeadForm from "@/components/page-builder/components/forms/StrapiLeadForm"
 import StrapiImageWithLink from "@/components/page-builder/components/utilities/StrapiImageWithLink"
 import StrapiLink from "@/components/page-builder/components/utilities/StrapiLink"
 import Typography from "@/components/typography"
 import { contactHref } from "@/lib/contacts"
 import { fetchFooter } from "@/lib/strapi-api/content/server"
+import { formatStrapiMediaUrl } from "@/lib/strapi-helpers"
 import { cn } from "@/lib/styles"
+import type { StrapiImageMedia } from "@/types/api"
 
 type Contact = NonNullable<
   Data.ContentType<"api::footer.footer">["contacts"]
@@ -35,13 +31,6 @@ const CONTACT_ICONS: Record<string, ComponentType<SVGProps<SVGSVGElement>>> = {
   phone: Phone,
   "map-pin": MapPin,
   mail: Mail,
-}
-
-const SOCIAL_ICONS: Record<string, ComponentType<SVGProps<SVGSVGElement>>> = {
-  telegram: TelegramIcon,
-  whatsapp: WhatsAppIcon,
-  messenger: MessengerIcon,
-  instagram: InstagramIcon,
 }
 
 /** A hairline the width of the grid, as the design rules the footer. */
@@ -251,12 +240,22 @@ function ContactCell({
   )
 }
 
+/**
+ * One messenger or social mark, as an editor uploaded it.
+ *
+ * The file is not drawn as an image but used as a mask over the current text
+ * colour: that is what lets a mark an editor uploaded take the brand teal and
+ * go light on hover, the way the design has them, instead of showing in
+ * whatever colour the file happens to carry. A single-colour SVG is what the
+ * field asks for; a multicoloured file still renders, as a silhouette.
+ */
 function SocialLink({ social }: { readonly social: Social }) {
-  const Icon = social.platform ? SOCIAL_ICONS[social.platform] : undefined
+  const icon: StrapiImageMedia | undefined | null = social.icon
+  const src = formatStrapiMediaUrl(icon?.url)
 
   // An account with no address is not a link; a mark that goes nowhere is
   // worse than the row being one mark shorter.
-  if (!Icon || !social.href) {
+  if (!src || !social.href) {
     return null
   }
 
@@ -266,10 +265,14 @@ function SocialLink({ social }: { readonly social: Social }) {
         href={social.href}
         target="_blank"
         rel="noreferrer noopener"
-        aria-label={social.label ?? social.platform ?? undefined}
+        aria-label={social.label ?? undefined}
         className="text-brand-teal hover:text-brand-light block transition-colors"
       >
-        <Icon className="size-7.5 lg:size-8.5" />
+        <span
+          aria-hidden
+          className="block size-7.5 bg-current mask-contain mask-center mask-no-repeat lg:size-8.5"
+          style={{ maskImage: `url("${src}")` }}
+        />
       </a>
     </li>
   )
