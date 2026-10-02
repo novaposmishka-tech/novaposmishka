@@ -429,17 +429,14 @@ export interface SharedDoctor extends Struct.ComponentSchema {
 export interface SharedSocialLink extends Struct.ComponentSchema {
   collectionName: "components_shared_social_links"
   info: {
-    description: "One messenger or social account, drawn with that mark."
+    description: "One messenger or social account. Upload a single-colour SVG mark: the site tints it with the brand colour and recolours it on hover."
     displayName: "SocialLink"
     icon: "link"
   }
   attributes: {
     href: Schema.Attribute.String & Schema.Attribute.Required
-    label: Schema.Attribute.String
-    platform: Schema.Attribute.Enumeration<
-      ["telegram", "whatsapp", "messenger", "instagram"]
-    > &
-      Schema.Attribute.Required
+    icon: Schema.Attribute.Media<"images"> & Schema.Attribute.Required
+    label: Schema.Attribute.String & Schema.Attribute.Required
   }
 }
 

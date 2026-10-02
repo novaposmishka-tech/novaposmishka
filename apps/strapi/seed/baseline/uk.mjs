@@ -98,14 +98,14 @@ export const footer = {
   // can be linked to anything.
   socials: [
     {
-      platform: "whatsapp",
-      href: `https://wa.me/${PHONE_E164}`,
-      label: "WhatsApp",
-    },
-    {
-      platform: "telegram",
+      icon: mediaId("telegram"),
       href: `https://t.me/+${PHONE_E164}`,
       label: "Telegram",
+    },
+    {
+      icon: mediaId("whatsapp"),
+      href: `https://wa.me/${PHONE_E164}`,
+      label: "WhatsApp",
     },
   ],
   links: [

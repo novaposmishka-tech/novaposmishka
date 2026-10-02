@@ -3,21 +3,23 @@
   "info": {
     "displayName": "SocialLink",
     "icon": "link",
-    "description": "One messenger or social account, drawn with that platform's mark."
+    "description": "One messenger or social account. Upload a single-colour SVG mark: the site tints it with the brand colour and recolours it on hover."
   },
   "options": {},
   "attributes": {
-    "platform": {
-      "type": "enumeration",
-      "enum": ["telegram", "whatsapp", "messenger", "instagram"],
-      "required": true
+    "icon": {
+      "type": "media",
+      "multiple": false,
+      "required": true,
+      "allowedTypes": ["images"]
     },
     "href": {
       "type": "string",
       "required": true
     },
     "label": {
-      "type": "string"
+      "type": "string",
+      "required": true
     }
   },
   "config": {}
