@@ -89,7 +89,6 @@ export async function StrapiTestimonials({
                 key="video"
                 reviews={videoReviews}
                 label={videoLabel}
-                layout="carousel"
               />,
             ]}
           />
