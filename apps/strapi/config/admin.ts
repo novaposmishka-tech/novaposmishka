@@ -15,6 +15,22 @@ export default ({ env }) => {
     auth: {
       secret: env("ADMIN_JWT_SECRET"),
       providers: [microsoftSSOProvider(env)].filter(Boolean),
+      // The admin panel logs out when the access token expires, and only an
+      // API call that meets a 401 renews it — so an editor who stops for the
+      // token's lifespan is signed out, even mid-form. Strapi's half hour
+      // was doing that several times a day. A working day instead, and a
+      // session that closes after a day in any case.
+      sessions: {
+        accessTokenLifespan: env.int(
+          "ADMIN_ACCESS_TOKEN_LIFESPAN",
+          12 * 60 * 60
+        ),
+        idleSessionLifespan: env.int(
+          "ADMIN_IDLE_SESSION_LIFESPAN",
+          12 * 60 * 60
+        ),
+        maxSessionLifespan: env.int("ADMIN_MAX_SESSION_LIFESPAN", 24 * 60 * 60),
+      },
     },
     apiToken: {
       salt: env("API_TOKEN_SALT"),
