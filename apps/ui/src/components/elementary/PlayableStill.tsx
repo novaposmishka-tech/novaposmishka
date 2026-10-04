@@ -45,21 +45,30 @@ export function PlayableStill({
         onClose={() => setPlaying(false)}
         label={label}
       >
-        {/* No caption track: the clinic has none for these yet, and the quote
+        {/* Only while the viewer is open. The dialog itself is always in the
+            page, closed or not, and a clip with autoplay inside a closed one
+            still starts — every film on the page was playing at once, and
+            closing the viewer only hid the one that was showing. Taking the
+            element out stops it, and puts a fresh one in at the start next
+            time.
+
+            No caption track: the clinic has none for these yet, and the quote
             beside each card carries what is said. One goes on each clip when
             the real films arrive.
 
             Less curve than the still: the browser draws its own controls hard
             into the corners, and the frame's 30 was cutting the fullscreen and
             picture-in-picture marks and the ends of the scrubber. */}
-        <video
-          src={src}
-          controls
-          autoPlay
-          playsInline
-          aria-label={label ?? undefined}
-          className="max-h-[80vh] w-full rounded-xl bg-black object-contain"
-        />
+        {playing && (
+          <video
+            src={src}
+            controls
+            autoPlay
+            playsInline
+            aria-label={label ?? undefined}
+            className="max-h-[80vh] w-full rounded-xl bg-black object-contain"
+          />
+        )}
       </MediaViewer>
 
       <a
