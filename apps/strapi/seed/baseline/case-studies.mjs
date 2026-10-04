@@ -3,14 +3,16 @@
  *
  * Every word here is the clinic's own, transcribed from the Figma frames — the
  * wording, including its typos, is left as written rather than tidied, because
- * this is clinical narrative and not ours to edit. The photographs are the
- * design's own too, exported from the same frames.
+ * this is clinical narrative and not ours to edit. The photographs and the
+ * films are the clinic's too, taken from its previous site; where the frames
+ * had a photograph the site does not, the frame's own export stands.
  *
  * The design switches the page between the grid and one of these when a
  * "Кейс: …" chip is chosen. Here they are laid out below the grid instead, and
  * the chips jump to them; the content is the same, the interaction is simpler.
  */
 
+import { dentist } from "./dentists.mjs"
 import { image, mediaUrl, text } from "./shared.mjs"
 
 const PREPARATION_INTRO =
@@ -28,23 +30,20 @@ const ENOUGH_BONE =
 const GUM_FORMER =
   "Металевий кружечок який ви бачите на зображенні – це формувач ясен який тимчасово встановлюється на імплант"
 
-const SHEVCHUK = {
-  doctorName: "Сергій Шевчук",
-  doctorPhoto: image("doctor-shevchuk", "Сергій Шевчук, лікар клініки"),
-}
-const ZAMIATIN = {
-  doctorName: "Віталій Замятін",
-  doctorPhoto: image("doctor-zamiatin", "Віталій Замятін, лікар клініки"),
-}
-const HONCHARUK = {
-  doctorName: "Артур Гончарук",
-  doctorPhoto: image("doctor-honcharuk", "Артур Гончарук, лікар клініки"),
-}
+const SHEVCHUK = dentist("Сергій Шевчук")
+const ZAMIATIN = dentist("Віталій Замятін")
+const HONCHARUK = dentist("Артур Гончарук")
 
-const pair = (slug, stage) => [
-  image(`${slug}-${stage}-1`, "Стан зубів до цього етапу лікування"),
-  image(`${slug}-${stage}-2`, "Стан зубів після цього етапу лікування"),
-]
+/**
+ * One view of the mouth before and after a stage, compared on a slider. A
+ * file may stand in more than one pair: the start of the treatment is the
+ * "before" of several stages, and one stage's "after" is the next one's
+ * "before".
+ */
+const pair = (before, after) => ({
+  before: image(before, "Стан зубів до цього етапу лікування"),
+  after: image(after, "Стан зубів після цього етапу лікування"),
+})
 
 export const caseStudies = [
   {
@@ -61,7 +60,7 @@ export const caseStudies = [
     ].map(text),
     videoLabel: "Дивіться відеоогляд випадку",
     videoPoster: image("case1-cover-1", "Кадр з відеоогляду випадку"),
-    videoUrl: mediaUrl("hero-video"),
+    videoUrl: mediaUrl("case1-video"),
     before: image("case1-cover-2", "Посмішка пацієнтки до лікування"),
     after: image("case1-cover-3", "Посмішка пацієнтки після лікування"),
     stages: [
@@ -90,16 +89,21 @@ export const caseStudies = [
           "Лікування кореневих каналів",
           "Видалення зубів мудрості",
         ].map(text),
-        showBeforeAfter: true,
-        images: pair("case1", "s2"),
+        // The previous site shows no photographs at this stage; the frame's
+        // own pair stands here.
+        pairs: [pair("case1-s2-1", "case1-s2-2")],
         ...SHEVCHUK,
       },
       {
         title: "3. Вирівнювання зубів металевими брекетами",
         intro: ALIGNMENT_INTRO,
         note: "Тривалість лікування 2 роки",
-        showBeforeAfter: true,
-        images: pair("case1", "s3"),
+        pairs: [
+          pair("case1-s3-p1-before", "case1-s3-p1-after"),
+          pair("case1-s3-p2-before", "case1-s3-p2-after"),
+          pair("case1-s3-p3-before", "case1-s3-p3-after"),
+          pair("case1-s3-p4-before", "case1-s3-p4-after"),
+        ],
         ...SHEVCHUK,
       },
       {
@@ -110,8 +114,10 @@ export const caseStudies = [
           ENOUGH_BONE,
         ].map(text),
         note: GUM_FORMER,
-        showBeforeAfter: true,
-        images: pair("case1", "s4"),
+        pairs: [
+          pair("case1-s3-p2-before", "case1-s3-p2-after"),
+          pair("case1-s4-p2-before", "case1-s4-p2-after"),
+        ],
         ...ZAMIATIN,
       },
       {
@@ -123,8 +129,16 @@ export const caseStudies = [
           "5 накладок",
         ].map(text),
         note: "Всі перечислені ортопедичні конструкції виготовлені з кераміки",
-        showBeforeAfter: true,
-        images: pair("case1", "s5"),
+        pairs: [
+          pair("case1-s5-p1-before", "case1-s5-p1-after"),
+          pair("case1-s5-p2-before", "case1-s5-p2-after"),
+          pair("case1-s5-p3-before", "case1-s5-p3-after"),
+          pair("case1-s3-p1-after", "case1-s5-p4-after"),
+          pair("case1-s3-p1-before", "case1-s5-p4-after"),
+          pair("case1-s3-p2-after", "case1-s5-p5-after"),
+          pair("case1-s3-p2-before", "case1-s5-p5-after"),
+          pair("case1-s5-p6-before", "case1-s5-p6-after"),
+        ],
         ...HONCHARUK,
       },
     ],
@@ -137,9 +151,11 @@ export const caseStudies = [
     quote:
       "“Процедура імплантації пройшла дуже комфортно, безболісно, хоча перед цим я дуже сильно хвилювався – але все пройшло на вищому рівні”",
     videoPoster: image("case2-cover-1", "Кадр з відеоогляду випадку"),
-    videoUrl: mediaUrl("hero-video"),
+    videoUrl: mediaUrl("case2-video"),
     before: image("case2-cover-2", "Посмішка пацієнта до лікування"),
     after: image("case2-cover-3", "Посмішка пацієнта після лікування"),
+    // The first three stages carry no photographs: the clinic's previous site
+    // has none for them either, and the frames draw placeholders there.
     stages: [
       {
         title: "1. Діагностика",
@@ -168,8 +184,7 @@ export const caseStudies = [
           ENOUGH_BONE,
         ].map(text),
         note: GUM_FORMER,
-        showBeforeAfter: true,
-        images: pair("case2", "s4"),
+        pairs: [pair("case2-s4-p1-before", "case2-s4-p1-after")],
         ...ZAMIATIN,
       },
       {
@@ -181,8 +196,14 @@ export const caseStudies = [
           "Встановили 1 керамічну коронку на імпланті",
           "Встановили 1 керамічний вінір",
         ].map(text),
-        showBeforeAfter: true,
-        images: pair("case2", "s5"),
+        pairs: [
+          pair("case2-s5-p1-before", "case2-s5-p1-after"),
+          pair("case2-s5-p2-before", "case2-s5-p2-after"),
+          pair("case2-s5-p3-before", "case2-s5-p3-after"),
+          pair("case2-s5-p4-before", "case2-s5-p4-after"),
+          pair("case2-s5-p4-after", "case2-s5-p5-after"),
+          pair("case2-s5-p6-before", "case2-s5-p6-after"),
+        ],
         ...HONCHARUK,
       },
     ],

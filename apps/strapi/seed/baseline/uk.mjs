@@ -11,7 +11,7 @@
  * ./shared.mjs.
  */
 
-import { cases } from "./cases.mjs"
+import { groups } from "./cases.mjs"
 import { featuredDoctors } from "./doctors.mjs"
 import { reviews } from "./reviews.mjs"
 import { SERVICE_SLUGS } from "./services.mjs"
@@ -299,7 +299,7 @@ export const homepage = {
       __component: "sections.results",
       title: "Наші роботи",
       display: "carousel",
-      cases,
+      groups,
       link: pageLink("Дивитись усі роботи", "nashi-roboty", BUTTON_ON_DARK),
     },
     {
@@ -333,8 +333,3 @@ export const homepage = {
     },
   ],
 }
-
-// `sections.results` is intentionally left out of the homepage: its
-// before/after component requires two media entries, and the clinic's case
-// photos have not been supplied yet. Add the section through the admin panel
-// once they are uploaded.

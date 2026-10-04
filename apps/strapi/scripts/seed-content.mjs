@@ -13,7 +13,8 @@
  * rendering site without an admin session.
  *
  * It only ever creates what is missing — an existing document is left exactly
- * as the editors last saved it. Pass `--force` to replace them instead.
+ * as the editors last saved it. Pass `--force` to replace them all instead,
+ * or `--only=nashi-roboty,/` to replace just the pages named, by slug.
  */
 
 import { createRequire } from "node:module"
@@ -37,6 +38,13 @@ const appDir = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..")
 const require = createRequire(import.meta.url)
 
 const force = process.argv.includes("--force")
+const only = new Set(
+  process.argv
+    .find((arg) => arg.startsWith("--only="))
+    ?.slice("--only=".length)
+    .split(",")
+    .filter(Boolean)
+)
 
 process.env.STRAPI_TELEMETRY_DISABLED ??= "1"
 const { compileStrapi, createStrapi } = require("@strapi/strapi")
@@ -182,7 +190,7 @@ async function seedPage(label, page) {
     status: "draft",
   })
 
-  if (existing && !force) {
+  if (existing && !force && !only.has(label)) {
     console.log(`[seed:content] Page ${label}: exists, left untouched.`)
 
     return existing.documentId
