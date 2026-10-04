@@ -15,23 +15,24 @@ content are missing.
 
 ## Blocked on content
 
-- [ ] **Three doctor portraits show the wrong person.** The design has
-      photographs for five of the eight dentists. Каменчук, Бучинська and
-      Острогляд are standing in with a colleague's photograph so the team page
-      has no gaps — one named dentist's face under another's name.
+- [ ] **One doctor portrait shows the wrong person.** The design has
+      photographs for five of the eight dentists, and the clinic's previous
+      site supplied Каменчук and Бучинська. Острогляд is still standing in
+      with a colleague's photograph so the team page has no gap — one named
+      dentist's face under another's name.
 
-      **Replace before this page is shown outside the clinic.** The three are
-      marked in `apps/strapi/seed/baseline/doctors.mjs`.
+      **Replace before this page is shown outside the clinic.** He is marked
+      in `apps/strapi/seed/baseline/doctors.mjs`.
 
 - [ ] **More case photographs.** The homepage and /nashi-roboty show the
-      three before/after cases the design provides. Every further case needs its
-      own pair of photographs.
+      eighteen works the clinic's previous site had, in its five tabs. Every
+      further work needs its own pair of photographs, added to its tab in
+      `apps/strapi/seed/baseline/cases.mjs` or through the admin panel.
 
-- [ ] **Video URLs.** Two places offer a film and the design file contains
-      none, so each shows its still and no play control: the four filmed
-      reviews (`sections.video-reviews` → `videoUrl`) and the walk-through on
-      each case study (`sections.case-study` → `videoUrl`). Set the URL and the
-      play control appears.
+- [ ] **Video URLs.** The four filmed reviews (`sections.video-reviews` →
+      `videoUrl`) still carry the hero clip as a stand-in, because the design
+      file contains none. Set each URL to the real film. The two case studies
+      already play the clinic's own films, taken from its previous site.
 
 - [ ] **An H.264 copy of the hero clip.** The homepage background is the old
       site's `hero-video.webm` (VP8/VP9), which Safari cannot decode — those

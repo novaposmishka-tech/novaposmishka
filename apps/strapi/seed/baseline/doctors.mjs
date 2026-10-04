@@ -25,10 +25,11 @@ const PHOTOS = {
   "Замятін Віталій Олександрович": "doctor-zamiatin",
   "Гончарук Артур Анатолійович": "doctor-honcharuk",
 
-  // PLACEHOLDERS — not these people. Borrowed from the three above so the
-  // team page has no gaps. Replace with their own photographs; see TODO.md.
-  "Каменчук Михайло Віталійович": "doctors-1",
-  "Бучинська Дарина Олександрівна": "doctors-2",
+  // From the clinic's previous site, where the works are signed by them.
+  "Каменчук Михайло Віталійович": "doctor-kamenchuk",
+  "Бучинська Дарина Олександрівна": "doctor-buchynska",
+  // PLACEHOLDER — not this person. Borrowed so the team page has no gap.
+  // Replace with his own photograph; see TODO.md.
   "Острогляд Євгеній Сергійович": "doctors-3",
 }
 
