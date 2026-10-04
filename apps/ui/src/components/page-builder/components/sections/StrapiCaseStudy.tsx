@@ -5,8 +5,10 @@ import { ChevronRight } from "lucide-react"
 import { getTranslations } from "next-intl/server"
 
 import { BeforeAfterSlider } from "@/components/elementary/BeforeAfterSlider"
+import { CasePanel } from "@/components/elementary/CasePanel"
 import { Container } from "@/components/elementary/Container"
 import { PlayableStill } from "@/components/elementary/PlayableStill"
+import { ScrollRow } from "@/components/elementary/ScrollRow"
 import { ZoomableImage } from "@/components/elementary/ZoomableImage"
 import { StrapiBasicImage } from "@/components/page-builder/components/utilities/StrapiBasicImage"
 import Typography from "@/components/typography"
@@ -28,6 +30,7 @@ const RULE = "border-brand-hairline border-t"
 
 export async function StrapiCaseStudy({
   component,
+  page,
 }: PageBuilderComponentProps & {
   component: Data.Component<"sections.case-study">
 }) {
@@ -48,9 +51,16 @@ export async function StrapiCaseStudy({
   // A clip uploaded to Strapi is stored as a path; one an editor pasted from
   // elsewhere is already whole. This completes the first and leaves the second.
   const clip = formatStrapiMediaUrl(videoUrl)
+  const id = caseStudyId(title)
 
-  return (
-    <section id={caseStudyId(title)} className="scroll-mt-15 lg:scroll-mt-26.5">
+  // Where the page also lists the works, the frame shows a case in the grid's
+  // place once its chip is chosen, and not before. On its own it just stands.
+  const besideGallery = page?.content?.some(
+    (section) => section?.__component === "sections.results"
+  )
+
+  const study = (
+    <section id={id} className="scroll-mt-15 lg:scroll-mt-26.5">
       {/* The frame tells a case as a stack of white cards, 20 apart on a phone
           and 30 at desktop — the first naming the case, the rest walking
           through the treatment a step at a time. */}
@@ -156,12 +166,18 @@ export async function StrapiCaseStudy({
             // The frame turns the card over at every step: photographs left,
             // then words left, then photographs again.
             imagesFirst={index % 2 === 0}
-            labels={{ before: t("before"), after: t("after") }}
+            labels={{
+              before: t("before"),
+              after: t("after"),
+              compare: t("compare"),
+            }}
           />
         ))}
       </Container>
     </section>
   )
+
+  return besideGallery ? <CasePanel id={id}>{study}</CasePanel> : study
 }
 
 /**
@@ -176,54 +192,56 @@ function CaseStage({
 }: {
   readonly stage: Stage
   readonly imagesFirst: boolean
-  readonly labels: { before: string; after: string }
+  readonly labels: { before: string; after: string; compare: string }
 }) {
   const images = stage.images ?? []
-  const pair = stage.showBeforeAfter && images.length === 2
+  const pairs = stage.pairs ?? []
+  const hasPhotos = images.length > 0 || pairs.length > 0
 
   return (
     <article className={cn(CARD, "lg:items-center lg:gap-12.5")}>
-      {images.length > 0 && (
-        <ul
+      {hasPhotos && (
+        <div
           className={cn(
-            // One to a row on a phone, where the frame draws each 289 across
-            // — the full width of the column — rather than a pair of 135s too
-            // small to read. Side by side again at desktop.
-            "grid list-none grid-cols-1 gap-5 lg:w-146 lg:grid-cols-2 lg:gap-6",
+            "flex flex-col lg:w-146",
             imagesFirst ? "order-2 lg:order-1" : "order-2"
           )}
         >
-          {images.map((img, index) => {
-            const photo = (
-              <StrapiBasicImage
-                component={img}
-                className="aspect-140/93 w-full rounded-[20px] object-cover lg:rounded-[26px]"
-              />
-            )
-
-            return (
-              <li key={img.id} className="relative">
-                {/* A photograph on its own opens over the page, as the design
-                    review asked. A before-and-after pair does not: the two are
-                    read against each other, and taking one out of the pair is
-                    the opposite of what it is there for. */}
-                {pair ? (
-                  photo
-                ) : (
+          {/* The frame compares each view of the mouth on a slider of its own,
+              and where a stage has several it rows them with the arrows and
+              marks under, as every other run of cards on the site. One to a
+              view: the pair is read as a whole, and half of the next one
+              showing at the edge would only break it up. */}
+          {pairs.length > 0 ? (
+            <ScrollRow label={stage.title}>
+              {pairs.map((pair) => (
+                <li key={pair.id} className="w-full shrink-0 snap-start">
+                  <BeforeAfterSlider
+                    before={pair.before}
+                    after={pair.after}
+                    labels={labels}
+                    className="aspect-140/93 rounded-[20px] lg:rounded-[26px]"
+                  />
+                </li>
+              ))}
+            </ScrollRow>
+          ) : (
+            // Loose photographs — the state at the start, say — stand in a
+            // grid, each opening on its own as the design review asked.
+            <ul className="grid list-none grid-cols-1 gap-5 lg:grid-cols-2 lg:gap-6">
+              {images.map((img) => (
+                <li key={img.id}>
                   <ZoomableImage label={img.alt ?? stage.title}>
-                    {photo}
+                    <StrapiBasicImage
+                      component={img}
+                      className="aspect-140/93 w-full rounded-[20px] object-cover lg:rounded-[26px]"
+                    />
                   </ZoomableImage>
-                )}
-
-                {pair && (
-                  <span className="text-brand-ink absolute top-4 left-4 rounded-full bg-white px-3 py-1 text-sm">
-                    {labels[index === 0 ? "before" : "after"]}
-                  </span>
-                )}
-              </li>
-            )
-          })}
-        </ul>
+                </li>
+              ))}
+            </ul>
+          )}
+        </div>
       )}
 
       <div

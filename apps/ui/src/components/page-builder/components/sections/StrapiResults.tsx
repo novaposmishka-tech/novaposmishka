@@ -1,27 +1,40 @@
 import "server-only"
 
 import type { Data } from "@repo/strapi-types"
+import type { Locale } from "next-intl"
 import { getTranslations } from "next-intl/server"
 
-import { CaseGallery } from "@/components/elementary/CaseGallery"
+import { CaseGallery, type CaseLink } from "@/components/elementary/CaseGallery"
 import { Container } from "@/components/elementary/Container"
 import StrapiLink from "@/components/page-builder/components/utilities/StrapiLink"
 import Typography from "@/components/typography"
+import { caseStudyId } from "@/lib/case-studies"
+import { fetchPage } from "@/lib/strapi-api/content/server"
 import type { PageBuilderComponentProps } from "@/types/general"
+
+type Page = PageBuilderComponentProps["page"]
 
 export async function StrapiResults({
   component,
+  page,
+  pageParams,
 }: PageBuilderComponentProps & {
   component: Data.Component<"sections.results">
 }) {
-  const { title, subtitle, cases, link, display } = component
+  const { title, subtitle, groups, link, display } = component
 
-  if (!cases?.length) {
+  // A tab with nothing under it would be a tab that shows an empty band.
+  const filled = (groups ?? []).filter((group) => group.cases?.length)
+
+  if (filled.length === 0) {
     return null
   }
 
   const isCarousel = display !== "grid"
-  const t = await getTranslations("results")
+  const [t, caseLinks] = await Promise.all([
+    getTranslations("results"),
+    caseStudyLinks(page, link, pageParams?.locale),
+  ])
 
   return (
     <section id="results" className="scroll-mt-15 lg:scroll-mt-26.5">
@@ -69,7 +82,8 @@ export async function StrapiResults({
 
         <CaseGallery
           display={display ?? "carousel"}
-          cases={cases}
+          groups={filled}
+          caseLinks={caseLinks}
           labels={{
             before: t("before"),
             after: t("after"),
@@ -93,6 +107,51 @@ export async function StrapiResults({
         )}
       </Wrapper>
     </section>
+  )
+}
+
+/**
+ * The chips for the cases told end to end, which the frame sets after the tabs.
+ *
+ * They are not content of their own: a case study is a section, and the chip
+ * is found by looking for one. On the listing page that is the page itself,
+ * and the chip jumps down to it. On the homepage there is none, so the page
+ * the section's own link points at — the listing — is read instead, and the
+ * chip goes there. Either way an editor adds a case study and its chip
+ * appears, with nothing to type twice.
+ */
+async function caseStudyLinks(
+  page: Page,
+  link: Data.Component<"sections.results">["link"],
+  locale: Locale | undefined
+): Promise<CaseLink[]> {
+  const own = caseStudiesOn(page)
+  if (own.length > 0) {
+    return own.map((title) => ({
+      label: title,
+      href: "#" + caseStudyId(title),
+    }))
+  }
+
+  const target = link?.type === "page" ? link.page?.fullPath : undefined
+  if (!target || !locale) {
+    return []
+  }
+
+  const response = await fetchPage(target, locale)
+
+  return caseStudiesOn(response?.data).map((title) => ({
+    label: title,
+    href: target + "#" + caseStudyId(title),
+  }))
+}
+
+/** The titles of the case studies on a page, in the order they stand. */
+function caseStudiesOn(page: Page): string[] {
+  return (page?.content ?? []).flatMap((section) =>
+    section?.__component === "sections.case-study" && section.title
+      ? [section.title]
+      : []
   )
 }
 

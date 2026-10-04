@@ -34,7 +34,7 @@ export default function StrapiPageView({ params, searchParams }: Props) {
     notFound()
   }
 
-  const { content, ...restPageData } = data
+  const { content } = data
   const opensOnHero = content[0]?.__component === "sections.hero"
 
   return (
@@ -77,11 +77,21 @@ export default function StrapiPageView({ params, searchParams }: Props) {
               <ErrorBoundary key={key}>
                 {/* The design spaces every section 80px apart on a phone and
                     90 at desktop, not the starter's 160. */}
-                <div className={cn("mb-20 lg:mb-22.5")}>
+                <div
+                  className={cn(
+                    "mb-20 lg:mb-22.5",
+                    // A section that hides itself — a case study waiting for
+                    // its chip — would otherwise leave its spacing behind.
+                    "[&:has(>[hidden])]:hidden"
+                  )}
+                >
                   <Component
                     component={comp}
                     pageParams={params}
-                    page={restPageData}
+                    // The whole page, content included: the works section
+                    // reads its neighbours off it to find the case studies
+                    // its chips jump to.
+                    page={data}
                     searchParams={searchParams}
                     breadcrumbs={
                       index === 0 ? response?.meta?.breadcrumbs : undefined
