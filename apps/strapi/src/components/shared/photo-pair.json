@@ -1,0 +1,24 @@
+{
+  "collectionName": "components_shared_photo_pairs",
+  "info": {
+    "displayName": "PhotoPair",
+    "icon": "picture",
+    "description": "A before and an after photograph of the same view, compared on a slider."
+  },
+  "options": {},
+  "attributes": {
+    "before": {
+      "type": "component",
+      "repeatable": false,
+      "component": "utilities.basic-image",
+      "required": true
+    },
+    "after": {
+      "type": "component",
+      "repeatable": false,
+      "component": "utilities.basic-image",
+      "required": true
+    }
+  },
+  "config": {}
+}

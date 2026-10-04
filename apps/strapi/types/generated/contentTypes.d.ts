@@ -651,8 +651,18 @@ export interface ApiPagePage extends Struct.CollectionTypeSchema {
         "sections.statistics",
         "sections.features-list",
         "sections.cta-banner",
+        "sections.contacts",
+        "sections.doctors",
+        "sections.results",
+        "sections.case-study",
+        "sections.services",
+        "sections.testimonials",
+        "sections.video-reviews",
+        "sections.why-us",
         "utilities.ck-editor-text",
         "utilities.tip-tap-rich-text",
+        "sections.price-list",
+        "sections.map",
       ]
     > &
       Schema.Attribute.SetPluginOptions<{

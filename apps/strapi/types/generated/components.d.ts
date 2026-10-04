@@ -174,7 +174,7 @@ export interface SharedCaseStage extends Struct.ComponentSchema {
     images: Schema.Attribute.Component<"utilities.basic-image", true>
     intro: Schema.Attribute.Text
     note: Schema.Attribute.Text
-    showBeforeAfter: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<false>
+    pairs: Schema.Attribute.Component<"shared.photo-pair", true>
     title: Schema.Attribute.String & Schema.Attribute.Required
   }
 }
@@ -237,10 +237,10 @@ export interface SectionsResults extends Struct.ComponentSchema {
     icon: "picture"
   }
   attributes: {
-    cases: Schema.Attribute.Component<"shared.before-after", true>
     display: Schema.Attribute.Enumeration<["carousel", "grid"]> &
       Schema.Attribute.Required &
       Schema.Attribute.DefaultTo<"carousel">
+    groups: Schema.Attribute.Component<"shared.case-group", true>
     link: Schema.Attribute.Component<"utilities.link", false>
     subtitle: Schema.Attribute.Text
     title: Schema.Attribute.String
@@ -255,14 +255,40 @@ export interface SharedBeforeAfter extends Struct.ComponentSchema {
     icon: "picture"
   }
   attributes: {
-    after: Schema.Attribute.Component<"utilities.basic-image", false> &
-      Schema.Attribute.Required
+    after: Schema.Attribute.Component<"utilities.basic-image", false>
     before: Schema.Attribute.Component<"utilities.basic-image", false> &
       Schema.Attribute.Required
     caption: Schema.Attribute.String
     doctorName: Schema.Attribute.String
     doctorPhoto: Schema.Attribute.Component<"utilities.basic-image", false>
-    tags: Schema.Attribute.Component<"utilities.text", true>
+  }
+}
+
+export interface SharedCaseGroup extends Struct.ComponentSchema {
+  collectionName: "components_shared_case_groups"
+  info: {
+    description: "One tab of the works gallery: a direction of treatment and the cases shown under it."
+    displayName: "CaseGroup"
+    icon: "folder"
+  }
+  attributes: {
+    cases: Schema.Attribute.Component<"shared.before-after", true>
+    title: Schema.Attribute.String & Schema.Attribute.Required
+  }
+}
+
+export interface SharedPhotoPair extends Struct.ComponentSchema {
+  collectionName: "components_shared_photo_pairs"
+  info: {
+    description: "A before and an after photograph of the same view, compared on a slider."
+    displayName: "PhotoPair"
+    icon: "picture"
+  }
+  attributes: {
+    after: Schema.Attribute.Component<"utilities.basic-image", false> &
+      Schema.Attribute.Required
+    before: Schema.Attribute.Component<"utilities.basic-image", false> &
+      Schema.Attribute.Required
   }
 }
 
@@ -924,6 +950,7 @@ declare module "@strapi/strapi" {
       "seo-utilities.seo-twitter": SeoUtilitiesSeoTwitter
       "seo-utilities.social-icons": SeoUtilitiesSocialIcons
       "shared.before-after": SharedBeforeAfter
+      "shared.case-group": SharedCaseGroup
       "shared.case-stage": SharedCaseStage
       "shared.contact-item": SharedContactItem
       "shared.credential": SharedCredential
@@ -931,6 +958,7 @@ declare module "@strapi/strapi" {
       "shared.figure": SharedFigure
       "shared.image-with-config": SharedImageWithConfig
       "shared.image-with-title-and-description": SharedImageWithTitleAndDescription
+      "shared.photo-pair": SharedPhotoPair
       "shared.price-group": SharedPriceGroup
       "shared.price-row": SharedPriceRow
       "shared.rating": SharedRating

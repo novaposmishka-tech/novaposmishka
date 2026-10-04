@@ -1,0 +1,18 @@
+{
+  "collectionName": "components_shared_case_groups",
+  "info": {
+    "displayName": "CaseGroup",
+    "icon": "folder",
+    "description": "One tab of the works gallery: a direction of treatment and the cases shown under it."
+  },
+  "options": {},
+  "attributes": {
+    "title": { "type": "string", "required": true },
+    "cases": {
+      "type": "component",
+      "repeatable": true,
+      "component": "shared.before-after"
+    }
+  },
+  "config": {}
+}

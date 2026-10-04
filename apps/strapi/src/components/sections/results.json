@@ -3,7 +3,7 @@
   "info": {
     "displayName": "Results",
     "icon": "picture",
-    "description": ""
+    "description": "The clinic's works, one tab per direction of treatment."
   },
   "options": {},
   "attributes": {
@@ -13,9 +13,9 @@
     "subtitle": {
       "type": "text"
     },
-    "cases": {
+    "groups": {
       "type": "component",
-      "component": "shared.before-after",
+      "component": "shared.case-group",
       "repeatable": true
     },
     "link": {

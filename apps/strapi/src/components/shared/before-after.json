@@ -3,7 +3,7 @@
   "info": {
     "displayName": "BeforeAfter",
     "icon": "picture",
-    "description": ""
+    "description": "One finished piece of work: the result compared with the start, and who did it."
   },
   "options": {},
   "attributes": {
@@ -19,8 +19,7 @@
     "after": {
       "type": "component",
       "component": "utilities.basic-image",
-      "repeatable": false,
-      "required": true
+      "repeatable": false
     },
     "doctorName": {
       "type": "string"
@@ -29,11 +28,6 @@
       "type": "component",
       "component": "utilities.basic-image",
       "repeatable": false
-    },
-    "tags": {
-      "type": "component",
-      "component": "utilities.text",
-      "repeatable": true
     }
   },
   "config": {}

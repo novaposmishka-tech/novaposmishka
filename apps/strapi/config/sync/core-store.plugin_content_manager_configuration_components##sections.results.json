@@ -48,16 +48,16 @@
           "sortable": true
         }
       },
-      "cases": {
+      "groups": {
         "edit": {
-          "label": "Випадки (кейси)",
+          "label": "Напрямки (вкладки)",
           "description": "",
           "placeholder": "",
           "visible": true,
           "editable": true
         },
         "list": {
-          "label": "Випадки (кейси)",
+          "label": "Напрямки (вкладки)",
           "searchable": false,
           "sortable": false
         }
@@ -76,7 +76,7 @@
         "id",
         "title",
         "subtitle",
-        "cases"
+        "groups"
       ],
       "edit": [
         [
@@ -91,7 +91,7 @@
         ],
         [
           {
-            "name": "cases",
+            "name": "groups",
             "size": 12
           }
         ]

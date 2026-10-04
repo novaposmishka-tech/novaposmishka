@@ -26,7 +26,11 @@
       "repeatable": true,
       "component": "utilities.basic-image"
     },
-    "showBeforeAfter": { "type": "boolean", "default": false }
+    "pairs": {
+      "type": "component",
+      "repeatable": true,
+      "component": "shared.photo-pair"
+    }
   },
   "config": {}
 }
