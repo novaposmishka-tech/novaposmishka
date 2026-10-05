@@ -146,7 +146,11 @@ function Menu({
                   the design review. */}
               {hasSubItems && (
                 <NavigationMenuContent className="shadow-brand-card! z-50 min-w-90.75 rounded-3xl! border-0! bg-white p-5">
-                  <ul className="list-none">
+                  {/* A hair of air between the rows: the one for the page the
+                      reader is on is filled, and the one under the pointer
+                      fills too, and side by side the two fills ran into one
+                      block. */}
+                  <ul className="flex list-none flex-col gap-1">
                     {item?.categoryItems?.map((subItem) => (
                       <li key={subItem.id} className="list-none">
                         <StrapiLink
