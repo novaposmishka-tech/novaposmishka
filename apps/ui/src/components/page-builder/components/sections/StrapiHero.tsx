@@ -31,6 +31,8 @@ export function StrapiHero({
     images,
     serviceTags,
     backgroundImage,
+    backgroundFocusX,
+    backgroundFocusY,
     backgroundVideo,
     figures,
   } = component
@@ -82,6 +84,7 @@ export function StrapiHero({
           <Backdrop
             image={backgroundImage}
             video={backgroundVideo}
+            focus={[backgroundFocusX ?? 50, backgroundFocusY ?? 50]}
             fade={isBarePhoto}
           />
         )}
@@ -412,13 +415,24 @@ function BottomRow({
 function Backdrop({
   image,
   video,
+  focus,
   fade,
 }: {
   readonly image: Data.Component<"sections.hero">["backgroundImage"]
   readonly video: Data.Component<"sections.hero">["backgroundVideo"]
+  /**
+   * The point of the photograph to hold on screen, as percentages across and
+   * down, where the frame cannot show all of it. The photographs are wide
+   * and a phone's hero is tall, so a phone sees a third of their width — and
+   * the middle third is not always where the subject is. The editor sets
+   * this on the hero, and the picture is cropped around it instead.
+   */
+  readonly focus: readonly [number, number]
   /** True where the picture is the subject and carries no copy of its own. */
   readonly fade?: boolean
 }) {
+  const objectPosition = `${focus[0]}% ${focus[1]}%`
+
   return (
     // One positioned layer for the whole backdrop. The copy sits inside the
     // grid container, which is not positioned, so a `fill` image dropped
@@ -432,6 +446,7 @@ function Backdrop({
           fill
           sizes="100vw"
           className="object-cover"
+          style={{ objectPosition }}
         />
       )}
       {video && (
@@ -441,6 +456,7 @@ function Backdrop({
           // on screen while it loads and for anyone it never reaches.
           poster={formatStrapiMediaUrl(image?.media?.url)}
           className="absolute inset-0 size-full object-cover"
+          style={{ objectPosition }}
         />
       )}
       <div

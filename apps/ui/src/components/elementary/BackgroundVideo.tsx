@@ -27,10 +27,13 @@ export function BackgroundVideo({
   src,
   poster,
   className,
+  style,
 }: {
   readonly src: string | undefined
   readonly poster?: string | null
   readonly className?: string
+  /** For the point to hold the picture at, which only the caller knows. */
+  readonly style?: React.CSSProperties
 }) {
   const videoRef = useRef<HTMLVideoElement>(null)
 
@@ -78,6 +81,7 @@ export function BackgroundVideo({
       aria-hidden
       tabIndex={-1}
       className={cn("motion-reduce:hidden", className)}
+      style={style}
       ref={videoRef}
     />
   )
