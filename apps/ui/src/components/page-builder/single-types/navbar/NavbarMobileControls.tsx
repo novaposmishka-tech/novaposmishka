@@ -11,6 +11,25 @@ import { cn } from "@/lib/styles"
 
 export { NavbarMobileProvider } from "@/hooks/useNavbarMobile"
 
+/**
+ * Wraps the wordmark in the header: a press on it shuts the menu. The route
+ * change does that too, except when the reader is on the homepage already,
+ * where the wordmark leads nowhere new and the menu would stay over the page.
+ */
+export function NavbarMenuCloser({
+  children,
+}: {
+  readonly children: React.ReactNode
+}) {
+  const [, setMobileOpen] = useNavbarMobile()
+
+  return (
+    <div className="contents" onClick={() => setMobileOpen(false)}>
+      {children}
+    </div>
+  )
+}
+
 export function NavbarMobileToggle() {
   const [mobileOpen, setMobileOpen] = useNavbarMobile()
 
@@ -23,8 +42,26 @@ export function NavbarMobileToggle() {
       onClick={() => setMobileOpen((open) => !open)}
     >
       {/* The frame draws the mark 26 across inside its 32 of target; the
-          button's own default is 16, which is what "дуже манюсіньке" was. */}
-      {mobileOpen ? <X className="size-6.5" /> : <Menu className="size-6.5" />}
+          button's own default is 16, which is what "дуже манюсіньке" was.
+          Both marks are drawn on top of each other and the pressed one turns
+          a quarter as it fades, so the burger becomes the cross rather than
+          being replaced by it. */}
+      <span className="relative size-6.5">
+        <Menu
+          aria-hidden
+          className={cn(
+            "absolute inset-0 size-6.5 transition-[opacity,rotate] duration-300 ease-out",
+            mobileOpen && "rotate-90 opacity-0"
+          )}
+        />
+        <X
+          aria-hidden
+          className={cn(
+            "absolute inset-0 size-6.5 transition-[opacity,rotate] duration-300 ease-out",
+            !mobileOpen && "-rotate-90 opacity-0"
+          )}
+        />
+      </span>
     </Button>
   )
 }

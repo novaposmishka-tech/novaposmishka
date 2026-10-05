@@ -10,6 +10,7 @@ import { StrapiBasicImage } from "@/components/page-builder/components/utilities
 import StrapiImageWithLink from "@/components/page-builder/components/utilities/StrapiImageWithLink"
 import {
   NavbarBookingLink,
+  NavbarMenuCloser,
   NavbarMobileNavigation,
   NavbarMobileProvider,
   NavbarMobileToggle,
@@ -69,18 +70,20 @@ export function NavbarInner({
                 belongs to this row rather than to it. */}
             <div className="photo-hero-top:border-b photo-hero-top:border-white/20 flex h-full items-center justify-between">
               {/* Logo — the clinic's own mark unless an editor uploaded one. */}
-              {navbarData?.logoImage?.image && navbarData.logoImage.link ? (
-                <StrapiImageWithLink component={navbarData.logoImage} />
-              ) : navbarData?.logoImage?.image ? (
-                <StrapiBasicImage
-                  component={navbarData.logoImage.image}
-                  width={80}
-                  height={30}
-                  className="h-7.5 w-20 shrink-0 object-contain"
-                />
-              ) : (
-                <ClinicLogo />
-              )}
+              <NavbarMenuCloser>
+                {navbarData?.logoImage?.image && navbarData.logoImage.link ? (
+                  <StrapiImageWithLink component={navbarData.logoImage} />
+                ) : navbarData?.logoImage?.image ? (
+                  <StrapiBasicImage
+                    component={navbarData.logoImage.image}
+                    width={80}
+                    height={30}
+                    className="h-7.5 w-20 shrink-0 object-contain"
+                  />
+                ) : (
+                  <ClinicLogo />
+                )}
+              </NavbarMenuCloser>
 
               <DesktopNavigation navbarItems={navbarData?.navbarItems} />
 

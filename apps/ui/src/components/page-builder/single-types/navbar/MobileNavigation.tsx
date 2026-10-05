@@ -39,6 +39,15 @@ export function MobileNavigation({
   const [openCategory, setOpenCategory] =
     useState<Data.Component<"layout.navbar-item"> | null>(null)
 
+  // Shut and opened again, the menu starts at its top level rather than on
+  // whatever services list it was closed on. Settled during render, as React
+  // has it for state that follows a prop.
+  const [wasOpen, setWasOpen] = useState(isOpen)
+  if (wasOpen !== isOpen) {
+    setWasOpen(isOpen)
+    if (!isOpen) setOpenCategory(null)
+  }
+
   if (!navbarItems?.length) return null
 
   const close = () => {
@@ -56,7 +65,9 @@ export function MobileNavigation({
       // transform so the list is not in the tab order while it is shut.
       className={cn(
         "bg-background fixed inset-x-0 top-15 bottom-0 z-40 overflow-y-auto px-7.5 lg:hidden",
-        isOpen ? "block" : "hidden"
+        // Replayed on every opening: the entrance restarts each time the
+        // panel comes back from `hidden`.
+        isOpen ? "menu-in block" : "hidden"
       )}
     >
       {openCategory ? (
@@ -90,7 +101,7 @@ export function MobileNavigation({
               47 on the right against 15 on the left; that lopsidedness reads
               as a slip in the drawing rather than the intent, so here they run
               the full width between equal gutters. */}
-          <ul className="-mx-3.75 list-none">
+          <ul className="cascade -mx-3.75 list-none">
             {openCategory.categoryItems?.map((subItem) => (
               <li key={subItem.id} className="border-brand-hairline border-b">
                 <StrapiLink
@@ -112,7 +123,7 @@ export function MobileNavigation({
         </>
       ) : (
         <>
-          <ul className="list-none">
+          <ul className="cascade list-none">
             {navbarItems.map((item) => (
               <li key={item.id} className="border-brand-hairline border-b">
                 {item.isCategoryLink && item.link ? (
