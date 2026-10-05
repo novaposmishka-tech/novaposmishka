@@ -6,8 +6,12 @@ import { Container } from "@/components/elementary/Container"
 import Typography from "@/components/typography"
 import type { PageBuilderComponentProps } from "@/types/general"
 
-/** The leading amount in a price, so it can be set apart from its unit. */
-const AMOUNT = /(\d[\d\s.,]*)/
+/**
+ * Every amount in a price, so each can be set apart from the words around it.
+ * A space inside an amount only counts when a digit follows it ("1 200"), so
+ * the one before the currency stays with the words.
+ */
+const AMOUNTS = /(\d(?:[\d.,]|\s(?=\d))*)/g
 
 export function StrapiPriceList({
   component,
@@ -80,29 +84,33 @@ export function StrapiPriceList({
 }
 
 /**
- * "500 ГРН" with the amount picked out, as the design sets it: the number in
- * brand teal and semibold, the currency left in the body colour. A price with
- * no digits in it is printed as written.
+ * A price with its amounts set in the brand's teal and the words around them
+ * — "Ціна", "від", the currency — left as they are. A range sets both of its
+ * amounts apart, not only the first; a price with no digits in it is printed
+ * as written.
  */
 function Price({ value }: { readonly value: string | null | undefined }) {
   const price = value ?? ""
-  const match = AMOUNT.exec(price)
+  // Split on the capturing group, so the amounts land at the odd indexes.
+  const parts = price.split(AMOUNTS)
 
-  if (!match) {
+  if (parts.length === 1) {
     return price
   }
 
-  // The match runs greedy so a thousands separator stays with the amount
-  // ("1 200"), which also swallows the space before the currency. Give it back.
-  const amount = match[0].trimEnd()
-  const start = match.index
-  const end = start + amount.length
-
   return (
     <>
-      {price.slice(0, start)}
-      <span className="text-brand-teal font-semibold">{amount}</span>
-      {price.slice(end)}
+      {parts.map((part, index) =>
+        index % 2 === 1 ? (
+          // Positional keys: the parts of one price never reorder.
+          // eslint-disable-next-line react/no-array-index-key
+          <span key={index} className="text-brand-teal font-semibold">
+            {part}
+          </span>
+        ) : (
+          part
+        )
+      )}
     </>
   )
 }
