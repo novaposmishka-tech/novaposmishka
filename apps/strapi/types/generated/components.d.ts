@@ -569,6 +569,24 @@ export interface SectionsHero extends Struct.ComponentSchema {
           preset: "defaultCkEditor"
         }
       >
+    backgroundFocusX: Schema.Attribute.Integer &
+      Schema.Attribute.SetMinMax<
+        {
+          max: 100
+          min: 0
+        },
+        number
+      > &
+      Schema.Attribute.DefaultTo<50>
+    backgroundFocusY: Schema.Attribute.Integer &
+      Schema.Attribute.SetMinMax<
+        {
+          max: 100
+          min: 0
+        },
+        number
+      > &
+      Schema.Attribute.DefaultTo<50>
     backgroundImage: Schema.Attribute.Component<"utilities.basic-image", false>
     backgroundVideo: Schema.Attribute.Media<"videos">
     figures: Schema.Attribute.Component<"shared.figure", true>
