@@ -21,36 +21,56 @@ import {
  * The photograph each page opens on. The design gives all seven a frame of
  * their own and a different picture in each, chosen for what that speciality
  * actually does, so they are named by the page rather than shared.
+ *
+ * The photographs are wide and a phone's hero is tall, so a phone sees a
+ * third of their width. Where the subject is not in the middle third — the
+ * dentist at the right of the children's room, the face at the left of the
+ * facebow, the scans on the screen at the left of the surgeon — the hero is
+ * told where to hold the picture.
  */
 const HERO_IMAGES = {
-  terapiia: image(
+  terapiia: hero(
     "service-hero-terapiia",
-    "Лікар оглядає зуб пацієнта через стоматологічний мікроскоп"
+    "Лікар оглядає зуб пацієнта через стоматологічний мікроскоп",
+    { x: 45 }
   ),
-  ortopediia: image(
+  ortopediia: hero(
     "service-hero-ortopediia",
     "Лікар у бінокулярах із підсвіткою під час протезування"
   ),
-  khirurhiia: image(
+  khirurhiia: hero(
     "service-hero-khirurhiia",
-    "Лікар вивчає комп'ютерну томографію щелеп на екрані ноутбука"
+    "Лікар вивчає комп'ютерну томографію щелеп на екрані ноутбука",
+    { x: 25, y: 45 }
   ),
-  ortodontiia: image(
+  ortodontiia: hero(
     "service-hero-ortodontiia",
     "Лікар оглядає пацієнтку в кріслі стоматологічної клініки"
   ),
-  parodontolohiia: image(
+  parodontolohiia: hero(
     "service-hero-parodontolohiia",
-    "Лікарка чистить зуби пацієнтці ультразвуковим скейлером"
+    "Лікарка чистить зуби пацієнтці ультразвуковим скейлером",
+    { x: 62 }
   ),
-  "dytiacha-stomatolohiia": image(
+  "dytiacha-stomatolohiia": hero(
     "service-hero-dytiacha-stomatolohiia",
-    "Лікарка лікує зуби дівчинці в дитячому кабінеті"
+    "Лікарка лікує зуби дівчинці в дитячому кабінеті",
+    { x: 80, y: 40 }
   ),
-  hnatolohiia: image(
+  hnatolohiia: hero(
     "service-hero-hnatolohiia",
-    "Лицьова дуга, встановлена на обличчі пацієнта, для запису положення щелепи"
+    "Лицьова дуга, встановлена на обличчі пацієнта, для запису положення щелепи",
+    { x: 30, y: 45 }
   ),
+}
+
+/** A hero's photograph with the point to hold it at, as percentages. */
+function hero(file, alt, { x = 50, y = 50 } = {}) {
+  return {
+    backgroundImage: image(file, alt),
+    backgroundFocusX: x,
+    backgroundFocusY: y,
+  }
 }
 
 /** The card on the homepage each page belongs to, and its path. */
@@ -93,7 +113,7 @@ export const servicePages = [
     content: [
       {
         __component: "sections.hero",
-        backgroundImage: HERO_IMAGES.terapiia,
+        ...HERO_IMAGES.terapiia,
         title: "<h1>Стоматолог-терапевт<br><strong>в Житомирі</strong></h1>",
         description:
           "<p>Наша мета – забезпечити Вас здоровими та естетично гарними зубами, дбаючи про Ваш комфорт та безболісність процедур. Довіртеся нашим фахівцям для досягнення найкращих результатів у терапевтичній стоматології.</p>",
@@ -160,7 +180,7 @@ export const servicePages = [
     content: [
       {
         __component: "sections.hero",
-        backgroundImage: HERO_IMAGES.ortopediia,
+        ...HERO_IMAGES.ortopediia,
         title: "<h1>Протезування зубів<br><strong>в Житомирі</strong></h1>",
         description:
           "<p>Посмішка – це Ваша візитна картка, і ми зробимо все, щоб вона була ідеальною!</p>",
@@ -227,7 +247,7 @@ export const servicePages = [
     content: [
       {
         __component: "sections.hero",
-        backgroundImage: HERO_IMAGES.khirurhiia,
+        ...HERO_IMAGES.khirurhiia,
         title: "<h1>Стоматолог-хірург<br><strong>в Житомирі</strong></h1>",
         description:
           "<p>Наша клініка пропонує передові методи хірургічної стоматології для Вас і Вашої сім’ї. Ми розуміємо, що зуби – це важлива частина Вашого життя, і ми готові надати Вам найкращі рішення.</p>",
@@ -294,7 +314,7 @@ export const servicePages = [
     content: [
       {
         __component: "sections.hero",
-        backgroundImage: HERO_IMAGES.ortodontiia,
+        ...HERO_IMAGES.ortodontiia,
         title: "<h1>Ортодонт<br><strong>в Житомирі</strong></h1>",
         description:
           "<p>Ортодонтичне лікування може змінити Вашу посмішку та покращити функцію щелеп. Наші професійні ортодонти допоможуть Вам вибрати найкращий метод для досягнення Ваших цілей.</p>",
@@ -361,7 +381,7 @@ export const servicePages = [
     content: [
       {
         __component: "sections.hero",
-        backgroundImage: HERO_IMAGES.parodontolohiia,
+        ...HERO_IMAGES.parodontolohiia,
         title: "<h1>Пародонтологія<br><strong>в Житомирі</strong></h1>",
         description:
           "<p>Захворювання ясен – це не вирок, ваша посмішка знову може стати ідеальною.</p>",
@@ -428,7 +448,7 @@ export const servicePages = [
     content: [
       {
         __component: "sections.hero",
-        backgroundImage: HERO_IMAGES["dytiacha-stomatolohiia"],
+        ...HERO_IMAGES["dytiacha-stomatolohiia"],
         title: "<h1>Дитячий стоматолог<br><strong>в Житомирі</strong></h1>",
         description:
           "<p>У нашій клініці ми розуміємо, що здоров’я зубів Вашої дитини – це справа важлива та відповідальна. Наша команда досвідчених дитячих стоматологів пропонує найкращий догляд для маленьких пацієнтів, роблячи їх перші знайомства зі стоматологією приємними та безболісними.</p>",
@@ -495,7 +515,7 @@ export const servicePages = [
     content: [
       {
         __component: "sections.hero",
-        backgroundImage: HERO_IMAGES.hnatolohiia,
+        ...HERO_IMAGES.hnatolohiia,
         title: "<h1>Гнатолог<br><strong>в Житомирі</strong></h1>",
         description:
           "<p>Гнатологічне лікування може усунути біль та дискомфорт у щелепі, відновивши її правильну функцію. Наш гнатолог допоможе Вам визначити причину проблеми та підібрати оптимальний метод для Вашого одужання.</p>",
