@@ -158,11 +158,17 @@ export function StrapiHero({
               <div
                 className={cn(
                   "flex w-full flex-col gap-2 lg:flex-row lg:gap-4",
-                  // The copy above already keeps forty below itself, which is
-                  // the distance the frame puts between the words and this
-                  // button. It used to be pushed to the hero's floor instead,
-                  // and on a phone whose browser keeps a bar at the bottom it
-                  // fell below the fold — the "ховається" of the design review.
+                  // On a phone the button sits on the hero's floor, under the
+                  // words and the air the frame leaves below them. It can,
+                  // because the hero is never taller than the screen there —
+                  // see the frame's height — so it no longer falls below the
+                  // fold on a phone whose browser keeps a bar at the bottom,
+                  // which is the "ховається" of the design review. A pill as
+                  // wide as the screen read as a bar; held to 290 it reads as
+                  // a button, and on a phone it stands centred under the
+                  // words rather than against their left edge.
+                  hasBackground &&
+                    "max-lg:mt-auto max-lg:max-w-72.5 max-sm:mx-auto",
                   isCentered ? "mx-auto md:w-fit" : "lg:w-auto"
                 )}
               >
@@ -484,9 +490,13 @@ function Wrapper({
           "flex flex-col lg:min-h-217.5",
           hasTrail && (isBarePhoto ? "lg:pt-26.5" : "pt-15 lg:pt-26.5"),
           // Every subpage's photo hero is the same height on a phone, whether
-          // or not its copy fills it.
-          hasTrail && !isBarePhoto && "max-lg:min-h-186.5",
-          hasBottomRow && "min-h-200",
+          // or not its copy fills it — the frame's 746, and the homepage's
+          // 800 — but never more than the screen shows at once, since the
+          // button stands on the hero's floor and has to be seen there.
+          // `svh` is the screen with the browser's own bars at their
+          // largest, which is what a reader gets on arrival.
+          hasTrail && !isBarePhoto && "max-lg:min-h-[min(46.625rem,100svh)]",
+          hasBottomRow && "min-h-[min(50rem,100svh)] lg:min-h-200",
           isBarePhoto && "max-lg:min-h-112.5"
         )}
       >
