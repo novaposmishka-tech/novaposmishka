@@ -42,13 +42,16 @@ export function StrapiWhyUs({
             </div>
           )}
 
-          <ul className="grid list-none grid-cols-1 gap-5 md:grid-cols-2 lg:grid-cols-3 lg:gap-6">
+          <ul
+            data-stagger
+            className="grid list-none grid-cols-1 gap-5 md:grid-cols-2 lg:grid-cols-3 lg:gap-6"
+          >
             {reasons.map((reason) => (
               <li
                 key={reason.id}
                 // The frame draws a hairline of white around each card, not
                 // only the wash inside it.
-                className="flex flex-col gap-5 rounded-[20px] border border-white/10 bg-white/5 p-5 lg:gap-7.5 lg:rounded-[26px] lg:p-7.5"
+                className="lift flex flex-col gap-5 rounded-[20px] border border-white/10 bg-white/5 p-5 lg:gap-7.5 lg:rounded-[26px] lg:p-7.5"
               >
                 {reason.image && (
                   <StrapiBasicImage

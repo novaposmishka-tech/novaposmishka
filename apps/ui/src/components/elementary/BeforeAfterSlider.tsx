@@ -1,7 +1,7 @@
 "use client"
 
 import type { Data } from "@repo/strapi-types"
-import { type ReactNode, useId, useState } from "react"
+import { type ReactNode, useEffect, useId, useRef, useState } from "react"
 
 import { StrapiBasicImage } from "@/components/page-builder/components/utilities/StrapiBasicImage"
 import { cn } from "@/lib/styles"
@@ -10,6 +10,10 @@ type Media = Data.Component<"shared.before-after">["before"]
 
 /** Where the handle rests before anyone touches it, in percent. */
 const INITIAL = 50
+
+/** How far the hint rocks the handle to each side, in percent, and how long. */
+const NUDGE = 8
+const NUDGE_MS = 1600
 
 /**
  * Two photographs of the same mouth under a draggable divider: the "after"
@@ -75,9 +79,49 @@ function Comparison({
 }) {
   const [position, setPosition] = useState(INITIAL)
   const id = useId()
+  const frame = useRef<HTMLDivElement>(null)
+  // Whether the reader has taken the handle; the hint below stands down then.
+  const touched = useRef(false)
+
+  // The first time the comparison comes into view the handle rocks once —
+  // left a little, right a little, home — which is the only way to show that
+  // the line is there to be dragged. Not for a reader who asked for less
+  // motion, and not once the reader has moved it themselves.
+  useEffect(() => {
+    const node = frame.current
+    if (!node) return
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return
+
+    let raf = 0
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (!entries[0]?.isIntersecting) return
+        observer.disconnect()
+
+        const start = performance.now()
+        const tick = (now: number) => {
+          if (touched.current) return
+          const progress = Math.min((now - start) / NUDGE_MS, 1)
+          // One full sine wave: out to the left, through the middle to the
+          // right, and back — easing itself at both ends.
+          setPosition(INITIAL - Math.sin(progress * 2 * Math.PI) * NUDGE)
+          if (progress < 1) raf = requestAnimationFrame(tick)
+        }
+        raf = requestAnimationFrame(tick)
+      },
+      { threshold: 0.6 }
+    )
+    observer.observe(node)
+
+    return () => {
+      observer.disconnect()
+      cancelAnimationFrame(raf)
+    }
+  }, [])
 
   return (
     <div
+      ref={frame}
       className={cn(
         "relative aspect-1076/610 w-full touch-none overflow-hidden select-none",
         className
@@ -121,7 +165,13 @@ function Comparison({
         max={100}
         step={0.1}
         value={position}
-        onChange={(event) => setPosition(Number(event.target.value))}
+        onPointerDown={() => {
+          touched.current = true
+        }}
+        onChange={(event) => {
+          touched.current = true
+          setPosition(Number(event.target.value))
+        }}
         aria-valuetext={`${Math.round(position)}%`}
         className={cn(
           "peer absolute inset-0 z-20 h-full w-full cursor-ew-resize appearance-none bg-transparent opacity-0",

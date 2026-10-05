@@ -5,6 +5,7 @@ import { Fragment } from "react"
 
 import CkEditorRenderer from "@/components/elementary/ck-editor"
 import { Container } from "@/components/elementary/Container"
+import { CountUp } from "@/components/elementary/CountUp"
 import { cn } from "@/lib/styles"
 import type { PageBuilderComponentProps } from "@/types/general"
 
@@ -31,7 +32,10 @@ export function StrapiStatistics({
             past the screen at 1024 and folded the middle label onto three
             lines at 1280, so until then everything is a step smaller: the
             gaps, the figures and their words. */}
-        <ul className="flex list-none flex-col gap-5 lg:flex-row lg:items-center lg:gap-6 min-[85rem]:gap-10">
+        <ul
+          data-stagger
+          className="flex list-none flex-col gap-5 lg:flex-row lg:items-center lg:gap-6 min-[85rem]:gap-10"
+        >
           {figures.map((figure, index) => (
             <Fragment key={figure.id}>
               {index > 0 && (
@@ -75,7 +79,7 @@ function StrapiFigure({
           figure takes a column of its own rather than a gap after it. */}
       <p className="bg-brand-gradient w-30 shrink-0 bg-clip-text text-[2.5rem]/11 font-semibold text-transparent lg:w-auto lg:text-[3.5rem]/[3.85rem] min-[85rem]:text-[4.375rem]/[4.8125rem]">
         {prefix}
-        {number}
+        {number == null ? null : <CountUp value={number} />}
         {suffix}
       </p>
       {/* The frame sets one word of each label in bold italic — the first, or

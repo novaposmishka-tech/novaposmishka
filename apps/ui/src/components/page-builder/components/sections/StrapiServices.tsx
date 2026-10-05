@@ -99,11 +99,14 @@ export function StrapiServices({
         {/* Three across only from xl. At lg a third of the row is some 300,
             and once the illustration has its 140 the words are left a column
             too narrow for a single word of "нижньощелепного". */}
-        <ul className="grid list-none grid-cols-1 gap-5 md:grid-cols-2 lg:gap-6 xl:grid-cols-3">
+        <ul
+          data-stagger
+          className="grid list-none grid-cols-1 gap-5 md:grid-cols-2 lg:gap-6 xl:grid-cols-3"
+        >
           {services.map((service) => (
             <li
               key={service.id}
-              className={`${CARD} hover:bg-brand-stripe gap-2.5 bg-white transition-colors lg:gap-3.75`}
+              className={`${CARD} hover:bg-brand-stripe lift gap-2.5 bg-white lg:gap-3.75`}
             >
               {/* The title keeps the card's full width: it stands at the top,
                   clear of the illustration on the floor, and the frame runs

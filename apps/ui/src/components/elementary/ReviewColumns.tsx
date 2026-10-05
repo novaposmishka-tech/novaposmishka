@@ -74,6 +74,7 @@ export function ReviewColumns({
         // last margin over to the top of the next. The bleed and the narrower
         // gap give the padding back, so the cards sit 24 apart as before.
         className="flex list-none flex-col gap-5 md:-mx-2 md:-mt-3 md:block md:columns-2 md:gap-2 md:pb-3 lg:columns-3"
+        data-stagger
       >
         {shown.map((review) => (
           <li key={review.id} className="md:break-inside-avoid md:px-2 md:py-3">

@@ -58,6 +58,9 @@ export function CaseGallery({
   // each begins.
   const [chosen, setChosen] = useState(0)
   const [limit, setLimit] = useState(PAGE_SIZE)
+  // Only once a tab has been pressed: the cards of the first showing are the
+  // listing page's first screen, and they are simply there.
+  const [switched, setSwitched] = useState(false)
 
   // The case chosen by the URL's fragment, where one of the chips here
   // names it — only the listing page's chips do.
@@ -88,6 +91,7 @@ export function CaseGallery({
                 onClick={() => {
                   setChosen(index)
                   setLimit(PAGE_SIZE)
+                  setSwitched(true)
                   if (showingCase) showGrid()
                 }}
                 aria-pressed={!showingCase && index === chosen}
@@ -122,12 +126,17 @@ export function CaseGallery({
           the group so a change of tab starts the row from its first card and
           measures it afresh, rather than keeping the last tab's scroll. */}
       {!showingCase && (
-        <Cases key={active?.id} isGrid={isGrid} label={labels.list}>
+        <Cases
+          key={active?.id}
+          isGrid={isGrid}
+          cascade={switched}
+          label={labels.list}
+        >
           {shown.map((item) => (
             <li
               key={item.id}
               className={cn(
-                "rounded-[20px] p-5 lg:rounded-[26px] lg:p-7.5",
+                "lift rounded-[20px] p-5 lg:rounded-[26px] lg:p-7.5",
                 isGrid
                   ? "shadow-brand-card bg-white"
                   : // Two to a row, whatever the container is: the design's fixed
@@ -229,7 +238,7 @@ function chip(isGrid: boolean, active: boolean) {
     // 40 because its labels are all one line, and a longer one — a
     // write-up's name on a phone — spilled out of the pill instead of
     // making it taller. The padding keeps a single line at 40.
-    "flex min-h-10 cursor-pointer items-center rounded-[30px] px-5 py-1.75 text-center text-base transition-colors lg:min-h-11.5 lg:px-7.5",
+    "flex min-h-10 cursor-pointer items-center rounded-[30px] px-5 py-1.75 text-center text-base transition-[color,background-color,border-color,scale] active:scale-[0.97] lg:min-h-11.5 lg:px-7.5",
     active
       ? isGrid
         ? // On the light page the frame fills the chosen chip with
@@ -260,16 +269,25 @@ function chip(isGrid: boolean, active: boolean) {
 /** The grid on the listing page, the scrolling row on the homepage. */
 function Cases({
   isGrid,
+  cascade,
   label,
   children,
 }: {
   readonly isGrid: boolean
+  /** Send the cards in one after another as the list appears. */
+  readonly cascade: boolean
   readonly label: string
   readonly children: React.ReactNode
 }) {
   if (isGrid) {
     return (
-      <ul className="grid list-none grid-cols-1 gap-6 md:grid-cols-2">
+      <ul
+        data-stagger
+        className={cn(
+          "grid list-none grid-cols-1 gap-6 md:grid-cols-2",
+          cascade && "cascade"
+        )}
+      >
         {children}
       </ul>
     )
@@ -279,7 +297,7 @@ function Cases({
     <ScrollRow
       label={label}
       tone="dark"
-      className="focus-visible:outline-white"
+      className={cn("focus-visible:outline-white", cascade && "cascade")}
     >
       {children}
     </ScrollRow>

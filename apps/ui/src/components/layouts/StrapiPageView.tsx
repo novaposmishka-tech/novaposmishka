@@ -7,6 +7,7 @@ import { use } from "react"
 import { Breadcrumbs } from "@/components/elementary/Breadcrumbs"
 import { Container } from "@/components/elementary/Container"
 import { ErrorBoundary } from "@/components/elementary/ErrorBoundary"
+import { Reveal } from "@/components/elementary/Reveal"
 import { PageContentComponents } from "@/components/page-builder"
 import StrapiStructuredData from "@/components/page-builder/components/seo-utilities/StrapiStructuredData"
 import { logger } from "@/lib/logging"
@@ -73,11 +74,16 @@ export default function StrapiPageView({ params, searchParams }: Props) {
               )
             }
 
+            // The design spaces every section 80px apart on a phone and 90 at
+            // desktop, not the starter's 160. Every section but the first
+            // rises into place as the reader reaches it; the first is what is
+            // on screen on arrival, and it is simply there — nothing stands
+            // between the reader and the page's largest paint.
+            const Spacer = index === 0 ? "div" : Reveal
+
             return (
               <ErrorBoundary key={key}>
-                {/* The design spaces every section 80px apart on a phone and
-                    90 at desktop, not the starter's 160. */}
-                <div
+                <Spacer
                   className={cn(
                     "mb-20 lg:mb-22.5",
                     // A section that hides itself — a case study waiting for
@@ -97,7 +103,7 @@ export default function StrapiPageView({ params, searchParams }: Props) {
                       index === 0 ? response?.meta?.breadcrumbs : undefined
                     }
                   />
-                </div>
+                </Spacer>
               </ErrorBoundary>
             )
           })}

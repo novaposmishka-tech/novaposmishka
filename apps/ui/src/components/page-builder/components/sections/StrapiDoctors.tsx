@@ -85,7 +85,7 @@ export function StrapiDoctors({
                 {doctor.photo && (
                   <Portrait
                     photo={doctor.photo}
-                    className="shadow-brand-card bg-brand-inverted hover:bg-brand-mist h-66.75 rounded-[20px] px-7 pt-9.75 transition-colors lg:h-92.25 lg:rounded-[30px]"
+                    className="shadow-brand-card bg-brand-inverted hover:bg-brand-mist lift h-66.75 rounded-[20px] px-7 pt-9.75 lg:h-92.25 lg:rounded-[30px]"
                   />
                 )}
 
@@ -157,7 +157,10 @@ function DoctorsPage({
             </Typography>
           )}
 
-          <ul className="grid list-none grid-cols-1 gap-5 lg:grid-cols-2 lg:gap-7.5">
+          <ul
+            data-stagger
+            className="grid list-none grid-cols-1 gap-5 lg:grid-cols-2 lg:gap-7.5"
+          >
             {doctors.map((doctor) => (
               <li
                 key={doctor.id}

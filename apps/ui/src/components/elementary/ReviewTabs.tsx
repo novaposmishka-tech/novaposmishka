@@ -63,7 +63,7 @@ export function ReviewTabs({
                 // The frame gives the chosen tab the brand gradient and leaves
                 // the other one outlined in teal, at the same two sizes every
                 // button on the page takes.
-                "flex h-10 cursor-pointer items-center gap-2.5 rounded-[30px] px-5 text-base/5.5 font-semibold transition-colors lg:h-12.5 lg:px-7.5",
+                "flex h-10 cursor-pointer items-center gap-2.5 rounded-[30px] px-5 text-base/5.5 font-semibold transition-[color,background-color,scale] active:scale-[0.97] lg:h-12.5 lg:px-7.5",
                 active === index
                   ? "bg-brand-gradient text-brand-inverted shadow-brand-button"
                   : "border-brand-teal text-brand-ink hover:bg-brand-surface border bg-white"

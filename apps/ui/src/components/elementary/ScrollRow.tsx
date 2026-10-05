@@ -96,6 +96,7 @@ export function ScrollRow({
         ref={row}
         tabIndex={0}
         aria-label={label ?? undefined}
+        data-stagger
         onScroll={measure}
         className={cn(
           // The ring is drawn inside: bleeding the row past the grid to make room

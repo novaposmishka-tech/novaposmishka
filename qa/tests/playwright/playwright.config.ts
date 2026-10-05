@@ -142,6 +142,12 @@ export default defineConfig({
     trace: "on-first-retry",
     screenshot: "only-on-failure",
     video: "retain-on-failure",
+
+    // The site rises its sections into view and counts its figures up as the
+    // reader scrolls, and honours a request for less motion by not doing so.
+    // The tests make that request: a screenshot of a page mid-rise, or of a
+    // block still transparent below the fold, would compare against nothing.
+    reducedMotion: "reduce",
   },
   projects,
 })

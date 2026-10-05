@@ -8,6 +8,7 @@ import { type ComponentType, type SVGProps, use } from "react"
 import { ClinicLogo } from "@/components/elementary/ClinicLogo"
 import { Container } from "@/components/elementary/Container"
 import { RatingBadge } from "@/components/elementary/RatingBadge"
+import { Reveal } from "@/components/elementary/Reveal"
 import { operatorIcon } from "@/components/icons/operators"
 import StrapiLeadForm from "@/components/page-builder/components/forms/StrapiLeadForm"
 import StrapiImageWithLink from "@/components/page-builder/components/utilities/StrapiImageWithLink"
@@ -69,128 +70,130 @@ export function StrapiFooter({ locale }: { readonly locale: Locale }) {
   // button is the only way on.
   return (
     <footer className="w-full group-has-data-error-page:hidden">
-      {/* No space of its own above the form: every section on the page
+      <Reveal>
+        {/* No space of its own above the form: every section on the page
           already ends with the design's 80 on a phone and 90 at desktop, and
           adding the same again put the form more than twice as far from the
           page as any two blocks stand from each other. */}
-      {footer.leadForm && (
-        <StrapiLeadForm component={footer.leadForm} phones={phones} />
-      )}
+        {footer.leadForm && (
+          <StrapiLeadForm component={footer.leadForm} phones={phones} />
+        )}
 
-      <Container>
-        {/* The design opens the footer on a rule across the grid, 90 under the
+        <Container>
+          {/* The design opens the footer on a rule across the grid, 90 under the
             block above it and 50 over its own contents — not a band of colour
             across the window. */}
-        <div
-          className={cn(RULE, "mt-20 pt-12.5 pb-12.5 lg:mt-22.5 lg:pb-17.5")}
-        >
-          <div className="flex flex-col gap-7.5 lg:flex-row lg:items-center lg:justify-between lg:gap-0">
-            <div className="flex flex-col gap-5 lg:w-107.25 lg:gap-10.5">
-              <div className="flex flex-col gap-4 lg:gap-8.25">
-                {/* The clinic's own mark unless an editor uploaded one, as
+          <div
+            className={cn(RULE, "mt-20 pt-12.5 pb-12.5 lg:mt-22.5 lg:pb-17.5")}
+          >
+            <div className="flex flex-col gap-7.5 lg:flex-row lg:items-center lg:justify-between lg:gap-0">
+              <div className="flex flex-col gap-5 lg:w-107.25 lg:gap-10.5">
+                <div className="flex flex-col gap-4 lg:gap-8.25">
+                  {/* The clinic's own mark unless an editor uploaded one, as
                     the header does it — at the larger of the design's two
                     sizes. */}
-                {footer.logoImage?.image ? (
-                  <StrapiImageWithLink component={footer.logoImage} />
-                ) : (
-                  <ClinicLogo variant="footer" />
-                )}
+                  {footer.logoImage?.image ? (
+                    <StrapiImageWithLink component={footer.logoImage} />
+                  ) : (
+                    <ClinicLogo variant="footer" />
+                  )}
 
-                {footer.description && (
-                  <Typography className="text-brand-body mb-0! text-xs/[1.0625rem]! lg:text-base/5.5!">
-                    {footer.description}
-                  </Typography>
+                  {footer.description && (
+                    <Typography className="text-brand-body mb-0! text-xs/[1.0625rem]! lg:text-base/5.5!">
+                      {footer.description}
+                    </Typography>
+                  )}
+                </div>
+
+                {footer.rating?.label && footer.rating.score != null && (
+                  <RatingBadge
+                    label={footer.rating.label}
+                    score={footer.rating.score}
+                  />
                 )}
               </div>
 
-              {footer.rating?.label && footer.rating.score != null && (
-                <RatingBadge
-                  label={footer.rating.label}
-                  score={footer.rating.score}
-                />
-              )}
-            </div>
-
-            <div className="flex flex-col gap-5 lg:w-168.5 lg:items-end lg:gap-8.25">
-              {/* The phone frame rules a line over the links as well as under
+              <div className="flex flex-col gap-5 lg:w-168.5 lg:items-end lg:gap-8.25">
+                {/* The phone frame rules a line over the links as well as under
                   them; the desktop has only the one beneath. */}
-              <hr className={cn(RULE, "lg:hidden")} />
+                <hr className={cn(RULE, "lg:hidden")} />
 
-              {/* One flat row of links, as the design draws it. `footer.sections`
+                {/* One flat row of links, as the design draws it. `footer.sections`
                   stays in the schema for anyone who wants grouped columns, but
                   this design has none, so nothing renders them. */}
-              {footer.links && footer.links.length > 0 && (
-                <nav className="grid w-full grid-flow-col grid-cols-2 grid-rows-3 gap-x-20 gap-y-4 lg:flex lg:justify-between lg:gap-0">
-                  {footer.links.map((link) => (
-                    <StrapiLink
-                      key={link.id}
-                      component={link}
-                      // Regular, as the frame sets them; the link variant
-                      // would make them medium.
-                      className="text-brand-ink hover:text-brand-teal h-auto w-fit p-0 text-base/5.5 font-normal"
-                    />
-                  ))}
-                </nav>
-              )}
+                {footer.links && footer.links.length > 0 && (
+                  <nav className="grid w-full grid-flow-col grid-cols-2 grid-rows-3 gap-x-20 gap-y-4 lg:flex lg:justify-between lg:gap-0">
+                    {footer.links.map((link) => (
+                      <StrapiLink
+                        key={link.id}
+                        component={link}
+                        // Regular, as the frame sets them; the link variant
+                        // would make them medium.
+                        className="text-brand-ink hover:text-brand-teal h-auto w-fit p-0 text-base/5.5 font-normal"
+                      />
+                    ))}
+                  </nav>
+                )}
 
-              <hr className={RULE} />
+                <hr className={RULE} />
 
-              {/* Each line of details is its own description list: a single
+                {/* Each line of details is its own description list: a single
                   list around all of them would have the messenger marks inside
                   it, which is not something a list of terms may contain. */}
-              {/* Two columns from 360, as the frame has them; under that a
+                {/* Two columns from 360, as the frame has them; under that a
                   column is 125 wide and the hours broke across lines. */}
-              <div className="grid w-full grid-cols-2 gap-x-10 gap-y-6.25 max-[359px]:grid-cols-1 lg:grid-cols-3 lg:gap-x-0 lg:gap-y-8.25">
-                {inlineContacts.map((item, index) => (
-                  <ContactCell
-                    key={item.id}
-                    item={item}
-                    // The phone frame keeps the first two side by side and
-                    // gives everything after them the full width.
-                    className={index > 1 ? "max-lg:col-span-2" : undefined}
-                  />
-                ))}
+                <div className="grid w-full grid-cols-2 gap-x-10 gap-y-6.25 max-[359px]:grid-cols-1 lg:grid-cols-3 lg:gap-x-0 lg:gap-y-8.25">
+                  {inlineContacts.map((item, index) => (
+                    <ContactCell
+                      key={item.id}
+                      item={item}
+                      // The phone frame keeps the first two side by side and
+                      // gives everything after them the full width.
+                      className={index > 1 ? "max-lg:col-span-2" : undefined}
+                    />
+                  ))}
 
-                {mailContact && (
-                  <ContactCell
-                    item={mailContact}
-                    className="max-lg:col-span-2 lg:col-start-1"
-                  />
-                )}
+                  {mailContact && (
+                    <ContactCell
+                      item={mailContact}
+                      className="max-lg:col-span-2 lg:col-start-1"
+                    />
+                  )}
 
-                {footer.socials && footer.socials.length > 0 && (
-                  <ul
-                    className={cn(
-                      "flex list-none items-center",
-                      // Ranged against the foot of the grid on a desktop; on a
-                      // phone the marks take a rule and a row of their own.
-                      "lg:col-start-3 lg:justify-end lg:gap-7.5 lg:self-end",
-                      // The gap is fixed at both widths — 60 on a phone, 30 at
-                      // desktop — rather than spread across the row. The frame
-                      // draws four marks packed to the left; spreading them
-                      // only matches that by accident at four, and the clinic
-                      // has two, which sends them to opposite corners.
-                      "border-brand-hairline max-lg:col-span-2 max-lg:mt-1.25 max-lg:gap-15 max-lg:border-t max-lg:pt-7.5"
-                    )}
-                  >
-                    {footer.socials.map((social) => (
-                      <SocialLink key={social.id} social={social} />
-                    ))}
-                  </ul>
-                )}
+                  {footer.socials && footer.socials.length > 0 && (
+                    <ul
+                      className={cn(
+                        "flex list-none items-center",
+                        // Ranged against the foot of the grid on a desktop; on a
+                        // phone the marks take a rule and a row of their own.
+                        "lg:col-start-3 lg:justify-end lg:gap-7.5 lg:self-end",
+                        // The gap is fixed at both widths — 60 on a phone, 30 at
+                        // desktop — rather than spread across the row. The frame
+                        // draws four marks packed to the left; spreading them
+                        // only matches that by accident at four, and the clinic
+                        // has two, which sends them to opposite corners.
+                        "border-brand-hairline max-lg:col-span-2 max-lg:mt-1.25 max-lg:gap-15 max-lg:border-t max-lg:pt-7.5"
+                      )}
+                    >
+                      {footer.socials.map((social) => (
+                        <SocialLink key={social.id} social={social} />
+                      ))}
+                    </ul>
+                  )}
+                </div>
               </div>
             </div>
-          </div>
 
-          {/* The design carries no copyright line; this renders only if an
+            {/* The design carries no copyright line; this renders only if an
               editor decides to add one. */}
-          {footer.copyRight && (
-            <Typography className="text-brand-body mt-10 text-sm">
-              {footer.copyRight.split("{YEAR}").join(String(currentYear))}
-            </Typography>
-          )}
-        </div>
-      </Container>
+            {footer.copyRight && (
+              <Typography className="text-brand-body mt-10 text-sm">
+                {footer.copyRight.split("{YEAR}").join(String(currentYear))}
+              </Typography>
+            )}
+          </div>
+        </Container>
+      </Reveal>
     </footer>
   )
 }

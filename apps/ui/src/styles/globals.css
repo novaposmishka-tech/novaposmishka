@@ -63,6 +63,126 @@
   padding: 2rem;
 }
 
+/* Motion.
+
+   A block marked `data-reveal` rises into place when the reader reaches it,
+   and a list marked `data-stagger` inside one sends its cards up one after
+   another. A list classed `cascade` does the same the moment it appears, with
+   no block to wait for — the menu's rows, a tab's fresh cards. All of it is
+   animation rather than transition, run backwards-filled: once an animation
+   has played the element is left with its ordinary styles, so a card's own
+   hover can still move it, which a forwards fill or a lingering
+   transition-delay would hold. An element shown again after `display: none`
+   plays its animation again, which is how a menu or a tab's panel cascades
+   each time it opens.
+
+   Nothing is hidden for a reader without script, who would otherwise get a
+   blank page, nor for one who asked for less motion; both conditions have to
+   hold before anything is made transparent at all. The first block of a page
+   is never marked, so what is on screen on arrival is simply there. */
+@layer base {
+  @media (scripting: enabled) and (prefers-reduced-motion: no-preference) {
+    [data-reveal=""],
+    [data-reveal=""] [data-stagger] > * {
+      opacity: 0;
+    }
+
+    [data-reveal="in"] {
+      animation: rise 0.7s var(--ease-out) backwards;
+    }
+
+    [data-reveal="in"] [data-stagger] > *,
+    .cascade > * {
+      animation: rise 0.6s var(--ease-out) backwards;
+    }
+
+    /* The cascade: each card a beat after the one before, up to the eighth,
+       and the rest together with it. */
+    :is([data-stagger], .cascade) > :nth-child(2) {
+      animation-delay: 70ms;
+    }
+    :is([data-stagger], .cascade) > :nth-child(3) {
+      animation-delay: 140ms;
+    }
+    :is([data-stagger], .cascade) > :nth-child(4) {
+      animation-delay: 210ms;
+    }
+    :is([data-stagger], .cascade) > :nth-child(5) {
+      animation-delay: 280ms;
+    }
+    :is([data-stagger], .cascade) > :nth-child(6) {
+      animation-delay: 350ms;
+    }
+    :is([data-stagger], .cascade) > :nth-child(7) {
+      animation-delay: 420ms;
+    }
+    :is([data-stagger], .cascade) > :nth-child(n + 8) {
+      animation-delay: 490ms;
+    }
+
+    /* The phone menu drops in from under the header each time it opens. */
+    .menu-in {
+      animation: menu-in 0.3s var(--ease-out) backwards;
+    }
+
+    /* An arrow in a link or a button leans the way it points while the
+       pointer is on it — the one hint a button needs that it will go
+       somewhere. Lucide names every icon by class, so the arrows can be found
+       without each caller marking them. */
+    :is(a, button) .lucide-arrow-right,
+    :is(a, button) .lucide-arrow-left {
+      transition: translate 0.3s var(--ease-out);
+    }
+    @media (hover: hover) {
+      :is(a, button):hover .lucide-arrow-right {
+        translate: 0.25rem 0;
+      }
+      :is(a, button):hover .lucide-arrow-left {
+        translate: -0.25rem 0;
+      }
+    }
+  }
+
+  @keyframes menu-in {
+    from {
+      opacity: 0;
+      translate: 0 -0.5rem;
+    }
+    to {
+      opacity: 1;
+      translate: none;
+    }
+  }
+
+  @keyframes rise {
+    from {
+      opacity: 0;
+      translate: 0 1.5rem;
+    }
+    to {
+      opacity: 1;
+      translate: none;
+    }
+  }
+}
+
+/* A card that lifts a touch under the pointer. Only where there is a pointer
+   to hover with — on a touch screen the lift would stick after a tap — and
+   only for a reader who has not asked for less motion. The colour transition
+   the cards already had rides along, so this replaces `transition-colors`
+   rather than fighting it over the shorthand. */
+@utility lift {
+  transition-property: translate, background-color, border-color, color;
+  transition-duration: 300ms;
+  transition-timing-function: var(--ease-out);
+
+  @media (hover: hover) and (prefers-reduced-motion: no-preference) {
+    &:hover {
+      translate: 0 -0.25rem;
+    }
+  }
+}
+
 /* this enabled the dark mode variant */
 @custom-variant dark (&:where(.dark, .dark *));
 

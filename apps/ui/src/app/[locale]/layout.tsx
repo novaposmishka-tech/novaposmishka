@@ -78,6 +78,11 @@ export default async function RootLayout({
     // resolves nowhere makes the whole declaration invalid — which is why the
     // site was rendering in the system stack rather than Open Sans.
     <html
+      // Tells Next the page scrolls smoothly, so it can switch that off for
+      // the jump to the top of a new route: otherwise a route change glides
+      // up from wherever the reader was, and every section on the way is
+      // revealed before the page has settled.
+      data-scroll-behavior="smooth"
       lang={locale}
       suppressHydrationWarning
       className={cn(fontOpenSans.variable, fontNunito.variable)}
