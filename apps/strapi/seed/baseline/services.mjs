@@ -18,56 +18,67 @@ import {
 } from "./shared.mjs"
 
 /**
- * The photograph each page opens on. The design gives all seven a frame of
+ * The photographs each page opens on. The design gives all seven a frame of
  * their own and a different picture in each, chosen for what that speciality
  * actually does, so they are named by the page rather than shared.
  *
- * The photographs are wide and a phone's hero is tall, so a phone sees a
- * third of their width. Where the subject is not in the middle third — the
- * dentist at the right of the children's room, the face at the left of the
- * facebow, the scans on the screen at the left of the surgeon — the hero is
- * told where to hold the picture.
+ * The wide photograph is the desktop's. A phone's hero is tall, so a phone
+ * would see a third of its width; below the desktop breakpoint the hero shows
+ * the upright photograph instead, cut to 3:4 with its subject in the middle,
+ * which holds from a 390 phone to a 1023 tablet. Between 1024 and 1279 the
+ * wide one still loses its edges, and where its subject is not in the middle
+ * — the dentist at the right of the children's room, the face at the left of
+ * the facebow, the scans on the screen at the left of the surgeon — the hero
+ * is told where to hold it.
  */
 const HERO_IMAGES = {
-  terapiia: hero(
-    "service-hero-terapiia",
-    "Лікар оглядає зуб пацієнта через стоматологічний мікроскоп",
-    { x: 45 }
-  ),
-  ortopediia: hero(
-    "service-hero-ortopediia",
-    "Лікар у бінокулярах із підсвіткою під час протезування"
-  ),
-  khirurhiia: hero(
-    "service-hero-khirurhiia",
-    "Лікар вивчає комп'ютерну томографію щелеп на екрані ноутбука",
-    { x: 25, y: 45 }
-  ),
-  ortodontiia: hero(
-    "service-hero-ortodontiia",
-    "Лікар оглядає пацієнтку в кріслі стоматологічної клініки"
-  ),
-  parodontolohiia: hero(
-    "service-hero-parodontolohiia",
-    "Лікарка чистить зуби пацієнтці ультразвуковим скейлером",
-    { x: 62 }
-  ),
-  "dytiacha-stomatolohiia": hero(
-    "service-hero-dytiacha-stomatolohiia",
-    "Лікарка лікує зуби дівчинці в дитячому кабінеті",
-    { x: 80, y: 40 }
-  ),
-  hnatolohiia: hero(
-    "service-hero-hnatolohiia",
-    "Лицьова дуга, встановлена на обличчі пацієнта, для запису положення щелепи",
-    { x: 30, y: 45 }
-  ),
+  terapiia: hero("terapiia", {
+    alt: "Лікар оглядає зуб пацієнта через стоматологічний мікроскоп",
+    phoneAlt: "Лікарка в масці та шапочці лікує зуб пацієнта",
+    x: 45,
+  }),
+  ortopediia: hero("ortopediia", {
+    alt: "Лікар у бінокулярах із підсвіткою під час протезування",
+    phoneAlt: "Коронка на імпланті в руці лікаря в рукавичці",
+  }),
+  khirurhiia: hero("khirurhiia", {
+    alt: "Лікар вивчає комп'ютерну томографію щелеп на екрані ноутбука",
+    phoneAlt: "Двоє хірургів у халатах і масках під час операції",
+    x: 25,
+    y: 45,
+  }),
+  ortodontiia: hero("ortodontiia", {
+    alt: "Лікар оглядає пацієнтку в кріслі стоматологічної клініки",
+    phoneAlt: "Пацієнтка в кріслі розмовляє з лікарем на консультації",
+  }),
+  parodontolohiia: hero("parodontolohiia", {
+    alt: "Лікарка чистить зуби пацієнтці ультразвуковим скейлером",
+    phoneAlt: "Лікарка чистить зуби пацієнтці ультразвуковим скейлером",
+    x: 62,
+  }),
+  "dytiacha-stomatolohiia": hero("dytiacha-stomatolohiia", {
+    alt: "Лікарка лікує зуби дівчинці в дитячому кабінеті",
+    phoneAlt: "Дівчинка усміхається в стоматологічному кріслі",
+    x: 80,
+    y: 40,
+  }),
+  hnatolohiia: hero("hnatolohiia", {
+    alt: "Лицьова дуга, встановлена на обличчі пацієнта, для запису положення щелепи",
+    phoneAlt: "Лікарі вивчають рентгенівський знімок щелепи на екрані",
+    x: 30,
+    y: 45,
+  }),
 }
 
-/** A hero's photograph with the point to hold it at, as percentages. */
-function hero(file, alt, { x = 50, y = 50 } = {}) {
+/**
+ * A page's two photographs — wide and upright, named by its slug in
+ * seed/media — and the point of the wide one to hold on screen, as
+ * percentages, for the widths where it is cropped.
+ */
+function hero(slug, { alt, phoneAlt, x = 50, y = 50 }) {
   return {
-    backgroundImage: image(file, alt),
+    backgroundImage: image(`service-hero-${slug}`, alt),
+    backgroundImagePhone: image(`service-hero-phone-${slug}`, phoneAlt),
     backgroundFocusX: x,
     backgroundFocusY: y,
   }
