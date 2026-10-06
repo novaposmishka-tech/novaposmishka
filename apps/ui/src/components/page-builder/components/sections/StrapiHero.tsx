@@ -31,6 +31,7 @@ export function StrapiHero({
     images,
     serviceTags,
     backgroundImage,
+    backgroundImagePhone,
     backgroundFocusX,
     backgroundFocusY,
     backgroundVideo,
@@ -83,6 +84,7 @@ export function StrapiHero({
         {hasBackground && (
           <Backdrop
             image={backgroundImage}
+            phoneImage={backgroundImagePhone}
             video={backgroundVideo}
             focus={[backgroundFocusX ?? 50, backgroundFocusY ?? 50]}
             fade={isBarePhoto}
@@ -414,18 +416,27 @@ function BottomRow({
  */
 function Backdrop({
   image,
+  phoneImage,
   video,
   focus,
   fade,
 }: {
   readonly image: Data.Component<"sections.hero">["backgroundImage"]
+  /**
+   * An upright photograph for the phone frame, which is taller than it is
+   * wide below the desktop breakpoint, so a wide photograph shows a third of
+   * itself there. Where an editor uploaded one, the phone shows it instead
+   * of the wide one; where they did not, the wide one is cropped around its
+   * focus as before.
+   */
+  readonly phoneImage: Data.Component<"sections.hero">["backgroundImagePhone"]
   readonly video: Data.Component<"sections.hero">["backgroundVideo"]
   /**
-   * The point of the photograph to hold on screen, as percentages across and
-   * down, where the frame cannot show all of it. The photographs are wide
-   * and a phone's hero is tall, so a phone sees a third of their width — and
-   * the middle third is not always where the subject is. The editor sets
-   * this on the hero, and the picture is cropped around it instead.
+   * The point of the wide photograph to hold on screen, as percentages
+   * across and down, where the frame cannot show all of it — from 1024 to
+   * 1279 the desktop frame is nearly square, and on a phone with no upright
+   * photograph of its own it is taller than it is wide. The editor sets this
+   * on the hero, and the picture is cropped around it instead of its middle.
    */
   readonly focus: readonly [number, number]
   /** True where the picture is the subject and carries no copy of its own. */
@@ -440,13 +451,25 @@ function Backdrop({
     // but only by accident, and Next says so. This layer is the frame's size on
     // purpose, and the wash and the clip stack inside it in source order.
     <div className="absolute inset-0 -z-10">
+      {/* Where there are two photographs, each frame hides the other's. Both
+          load lazily, and a lazy image with no box never crosses the
+          viewport, so the hidden one is not fetched: a phone pays for its
+          own photograph alone. */}
       {image && (
         <StrapiBasicImage
           component={image}
           fill
           sizes="100vw"
-          className="object-cover"
+          className={cn("object-cover", phoneImage && "max-lg:hidden")}
           style={{ objectPosition }}
+        />
+      )}
+      {phoneImage && (
+        <StrapiBasicImage
+          component={phoneImage}
+          fill
+          sizes="100vw"
+          className="object-cover lg:hidden"
         />
       )}
       {video && (
