@@ -588,6 +588,10 @@ export interface SectionsHero extends Struct.ComponentSchema {
       > &
       Schema.Attribute.DefaultTo<50>
     backgroundImage: Schema.Attribute.Component<"utilities.basic-image", false>
+    backgroundImagePhone: Schema.Attribute.Component<
+      "utilities.basic-image",
+      false
+    >
     backgroundVideo: Schema.Attribute.Media<"videos">
     figures: Schema.Attribute.Component<"shared.figure", true>
     images: Schema.Attribute.Component<"utilities.basic-image", true>

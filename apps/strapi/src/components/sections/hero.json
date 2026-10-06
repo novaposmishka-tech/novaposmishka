@@ -54,6 +54,11 @@
       "component": "utilities.basic-image",
       "repeatable": false
     },
+    "backgroundImagePhone": {
+      "type": "component",
+      "component": "utilities.basic-image",
+      "repeatable": false
+    },
     "backgroundFocusX": {
       "type": "integer",
       "min": 0,
@@ -70,9 +75,7 @@
       "type": "media",
       "multiple": false,
       "required": false,
-      "allowedTypes": [
-        "videos"
-      ]
+      "allowedTypes": ["videos"]
     },
     "figures": {
       "type": "component",
