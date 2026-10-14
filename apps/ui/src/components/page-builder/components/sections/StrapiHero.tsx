@@ -80,17 +80,18 @@ export function StrapiHero({
         hasBottomRow={hasBottomRow && !hasFigures}
         hasTrail={hasTrail}
         isBarePhoto={isBarePhoto}
+        backdrop={
+          hasBackground && (
+            <Backdrop
+              image={backgroundImage}
+              phoneImage={backgroundImagePhone}
+              video={backgroundVideo}
+              focus={[backgroundFocusX ?? 50, backgroundFocusY ?? 50]}
+              fade={isBarePhoto}
+            />
+          )
+        }
       >
-        {hasBackground && (
-          <Backdrop
-            image={backgroundImage}
-            phoneImage={backgroundImagePhone}
-            video={backgroundVideo}
-            focus={[backgroundFocusX ?? 50, backgroundFocusY ?? 50]}
-            fade={isBarePhoto}
-          />
-        )}
-
         {hasTrail && pageParams && (
           <Breadcrumbs
             breadcrumbs={breadcrumbs}
@@ -445,12 +446,15 @@ function Backdrop({
   const objectPosition = `${focus[0]}% ${focus[1]}%`
 
   return (
-    // One positioned layer for the whole backdrop. The copy sits inside the
-    // grid container, which is not positioned, so a `fill` image dropped
-    // alongside it would reach past it to the frame — which is where we want it,
-    // but only by accident, and Next says so. This layer is the frame's size on
-    // purpose, and the wash and the clip stack inside it in source order.
-    <div className="absolute inset-0 -z-10">
+    // One positioned layer for the whole backdrop, the frame's size, with the
+    // wash and the clip stacked inside it in source order. It stands ahead of
+    // the copy's container in the frame and the container is raised above it
+    // — not the backdrop sunk below with a negative z-index. iOS Safari draws
+    // a playing clip in a layer of its own, and with the copy left as plain
+    // flow content it painted that layer over the words until the first
+    // scroll redrew the page; copy in a positioned layer of its own, ordered
+    // above the clip, is what it respects.
+    <div className="absolute inset-0">
       {/* Where there are two photographs, each frame hides the other's. Both
           load lazily, and a lazy image with no box never crosses the
           viewport, so the hidden one is not fetched: a phone pays for its
@@ -498,20 +502,23 @@ function Backdrop({
 
 /**
  * A photo hero runs edge to edge, as the design draws it — the copy still sits
- * on the 1320 grid, so the container moves inside. Every other hero is the
- * container itself.
+ * on the 1320 grid, so the container moves inside, and the backdrop lies
+ * directly in the frame behind it. Every other hero is the container itself.
  */
 function Wrapper({
   hasBackground,
   hasBottomRow,
   hasTrail,
   isBarePhoto,
+  backdrop,
   children,
 }: {
   readonly hasBackground: boolean
   readonly hasBottomRow: boolean
   readonly hasTrail: boolean
   readonly isBarePhoto: boolean
+  /** What lies behind the copy on a photo hero; see `Backdrop`. */
+  readonly backdrop?: React.ReactNode
   readonly children: React.ReactNode
 }) {
   if (!hasBackground) {
@@ -520,13 +527,16 @@ function Wrapper({
 
   return (
     <PhotoHeroFrame headerOverFromLg={isBarePhoto}>
+      {backdrop}
+
       {/* The frame's own height, and — where a trail is drawn under it — the
           room the header takes out of that, since the header floats over the
           photograph rather than standing above it. Not on the phone frame of a
           bare photograph, which starts under the header instead. */}
       <Container
         className={cn(
-          "flex flex-col lg:min-h-217.5",
+          // Raised above the backdrop as its own layer; see `Backdrop`.
+          "relative z-10 flex flex-col lg:min-h-217.5",
           hasTrail && (isBarePhoto ? "lg:pt-26.5" : "pt-15 lg:pt-26.5"),
           // Every subpage's photo hero is the same height on a phone, whether
           // or not its copy fills it — the frame's 746, and the homepage's
