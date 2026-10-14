@@ -44,6 +44,13 @@ export function ScrollRow({
   // and a mark for a position that does not exist is a mark that does nothing
   // when pressed.
   const [steps, setSteps] = useState(Children.count(children))
+  // Where the row has been told to go and has not yet arrived. A smooth scroll
+  // takes a moment, and a press that lands during one has to count from where
+  // the last press was headed, not from wherever the animation happens to be.
+  // Otherwise a reader tapping the arrow quickly on an iPhone asks the row to
+  // go a card past its end, which iOS obliges and then holds, showing nothing;
+  // the arrow cannot help, since it is only disabled once the row has arrived.
+  const target = useRef<number | null>(null)
   // Only to re-measure when the row gains or loses a card; the marks below
   // count positions, not children.
   const count = Children.count(children)
@@ -54,14 +61,44 @@ export function ScrollRow({
     if (!node) return
     // A fractional scroll width leaves a pixel or two over; round it off.
     const past = node.scrollWidth - node.clientWidth
+    const atEnd = node.scrollLeft >= past - 2
     setScrollable(past > 2)
     setAtStart(node.scrollLeft < 2)
-    setAtEnd(node.scrollLeft >= past - 2)
+    setAtEnd(atEnd)
 
     const step = cardStep(node)
-    setCurrent(step > 0 ? Math.round(node.scrollLeft / step) : 0)
-    setSteps(restingPlaces(past, step))
+    const places = restingPlaces(past, step)
+    // The end is a place of its own, whether or not a card starts near it, and
+    // the last mark stands for it.
+    setCurrent(
+      atEnd ? places - 1 : step > 0 ? Math.round(node.scrollLeft / step) : 0
+    )
+    setSteps(places)
+
+    // Arrived: the next press counts from the row itself again.
+    if (
+      target.current !== null &&
+      Math.abs(node.scrollLeft - target.current) <= 2
+    ) {
+      target.current = null
+    }
   }, [])
+
+  // A finger or a wheel moves the row on its own terms and cuts any journey
+  // short, so what it was headed for means nothing any more.
+  const forget = () => {
+    target.current = null
+  }
+
+  /** Sends the row to a place, held within its ends. */
+  const travel = (left: number) => {
+    const node = row.current
+    if (!node) return
+    const past = node.scrollWidth - node.clientWidth
+    const next = Math.min(Math.max(left, 0), past)
+    target.current = next
+    node.scrollTo({ left: next, behavior: "smooth" })
+  }
 
   // How far the row can scroll changes with the breakpoint, with a picture
   // finishing its load, and — where the row sits behind a tab — with the panel
@@ -81,13 +118,13 @@ export function ScrollRow({
   const nudge = (direction: 1 | -1) => {
     const node = row.current
     if (!node) return
-    node.scrollBy({ left: cardStep(node) * direction, behavior: "smooth" })
+    travel((target.current ?? node.scrollLeft) + cardStep(node) * direction)
   }
 
   const goTo = (index: number) => {
     const node = row.current
     if (!node) return
-    node.scrollTo({ left: cardStep(node) * index, behavior: "smooth" })
+    travel(cardStep(node) * index)
   }
 
   return (
@@ -98,6 +135,8 @@ export function ScrollRow({
         aria-label={label ?? undefined}
         data-stagger
         onScroll={measure}
+        onPointerDown={forget}
+        onWheel={forget}
         className={cn(
           // The ring is drawn inside: bleeding the row past the grid to make room
           // for it would take the first card off the column with it.
