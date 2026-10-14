@@ -89,6 +89,10 @@ export default async function RootLayout({
       className={cn(fontOpenSans.variable, fontNunito.variable)}
     >
       <head>
+        <meta
+          name="google-site-verification"
+          content="2ylYlPw7taPwt9PdrBcgVihm6YG4snF446pEiUM-EcY"
+        />
         <Script id="csr-config" strategy="beforeInteractive">
           {`
          window.CSR_CONFIG = window.CSR_CONFIG || {};
