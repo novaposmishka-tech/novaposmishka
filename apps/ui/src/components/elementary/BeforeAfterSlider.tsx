@@ -1,7 +1,14 @@
 "use client"
 
 import type { Data } from "@repo/strapi-types"
-import { type ReactNode, useEffect, useId, useRef, useState } from "react"
+import {
+  type PointerEvent,
+  type ReactNode,
+  useEffect,
+  useId,
+  useRef,
+  useState,
+} from "react"
 
 import { StrapiBasicImage } from "@/components/page-builder/components/utilities/StrapiBasicImage"
 import { cn } from "@/lib/styles"
@@ -20,12 +27,20 @@ const NUDGE_MS = 1600
  * shot fills the frame and the "before" one is clipped to the handle's left.
  * Dragging left uncovers the result, dragging right puts the problem back.
  *
- * The handle is a real range input, kept transparent above the photographs and
- * drawn separately underneath. That buys pointer, touch and keyboard control —
- * arrows, Home and End — plus the slider role and its value, none of which a
- * div with a pointer listener would have. `touch-none` matters: inside the
- * homepage's scroll row the browser would otherwise read a sideways drag on
- * the handle as a swipe of the carousel.
+ * A finger or a mouse drives the divider from anywhere in the frame: press,
+ * and it comes to the finger; move, and it follows, the pointer captured so a
+ * fast drag that leaves the frame still counts. The frame used to leave this to
+ * a transparent range input stretched over it, but a native range only starts
+ * a drag from its own thumb — forty pixels wide — and on a phone a finger that
+ * landed on the photograph next to the line did nothing at all.
+ *
+ * The range input is still there, transparent and out of the pointer's way,
+ * for what pointer listeners cannot give: keyboard control — arrows, Home and
+ * End — plus the slider role and its value for a screen reader.
+ *
+ * `touch-pan-y` keeps the page scrolling under a vertical swipe and claims
+ * the horizontal one for the divider — inside the homepage's scroll row the
+ * browser would otherwise read a sideways drag as a swipe of the carousel.
  */
 export function BeforeAfterSlider({
   before,
@@ -82,6 +97,40 @@ function Comparison({
   const frame = useRef<HTMLDivElement>(null)
   // Whether the reader has taken the handle; the hint below stands down then.
   const touched = useRef(false)
+  // The pointer the divider is following, while one is.
+  const dragging = useRef<number | null>(null)
+
+  /** Puts the divider under the pointer, held within the frame. */
+  const follow = (event: PointerEvent<HTMLDivElement>) => {
+    const node = frame.current
+    if (!node) return
+    const { left, width } = node.getBoundingClientRect()
+    if (width <= 0) return
+    const next = ((event.clientX - left) / width) * 100
+    setPosition(Math.min(Math.max(next, 0), 100))
+  }
+
+  const take = (event: PointerEvent<HTMLDivElement>) => {
+    // A mouse drags with its main button alone; a finger or pen has no other.
+    if (event.pointerType === "mouse" && event.button !== 0) return
+    touched.current = true
+    dragging.current = event.pointerId
+    event.currentTarget.setPointerCapture(event.pointerId)
+    follow(event)
+  }
+
+  const move = (event: PointerEvent<HTMLDivElement>) => {
+    if (dragging.current !== event.pointerId) return
+    follow(event)
+  }
+
+  const release = (event: PointerEvent<HTMLDivElement>) => {
+    if (dragging.current !== event.pointerId) return
+    dragging.current = null
+    if (event.currentTarget.hasPointerCapture(event.pointerId)) {
+      event.currentTarget.releasePointerCapture(event.pointerId)
+    }
+  }
 
   // The first time the comparison comes into view the handle rocks once —
   // left a little, right a little, home — which is the only way to show that
@@ -122,8 +171,15 @@ function Comparison({
   return (
     <div
       ref={frame}
+      onPointerDown={take}
+      onPointerMove={move}
+      onPointerUp={release}
+      onPointerCancel={release}
+      // A mouse that drags a photograph starts the browser's own drag of the
+      // picture, which cancels the pointer and leaves the divider behind.
+      onDragStart={(event) => event.preventDefault()}
       className={cn(
-        "relative aspect-1076/610 w-full touch-none overflow-hidden select-none",
+        "relative aspect-1076/610 w-full cursor-ew-resize touch-pan-y overflow-hidden select-none",
         className
       )}
     >
@@ -165,21 +221,14 @@ function Comparison({
         max={100}
         step={0.1}
         value={position}
-        onPointerDown={() => {
-          touched.current = true
-        }}
         onChange={(event) => {
           touched.current = true
           setPosition(Number(event.target.value))
         }}
         aria-valuetext={`${Math.round(position)}%`}
-        className={cn(
-          "peer absolute inset-0 z-20 h-full w-full cursor-ew-resize appearance-none bg-transparent opacity-0",
-          // A thumb as tall as the frame keeps the grab area over the divider
-          // itself, wherever the reader takes hold of it.
-          "[&::-webkit-slider-thumb]:h-full [&::-webkit-slider-thumb]:w-10 [&::-webkit-slider-thumb]:appearance-none",
-          "[&::-moz-range-thumb]:h-full [&::-moz-range-thumb]:w-10 [&::-moz-range-thumb]:border-0"
-        )}
+        // Out of the pointer's way — the frame takes every press and drag —
+        // but still in the tab order and under a screen reader's finger.
+        className="peer pointer-events-none absolute inset-0 z-20 h-full w-full appearance-none bg-transparent opacity-0"
       />
 
       <div
