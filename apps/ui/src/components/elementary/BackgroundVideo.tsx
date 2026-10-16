@@ -9,8 +9,9 @@ import { cn } from "@/lib/styles"
  *
  * It is decorative, so it is muted, loops, and carries no controls — which is
  * also what every browser requires before it will play a video on its own.
- * The poster is the section's own photograph, so something is on screen while
- * the file loads and for anyone whose browser never gets it.
+ * It carries no poster: a still that is swapped for the moving picture is a
+ * visible jump, so the caller lays a plain fill under it instead, and that is
+ * what shows while the file loads and for anyone whose browser never gets it.
  *
  * The source is attached after the page has finished loading, never in the
  * markup. A `<video>` in the initial document delays the load event until the
@@ -21,16 +22,14 @@ import { cn } from "@/lib/styles"
  *
  * It is skipped outright when the reader has asked for less motion. A looping
  * clip behind text is exactly the moving content that request is about, and the
- * photograph underneath says the same thing without moving.
+ * fill underneath keeps the words legible without it.
  */
 export function BackgroundVideo({
   src,
-  poster,
   className,
   style,
 }: {
   readonly src: string | undefined
-  readonly poster?: string | null
   readonly className?: string
   /** For the point to hold the picture at, which only the caller knows. */
   readonly style?: React.CSSProperties
@@ -77,7 +76,6 @@ export function BackgroundVideo({
       loop
       playsInline
       preload="none"
-      poster={poster ?? undefined}
       aria-hidden
       tabIndex={-1}
       className={cn("motion-reduce:hidden", className)}

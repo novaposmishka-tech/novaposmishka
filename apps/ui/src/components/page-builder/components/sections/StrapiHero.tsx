@@ -411,9 +411,15 @@ function BottomRow({
 }
 
 /**
- * What lies behind the copy on a photo hero: the photograph, the clip that
- * plays over it where an editor uploaded one, and the wash that keeps the words
- * legible whatever picture they chose. Black at 40%, as in the design.
+ * What lies behind the copy on a photo hero: the photograph, or the clip where
+ * an editor uploaded one, and the wash that keeps the words legible whatever
+ * picture they chose. Black at 40%, as in the design.
+ *
+ * A clip stands alone, on a dark fill — never over the photograph. Laid under
+ * it, the photograph showed through until the clip's first frame, shifted as
+ * the browser swapped it for its poster, and then vanished as the clip began:
+ * three different pictures in the first second. A plain dark floor holds
+ * still, and it is what the clip itself fades in from.
  */
 function Backdrop({
   image,
@@ -454,37 +460,37 @@ function Backdrop({
     // flow content it painted that layer over the words until the first
     // scroll redrew the page; copy in a positioned layer of its own, ordered
     // above the clip, is what it respects.
-    <div className="absolute inset-0">
-      {/* Where there are two photographs, each frame hides the other's. Both
-          load lazily, and a lazy image with no box never crosses the
-          viewport, so the hidden one is not fetched: a phone pays for its
-          own photograph alone. */}
-      {image && (
-        <StrapiBasicImage
-          component={image}
-          fill
-          sizes="100vw"
-          className={cn("object-cover", phoneImage && "max-lg:hidden")}
-          style={{ objectPosition }}
-        />
-      )}
-      {phoneImage && (
-        <StrapiBasicImage
-          component={phoneImage}
-          fill
-          sizes="100vw"
-          className="object-cover lg:hidden"
-        />
-      )}
-      {video && (
+    <div className={cn("absolute inset-0", video && "bg-black")}>
+      {video ? (
         <BackgroundVideo
           src={formatStrapiMediaUrl(video.url)}
-          // The photograph doubles as the clip's poster, so there is something
-          // on screen while it loads and for anyone it never reaches.
-          poster={formatStrapiMediaUrl(image?.media?.url)}
           className="absolute inset-0 size-full object-cover"
           style={{ objectPosition }}
         />
+      ) : (
+        <>
+          {/* Where there are two photographs, each frame hides the other's.
+              Both load lazily, and a lazy image with no box never crosses the
+              viewport, so the hidden one is not fetched: a phone pays for its
+              own photograph alone. */}
+          {image && (
+            <StrapiBasicImage
+              component={image}
+              fill
+              sizes="100vw"
+              className={cn("object-cover", phoneImage && "max-lg:hidden")}
+              style={{ objectPosition }}
+            />
+          )}
+          {phoneImage && (
+            <StrapiBasicImage
+              component={phoneImage}
+              fill
+              sizes="100vw"
+              className="object-cover lg:hidden"
+            />
+          )}
+        </>
       )}
       <div
         className={cn(
