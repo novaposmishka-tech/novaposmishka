@@ -11,11 +11,14 @@ import { useTheme } from "next-themes"
 import { Toaster as Sonner, type ToasterProps } from "sonner"
 
 function Toaster({ ...props }: ToasterProps) {
-  const { theme = "system" } = useTheme()
+  // The resolved theme, not the stored one: the provider forces light, and
+  // a stored "system" would otherwise have the toasts alone follow the phone
+  // into night mode.
+  const { resolvedTheme = "light" } = useTheme()
 
   return (
     <Sonner
-      theme={theme as ToasterProps["theme"]}
+      theme={resolvedTheme as ToasterProps["theme"]}
       className="toaster group"
       icons={{
         success: <CircleCheckIcon className="size-4" />,

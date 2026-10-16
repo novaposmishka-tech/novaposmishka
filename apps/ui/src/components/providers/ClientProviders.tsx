@@ -22,7 +22,17 @@ export function ClientProviders({
   useTranslatedZod(z)
 
   return (
-    <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
+    // Light only. The site is drawn for one palette, and a phone in night
+    // mode was getting the starter's dark tokens over it — grey copy on black
+    // cards that no frame ever had. Forced, not merely defaulted, so a
+    // reader whose browser stored "system" or "dark" earlier is not kept
+    // there.
+    <ThemeProvider
+      attribute="class"
+      defaultTheme="light"
+      forcedTheme="light"
+      enableSystem={false}
+    >
       <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>
     </ThemeProvider>
   )

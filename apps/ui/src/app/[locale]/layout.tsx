@@ -1,6 +1,6 @@
 import "@/styles/globals.css"
 
-import type { Metadata } from "next"
+import type { Metadata, Viewport } from "next"
 import { notFound } from "next/navigation"
 import Script from "next/script"
 import { setRequestLocale } from "next-intl/server"
@@ -38,6 +38,13 @@ export const metadata: Metadata = {
     ],
     apple: "/apple-touch-icon.png",
   },
+}
+
+// Light only, said to the browser as well as to the theme provider: without
+// this Safari on a phone in night mode still draws its own parts — form
+// controls, the scrollbar, the page behind an image while it loads — in dark.
+export const viewport: Viewport = {
+  colorScheme: "light",
 }
 
 export default async function RootLayout({

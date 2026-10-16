@@ -15,7 +15,7 @@
    rule sets the colour on the paragraph itself, so an inherited colour from a
    dark section cannot win: those sections pass [&_p]:text-inherit. */
 .ck-editor-rich-text-page p {
-  @apply text-brand-body dark:text-brand-muted;
+  @apply text-brand-body;
 }
 
 .ck-content iframe[src^="https://www.youtube.com"] {
