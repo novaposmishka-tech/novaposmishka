@@ -170,9 +170,11 @@ export const homepage = {
   content: [
     {
       __component: "sections.hero",
+      // The clip's own first frame, so the picture under it is the one the
+      // clip starts from and nothing shifts when it begins.
       backgroundImage: image(
-        "hero-1",
-        "Лікарка оглядає пацієнтку в кріслі стоматологічної клініки"
+        "hero-video-still",
+        "Лікар дивиться у стоматологічний мікроскоп"
       ),
       backgroundVideo: mediaId("hero-video"),
       tag: "<p>Лікування без болю</p>",
