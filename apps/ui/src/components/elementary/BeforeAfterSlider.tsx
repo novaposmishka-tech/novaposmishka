@@ -38,9 +38,15 @@ const NUDGE_MS = 1600
  * for what pointer listeners cannot give: keyboard control — arrows, Home and
  * End — plus the slider role and its value for a screen reader.
  *
- * `touch-pan-y` keeps the page scrolling under a vertical swipe and claims
- * the horizontal one for the divider — inside the homepage's scroll row the
- * browser would otherwise read a sideways drag as a swipe of the carousel.
+ * A finger on a phone is claimed by its first move: sideways, and the frame
+ * cancels the browser's own handling of the touch so the divider gets the
+ * drag; up or down, and the page scrolls as it would anywhere else.
+ * `touch-pan-y` says the same thing in CSS, but iOS Safari, with the frame
+ * inside the homepage's sideways-scrolling row, still took the sideways swipe
+ * for the row — the first move cancelled the pointer, and all a finger could
+ * do was tap the divider from place to place. Only a touchmove that is
+ * cancelled while the gesture is still undecided stops that, and only a
+ * listener registered as not passive may cancel one.
  */
 export function BeforeAfterSlider({
   before,
@@ -99,6 +105,58 @@ function Comparison({
   const touched = useRef(false)
   // The pointer the divider is following, while one is.
   const dragging = useRef<number | null>(null)
+
+  // Which way a finger set off, decided on its first move and kept until it
+  // lifts: "drag" claims the touch for the divider, "scroll" leaves it to the
+  // page. See the touch listeners below.
+  useEffect(() => {
+    const node = frame.current
+    if (!node) return
+
+    let start: null | { x: number; y: number } = null
+    let claimed: "drag" | "scroll" | null = null
+
+    const onStart = (event: TouchEvent) => {
+      const touch = event.touches[0]
+      if (!touch || event.touches.length > 1) {
+        start = null
+
+        return
+      }
+      start = { x: touch.clientX, y: touch.clientY }
+      claimed = null
+    }
+
+    const onMove = (event: TouchEvent) => {
+      const touch = event.touches[0]
+      if (!touch || !start) return
+      if (claimed === null) {
+        const dx = Math.abs(touch.clientX - start.x)
+        const dy = Math.abs(touch.clientY - start.y)
+        claimed = dx >= dy ? "drag" : "scroll"
+      }
+      if (claimed === "drag" && event.cancelable) {
+        event.preventDefault()
+      }
+    }
+
+    const onEnd = () => {
+      start = null
+      claimed = null
+    }
+
+    node.addEventListener("touchstart", onStart, { passive: true })
+    node.addEventListener("touchmove", onMove, { passive: false })
+    node.addEventListener("touchend", onEnd, { passive: true })
+    node.addEventListener("touchcancel", onEnd, { passive: true })
+
+    return () => {
+      node.removeEventListener("touchstart", onStart)
+      node.removeEventListener("touchmove", onMove)
+      node.removeEventListener("touchend", onEnd)
+      node.removeEventListener("touchcancel", onEnd)
+    }
+  }, [])
 
   /** Puts the divider under the pointer, held within the frame. */
   const follow = (event: PointerEvent<HTMLDivElement>) => {
