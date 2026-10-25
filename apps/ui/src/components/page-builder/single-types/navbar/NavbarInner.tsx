@@ -8,6 +8,7 @@ import { ClinicLogo } from "@/components/elementary/ClinicLogo"
 import { Container } from "@/components/elementary/Container"
 import { StrapiBasicImage } from "@/components/page-builder/components/utilities/StrapiBasicImage"
 import StrapiImageWithLink from "@/components/page-builder/components/utilities/StrapiImageWithLink"
+import { FloatingCallButton } from "@/components/page-builder/single-types/navbar/FloatingCallButton"
 import {
   NavbarBookingLink,
   NavbarMenuCloser,
@@ -31,6 +32,9 @@ export function NavbarInner({
   readonly session?: BetterAuthSessionWithStrapi | null
 }) {
   const t = useTranslations("general")
+  const phones = navbarData?.phones?.length
+    ? navbarData.phones.map((entry) => entry.text)
+    : [navbarData?.phone]
 
   return (
     <NavbarMobileProvider>
@@ -89,13 +93,7 @@ export function NavbarInner({
 
               {/* The call button and the booking button, 20px apart. */}
               <div className="hidden items-center gap-5 lg:flex">
-                <NavbarPhoneButton
-                  phones={
-                    navbarData?.phones?.length
-                      ? navbarData.phones.map((entry) => entry.text)
-                      : [navbarData?.phone]
-                  }
-                />
+                <NavbarPhoneButton phones={phones} />
                 {/* The button goes down to the form at the foot of the page.
                   The site has one form and it lives there — a second copy of
                   it over the page would be the same two fields posting to the
@@ -145,12 +143,9 @@ export function NavbarInner({
       <NavbarMobileNavigation
         navbarItems={navbarData?.navbarItems}
         menuButton={navbarData?.menuButton}
-        phones={
-          navbarData?.phones?.length
-            ? navbarData.phones.map((entry) => entry.text)
-            : [navbarData?.phone]
-        }
+        phones={phones}
       />
+      <FloatingCallButton phones={phones} />
     </NavbarMobileProvider>
   )
 }
