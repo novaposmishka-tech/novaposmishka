@@ -32,14 +32,16 @@ export async function Breadcrumbs({
   locale,
   onPhoto,
 }: Props) {
-  const trail = withRoot(breadcrumbs)
-  const [root, ...rest] = trail ?? []
+  const [first, ...rest] = withRoot(breadcrumbs)
 
-  if (!root || rest.length === 0) {
+  if (!first || rest.length === 0) {
     return null
   }
 
   const t = await getTranslations("breadcrumbs")
+  // The homepage crumb is drawn as a house, but search engines read the trail
+  // as text and reject an item without a name.
+  const root = { ...first, title: first.title || t("home") }
 
   return (
     <nav
@@ -58,7 +60,7 @@ export async function Breadcrumbs({
         className="text-brand-on-dark hover:text-brand-teal h-auto p-0"
       >
         <House aria-hidden className="size-5" />
-        <span className="sr-only">{root.title || t("home")}</span>
+        <span className="sr-only">{root.title}</span>
       </AppLink>
 
       {rest.map((crumb, index) => (
