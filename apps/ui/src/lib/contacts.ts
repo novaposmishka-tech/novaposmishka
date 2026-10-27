@@ -1,3 +1,5 @@
+import type { Data } from "@repo/strapi-types"
+
 /**
  * Turns a contact value into a tel:/mailto: href so a visitor on a phone can
  * reach the clinic in one tap.
@@ -19,4 +21,16 @@ export function contactHref(
     default:
       return undefined
   }
+}
+
+/**
+ * The clinic's numbers as the header lists them. The navbar carries a list of
+ * them now; an older entry has the single `phone` field instead.
+ */
+export function clinicPhones(
+  navbar: Data.ContentType<"api::navbar.navbar"> | null | undefined
+): (string | null | undefined)[] {
+  return navbar?.phones?.length
+    ? navbar.phones.map((entry) => entry.text)
+    : [navbar?.phone]
 }

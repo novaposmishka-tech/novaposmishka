@@ -1,7 +1,9 @@
 import "server-only"
 
 import type { Data } from "@repo/strapi-types"
-import { ArrowRight } from "lucide-react"
+import { ArrowRight, PhoneIcon } from "lucide-react"
+import { useTranslations } from "next-intl"
+import { use } from "react"
 
 import { BackgroundVideo } from "@/components/elementary/BackgroundVideo"
 import {
@@ -13,6 +15,8 @@ import { Container } from "@/components/elementary/Container"
 import { PhotoHeroFrame } from "@/components/elementary/PhotoHeroFrame"
 import { StrapiBasicImage } from "@/components/page-builder/components/utilities/StrapiBasicImage"
 import StrapiLink from "@/components/page-builder/components/utilities/StrapiLink"
+import { clinicPhones, contactHref } from "@/lib/contacts"
+import { fetchNavbar } from "@/lib/strapi-api/content/server"
 import { formatStrapiMediaUrl } from "@/lib/strapi-helpers"
 import { cn } from "@/lib/styles"
 import type { PageBuilderComponentProps } from "@/types/general"
@@ -62,6 +66,7 @@ export function StrapiHero({
   // page that carries only itself renders nothing, and the hero has to know
   // that before it sets its own padding.
   const hasTrail = Boolean(pageParams) && hasBreadcrumbTrail(breadcrumbs)
+  const phone = useHeroPhone({ hasBackground, hasTrail, links, pageParams })
 
   return (
     <section>
@@ -163,7 +168,7 @@ export function StrapiHero({
             {links && (
               <div
                 className={cn(
-                  "flex w-full flex-col gap-2 lg:flex-row lg:gap-4",
+                  "flex w-full flex-col gap-2 lg:flex-row lg:items-center lg:gap-4",
                   // On a phone the button sits on the hero's floor, under the
                   // words and the air the frame leaves below them. It can,
                   // because the hero is never taller than the screen there —
@@ -199,6 +204,8 @@ export function StrapiHero({
                     )}
                   </StrapiLink>
                 ))}
+
+                <HeroPhone phone={phone} />
               </div>
             )}
 
@@ -278,6 +285,60 @@ function HeroTag({
         className="mb-0 [&_p]:text-xs! lg:[&_p]:text-base!"
       />
     </div>
+  )
+}
+
+/**
+ * The number the homepage's hero offers beside its button, for a visitor who
+ * would rather call than fill in the form: the one the header lists first. The
+ * navbar is asked for it with the same request the header makes, which Next
+ * answers from its cache. Only the homepage carries it — a photo hero with a
+ * button and no trail above it.
+ */
+function useHeroPhone({
+  hasBackground,
+  hasTrail,
+  links,
+  pageParams,
+}: {
+  readonly hasBackground: boolean
+  readonly hasTrail: boolean
+  readonly links: Data.Component<"sections.hero">["links"]
+  readonly pageParams: PageBuilderComponentProps["pageParams"]
+}) {
+  if (!hasBackground || hasTrail || !links?.length || !pageParams) {
+    return
+  }
+
+  return clinicPhones(use(fetchNavbar(pageParams.locale))?.data).find(Boolean)
+}
+
+/**
+ * The clinic's number on the photo hero, a tap away from a call. On a desktop
+ * it stands beside the button; on a phone, where the button sits on the hero's
+ * floor, it stands over it, centred like the button is.
+ */
+function HeroPhone({ phone }: { readonly phone?: string | null }) {
+  const t = useTranslations("clinic")
+  const href = phone ? contactHref("phone", phone) : undefined
+
+  if (!phone || !href) {
+    return null
+  }
+
+  return (
+    <a
+      href={href}
+      aria-label={`${t("callUs")}: ${phone}`}
+      className="group/phone text-brand-inverted flex h-10 items-center justify-center gap-2.5 text-lg/6 font-semibold max-lg:order-first max-lg:mb-4 lg:ml-3.5 lg:h-12.5 lg:text-xl/7"
+    >
+      {/* The ring is the header's call button over a photograph: a hairline
+          on glass, filling white on hover. */}
+      <span className="group-hover/phone:text-brand-teal flex size-10 shrink-0 items-center justify-center rounded-full border border-white/40 backdrop-blur-md transition-colors group-hover/phone:border-white group-hover/phone:bg-white lg:size-12.5">
+        <PhoneIcon aria-hidden className="size-5" />
+      </span>
+      {phone}
+    </a>
   )
 }
 

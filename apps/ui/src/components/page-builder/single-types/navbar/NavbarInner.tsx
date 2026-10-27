@@ -17,6 +17,7 @@ import {
   NavbarMobileToggle,
 } from "@/components/page-builder/single-types/navbar/NavbarMobileControls"
 import { NavbarPhoneButton } from "@/components/page-builder/single-types/navbar/NavbarPhoneButton"
+import { clinicPhones } from "@/lib/contacts"
 import { cn } from "@/lib/styles"
 import type { BetterAuthSessionWithStrapi } from "@/types/better-auth"
 
@@ -32,9 +33,7 @@ export function NavbarInner({
   readonly session?: BetterAuthSessionWithStrapi | null
 }) {
   const t = useTranslations("general")
-  const phones = navbarData?.phones?.length
-    ? navbarData.phones.map((entry) => entry.text)
-    : [navbarData?.phone]
+  const phones = clinicPhones(navbarData)
 
   return (
     <NavbarMobileProvider>
