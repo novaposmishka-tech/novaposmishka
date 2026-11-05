@@ -1,5 +1,6 @@
 import Script from "next/script"
 
+import { AnalyticsClickTracker } from "@/components/providers/AnalyticsClickTracker"
 import { getEnvVar } from "@/lib/env-vars"
 import { isDevelopment } from "@/lib/general-helpers"
 
@@ -65,7 +66,12 @@ function GoogleTagManager() {
 }
 
 function TrackingScripts() {
-  return <GoogleTagManager />
+  return (
+    <>
+      <GoogleTagManager />
+      <AnalyticsClickTracker />
+    </>
+  )
 }
 
 export default TrackingScripts

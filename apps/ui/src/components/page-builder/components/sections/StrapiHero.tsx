@@ -330,6 +330,7 @@ function HeroPhone({ phone }: { readonly phone?: string | null }) {
     <a
       href={href}
       aria-label={`${t("callUs")}: ${phone}`}
+      data-analytics-location="hero"
       className="group/phone text-brand-inverted flex h-10 items-center justify-center gap-2.5 text-lg/6 font-semibold max-lg:order-first max-lg:mb-4 lg:ml-3.5 lg:h-12.5 lg:text-xl/7"
     >
       {/* The ring is the header's call button over a photograph: a hairline

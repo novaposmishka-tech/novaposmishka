@@ -61,6 +61,7 @@ export function MobileNavigation({
 
   return (
     <div
+      data-analytics-location="mobile_menu"
       // Below the header, over everything else. `hidden` rather than a
       // transform so the list is not in the tab order while it is shut.
       className={cn(

@@ -54,6 +54,7 @@ export function FloatingCallButton({
         href={href}
         aria-label={`${t("callUs")}: ${phone}`}
         className={className}
+        data-analytics-location="floating_button"
       >
         <PhoneIcon aria-hidden className="relative size-6 lg:size-7" />
       </a>
@@ -61,7 +62,12 @@ export function FloatingCallButton({
   }
 
   return (
-    <a href={LEAD_FORM_ANCHOR} aria-label={t("writeUs")} className={className}>
+    <a
+      href={LEAD_FORM_ANCHOR}
+      aria-label={t("writeUs")}
+      className={className}
+      data-analytics-location="floating_button"
+    >
       <MessageCircleMore aria-hidden className="relative size-6 lg:size-7" />
     </a>
   )

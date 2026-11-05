@@ -12,6 +12,7 @@ import AppLink from "@/components/elementary/AppLink"
 import { AppField } from "@/components/forms/AppField"
 import { AppForm } from "@/components/forms/AppForm"
 import { Button } from "@/components/ui/button"
+import { trackEvent } from "@/lib/analytics"
 import { readError } from "@/lib/http"
 import { cn } from "@/lib/styles"
 
@@ -81,6 +82,8 @@ export function LeadForm({
 
       form.reset()
       onStatusChange?.("sent")
+      // The clinic's main conversion, under GA4's own name for it.
+      trackEvent("generate_lead", { form_location: "footer" })
     } catch (caught) {
       onStatusChange?.("failed")
       toast.error(caught instanceof Error ? caught.message : t("error"))
