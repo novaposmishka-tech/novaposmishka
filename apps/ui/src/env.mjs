@@ -46,6 +46,12 @@ export const env = createEnv({
     BASIC_AUTH_PASSWORD: z.string().optional(),
 
     IMGPROXY_URL: z.string().url().optional(),
+
+    // Google Tag Manager container, e.g. GTM-XXXXXXX. Unset, no tag loads.
+    GTM_ID: z
+      .string()
+      .regex(/^GTM-[A-Z0-9]+$/)
+      .optional(),
   },
 
   /*
@@ -106,6 +112,8 @@ export const env = createEnv({
     BASIC_AUTH_PASSWORD: process.env.BASIC_AUTH_PASSWORD,
 
     IMGPROXY_URL: process.env.IMGPROXY_URL,
+
+    GTM_ID: process.env.GTM_ID,
 
     // client
     // @dominik-juriga - find out if these are specific per environment

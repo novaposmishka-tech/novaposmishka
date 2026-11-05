@@ -65,37 +65,40 @@ function buildCsp({
     [
       "script-src 'self' 'unsafe-inline'",
       ...(isDevelopment ? ["'unsafe-eval'"] : []),
-      // Example — Google Tag Manager / Analytics / Ads (uncomment if used):
-      // "https://www.googletagmanager.com",
-      // "https://www.google-analytics.com",
+      // Google Tag Manager and the GA4 tag it loads; Tag Manager's preview
+      // mode, which is how a container is checked before it is published,
+      // loads its own script from tagmanager.google.com.
+      "https://www.googletagmanager.com",
+      "https://tagmanager.google.com",
+      "https://www.google-analytics.com",
+      // Example — Google Ads (uncomment if used):
       // "https://www.googleadservices.com",
       // "https://pagead2.googlesyndication.com",
       // "https://googleads.g.doubleclick.net",
     ].join(" "),
-    "style-src 'self' 'unsafe-inline'",
+    // Tag Manager's preview panel brings its own stylesheet and font.
+    "style-src 'self' 'unsafe-inline' https://tagmanager.google.com https://fonts.googleapis.com",
     // imgproxy, blob storage and Strapi media are all served over HTTPS.
     [
       "img-src 'self' data: blob: https:",
       ...(allowLocalStrapiMedia ? ["http://127.0.0.1:1337"] : []),
     ].join(" "),
-    "font-src 'self' data:",
+    "font-src 'self' data: https://fonts.gstatic.com",
     [
       "connect-src 'self'",
-      // Example — Google Analytics / Ads (uncomment if used):
-      // "https://*.google-analytics.com",
-      // "https://*.analytics.google.com",
-      // "https://*.googletagmanager.com",
+      // Where GA4 sends its hits, by region, and Tag Manager's preview link.
+      "https://*.google-analytics.com",
+      "https://*.analytics.google.com",
+      "https://*.googletagmanager.com",
+      // Example — Google Ads (uncomment if used):
       // "https://www.googleadservices.com",
       // "https://pagead2.googlesyndication.com",
       // "https://*.doubleclick.net",
       // "https://www.google.com",
     ].join(" "),
-    // Example — add framed third parties (e.g. tag manager preview) here:
-    // "frame-src 'self' https://www.googletagmanager.com https://bid.g.doubleclick.net https://td.doubleclick.net",
-    //
-    // The contact page frames a Google map. Named exactly, not a wildcard:
-    // this is the one third party the site is allowed to embed.
-    "frame-src 'self' https://www.google.com https://maps.google.com",
+    // The contact page frames a Google map, and Tag Manager frames itself for
+    // visitors without JavaScript. Named exactly, not a wildcard.
+    "frame-src 'self' https://www.google.com https://maps.google.com https://www.googletagmanager.com",
     "worker-src 'self' blob:",
     [
       "media-src 'self' blob: https:",
