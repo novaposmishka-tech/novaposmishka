@@ -9,6 +9,75 @@ import { logNonBlockingError } from "@/lib/logging"
 import { PublicStrapiClient } from "@/lib/strapi-api"
 import type { CustomFetchOptions } from "@/types/general"
 
+/**
+ * How long Strapi content is trusted before Next fetches it again: a day.
+ *
+ * The site does not need a timer to pick up edits — Strapi tells it the
+ * moment something is published, through the strapi-revalidate route, and
+ * that clears every fetch carrying the type's tag. The timer is only a
+ * backstop in case a signal is lost. It used to be one to ten minutes, and on
+ * Vercel every expiry a crawler ran into rebuilt the page and wrote it to the
+ * cache again: some 20,000 cache writes a day for a site that changes a few
+ * times a month, which is what took the Hobby plan over its limits.
+ *
+ * The page route's `revalidate` repeats this number as a literal and has to
+ * be changed with it.
+ */
+const CMS_CACHE_SECONDS = 86_400
+
+const PAGE_TAG = strapiCacheTag("api::page.page")
+
+/**
+ * The cache policy every public Strapi read shares: the day-long backstop
+ * unless the caller asks for something else, and the tags a publish clears,
+ * added to any the caller brought. A caller's own `cache` setting is left to
+ * the base client, which drops `revalidate` beside it.
+ */
+function cmsCache(
+  requestInit: RequestInit | undefined,
+  tags: string[]
+): RequestInit {
+  return {
+    ...requestInit,
+    next: {
+      ...requestInit?.next,
+      revalidate: requestInit?.next?.revalidate ?? CMS_CACHE_SECONDS,
+      tags: [...new Set([...(requestInit?.next?.tags ?? []), ...tags])],
+    },
+  }
+}
+
+/**
+ * A read that skips the cache whatever the caller passed: draft content, which
+ * no publish signal will ever clear.
+ */
+function uncached(requestInit: RequestInit | undefined): RequestInit {
+  const { next: _next, ...rest } = requestInit ?? {}
+
+  return { ...rest, cache: "no-store" }
+}
+
+/**
+ * Logs a failed Strapi read and throws it on. Returning nothing instead would
+ * let Next cache the empty render — a page turned 404, or one without its menu
+ * and footer — for the whole day-long window. A thrown error is not cached:
+ * visitors keep getting the last good copy until a rebuild succeeds.
+ *
+ * Content that is simply missing is not an error here: Strapi answers with no
+ * data, and the page's 404 is real.
+ */
+function rethrow(message: string, e: unknown): never {
+  logNonBlockingError({
+    message,
+    error: {
+      error: e instanceof Error ? e.message : String(e),
+      stack: e instanceof Error ? e.stack : undefined,
+    },
+  })
+
+  throw e instanceof Error ? e : new Error(String(e))
+}
+
 // ------ Page fetching functions
 export async function fetchPage(
   fullPath: string,
@@ -27,23 +96,13 @@ export async function fetchPage(
         status: dm.isEnabled ? "draft" : "published",
         populate: { seo: "smart", content: "smart" },
       },
-      {
-        ...requestInit,
-        next: {
-          ...requestInit?.next,
-          revalidate: requestInit?.next?.revalidate ?? 120,
-        },
-      },
+      // A draft is never cached: saving one sends no signal, so a cached
+      // draft would leave the editor's preview a day behind their edits.
+      dm.isEnabled ? uncached(requestInit) : cmsCache(requestInit, [PAGE_TAG]),
       options
     )
   } catch (e: unknown) {
-    logNonBlockingError({
-      message: `Error fetching page '${fullPath}' for locale '${locale}'`,
-      error: {
-        error: e instanceof Error ? e.message : String(e),
-        stack: e instanceof Error ? e.stack : undefined,
-      },
-    })
+    rethrow(`Error fetching page '${fullPath}' for locale '${locale}'`, e)
   }
 }
 
@@ -63,7 +122,7 @@ export async function fetchAllPages(
         status: "published",
         ...params,
       },
-      requestInit
+      cmsCache(requestInit, [PAGE_TAG])
     )
   } catch (e: unknown) {
     logNonBlockingError({
@@ -87,21 +146,23 @@ export async function fetchSeo(
   locale: Locale
 ) {
   try {
-    return await PublicStrapiClient.fetchOneByFullPath(uid, fullPath, {
-      locale,
-      populate: {
-        seo: "smart",
-        localizations: true,
+    return await PublicStrapiClient.fetchOneByFullPath(
+      uid,
+      fullPath,
+      {
+        locale,
+        populate: {
+          seo: "smart",
+          localizations: true,
+        },
       },
-    })
+      cmsCache(undefined, [PAGE_TAG])
+    )
   } catch (e: unknown) {
-    logNonBlockingError({
-      message: `Error fetching SEO for '${uid}' with fullPath '${fullPath}' for locale '${locale}'`,
-      error: {
-        error: e instanceof Error ? e.message : String(e),
-        stack: e instanceof Error ? e.stack : undefined,
-      },
-    })
+    rethrow(
+      `Error fetching SEO for '${uid}' with fullPath '${fullPath}' for locale '${locale}'`,
+      e
+    )
   }
 }
 
@@ -123,21 +184,12 @@ export async function fetchNavbar(locale: Locale) {
           menuButton: "smart",
         },
       },
-      {
-        next: {
-          revalidate: 600, // 10 minutes; tag-revalidated on Strapi publish
-          tags: [strapiCacheTag("api::navbar.navbar")],
-        },
-      }
+      // The menu links to pages by their path, so a page that is renamed or
+      // moved has to clear it too.
+      cmsCache(undefined, [strapiCacheTag("api::navbar.navbar"), PAGE_TAG])
     )
   } catch (e: unknown) {
-    logNonBlockingError({
-      message: `Error fetching navbar for locale '${locale}'`,
-      error: {
-        error: e instanceof Error ? e.message : String(e),
-        stack: e instanceof Error ? e.stack : undefined,
-      },
-    })
+    rethrow(`Error fetching navbar for locale '${locale}'`, e)
   }
 }
 
@@ -160,21 +212,11 @@ export async function fetchFooter(locale: Locale) {
           socials: "smart",
         },
       },
-      {
-        next: {
-          revalidate: 600, // 10 minutes; tag-revalidated on Strapi publish
-          tags: [strapiCacheTag("api::footer.footer")],
-        },
-      }
+      // Its links point at pages too, so it goes stale with them.
+      cmsCache(undefined, [strapiCacheTag("api::footer.footer"), PAGE_TAG])
     )
   } catch (e: unknown) {
-    logNonBlockingError({
-      message: `Error fetching footer for locale '${locale}'`,
-      error: {
-        error: e instanceof Error ? e.message : String(e),
-        stack: e instanceof Error ? e.stack : undefined,
-      },
-    })
+    rethrow(`Error fetching footer for locale '${locale}'`, e)
   }
 }
 

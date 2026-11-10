@@ -26,8 +26,13 @@ import { fetchAllPages } from "@/lib/strapi-api/content/server"
 // export const dynamic = "error"
 export const dynamic = "force-static"
 
-// Set ISR revalidation interval: regenerate the page every 5 minutes (300s)
-export const revalidate = 300
+// Regenerate a page at most once a day. Edits do not wait for this: Strapi
+// signals every publish, through the strapi-revalidate route, and the page
+// is rebuilt then. At five minutes, crawlers kept every page
+// rebuilding all day, which took the Vercel Hobby plan over its limits.
+// A literal, because Next reads segment config without evaluating it; keep
+// it equal to CMS_CACHE_SECONDS in the Strapi content fetchers.
+export const revalidate = 86400
 
 // Enable ISR generation for pages not returned by generateStaticParams
 // First request will SSR the page, then cache it for future requests
