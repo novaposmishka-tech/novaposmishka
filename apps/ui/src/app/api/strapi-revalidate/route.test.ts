@@ -123,11 +123,10 @@ describe("POST /api/strapi-revalidate", () => {
     expect(revalidatePathMock).toHaveBeenCalledWith("/")
 
     expect(revalidateTagMock).toHaveBeenCalledTimes(2)
-    expect(revalidateTagMock).toHaveBeenCalledWith(
-      "strapi:api::page.page",
-      "max"
-    )
-    expect(revalidateTagMock).toHaveBeenCalledWith("news", "max")
+    expect(revalidateTagMock).toHaveBeenCalledWith("strapi:api::page.page", {
+      expire: 0,
+    })
+    expect(revalidateTagMock).toHaveBeenCalledWith("news", { expire: 0 })
     await expect(response.json()).resolves.toMatchObject({
       uid: "api::page.page",
       revalidated: true,

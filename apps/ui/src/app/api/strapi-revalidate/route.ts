@@ -12,11 +12,11 @@ import { hasValidBearerToken } from "@/lib/verify-bearer-token"
  * Accepts fullPaths and/or tags to selectively invalidate cached Next.js
  * content after publish, unpublish, or hierarchy changes in the CMS.
  *
- * Front Door is not purged here. AFD purge propagation (up to 20 minutes per
- * Microsoft's documentation) is always slower than the page route's TTL, so
- * the natural TTL refresh after `revalidateTag`/`revalidatePath` always wins.
- * Operators can force a purge through the Front Door cache widget on the
- * Strapi homepage when an incident requires a faster eviction.
+ * No external CDN is purged here. On Vercel, `revalidateTag`/`revalidatePath`
+ * also invalidate Vercel's own edge cache, so nothing else is needed. Behind
+ * a separate CDN such as Front Door it is different: the page route's TTL is
+ * a day, so a stale copy there would outlive this call by up to that long.
+ * Purge it through the CDN cache widget on the Strapi homepage.
  */
 export async function POST(request: Request) {
   const revalidateSecret = getEnvVar("STRAPI_REVALIDATE_SECRET")
@@ -66,8 +66,11 @@ export async function POST(request: Request) {
     revalidatePath(path)
   }
 
+  // Expired outright rather than marked stale ("max"), which would serve the
+  // old copy once more while it rebuilds. On a quiet site that one visitor is
+  // usually the editor checking their publish, who would see nothing change.
   for (const tag of tagsToRevalidate) {
-    revalidateTag(tag, "max")
+    revalidateTag(tag, { expire: 0 })
   }
 
   logger.debug("Invalidated Strapi-driven Next.js cache", {
