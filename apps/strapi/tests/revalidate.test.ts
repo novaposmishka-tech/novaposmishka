@@ -202,6 +202,24 @@ describe("auto revalidate document middleware", () => {
     expect(result).toBe(nextResult)
   })
 
+  it("still sends the page tag when the result carries no path", async () => {
+    const { middleware, runMock } = buildMiddleware()
+    const nextResult = { entries: [] }
+
+    const result = await middleware(
+      {
+        uid: "api::page.page",
+        action: "unpublish",
+        params: { locale: "en" },
+        contentType: { options: { draftAndPublish: true } },
+      },
+      vi.fn().mockResolvedValue(nextResult)
+    )
+
+    expect(runMock).toHaveBeenCalledWith({ uid: "api::page.page" })
+    expect(result).toBe(nextResult)
+  })
+
   it("revalidates redirect source paths on publish", async () => {
     const { middleware, runMock } = buildMiddleware()
     const nextResult = {

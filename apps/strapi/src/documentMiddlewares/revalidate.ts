@@ -94,11 +94,16 @@ export const registerAutoRevalidateMiddleware = ({
       const fullPath = getString(effectiveResult?.[pathField])
 
       if (!fullPath) {
-        logger.warn("Auto revalidation skipped because path field is empty", {
+        // Still send the type's tag: menus, lists and other pages read this
+        // content through it, and without a signal they would wait out the
+        // UI's day-long cache.
+        logger.warn("Auto revalidation sent tag only: path field is empty", {
           uid,
           action,
           pathField,
         })
+
+        await revalidateService.run({ uid })
 
         return nextResult
       }

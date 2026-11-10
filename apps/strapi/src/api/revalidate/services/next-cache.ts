@@ -27,10 +27,10 @@ export type RevalidationResponse = {
  * surfaces upstream failures as thrown errors so the caller (admin button,
  * document middleware, hierarchy batch) does not silently proceed.
  *
- * The CDN is intentionally not purged here. CDN purge propagation (up to
- * 20 minutes) is always slower than the affected route's `revalidate` TTL,
- * so the natural TTL refresh after `revalidateTag` wins. Operators can still
- * force a purge through the CDN cache widget on the Strapi homepage.
+ * No external CDN is purged here. On Vercel the edge cache is invalidated
+ * along with Next's own, so nothing else is needed. Behind a separate CDN the
+ * route's day-long TTL means a stale copy can outlive this call by up to a
+ * day; purge it through the CDN cache widget on the Strapi homepage.
  * See `apps/docs/docs/reference/cache-revalidation.md` for the full reasoning.
  */
 export async function revalidateNextCache({
