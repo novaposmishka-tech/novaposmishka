@@ -22,6 +22,31 @@ export const API_ENDPOINTS: Partial<Record<UID.ContentType, string>> = {
   "api::redirect.redirect": "/redirects",
 } as const
 
+/**
+ * The `cache` and `next` options a Strapi fetch goes out with.
+ *
+ * Next takes `cache` or `next.revalidate`, never both: given the two, it warns
+ * and ignores one. So a caller that set `cache` keeps it and loses any
+ * `revalidate`, its own included; otherwise `revalidate` defaults to a minute.
+ * In development nothing is cached, whatever was asked.
+ */
+export function strapiCacheOptions(
+  requestInit: RequestInit | undefined,
+  development: boolean
+): Pick<RequestInit, "cache" | "next"> {
+  const { revalidate, ...next } = requestInit?.next ?? {}
+
+  if (development) {
+    return { cache: undefined, next: { ...next, revalidate: 0 } }
+  }
+
+  if (requestInit?.cache !== undefined) {
+    return { cache: requestInit.cache, next }
+  }
+
+  return { cache: undefined, next: { ...next, revalidate: revalidate ?? 60 } }
+}
+
 export default abstract class BaseStrapiClient {
   private async parseResponse(response: Response) {
     const contentType = response.headers.get("content-type")
@@ -56,11 +81,7 @@ export default abstract class BaseStrapiClient {
 
     const response = await fetch(url, {
       ...requestInit,
-      next: {
-        ...requestInit?.next,
-        // if revalidate is set to a number since 0 implies cache: 'no-store' and a positive value implies cache: 'force-cache'.
-        revalidate: isDevelopment() ? 0 : (requestInit?.next?.revalidate ?? 60),
-      },
+      ...strapiCacheOptions(requestInit, isDevelopment()),
       headers: {
         ...requestInit?.headers,
         ...headers,
