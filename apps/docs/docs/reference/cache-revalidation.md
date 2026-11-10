@@ -13,9 +13,11 @@ Strapi-driven pages use ISR. The static page route has its own `revalidate` wind
 On publish/update/delete, a Strapi **Document Service middleware** calls the `api::revalidate.revalidate` service. The service POSTs to the UI route `POST /api/strapi-revalidate`, which marks the matching cache entries stale through:
 
 - `revalidatePath` for page-like paths such as pages and redirects
-- `revalidateTag(tag, "max")` for shared content such as navbar and footer
+- `revalidateTag(tag, { expire: 0 })` for every signal: Strapi always sends the type's canonical tag (`strapi:<uid>`) through `collectCacheTags`
 
-The next request re-renders with fresh Strapi data without waiting for the normal TTL to expire.
+Page freshness depends on the tag as much as on the path. `fetchPage`, `fetchSeo`, `fetchAllPages`, `fetchNavbar` and `fetchFooter` all carry `strapi:api::page.page`, because pages, menus and lists link to other pages by path. A page publish therefore marks every page stale, and each one is rebuilt on its next visit. Publishes are rare, so this costs a handful of rebuilds rather than the steady stream a short TTL does. Do not narrow the page tag in `collectCacheTags` without giving those cross-page reads another way to refresh.
+
+The next request re-renders with fresh Strapi data without waiting for the normal TTL to expire. Tags are expired outright rather than marked stale (`"max"`), so that request waits for the rebuild instead of being served the old copy one last time — on a quiet site that request is usually the editor checking their publish. A page signal that arrives without a path (some deletes and unpublishes) still sends the page tag.
 
 :::tip Cache revalidation is not CDN purge
 Next.js revalidation marks the application cache stale. It does not automatically evict an upstream CDN — that has to be done through the CDN's own tooling.
@@ -49,16 +51,20 @@ flowchart TD
 
 ## Revalidate Windows
 
-| Cache layer                    | Interval | Notes                                                                             |
-| ------------------------------ | -------- | --------------------------------------------------------------------------------- |
-| Static Strapi page route       | 300s     | `apps/ui/src/app/[locale]/[[...rest]]/page.tsx` exports `revalidate = 300`.       |
-| `fetchPage`                    | 120s     | Strapi page-data fetch window. Path-revalidated on publish.                       |
-| Base Strapi client fetches     | 60s      | Default Data Cache fallback when a fetch does not override `next.revalidate`.     |
-| `fetchNavbar`, `fetchFooter`   | 600s     | Shared content tagged with `strapi:<uid>`; TTL is the backstop after tag updates. |
-| Development Strapi API fetches | 0s       | `next dev` skips the Data Cache, so cache invalidation is not fully observable.   |
+| Cache layer                              | Interval | Notes                                                                                |
+| ---------------------------------------- | -------- | ------------------------------------------------------------------------------------ |
+| Static Strapi page route                 | 86400s   | `apps/ui/src/app/[locale]/[[...rest]]/page.tsx` exports `revalidate = 86400`.        |
+| `fetchPage`, `fetchSeo`, `fetchAllPages` | 86400s   | Tagged `strapi:api::page.page`; a page publish clears them. Drafts are never cached. |
+| Base Strapi client fetches               | 60s      | Default Data Cache fallback when a fetch does not override `next.revalidate`.        |
+| `fetchNavbar`, `fetchFooter`             | 86400s   | Tagged `strapi:<uid>` and `strapi:api::page.page`, since their links point at pages. |
+| Development Strapi API fetches           | 0s       | `next dev` skips the Data Cache, so cache invalidation is not fully observable.      |
 
 :::info TTL is the backstop
 On-demand revalidation handles fresh publishes immediately. The `revalidate` intervals still matter when a webhook fails, a collection is not configured for automatic revalidation, or a cached entry has no matching tag/path.
+
+The windows are a day because short ones cost more than they save: on Vercel every expiry a crawler hits rebuilds the page and writes it to the cache, and at 2–10 minutes that took the Hobby plan over its ISR-write and CPU limits. The price is that anything a publish does not signal waits up to a day — a Media Library file replaced without republishing the page, or a signal that failed. Strapi logs every failed signal as `Auto revalidation failed`, whatever the cause: a timeout, a network error, a missing `CLIENT_URL` or secret, or an error from the UI. When the UI did answer, `Next.js cache revalidation request failed` is logged just before it with the HTTP status (a 401 means the two sides' `STRAPI_REVALIDATE_SECRET` differ); without that line, the request never got an answer or never left. Republish the page, or use the revalidate button in the Strapi admin, to refresh it at once.
+
+Because a cached render lasts a day, `fetchPage`, `fetchSeo`, `fetchNavbar` and `fetchFooter` throw when Strapi fails instead of returning nothing. An empty result would be cached as a 404 or a page without its menu; a thrown error is not cached, so visitors keep the last good copy until a rebuild succeeds. A page that does not exist still comes back as empty data and a real 404.
 :::
 
 ## What Gets Revalidated
@@ -75,6 +81,8 @@ On-demand revalidation handles fresh publishes immediately. The `revalidate` int
 :::
 
 For tag-based invalidation, also tag the matching fetch in `apps/ui/src/lib/strapi-api/content/server.ts`.
+
+Any new content type that pages show — directly or through a populated relation — must go into `REVALIDATE_COLLECTIONS`, and the fetches that read it must carry its tag. Without both, edits to it reach the site only when the day-long backstop runs out.
 
 Tag revalidation handles cross-page invalidation automatically. For example, every route that renders a fetch tagged with `strapi:api::navbar.navbar` becomes stale when the navbar tag is revalidated.
 

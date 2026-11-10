@@ -38,7 +38,7 @@ This route uses:
 | --------------- | -------------------------------------------------------------------------- |
 | `force-static`  | Keeps the route eligible for the Full Route Cache and ISR.                 |
 | `dynamicParams` | Allows paths not returned by `generateStaticParams()` to render on demand. |
-| `revalidate`    | Sets the page regeneration interval to 300 seconds.                        |
+| `revalidate`    | Sets the page regeneration interval to a day (86400 seconds).              |
 
 :::warning CDN cache headers
 The `revalidate` value also affects the HTTP cache headers emitted by Next.js. A CDN in front of the app reads those headers to decide how long it can reuse a cached response before checking for fresh content — so it inherits this route's freshness window.
