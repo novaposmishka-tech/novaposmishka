@@ -1,11 +1,17 @@
 /**
  * The seven service pages, one per card in the homepage's services grid.
  *
- * The copy comes from the Figma file: the hero, an accordion of what the
- * service covers, and the paragraph that closes the section.
+ * The copy comes from the Figma file: the hero, and the heading and the
+ * paragraph over the list of what the service covers. The list itself is the
+ * direction's sub-services, each with the sentence its own page opens on and
+ * a link to that page — see ./subservices.data.mjs.
  *
  * The price table each page ends with is the design's own placeholder — see
  * ./prices.mjs, which explains what is wrong with it and why it is here.
+ *
+ * Each page hangs under the services index (/poslugy, in ./subservices.mjs),
+ * which is what puts "Послуги" in its breadcrumb trail, and carries the
+ * sub-service pages of its direction under itself.
  */
 
 import { priceList } from "./prices.mjs"
@@ -14,8 +20,10 @@ import {
   BUTTON_ON_DARK,
   CLINIC_NAME,
   image,
+  pageLink,
   PHONES,
 } from "./shared.mjs"
+import { SUBSERVICES } from "./subservices.data.mjs"
 
 /**
  * The photographs each page opens on. The design gives all seven a frame of
@@ -31,7 +39,7 @@ import {
  * the facebow, the scans on the screen at the left of the surgeon — the hero
  * is told where to hold it.
  */
-const HERO_IMAGES = {
+export const HERO_IMAGES = {
   terapiia: hero("terapiia", {
     alt: "Лікар оглядає зуб пацієнта через стоматологічний мікроскоп",
     phoneAlt: "Лікарка в масці та шапочці лікує зуб пацієнта",
@@ -84,6 +92,29 @@ function hero(slug, { alt, phoneAlt, x = 50, y = 50 }) {
   }
 }
 
+/**
+ * What a direction covers: its sub-services, each opening onto the sentence
+ * its own page begins with and a link through to that page.
+ *
+ * The design sets a photograph beside the list that follows the open entry.
+ * None are seeded — they are an editor's to add, entry by entry — and until
+ * there is one the block is the heading and the list alone.
+ */
+function subservices(direction, title, description = null) {
+  return {
+    __component: "sections.subservices",
+    title,
+    description,
+    items: SUBSERVICES.filter((item) => item.direction === direction).map(
+      (item) => ({
+        name: item.name,
+        description: item.intro,
+        link: pageLink("Детальніше та ціни", item.slug),
+      })
+    ),
+  }
+}
+
 /** The card on the homepage each page belongs to, and its path. */
 export const SERVICE_SLUGS = [
   { card: "Терапія", slug: "terapiia" },
@@ -98,6 +129,7 @@ export const SERVICE_SLUGS = [
 export const servicePages = [
   {
     slug: "terapiia",
+    __parentSlug: "poslugy",
     fullPath: "/poslugy/terapiia",
     title: "Стоматолог-терапевт в Житомирі",
     breadcrumbTitle: "Терапія",
@@ -132,39 +164,17 @@ export const servicePages = [
           anchor("Записатися на прийом", "#lead-form-section", BUTTON_ON_DARK),
         ],
       },
-      {
-        __component: "sections.faq",
-        title: "Наша стоматологія пропонує широкий спектр послуг, включаючи:",
-        subTitle:
-          "Наша команда готова надати Вам індивідуальну консультацію та розробити план лікування, який відповідає Вашим потребам та бюджету.",
-        accordions: [
-          {
-            question: "Лікування карієсу",
-          },
-          {
-            question: "Ендодонтичне лікування",
-            answer:
-              "Наші досвідчені лікарі проводять лікування карієсу, використовуючи сучасні методи та матеріали, повністю відновлюючи анатомічний вигляд зуба.",
-          },
-          {
-            question: "Зняття зубних відкладень",
-          },
-          {
-            question: "Заміна пломб",
-          },
-          {
-            question: "Відбілювання зубів",
-          },
-          {
-            question: "Терапія пародонту",
-          },
-        ],
-      },
+      subservices(
+        "terapiia",
+        "Наша стоматологія пропонує широкий спектр послуг, включаючи:",
+        "Наша команда готова надати Вам індивідуальну консультацію та розробити план лікування, який відповідає Вашим потребам та бюджету."
+      ),
       priceList("Ціни на терапевтичні послуги"),
     ],
   },
   {
     slug: "ortopediia",
+    __parentSlug: "poslugy",
     fullPath: "/poslugy/ortopediia",
     title: "Протезування зубів в Житомирі",
     breadcrumbTitle: "Ортопедія",
@@ -199,39 +209,17 @@ export const servicePages = [
           anchor("Записатися на прийом", "#lead-form-section", BUTTON_ON_DARK),
         ],
       },
-      {
-        __component: "sections.faq",
-        title: "Чому варто обрати протезування зубів?",
-        subTitle:
-          "Оберіть послуги протезування в нашій клініці та насолоджуйтеся здоровою та привабливою посмішкою щодня!",
-        accordions: [
-          {
-            question: "Відновлення функціональності",
-          },
-          {
-            question: "Покращення естетики",
-            answer:
-              "Протези допоможуть Вам досягти ідеального вигляду Вашої усмішки. Коронки, вініри, імплантати – ми маємо всі необхідні методи для створення прекрасних результатів.",
-          },
-          {
-            question: "Здоров’я та комфорт",
-          },
-          {
-            question: "Заміна пломб",
-          },
-          {
-            question: "Відбілювання зубів",
-          },
-          {
-            question: "Терапія пародонту",
-          },
-        ],
-      },
+      subservices(
+        "ortopediia",
+        "Чому варто обрати протезування зубів?",
+        "Оберіть послуги протезування в нашій клініці та насолоджуйтеся здоровою та привабливою посмішкою щодня!"
+      ),
       priceList("Ціни на протезування зубів"),
     ],
   },
   {
     slug: "khirurhiia",
+    __parentSlug: "poslugy",
     fullPath: "/poslugy/khirurhiia",
     title: "Стоматолог-хірург в Житомирі",
     breadcrumbTitle: "Хірургія",
@@ -266,39 +254,17 @@ export const servicePages = [
           anchor("Записатися на прийом", "#lead-form-section", BUTTON_ON_DARK),
         ],
       },
-      {
-        __component: "sections.faq",
-        title: "Наші хірургічні послуги включають:",
-        subTitle:
-          "Запишіться на консультацію до наших хірургів і переконайтеся у високому рівні надання послуг які ми пропонуємо.",
-        accordions: [
-          {
-            question: "Видалення зубів",
-          },
-          {
-            question: "Імплантація",
-            answer:
-              "Ми допоможемо Вам відновити втрачені зуби за допомогою сучасних імплантатів. Вони надійні, функціональні і природньо виглядають.",
-          },
-          {
-            question: "Пародонтальна хірургія",
-          },
-          {
-            question: "Хірургічна косметика",
-          },
-          {
-            question: "Відбілювання зубів",
-          },
-          {
-            question: "Терапія пародонту",
-          },
-        ],
-      },
+      subservices(
+        "khirurhiia",
+        "Наші хірургічні послуги включають:",
+        "Запишіться на консультацію до наших хірургів і переконайтеся у високому рівні надання послуг які ми пропонуємо."
+      ),
       priceList("Ціни на хірургічні послуги"),
     ],
   },
   {
     slug: "ortodontiia",
+    __parentSlug: "poslugy",
     fullPath: "/poslugy/ortodontiia",
     title: "Ортодонт в Житомирі",
     breadcrumbTitle: "Ортодонтія",
@@ -333,39 +299,17 @@ export const servicePages = [
           anchor("Записатися на прийом", "#lead-form-section", BUTTON_ON_DARK),
         ],
       },
-      {
-        __component: "sections.faq",
-        title: "Що Ви повинні знати про ортодонтичне лікування:",
-        subTitle:
-          "Не відкладайте свою мрію про прекрасну посмішку - звертайтеся до нас.​",
-        accordions: [
-          {
-            question: "Брекети",
-          },
-          {
-            question: "Елайнери",
-            answer:
-              "Це сучасний метод, який використовує прозорі полікарбонатні капи для виправлення прикусу. Вони надзвичайно зручні та майже невидимі.",
-          },
-          {
-            question: "Ретейнери",
-          },
-          {
-            question: "Заміна пломб",
-          },
-          {
-            question: "Відбілювання зубів",
-          },
-          {
-            question: "Терапія пародонту",
-          },
-        ],
-      },
+      subservices(
+        "ortodontiia",
+        "Що Ви повинні знати про ортодонтичне лікування:",
+        "Не відкладайте свою мрію про прекрасну посмішку - звертайтеся до нас.​"
+      ),
       priceList("Ціни на ортодонтичні послуги"),
     ],
   },
   {
     slug: "parodontolohiia",
+    __parentSlug: "poslugy",
     fullPath: "/poslugy/parodontolohiia",
     title: "Пародонтологія в Житомирі",
     breadcrumbTitle: "Пародонтологія",
@@ -400,39 +344,17 @@ export const servicePages = [
           anchor("Записатися на прийом", "#lead-form-section", BUTTON_ON_DARK),
         ],
       },
-      {
-        __component: "sections.faq",
-        title: "Своєчасний візит до пародонтолога вкрай важливий:​",
-        subTitle:
-          "У нашій клініці ми пропонуємо сучасні методи лікування та профілактики захворювань ясен, щоб забезпечити вам здорову та гарну посмішку.",
-        accordions: [
-          {
-            question: "Профілактика пародонтиту",
-          },
-          {
-            question: "Пародонтологія",
-            answer:
-              "Це розділ стоматології, що займається лікуванням та профілактикою захворювань ясен та тканин, що оточують зуби. Шинування зубів використовується для захисту пошкоджених зубів від подальшого пошкодження та сприяє їх швидшому одужанню. Пародонтит є серйозним захворюванням ясен та прилягаючих тканин, що може призвести до втрати зубів, але завдяки сучасним методам діагностики та лікування, його можна ефективно контролювати.",
-          },
-          {
-            question: "Лікування",
-          },
-          {
-            question: "Виправлення прикусу",
-          },
-          {
-            question: "Психологічна підтримка",
-          },
-          {
-            question: "Терапія пародонту",
-          },
-        ],
-      },
+      subservices(
+        "parodontolohiia",
+        "Своєчасний візит до пародонтолога вкрай важливий:​",
+        "У нашій клініці ми пропонуємо сучасні методи лікування та профілактики захворювань ясен, щоб забезпечити вам здорову та гарну посмішку."
+      ),
       priceList("Ціни на пародонтологічні послуги"),
     ],
   },
   {
     slug: "dytiacha-stomatolohiia",
+    __parentSlug: "poslugy",
     fullPath: "/poslugy/dytiacha-stomatolohiia",
     title: "Дитячий стоматолог в Житомирі",
     breadcrumbTitle: "Дитяча стоматологія",
@@ -467,39 +389,17 @@ export const servicePages = [
           anchor("Записатися на прийом", "#lead-form-section", BUTTON_ON_DARK),
         ],
       },
-      {
-        __component: "sections.faq",
-        title: "Наша дитяча стоматологія включає в себе:",
-        subTitle:
-          "Допоможемо Вашим дітям вирости зі здоровою посмішкою та переконанням, що відвідування стоматолога - це приємна та важлива частина їхнього дорослого життя",
-        accordions: [
-          {
-            question: "Проведення дружніх оглядів",
-          },
-          {
-            question: "Запобігання карієсу",
-            answer:
-              "Ми навчимо Вас та Вашу дитину правильному догляду за зубами та надамо рекомендації з харчування для підтримки здорових зубів.",
-          },
-          {
-            question: "Лікування",
-          },
-          {
-            question: "Виправлення прикусу",
-          },
-          {
-            question: "Психологічна підтримка",
-          },
-          {
-            question: "Терапія пародонту",
-          },
-        ],
-      },
+      subservices(
+        "dytiacha-stomatolohiia",
+        "Наша дитяча стоматологія включає в себе:",
+        "Допоможемо Вашим дітям вирости зі здоровою посмішкою та переконанням, що відвідування стоматолога - це приємна та важлива частина їхнього дорослого життя"
+      ),
       priceList("Ціни на дитячу стоматологію"),
     ],
   },
   {
     slug: "hnatolohiia",
+    __parentSlug: "poslugy",
     fullPath: "/poslugy/hnatolohiia",
     title: "Гнатолог в Житомирі",
     breadcrumbTitle: "Гнатологія",
@@ -534,32 +434,7 @@ export const servicePages = [
           anchor("Записатися на прийом", "#lead-form-section", BUTTON_ON_DARK),
         ],
       },
-      {
-        __component: "sections.faq",
-        title: "Що Ви повинні знати про гнатологію:",
-        accordions: [
-          {
-            question: "Суглобова діагностика",
-          },
-          {
-            question: "Сплінт-терапія",
-            answer:
-              "Це ефективний метод лікування дисфункції СНЩС за допомогою спеціальних знімних кап (сплінтів або оклюзійних шин). Сплінт допомагає розслабити напружені жувальні м’язи, нормалізувати положення щелепи, захистити зуби від стирання та усунути больові відчуття. Він виготовляється індивідуально для кожного пацієнта на основі даних, отриманих під час діагностики.",
-          },
-          {
-            question: "Лікування",
-          },
-          {
-            question: "Виправлення прикусу",
-          },
-          {
-            question: "Психологічна підтримка",
-          },
-          {
-            question: "Терапія пародонту",
-          },
-        ],
-      },
+      subservices("hnatolohiia", "Що Ви повинні знати про гнатологію:"),
       priceList("Ціни на гнатологічні послуги"),
     ],
   },

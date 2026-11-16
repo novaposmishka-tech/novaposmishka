@@ -3,7 +3,7 @@
 /* eslint-disable no-console */
 
 /**
- * Creates the Ukrainian baseline content (homepage, Navbar, Footer) in an
+ * Creates the Ukrainian baseline content (the pages, Navbar, Footer) in an
  * otherwise empty database.
  *
  * The starter seeds from a `strapi export` tarball, which needs someone to
@@ -15,6 +15,21 @@
  * It only ever creates what is missing — an existing document is left exactly
  * as the editors last saved it. Pass `--force` to replace them all instead,
  * or `--only=nashi-roboty,/` to replace just the pages named, by slug.
+ *
+ * A page the seed creates is also hung under its parent. One that already
+ * exists is not, even when it is replaced — an editor may have moved it, or
+ * taken it out of the tree — unless `--link-parents` asks for it.
+ *
+ * Bringing an older database up to the current baseline is therefore a
+ * deliberate step, not something a plain run does. One seeded before the
+ * services index existed gets the index and the sub-service pages from a
+ * plain run, and then needs, once:
+ *
+ *   --link-parents           the direction pages hung under the index
+ *   --only=terapiia,…        each direction page, for its list of sub-services
+ *
+ * and its Navbar and Footer edited by hand, or replaced with `--force` along
+ * with everything else, for the links to the index.
  */
 
 import { createRequire } from "node:module"
@@ -32,12 +47,26 @@ import { contactsPage } from "../seed/baseline/contacts.mjs"
 import { doctorsPage } from "../seed/baseline/doctors.mjs"
 import { feedbacksPage } from "../seed/baseline/feedbacks.mjs"
 import { servicePages } from "../seed/baseline/services.mjs"
+import {
+  servicesIndexPage,
+  subservicePages,
+} from "../seed/baseline/subservices.mjs"
 import { footer, homepage, locale, navbar } from "../seed/baseline/uk.mjs"
 
 const appDir = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..")
 const require = createRequire(import.meta.url)
 
 const force = process.argv.includes("--force")
+const linkParents = process.argv.includes("--link-parents")
+
+/**
+ * The pages this run wrote — made or, where asked, replaced — and of those
+ * the ones it made from nothing. A page it wrote is its to link up once
+ * everything exists; only a page it made is its to place in the tree, since
+ * a replaced one was somewhere an editor may have chosen.
+ */
+const written = new Set()
+const created = new Set()
 const only = new Set(
   process.argv
     .find((arg) => arg.startsWith("--only="))
@@ -67,18 +96,49 @@ try {
   // Pages first: the navbar and the service cards link to them by slug, and
   // those links need documentIds that only exist once the pages do.
   const pageIds = new Map()
+  const missingPages = new Set()
+  const link = (data) => resolvePageLinks(resolve(data), pageIds, missingPages)
+
+  // The pages link to one another in a ring — a direction lists its
+  // sub-services, each of which points back at it, and the index points at
+  // them all — so no order has every target in place first. Each page is
+  // seeded with the links that can be resolved so far, and one this run
+  // wrote while some could not is written again once every page exists.
+  const unlinked = []
   for (const page of [
     ...servicePages,
     casesPage,
     doctorsPage,
     contactsPage,
     feedbacksPage,
+    ...subservicePages,
+    servicesIndexPage,
   ]) {
-    pageIds.set(page.slug, await seedPage(page.slug, resolve(page)))
+    const dropped = new Set()
+    const data = resolvePageLinks(resolve(page), pageIds, dropped)
+
+    pageIds.set(page.slug, await seedPage(page.slug, data))
+
+    if (dropped.size > 0 && written.has(page.fullPath)) {
+      unlinked.push(page)
+    }
   }
 
-  const missingPages = new Set()
-  const link = (data) => resolvePageLinks(resolve(data), pageIds, missingPages)
+  for (const page of unlinked) {
+    await seedPage(page.slug, link(page), { relink: true })
+  }
+
+  // Parents last: the index is the parent of pages seeded before it.
+  const placed = []
+  for (const page of [...servicePages, ...subservicePages]) {
+    if (
+      (created.has(page.fullPath) || linkParents) &&
+      (await linkParent(page, pageIds))
+    ) {
+      placed.push(page.fullPath)
+    }
+  }
+  await revalidatePages(placed)
 
   await seedSingleType("api::navbar.navbar", "Navbar", link(navbar))
   await seedSingleType("api::footer.footer", "Footer", link(footer))
@@ -180,8 +240,87 @@ async function seedSingleType(uid, label, data) {
   console.log(`[seed:content] ${label}: created.`)
 }
 
+/**
+ * Hangs a page under the one its `__parentSlug` names, which is what Strapi
+ * builds the breadcrumb trail from.
+ *
+ * It is called for a page this run made from nothing, and for an existing
+ * one only where `--link-parents` asked. Either way a page that has a parent
+ * keeps it, and nothing is published that was not: the relation is written
+ * to the draft and to the published version each in its own right, so an
+ * unfinished draft stays a draft and a withdrawn page stays withdrawn.
+ *
+ * @returns {Promise<boolean>} whether anything was written; the caller tells
+ *   the UI about all of them at once.
+ */
+async function linkParent({ slug, fullPath, __parentSlug }, pageIds) {
+  const parentId = pageIds.get(__parentSlug)
+
+  if (!parentId) {
+    return false
+  }
+
+  const pages = strapi.db.query("api::page.page")
+  const [versions, parents] = await Promise.all([
+    pages.findMany({ where: { fullPath, locale }, populate: { parent: true } }),
+    pages.findMany({ where: { documentId: parentId, locale } }),
+  ])
+  let placed = false
+
+  for (const version of versions) {
+    // A draft hangs under the parent's draft, a published version under its
+    // published one.
+    const parent = parents.find(
+      (candidate) =>
+        Boolean(candidate.publishedAt) === Boolean(version.publishedAt)
+    )
+
+    if (version.parent || !parent) {
+      continue
+    }
+
+    await pages.update({
+      where: { id: version.id },
+      data: { parent: parent.id },
+    })
+    placed = true
+  }
+
+  if (placed) {
+    console.log(`[seed:content] Page ${slug}: placed under ${__parentSlug}.`)
+  }
+
+  return placed
+}
+
+/**
+ * Tells the UI the pages placed under a parent have changed.
+ *
+ * The parent is written under the document service, which is what would
+ * otherwise send this, and a page fetched between its creation and that
+ * write was cached with a trail that stops short. One request for the lot:
+ * each carries the tag every page is read through, so a second would clear
+ * nothing the first had not.
+ */
+async function revalidatePages(fullPaths) {
+  if (fullPaths.length === 0) {
+    return
+  }
+
+  try {
+    await strapi
+      .service("api::revalidate.revalidate")
+      .run({ uid: "api::page.page", fullPaths, locale })
+  } catch (error) {
+    // The UI may simply not be running; its cache then has nothing to clear.
+    console.warn(
+      `[seed:content] Could not tell the UI to refetch the placed pages (${error instanceof Error ? error.message : error}).`
+    )
+  }
+}
+
 /** @returns {Promise<string>} the page's documentId, for links pointing at it. */
-async function seedPage(label, page) {
+async function seedPage(label, { __parentSlug, ...page }, { relink } = {}) {
   const uid = "api::page.page"
   const existing = await strapi.documents(uid).findFirst({
     locale,
@@ -190,7 +329,8 @@ async function seedPage(label, page) {
     status: "draft",
   })
 
-  if (existing && !force && !only.has(label)) {
+  // `relink` is the second pass over a page this run has already written.
+  if (existing && !force && !only.has(label) && !relink) {
     console.log(`[seed:content] Page ${label}: exists, left untouched.`)
 
     return existing.documentId
@@ -210,8 +350,15 @@ async function seedPage(label, page) {
     .publish({ documentId: document.documentId, locale })
 
   console.log(
-    `[seed:content] Page ${label}: ${existing ? "replaced" : "created"} and published.`
+    relink
+      ? `[seed:content] Page ${label}: linked to the pages seeded after it.`
+      : `[seed:content] Page ${label}: ${existing ? "replaced" : "created"} and published.`
   )
+
+  written.add(page.fullPath)
+  if (!existing) {
+    created.add(page.fullPath)
+  }
 
   return document.documentId
 }

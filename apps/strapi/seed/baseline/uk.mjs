@@ -43,6 +43,8 @@ export const navbar = {
     {
       isCategoryLink: false,
       label: "Послуги",
+      // The row that heads the dropdown and leads to the index of them all.
+      link: pageLink("Усі послуги", "poslugy"),
       categoryItems: SERVICE_SLUGS.map(({ card, slug }) =>
         pageLink(card, slug)
       ),
@@ -109,9 +111,7 @@ export const footer = {
     },
   ],
   links: [
-    // There is no services index page in the design; the homepage grid is what
-    // "Послуги" means here.
-    anchor("Послуги", "/#services"),
+    pageLink("Послуги", "poslugy"),
     pageLink("Лікарі", "likari"),
     pageLink("Наші роботи", "nashi-roboty"),
     pageLink("Відгуки", "vidhuky"),
