@@ -15,6 +15,7 @@ import TableSection from "@/app/[locale]/dev/showcase/components/sections/TableS
 import TabsSection from "@/app/[locale]/dev/showcase/components/sections/TabsSection"
 import TextareaSection from "@/app/[locale]/dev/showcase/components/sections/TextareaSection"
 import TooltipSection from "@/app/[locale]/dev/showcase/components/sections/TooltipSection"
+import MockedStrapiAdvantages from "@/app/[locale]/dev/showcase/components/strapiComponents/MockedStrapiAdvantages"
 import MockedStrapiAnimatedLogoRow from "@/app/[locale]/dev/showcase/components/strapiComponents/MockedStrapiAnimatedLogoRow"
 import MockedStrapiCarousel from "@/app/[locale]/dev/showcase/components/strapiComponents/MockedStrapiCarousel"
 import MockedStrapiContacts from "@/app/[locale]/dev/showcase/components/strapiComponents/MockedStrapiContacts"
@@ -29,7 +30,11 @@ import MockedStrapiHeroCollage from "@/app/[locale]/dev/showcase/components/stra
 import MockedStrapiImageWithCTAButton from "@/app/[locale]/dev/showcase/components/strapiComponents/MockedStrapiImageWithCTAButton"
 import MockedStrapiPriceList from "@/app/[locale]/dev/showcase/components/strapiComponents/MockedStrapiPriceList"
 import MockedStrapiResults from "@/app/[locale]/dev/showcase/components/strapiComponents/MockedStrapiResults"
+import MockedStrapiServiceExplorer from "@/app/[locale]/dev/showcase/components/strapiComponents/MockedStrapiServiceExplorer"
 import MockedStrapiServices from "@/app/[locale]/dev/showcase/components/strapiComponents/MockedStrapiServices"
+import MockedStrapiSteps from "@/app/[locale]/dev/showcase/components/strapiComponents/MockedStrapiSteps"
+import MockedStrapiSubservices from "@/app/[locale]/dev/showcase/components/strapiComponents/MockedStrapiSubservices"
+import MockedStrapiSymptoms from "@/app/[locale]/dev/showcase/components/strapiComponents/MockedStrapiSymptoms"
 import MockedStrapiTestimonials from "@/app/[locale]/dev/showcase/components/strapiComponents/MockedStrapiTestimonials"
 import MockedStrapiWhyUs from "@/app/[locale]/dev/showcase/components/strapiComponents/MockedStrapiWhyUs"
 
@@ -228,6 +233,44 @@ export const showcaseItems = [
     kind: "component",
     component: MockedStrapiServices,
     description: "Grid of clinic services with icon, description and link",
+  },
+  {
+    id: "service-explorer",
+    label: "Service explorer",
+    kind: "component",
+    component: MockedStrapiServiceExplorer,
+    description:
+      "The services index: directions as a list with a preview panel, and two help cards",
+  },
+  {
+    id: "subservices",
+    label: "Subservices",
+    kind: "component",
+    component: MockedStrapiSubservices,
+    description:
+      "A direction's sub-services as an accordion, with a photograph that follows it",
+  },
+  {
+    id: "symptoms",
+    label: "Symptoms",
+    kind: "component",
+    component: MockedStrapiSymptoms,
+    description:
+      "Signs that bring a patient in, with a card that books a visit",
+  },
+  {
+    id: "steps",
+    label: "Steps",
+    kind: "component",
+    component: MockedStrapiSteps,
+    description: "How a procedure goes, as numbered cards",
+  },
+  {
+    id: "advantages",
+    label: "Advantages",
+    kind: "component",
+    component: MockedStrapiAdvantages,
+    description: "Why patients choose the clinic, as a row of short cards",
   },
   {
     id: "doctors",
