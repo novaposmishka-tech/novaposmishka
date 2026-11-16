@@ -10,7 +10,7 @@ export interface StrapiLinkProps {
   readonly className?: string
   readonly onClick?: () => void
 }
-const getStrapiLinkHref = (
+export const getStrapiLinkHref = (
   component?: Data.Component<"utilities.link"> | null
 ) => {
   // Add more when needed
@@ -24,6 +24,29 @@ const getStrapiLinkHref = (
       return
   }
 }
+
+/**
+ * True of a link that has somewhere to go: a URL, or a page that is there.
+ * A link to a page that was unpublished or never chosen resolves to "#", and
+ * a block that is nothing but its link should not be drawn around that.
+ */
+export const strapiLinkResolves = (
+  component?: Data.Component<"utilities.link"> | null
+) =>
+  Boolean(
+    component?.type === "external" ? component.href : component?.page?.fullPath
+  )
+
+/**
+ * Where a link leads, or nothing where it leads nowhere — what a block wants
+ * when it draws a button only for a link that works.
+ */
+export const resolvedStrapiHref = (
+  component?: Data.Component<"utilities.link"> | null
+) =>
+  strapiLinkResolves(component)
+    ? (getStrapiLinkHref(component) ?? undefined)
+    : undefined
 
 export function StrapiLink({
   component,

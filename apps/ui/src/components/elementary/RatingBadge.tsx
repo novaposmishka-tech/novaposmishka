@@ -37,26 +37,48 @@ export function RatingBadge({
             {/* One decimal, as in the design: 4.8 rather than 4.80 or 5. */}
             {score.toFixed(1)}
           </span>
-          <div
-            className="flex items-center gap-0.75"
-            // The stars repeat the score visually, so they are decorative — the
-            // number beside them is what a screen reader should read out.
-            aria-hidden
-          >
-            {Array.from({ length: MAX_SCORE }, (_, index) => (
-              <Star
-                key={index}
-                className={cn(
-                  "size-4",
-                  index < Math.round(score)
-                    ? "fill-brand-star text-brand-star"
-                    : "text-brand-muted"
-                )}
-              />
-            ))}
-          </div>
+          <RatingStars score={score} />
         </div>
       </div>
+    </div>
+  )
+}
+
+/**
+ * The score as gold stars out of five, rounded to the nearest whole one.
+ * Shared by every place that shows the rating, so they cannot count it
+ * differently.
+ */
+export function RatingStars({
+  score,
+  className,
+  starClassName = "size-4",
+  emptyClassName = "text-brand-muted",
+}: {
+  readonly score: number
+  readonly className?: string
+  readonly starClassName?: string
+  /** The colour of a star the score does not reach; pale on a photograph. */
+  readonly emptyClassName?: string
+}) {
+  return (
+    <div
+      className={cn("flex items-center gap-0.75", className)}
+      // The stars repeat the score visually, so they are decorative — the
+      // number beside them is what a screen reader should read out.
+      aria-hidden
+    >
+      {Array.from({ length: MAX_SCORE }, (_, index) => (
+        <Star
+          key={index}
+          className={cn(
+            starClassName,
+            index < Math.round(score)
+              ? "fill-brand-star text-brand-star"
+              : emptyClassName
+          )}
+        />
+      ))}
     </div>
   )
 }
