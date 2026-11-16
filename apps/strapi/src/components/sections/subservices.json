@@ -1,0 +1,23 @@
+{
+  "collectionName": "components_sections_subservices",
+  "info": {
+    "displayName": "Subservices",
+    "icon": "bulletList",
+    "description": "What a direction covers: its sub-services as a list that opens onto a sentence about each and a link to its page."
+  },
+  "options": {},
+  "attributes": {
+    "title": {
+      "type": "string"
+    },
+    "description": {
+      "type": "text"
+    },
+    "items": {
+      "type": "component",
+      "component": "shared.service",
+      "repeatable": true
+    }
+  },
+  "config": {}
+}

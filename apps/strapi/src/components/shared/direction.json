@@ -1,0 +1,34 @@
+{
+  "collectionName": "components_shared_directions",
+  "info": {
+    "displayName": "Direction",
+    "icon": "arrowRight",
+    "description": "A row of the services index: a direction of treatment, its page and the sub-services under it."
+  },
+  "options": {},
+  "attributes": {
+    "name": {
+      "type": "string",
+      "required": true
+    },
+    "description": {
+      "type": "text"
+    },
+    "icon": {
+      "type": "component",
+      "component": "utilities.basic-image",
+      "repeatable": false
+    },
+    "link": {
+      "type": "component",
+      "component": "utilities.link",
+      "repeatable": false
+    },
+    "tags": {
+      "type": "component",
+      "component": "utilities.link",
+      "repeatable": true
+    }
+  },
+  "config": {}
+}

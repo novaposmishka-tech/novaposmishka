@@ -1,0 +1,31 @@
+{
+  "collectionName": "components_sections_service_explorers",
+  "info": {
+    "displayName": "ServiceExplorer",
+    "icon": "layout",
+    "description": "The services index: the directions as a list, with a panel that previews the one in hand, and two cards for a reader who is unsure or in pain."
+  },
+  "options": {},
+  "attributes": {
+    "title": {
+      "type": "string"
+    },
+    "services": {
+      "type": "component",
+      "component": "shared.direction",
+      "repeatable": true
+    },
+    "callToAction": {
+      "type": "component",
+      "component": "shared.service",
+      "repeatable": false
+    },
+    "urgentTitle": {
+      "type": "string"
+    },
+    "urgentDescription": {
+      "type": "text"
+    }
+  },
+  "config": {}
+}

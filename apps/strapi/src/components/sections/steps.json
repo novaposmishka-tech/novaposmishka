@@ -1,0 +1,20 @@
+{
+  "collectionName": "components_sections_steps",
+  "info": {
+    "displayName": "Steps",
+    "icon": "bulletList",
+    "description": "How a procedure goes, as numbered steps."
+  },
+  "options": {},
+  "attributes": {
+    "title": {
+      "type": "string"
+    },
+    "steps": {
+      "type": "component",
+      "component": "shared.icon-card",
+      "repeatable": true
+    }
+  },
+  "config": {}
+}

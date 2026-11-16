@@ -1,0 +1,58 @@
+{
+  "collectionName": "components_shared_icon_cards",
+  "info": {
+    "displayName": "IconCard",
+    "icon": "apps",
+    "description": "A card with a line icon, a few words and, where there is one, a photograph: a symptom, a step of a procedure, an advantage."
+  },
+  "options": {},
+  "attributes": {
+    "title": {
+      "type": "string"
+    },
+    "text": {
+      "type": "text"
+    },
+    "icon": {
+      "type": "enumeration",
+      "enum": [
+        "tooth",
+        "pain",
+        "bite",
+        "cold",
+        "spot",
+        "food",
+        "smell",
+        "swell",
+        "dark",
+        "drop",
+        "recession",
+        "mobile",
+        "crooked",
+        "gap",
+        "click",
+        "head",
+        "clock",
+        "sparkle",
+        "cup",
+        "child",
+        "broken",
+        "missing",
+        "search",
+        "shield",
+        "spark",
+        "check",
+        "heart",
+        "monitor",
+        "document",
+        "award"
+      ]
+    },
+    "image": {
+      "type": "component",
+      "component": "utilities.basic-image",
+      "repeatable": false
+    }
+  },
+  "config": {}
+}

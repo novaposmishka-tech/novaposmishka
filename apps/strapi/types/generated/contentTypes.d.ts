@@ -663,6 +663,11 @@ export interface ApiPagePage extends Struct.CollectionTypeSchema {
         "utilities.tip-tap-rich-text",
         "sections.price-list",
         "sections.map",
+        "sections.symptoms",
+        "sections.steps",
+        "sections.advantages",
+        "sections.service-explorer",
+        "sections.subservices",
       ]
     > &
       Schema.Attribute.SetPluginOptions<{

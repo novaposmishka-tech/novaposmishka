@@ -316,6 +316,8 @@ export interface SectionsPriceList extends Struct.ComponentSchema {
   }
   attributes: {
     groups: Schema.Attribute.Component<"shared.price-group", true>
+    link: Schema.Attribute.Component<"utilities.link", false>
+    note: Schema.Attribute.String
     title: Schema.Attribute.String
   }
 }
@@ -363,6 +365,140 @@ export interface SectionsWhyUs extends Struct.ComponentSchema {
       true
     >
     subtitle: Schema.Attribute.Text
+    title: Schema.Attribute.String
+  }
+}
+
+export interface SectionsAdvantages extends Struct.ComponentSchema {
+  collectionName: "components_sections_advantages"
+  info: {
+    description: "Why patients choose the clinic: a row of short cards."
+    displayName: "Advantages"
+    icon: "crown"
+  }
+  attributes: {
+    items: Schema.Attribute.Component<"shared.icon-card", true>
+    title: Schema.Attribute.String
+  }
+}
+
+export interface SectionsServiceExplorer extends Struct.ComponentSchema {
+  collectionName: "components_sections_service_explorers"
+  info: {
+    description: "The services index: the directions as a list, with a panel that previews the one in hand, and two cards for a reader who is unsure or in pain."
+    displayName: "ServiceExplorer"
+    icon: "layout"
+  }
+  attributes: {
+    callToAction: Schema.Attribute.Component<"shared.service", false>
+    services: Schema.Attribute.Component<"shared.direction", true>
+    title: Schema.Attribute.String
+    urgentDescription: Schema.Attribute.Text
+    urgentTitle: Schema.Attribute.String
+  }
+}
+
+export interface SectionsSteps extends Struct.ComponentSchema {
+  collectionName: "components_sections_steps"
+  info: {
+    description: "How a procedure goes, as numbered steps."
+    displayName: "Steps"
+    icon: "bulletList"
+  }
+  attributes: {
+    steps: Schema.Attribute.Component<"shared.icon-card", true>
+    title: Schema.Attribute.String
+  }
+}
+
+export interface SectionsSubservices extends Struct.ComponentSchema {
+  collectionName: "components_sections_subservices"
+  info: {
+    description: "What a direction covers: its sub-services as a list that opens onto a sentence about each and a link to its page."
+    displayName: "Subservices"
+    icon: "bulletList"
+  }
+  attributes: {
+    description: Schema.Attribute.Text
+    items: Schema.Attribute.Component<"shared.service", true>
+    title: Schema.Attribute.String
+  }
+}
+
+export interface SectionsSymptoms extends Struct.ComponentSchema {
+  collectionName: "components_sections_symptoms"
+  info: {
+    description: "When to see the dentist: a grid of signs, closed by a card that books a visit."
+    displayName: "Symptoms"
+    icon: "eye"
+  }
+  attributes: {
+    callToAction: Schema.Attribute.Component<"shared.service", false>
+    items: Schema.Attribute.Component<"shared.icon-card", true>
+    title: Schema.Attribute.String
+  }
+}
+
+export interface SharedDirection extends Struct.ComponentSchema {
+  collectionName: "components_shared_directions"
+  info: {
+    description: "A row of the services index: a direction of treatment, its page and the sub-services under it."
+    displayName: "Direction"
+    icon: "arrowRight"
+  }
+  attributes: {
+    description: Schema.Attribute.Text
+    icon: Schema.Attribute.Component<"utilities.basic-image", false>
+    link: Schema.Attribute.Component<"utilities.link", false>
+    name: Schema.Attribute.String & Schema.Attribute.Required
+    tags: Schema.Attribute.Component<"utilities.link", true>
+  }
+}
+
+export interface SharedIconCard extends Struct.ComponentSchema {
+  collectionName: "components_shared_icon_cards"
+  info: {
+    description: "A card with a line icon, a few words and, where there is one, a photograph: a symptom, a step of a procedure, an advantage."
+    displayName: "IconCard"
+    icon: "apps"
+  }
+  attributes: {
+    icon: Schema.Attribute.Enumeration<
+      [
+        "tooth",
+        "pain",
+        "bite",
+        "cold",
+        "spot",
+        "food",
+        "smell",
+        "swell",
+        "dark",
+        "drop",
+        "recession",
+        "mobile",
+        "crooked",
+        "gap",
+        "click",
+        "head",
+        "clock",
+        "sparkle",
+        "cup",
+        "child",
+        "broken",
+        "missing",
+        "search",
+        "shield",
+        "spark",
+        "check",
+        "heart",
+        "monitor",
+        "document",
+        "award",
+      ]
+    >
+    image: Schema.Attribute.Component<"utilities.basic-image", false>
+    text: Schema.Attribute.Text
     title: Schema.Attribute.String
   }
 }
@@ -505,6 +641,8 @@ export interface SectionsFaq extends Struct.ComponentSchema {
   }
   attributes: {
     accordions: Schema.Attribute.Component<"utilities.accordions", true>
+    layout: Schema.Attribute.Enumeration<["panel", "cards"]> &
+      Schema.Attribute.DefaultTo<"panel">
     subTitle: Schema.Attribute.String
     title: Schema.Attribute.String & Schema.Attribute.Required
   }
@@ -569,6 +707,7 @@ export interface SectionsHero extends Struct.ComponentSchema {
           preset: "defaultCkEditor"
         }
       >
+    showContacts: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<false>
     backgroundFocusX: Schema.Attribute.Integer &
       Schema.Attribute.SetMinMax<
         {
@@ -948,6 +1087,7 @@ declare module "@strapi/strapi" {
       "forms.lead-form": FormsLeadForm
       "forms.newsletter-form": FormsNewsletterForm
       "layout.navbar-item": LayoutNavbarItem
+      "sections.advantages": SectionsAdvantages
       "sections.animated-logo-row": SectionsAnimatedLogoRow
       "sections.carousel": SectionsCarousel
       "sections.case-study": SectionsCaseStudy
@@ -962,8 +1102,12 @@ declare module "@strapi/strapi" {
       "sections.results": SectionsResults
       "sections.map": SectionsMap
       "sections.price-list": SectionsPriceList
+      "sections.service-explorer": SectionsServiceExplorer
       "sections.services": SectionsServices
       "sections.statistics": SectionsStatistics
+      "sections.steps": SectionsSteps
+      "sections.subservices": SectionsSubservices
+      "sections.symptoms": SectionsSymptoms
       "sections.testimonials": SectionsTestimonials
       "sections.video-reviews": SectionsVideoReviews
       "sections.why-us": SectionsWhyUs
@@ -976,8 +1120,10 @@ declare module "@strapi/strapi" {
       "shared.case-stage": SharedCaseStage
       "shared.contact-item": SharedContactItem
       "shared.credential": SharedCredential
+      "shared.direction": SharedDirection
       "shared.doctor": SharedDoctor
       "shared.figure": SharedFigure
+      "shared.icon-card": SharedIconCard
       "shared.image-with-config": SharedImageWithConfig
       "shared.image-with-title-and-description": SharedImageWithTitleAndDescription
       "shared.photo-pair": SharedPhotoPair

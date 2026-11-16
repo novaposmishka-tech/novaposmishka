@@ -84,7 +84,12 @@
         "utilities.ck-editor-text",
         "utilities.tip-tap-rich-text",
         "sections.price-list",
-        "sections.map"
+        "sections.map",
+        "sections.symptoms",
+        "sections.steps",
+        "sections.advantages",
+        "sections.service-explorer",
+        "sections.subservices"
       ]
     },
     "children": {

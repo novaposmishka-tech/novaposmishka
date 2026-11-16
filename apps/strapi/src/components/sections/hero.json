@@ -81,6 +81,10 @@
       "type": "component",
       "component": "shared.figure",
       "repeatable": true
+    },
+    "showContacts": {
+      "type": "boolean",
+      "default": false
     }
   }
 }

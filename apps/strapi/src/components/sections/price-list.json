@@ -14,6 +14,14 @@
       "type": "component",
       "component": "shared.price-group",
       "repeatable": true
+    },
+    "note": {
+      "type": "string"
+    },
+    "link": {
+      "type": "component",
+      "component": "utilities.link",
+      "repeatable": false
     }
   },
   "config": {}
