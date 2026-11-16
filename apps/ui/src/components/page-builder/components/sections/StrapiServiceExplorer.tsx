@@ -113,7 +113,10 @@ export async function StrapiServiceExplorer({
                 {callToAction.icon && (
                   <StrapiBasicImage
                     component={callToAction.icon}
-                    className="pointer-events-none absolute right-5 bottom-2.5 h-auto w-22.5 object-contain md:w-32.5 lg:w-42.5"
+                    // On a phone the card is as wide as its button, so the drawing
+                    // stands in the top corner beside the heading there, and
+                    // on the floor of the card from the tablet up.
+                    className="pointer-events-none absolute top-5 right-5 h-auto w-16 object-contain sm:top-auto sm:bottom-2.5 sm:w-22.5 md:w-32.5 lg:w-42.5"
                   />
                 )}
                 {/* Held to the left of the card, clear of the drawing. */}
