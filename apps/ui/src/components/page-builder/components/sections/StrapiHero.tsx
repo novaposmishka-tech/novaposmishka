@@ -1,8 +1,8 @@
 import "server-only"
 
 import type { Data } from "@repo/strapi-types"
-import { ArrowRight, PhoneIcon } from "lucide-react"
-import { useTranslations } from "next-intl"
+import { ArrowRight, Clock, PhoneIcon } from "lucide-react"
+import { type Locale, useTranslations } from "next-intl"
 import { use } from "react"
 
 import { BackgroundVideo } from "@/components/elementary/BackgroundVideo"
@@ -13,10 +13,12 @@ import {
 import CkEditorRenderer from "@/components/elementary/ck-editor"
 import { Container } from "@/components/elementary/Container"
 import { PhotoHeroFrame } from "@/components/elementary/PhotoHeroFrame"
+import { RatingStars } from "@/components/elementary/RatingBadge"
+import { GoogleMark } from "@/components/icons/GoogleMark"
 import { StrapiBasicImage } from "@/components/page-builder/components/utilities/StrapiBasicImage"
 import StrapiLink from "@/components/page-builder/components/utilities/StrapiLink"
-import { clinicPhones, contactHref } from "@/lib/contacts"
-import { fetchNavbar } from "@/lib/strapi-api/content/server"
+import { clinicHours, clinicPhones, contactHref } from "@/lib/contacts"
+import { fetchFooter, fetchNavbar } from "@/lib/strapi-api/content/server"
 import { formatStrapiMediaUrl } from "@/lib/strapi-helpers"
 import { cn } from "@/lib/styles"
 import type { PageBuilderComponentProps } from "@/types/general"
@@ -40,6 +42,7 @@ export function StrapiHero({
     backgroundFocusY,
     backgroundVideo,
     figures,
+    showContacts,
   } = component
 
   // The design has several hero treatments, so the layout follows the content:
@@ -66,7 +69,17 @@ export function StrapiHero({
   // page that carries only itself renders nothing, and the hero has to know
   // that before it sets its own padding.
   const hasTrail = Boolean(pageParams) && hasBreadcrumbTrail(breadcrumbs)
-  const phone = useHeroPhone({ hasBackground, hasTrail, links, pageParams })
+  // A sub-service's hero is a place to act from: it carries the number
+  // beside its button, as the homepage does, and the clinic's rating and
+  // hours on glass at its foot.
+  const withContacts = Boolean(showContacts)
+  const phone = useHeroPhone({
+    hasBackground,
+    hasTrail,
+    links,
+    pageParams,
+    withContacts,
+  })
 
   return (
     <section>
@@ -114,7 +127,13 @@ export function StrapiHero({
             hasTrail,
           })}
         >
-          <div className={copyClass({ hasBackground, isCentered })}>
+          <div
+            className={copyClass({
+              hasBackground,
+              isCentered,
+              entrance: withContacts,
+            })}
+          >
             <HeroTag tag={tag} hasBackground={hasBackground} />
 
             <CkEditorRenderer
@@ -221,6 +240,12 @@ export function StrapiHero({
             <CkEditorRenderer htmlContent={note} className="pt-6" />
           </div>
 
+          <HeroBadges
+            show={withContacts}
+            onPhoto={hasBackground}
+            locale={pageParams?.locale}
+          />
+
           {hasFigures ? (
             <FiguresRow figures={figures} />
           ) : (
@@ -292,21 +317,29 @@ function HeroTag({
  * The number the homepage's hero offers beside its button, for a visitor who
  * would rather call than fill in the form: the one the header lists first. The
  * navbar is asked for it with the same request the header makes, which Next
- * answers from its cache. Only the homepage carries it — a photo hero with a
- * button and no trail above it.
+ * answers from its cache. The homepage carries it — a photo hero with a
+ * button and no trail above it — and so does any hero an editor has asked to
+ * show the clinic's contacts.
  */
 function useHeroPhone({
   hasBackground,
   hasTrail,
   links,
   pageParams,
+  withContacts,
 }: {
   readonly hasBackground: boolean
   readonly hasTrail: boolean
   readonly links: Data.Component<"sections.hero">["links"]
   readonly pageParams: PageBuilderComponentProps["pageParams"]
+  readonly withContacts: boolean
 }) {
-  if (!hasBackground || hasTrail || !links?.length || !pageParams) {
+  if (!hasBackground || !links?.length || !pageParams) {
+    return
+  }
+
+  // A page under the homepage carries the number only where it was asked to.
+  if (hasTrail && !withContacts) {
     return
   }
 
@@ -340,6 +373,93 @@ function HeroPhone({ phone }: { readonly phone?: string | null }) {
       </span>
       {phone}
     </a>
+  )
+}
+
+const GLASS_BADGE =
+  "flex items-center gap-3.5 rounded-[20px] border border-white/25 bg-white/15 py-3.5 pr-5.5 pl-3.5 backdrop-blur-md"
+
+/**
+ * The clinic's Google rating and its hours, on two panes of glass at the
+ * foot of the photograph, drifting a little out of step with one another.
+ * Both are the footer's own — the score an editor keeps there and the
+ * schedule as it is printed there — so neither is written a second time.
+ * Only where there is room beside the copy: the phone frame and the narrow
+ * desktop have none.
+ */
+async function HeroBadges({
+  show,
+  onPhoto,
+  locale,
+}: {
+  readonly show: boolean
+  /** The panes are glass, so they are drawn only over a photograph. */
+  readonly onPhoto: boolean
+  readonly locale?: Locale
+}) {
+  if (!show || !onPhoto || !locale) {
+    return null
+  }
+
+  const footer = (await fetchFooter(locale))?.data
+  // A score of nothing is no rating to show, whether it was left empty or
+  // set to zero.
+  const rating = footer?.rating?.score ? footer.rating : undefined
+  const [hours, ...moreHours] = clinicHours(footer)
+
+  if (!rating && !hours) {
+    return null
+  }
+
+  return (
+    // They arrive last, after the copy's lines have come in.
+    <div className="pointer-events-none absolute right-3.75 bottom-14 hidden flex-col gap-3 motion-safe:animate-[rise_0.9s_var(--ease-out)_0.5s_backwards] md:right-15 xl:flex">
+      {rating && (
+        <div
+          className={cn(
+            GLASS_BADGE,
+            "motion-safe:animate-[float-y_5s_ease-in-out_infinite]"
+          )}
+        >
+          <span className="flex size-10 shrink-0 items-center justify-center rounded-full bg-white">
+            <GoogleMark className="size-6" />
+          </span>
+          <span className="flex flex-col gap-0.5">
+            <span className="text-[0.9375rem] font-semibold">
+              {rating.label} {rating.score?.toFixed(1)}
+            </span>
+            {/* The footer's own stars, counted the way it counts them. */}
+            <RatingStars
+              score={rating.score ?? 0}
+              className="gap-0.5"
+              starClassName="size-3.5"
+              emptyClassName="text-white/40"
+            />
+          </span>
+        </div>
+      )}
+
+      {hours && (
+        <div
+          className={cn(
+            GLASS_BADGE,
+            "ml-10 motion-safe:animate-[float-y_5s_ease-in-out_1.2s_infinite]"
+          )}
+        >
+          <span className="text-brand-light flex size-10 shrink-0 items-center justify-center rounded-full bg-white">
+            <Clock aria-hidden className="size-5" />
+          </span>
+          <span className="flex flex-col gap-0.5">
+            <span className="text-[0.9375rem] font-semibold">{hours}</span>
+            {moreHours.length > 0 && (
+              <span className="text-[0.8125rem] opacity-85">
+                {moreHours.join(", ")}
+              </span>
+            )}
+          </span>
+        </div>
+      )}
+    </div>
   )
 }
 
@@ -389,12 +509,21 @@ const layoutClass = ({
 const copyClass = ({
   hasBackground,
   isCentered,
+  entrance,
 }: {
   hasBackground: boolean
   isCentered: boolean
+  /**
+   * True where the design brings the copy in line by line as the page
+   * opens: the heading, the sentence, then the buttons. It is the words
+   * that move, over a photograph that is simply there, so the page's
+   * largest paint does not wait on it.
+   */
+  entrance: boolean
 }) =>
   cn(
     "flex flex-col",
+    entrance && "cascade",
     hasBackground ? "gap-0 max-lg:flex-1" : "gap-4",
     isCentered
       ? "mx-auto items-center justify-center text-center md:w-2/4"

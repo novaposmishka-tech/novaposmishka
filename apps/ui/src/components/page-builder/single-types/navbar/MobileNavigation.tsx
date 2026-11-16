@@ -6,7 +6,9 @@ import { useTranslations } from "next-intl"
 import { useState } from "react"
 
 import { operatorIcon } from "@/components/icons/operators"
-import StrapiLink from "@/components/page-builder/components/utilities/StrapiLink"
+import StrapiLink, {
+  strapiLinkResolves,
+} from "@/components/page-builder/components/utilities/StrapiLink"
 import { contactHref } from "@/lib/contacts"
 import { cn } from "@/lib/styles"
 
@@ -103,6 +105,20 @@ export function MobileNavigation({
               as a slip in the drawing rather than the intent, so here they run
               the full width between equal gutters. */}
           <ul className="cascade -mx-3.75 list-none">
+            {/* The row that leads to the category's own index, where it has
+                one, ahead of the pages it lists. */}
+            {openCategory.link && strapiLinkResolves(openCategory.link) && (
+              <li className="border-brand-hairline border-b">
+                <StrapiLink
+                  component={openCategory.link}
+                  onClick={close}
+                  className={cn(
+                    ROW,
+                    "text-brand-ink justify-start px-0 no-underline"
+                  )}
+                />
+              </li>
+            )}
             {openCategory.categoryItems?.map((subItem) => (
               <li key={subItem.id} className="border-brand-hairline border-b">
                 <StrapiLink
@@ -127,7 +143,8 @@ export function MobileNavigation({
           <ul className="cascade list-none">
             {navbarItems.map((item) => (
               <li key={item.id} className="border-brand-hairline border-b">
-                {item.isCategoryLink && item.link ? (
+                {(item.isCategoryLink || !item.categoryItems?.length) &&
+                item.link ? (
                   <StrapiLink
                     component={item.link}
                     onClick={close}

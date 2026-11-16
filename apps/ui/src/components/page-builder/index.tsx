@@ -2,6 +2,7 @@ import type { UID } from "@repo/strapi-types"
 
 import StrapiContactForm from "@/components/page-builder/components/forms/StrapiContactForm"
 import StrapiNewsletterForm from "@/components/page-builder/components/forms/StrapiNewsletterForm"
+import StrapiAdvantages from "@/components/page-builder/components/sections/StrapiAdvantages"
 import StrapiAnimatedLogoRow from "@/components/page-builder/components/sections/StrapiAnimatedLogoRow"
 import StrapiCarousel from "@/components/page-builder/components/sections/StrapiCarousel"
 import StrapiCaseStudy from "@/components/page-builder/components/sections/StrapiCaseStudy"
@@ -17,7 +18,11 @@ import StrapiImageWithCTAButton from "@/components/page-builder/components/secti
 import StrapiMap from "@/components/page-builder/components/sections/StrapiMap"
 import StrapiPriceList from "@/components/page-builder/components/sections/StrapiPriceList"
 import StrapiResults from "@/components/page-builder/components/sections/StrapiResults"
+import StrapiServiceExplorer from "@/components/page-builder/components/sections/StrapiServiceExplorer"
 import StrapiServices from "@/components/page-builder/components/sections/StrapiServices"
+import StrapiSteps from "@/components/page-builder/components/sections/StrapiSteps"
+import StrapiSubservices from "@/components/page-builder/components/sections/StrapiSubservices"
+import StrapiSymptoms from "@/components/page-builder/components/sections/StrapiSymptoms"
 import StrapiTestimonials from "@/components/page-builder/components/sections/StrapiTestimonials"
 import StrapiVideoReviews from "@/components/page-builder/components/sections/StrapiVideoReviews"
 import StrapiWhyUs from "@/components/page-builder/components/sections/StrapiWhyUs"
@@ -58,6 +63,11 @@ export const PageContentComponents: Partial<
   "sections.price-list": StrapiPriceList,
   "sections.video-reviews": StrapiVideoReviews,
   "sections.services": StrapiServices,
+  "sections.service-explorer": StrapiServiceExplorer,
+  "sections.subservices": StrapiSubservices,
+  "sections.symptoms": StrapiSymptoms,
+  "sections.steps": StrapiSteps,
+  "sections.advantages": StrapiAdvantages,
   "sections.testimonials": StrapiTestimonials,
   "sections.why-us": StrapiWhyUs,
 

@@ -2,7 +2,9 @@
 
 import type { Data } from "@repo/strapi-types"
 
-import StrapiLink from "@/components/page-builder/components/utilities/StrapiLink"
+import StrapiLink, {
+  strapiLinkResolves,
+} from "@/components/page-builder/components/utilities/StrapiLink"
 import {
   NavigationMenu,
   NavigationMenuContent,
@@ -12,6 +14,7 @@ import {
   navigationMenuTriggerStyle,
 } from "@/components/ui/navigation-menu"
 import { usePathname } from "@/lib/navigation"
+import { isWithinLink, isWithinSection } from "@/lib/navigation-section"
 import { cn } from "@/lib/styles"
 
 interface DesktopNavigationProps {
@@ -62,6 +65,10 @@ const LABEL = cn(
   "[&>svg]:ml-3 [&>svg]:size-4"
 )
 
+/** A row of the dropdown's card: a 54-tall pill, semibold, filling on hover. */
+const DROPDOWN_ROW =
+  "text-brand-ink hover:bg-brand-mist hover:text-brand-teal flex h-13.5 w-full items-center justify-start rounded-[10px] px-5 text-base font-semibold no-underline transition-colors"
+
 /** The page you are on: the frame's pill, in brand teal and semibold. */
 const ACTIVE = "bg-brand-mist text-brand-teal! font-semibold"
 
@@ -97,10 +104,11 @@ function Menu({
 }) {
   const pathname = usePathname()
 
-  // A dropdown counts as current when the reader is on one of the pages it
-  // lists, which is how "Послуги" lights up on a service page.
+  // A link counts as current on its own page and on the pages under it, and
+  // a dropdown on its index and anywhere inside what it lists — which is how
+  // "Послуги" lights up on /poslugy, on a direction and on a sub-service.
   const isCurrent = (link?: Data.Component<"utilities.link"> | null) =>
-    link?.type === "page" && link.page?.fullPath === pathname
+    isWithinLink(link, pathname)
 
   return (
     <NavigationMenu viewport={false} className="hidden lg:flex">
@@ -113,7 +121,10 @@ function Menu({
 
           return (
             <NavigationMenuItem key={item.id} className="relative">
-              {item.isCategoryLink && item.link ? (
+              {/* An item is a plain link where it is marked as one, and
+                  also where it lists nothing and still has a link: the field
+                  is open to an editor either way. */}
+              {(item.isCategoryLink || !hasSubItems) && item.link ? (
                 <StrapiLink
                   component={item.link}
                   className={cn(
@@ -129,7 +140,7 @@ function Menu({
                   className={cn(
                     navigationMenuTriggerStyle(),
                     LABEL,
-                    item.categoryItems?.some(isCurrent) && ACTIVE_IN_BAR
+                    isWithinSection(item, pathname) && ACTIVE_IN_BAR
                   )}
                 >
                   {item.label}
@@ -151,12 +162,28 @@ function Menu({
                       fills too, and side by side the two fills ran into one
                       block. */}
                   <ul className="flex list-none flex-col gap-1">
+                    {/* Where the dropdown has an index of its own, a row
+                        that leads to it heads the list — lit only on the
+                        index itself, not on everything under it. */}
+                    {item.link && strapiLinkResolves(item.link) && (
+                      <li className="list-none">
+                        <StrapiLink
+                          component={item.link}
+                          className={cn(
+                            DROPDOWN_ROW,
+                            item.link.type === "page" &&
+                              item.link.page?.fullPath === pathname &&
+                              ACTIVE
+                          )}
+                        />
+                      </li>
+                    )}
                     {item?.categoryItems?.map((subItem) => (
                       <li key={subItem.id} className="list-none">
                         <StrapiLink
                           component={subItem}
                           className={cn(
-                            "text-brand-ink hover:bg-brand-mist hover:text-brand-teal flex h-13.5 w-full items-center justify-start rounded-[10px] px-5 text-base font-semibold no-underline transition-colors",
+                            DROPDOWN_ROW,
                             isCurrent(subItem) && ACTIVE
                           )}
                         />

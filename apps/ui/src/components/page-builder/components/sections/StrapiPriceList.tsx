@@ -1,8 +1,12 @@
 import "server-only"
 
 import type { Data } from "@repo/strapi-types"
+import { ArrowRight } from "lucide-react"
 
 import { Container } from "@/components/elementary/Container"
+import StrapiLink, {
+  strapiLinkResolves,
+} from "@/components/page-builder/components/utilities/StrapiLink"
 import Typography from "@/components/typography"
 import type { PageBuilderComponentProps } from "@/types/general"
 
@@ -18,11 +22,14 @@ export function StrapiPriceList({
 }: PageBuilderComponentProps & {
   component: Data.Component<"sections.price-list">
 }) {
-  const { title, groups } = component
+  const { title, groups, note } = component
 
   if (!groups?.length) {
     return null
   }
+
+  // A link whose page is gone would be an arrow to nowhere.
+  const link = strapiLinkResolves(component.link) ? component.link : null
 
   return (
     <section id="prices" className="scroll-mt-15 lg:scroll-mt-26.5">
@@ -54,12 +61,15 @@ export function StrapiPriceList({
               {/* A description list, not a table: each row is one price for one
                   named service, which is what dt/dd describe. It also wraps on
                   a phone without the horizontal scroll a table would need. */}
-              <dl className="flex flex-col">
+              <dl data-stagger className="flex flex-col">
                 {group.rows?.map((row, index) => (
                   <div
                     key={row.id}
                     className={[
                       "border-brand-hairline flex flex-wrap items-baseline justify-between gap-x-6 gap-y-1 px-5 py-4 lg:px-7.5",
+                      // The row under the pointer takes a breath of the
+                      // brand's teal, over its stripe.
+                      "hover:bg-brand-surface transition-colors duration-200",
                       "not-last:border-b",
                       // The design stripes alternate rows, starting with the
                       // first one under the heading.
@@ -78,6 +88,27 @@ export function StrapiPriceList({
             </div>
           ))}
         </div>
+
+        {/* What a sub-service's short table owes the reader: that the figures
+            are a starting point, and where the direction's full list is. The
+            row sits closer to the table than the table does to its heading,
+            so it reads as the table's footnote. */}
+        {(note || link) && (
+          <div className="-mt-3.5 flex flex-wrap items-center justify-between gap-x-6 gap-y-3 lg:-mt-8.5">
+            {note && (
+              <p className="text-brand-body text-[0.8125rem]/5">{note}</p>
+            )}
+            {link && (
+              <StrapiLink
+                component={link}
+                className="text-brand-teal hover:text-brand-light h-auto gap-2 p-0 text-[0.9375rem] font-semibold no-underline"
+              >
+                {link.label}
+                <ArrowRight aria-hidden className="size-4" />
+              </StrapiLink>
+            )}
+          </div>
+        )}
       </Container>
     </section>
   )
