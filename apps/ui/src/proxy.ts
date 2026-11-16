@@ -49,6 +49,8 @@ export const config = {
     "/",
     // Gate the generated sitemap in non-production deployed environments
     "/sitemap.xml",
+    // The same for the site's description for language models
+    "/llms.txt",
     // Set a cookie to remember the previous locale for
     // all requests that have a locale prefix
     `/(cs|en)/:path*`,

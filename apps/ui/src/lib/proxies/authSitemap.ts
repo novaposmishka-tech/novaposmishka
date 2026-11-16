@@ -2,7 +2,10 @@ import { type NextRequest, NextResponse } from "next/server"
 
 import { isDevelopment, isProduction } from "@/lib/general-helpers"
 
-const SITEMAP_PROTECTED_PATHS = new Set(["/sitemap.xml"])
+// The files that describe the site to crawlers. Answering here passes them
+// on to their routes past the i18n rewrite, after basic auth and the HTTPS
+// redirect have run.
+const SITEMAP_PROTECTED_PATHS = new Set(["/sitemap.xml", "/llms.txt"])
 
 const ALLOW_SITEMAP_PARAM = "allow-sitemap"
 const ALLOW_SITEMAP_VALUE = "yes"

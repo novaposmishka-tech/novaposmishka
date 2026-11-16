@@ -113,17 +113,7 @@ export async function fetchAllPages(
   requestInit?: RequestInit
 ) {
   try {
-    return await PublicStrapiClient.fetchAll(
-      uid,
-      {
-        locale,
-        fields: ["fullPath", "locale", "updatedAt", "createdAt", "slug"],
-        populate: {},
-        status: "published",
-        ...params,
-      },
-      cmsCache(requestInit, [PAGE_TAG])
-    )
+    return await fetchAllPagesOrThrow(uid, locale, params, requestInit)
   } catch (e: unknown) {
     logNonBlockingError({
       message: `Error fetching all pages for locale '${locale}'`,
@@ -135,6 +125,29 @@ export async function fetchAllPages(
 
     return { data: [] }
   }
+}
+
+/**
+ * fetchAllPages for a caller that has to tell a failed request from a site
+ * with no pages, and so gets the error rather than an empty list.
+ */
+export async function fetchAllPagesOrThrow(
+  uid: Extract<UID.ContentType, "api::page.page"> = "api::page.page",
+  locale?: Locale,
+  params?: Record<string, unknown>,
+  requestInit?: RequestInit
+) {
+  return PublicStrapiClient.fetchAll(
+    uid,
+    {
+      locale,
+      fields: ["fullPath", "locale", "updatedAt", "createdAt", "slug"],
+      populate: {},
+      status: "published",
+      ...params,
+    },
+    cmsCache(requestInit, [PAGE_TAG])
+  )
 }
 
 // ------ SEO fetching functions
