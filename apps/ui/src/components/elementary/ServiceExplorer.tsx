@@ -30,8 +30,6 @@ interface Labels {
   readonly details: string
 }
 
-const pad = (value: number) => String(value).padStart(2, "0")
-
 // The filled button is the site's own — the `default` variant carries the
 // gradient, its shadow and the hover — and only its measure is stated here.
 // There is no outlined variant in the brand's look, so that one is spelled
@@ -91,7 +89,6 @@ export function ServiceExplorer({
                 className="max-lg:hidden"
               >
                 <Row
-                  number={index + 1}
                   name={service.name}
                   on={isActive}
                   className={cn(isActive && "translate-x-3")}
@@ -110,7 +107,6 @@ export function ServiceExplorer({
                 className="w-full cursor-pointer text-left lg:hidden"
               >
                 <Row
-                  number={index + 1}
                   name={service.name}
                   on={isOpen}
                   arrowClassName={cn(isOpen && "rotate-90")}
@@ -188,9 +184,6 @@ export function ServiceExplorer({
           key={current.id}
           className="mt-auto flex flex-col gap-4.5 motion-safe:animate-[rise_0.45s_var(--ease-out)]"
         >
-          <span className="text-brand-teal text-sm font-semibold">
-            {pad(active + 1)} / {pad(services.length)}
-          </span>
           <h3 className="text-brand-ink text-[2rem]/[1.2] font-semibold">
             {current.name}
           </h3>
@@ -223,15 +216,13 @@ export function ServiceExplorer({
   )
 }
 
-/** A row's number, name and arrow, lit while the row is the one in hand. */
+/** A row's name and arrow, lit while the row is the one in hand. */
 function Row({
-  number,
   name,
   on,
   className,
   arrowClassName,
 }: {
-  readonly number: number
   readonly name?: string | null
   readonly on: boolean
   readonly className?: string
@@ -244,14 +235,6 @@ function Row({
         on ? "text-brand-light" : "text-brand-ink"
       )}
     >
-      <span
-        className={cn(
-          "w-7 shrink-0 text-sm font-semibold",
-          on ? "text-brand-teal" : "text-brand-on-dark"
-        )}
-      >
-        {pad(number)}
-      </span>
       <span
         className={cn(
           "flex-1 text-xl/[1.2] transition-transform duration-300 lg:text-[2rem]/[1.2]",
