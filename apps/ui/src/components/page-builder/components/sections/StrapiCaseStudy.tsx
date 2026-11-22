@@ -13,6 +13,7 @@ import { ZoomableImage } from "@/components/elementary/ZoomableImage"
 import { StrapiBasicImage } from "@/components/page-builder/components/utilities/StrapiBasicImage"
 import Typography from "@/components/typography"
 import { caseStudyId } from "@/lib/case-studies"
+import { doctorSignature } from "@/lib/doctors"
 import { formatStrapiMediaUrl } from "@/lib/strapi-helpers"
 import { cn } from "@/lib/styles"
 import type { PageBuilderComponentProps } from "@/types/general"
@@ -197,6 +198,7 @@ function CaseStage({
   const images = stage.images ?? []
   const pairs = stage.pairs ?? []
   const hasPhotos = images.length > 0 || pairs.length > 0
+  const signature = doctorSignature(stage.doctor)
 
   return (
     <article className={cn(CARD, "lg:items-center lg:gap-12.5")}>
@@ -288,20 +290,20 @@ function CaseStage({
           )}
         </div>
 
-        {stage.doctorName && (
+        {signature && (
           <div
             className={cn(RULE, "flex items-center gap-3.75 pt-4 lg:pt-7.5")}
           >
-            {stage.doctorPhoto && (
+            {signature.portrait && (
               <StrapiBasicImage
-                component={stage.doctorPhoto}
+                component={signature.portrait}
                 // Ranged to the top: a centred square crop of a half-body
                 // portrait takes the top of the head off.
                 className="bg-brand-on-dark size-12.5 shrink-0 rounded-full object-cover object-top"
               />
             )}
             <span className="text-brand-body text-sm/5 lg:text-lg/6.25">
-              {stage.doctorName}
+              {signature.name}
             </span>
           </div>
         )}

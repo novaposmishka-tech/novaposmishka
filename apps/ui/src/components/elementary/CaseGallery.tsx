@@ -7,6 +7,7 @@ import { BeforeAfterSlider } from "@/components/elementary/BeforeAfterSlider"
 import { showGrid, useChosenCase } from "@/components/elementary/CasePanel"
 import { ScrollRow } from "@/components/elementary/ScrollRow"
 import { StrapiBasicImage } from "@/components/page-builder/components/utilities/StrapiBasicImage"
+import { doctorSignature } from "@/lib/doctors"
 import { cn } from "@/lib/styles"
 
 type Group = NonNullable<Data.Component<"sections.results">["groups"]>[number]
@@ -174,36 +175,7 @@ export function CaseGallery({
                     </p>
                   )}
 
-                  {item.doctorName && (
-                    <div
-                      className={cn(
-                        "mt-auto flex items-center gap-3.75 border-t pt-4 lg:pt-5",
-                        // Grey, not the pale blue of brand-border: the frame rules a card in
-                        // the same hairline the rest of the site uses.
-                        isGrid ? "border-brand-hairline" : "border-white/20"
-                      )}
-                    >
-                      {item.doctorPhoto && (
-                        <StrapiBasicImage
-                          component={item.doctorPhoto}
-                          // The frame sets the portrait on a pale disc, which shows wherever the
-                          // photograph does not fill the circle.
-                          // The portraits are half-body and begin at the hairline, so a
-                          // centred square crop takes the top of the head off. Ranged
-                          // to the top it comes off the chest instead.
-                          className="bg-brand-on-dark size-12.5 shrink-0 rounded-full object-cover object-top lg:size-17.5"
-                        />
-                      )}
-                      <span
-                        className={cn(
-                          "text-sm/5 lg:text-xl/7",
-                          isGrid ? "text-brand-ink" : "text-brand-inverted"
-                        )}
-                      >
-                        {item.doctorName}
-                      </span>
-                    </div>
-                  )}
+                  <Signature doctor={item.doctor} isGrid={isGrid} />
                 </div>
               </div>
             </li>
@@ -307,3 +279,49 @@ function Cases({
 CaseGallery.displayName = "CaseGallery"
 
 export default CaseGallery
+
+/** The dentist a piece of work is signed by, on the card's floor. */
+function Signature({
+  doctor,
+  isGrid,
+}: {
+  readonly doctor: Data.Component<"shared.before-after">["doctor"]
+  readonly isGrid: boolean
+}) {
+  const signature = doctorSignature(doctor)
+
+  if (!signature) {
+    return null
+  }
+
+  return (
+    <div
+      className={cn(
+        "mt-auto flex items-center gap-3.75 border-t pt-4 lg:pt-5",
+        // Grey, not the pale blue of brand-border: the frame rules a card in
+        // the same hairline the rest of the site uses.
+        isGrid ? "border-brand-hairline" : "border-white/20"
+      )}
+    >
+      {signature.portrait && (
+        <StrapiBasicImage
+          component={signature.portrait}
+          // The frame sets the portrait on a pale disc, which shows wherever the
+          // photograph does not fill the circle.
+          // The portraits are half-body and begin at the hairline, so a
+          // centred square crop takes the top of the head off. Ranged
+          // to the top it comes off the chest instead.
+          className="bg-brand-on-dark size-12.5 shrink-0 rounded-full object-cover object-top lg:size-17.5"
+        />
+      )}
+      <span
+        className={cn(
+          "text-sm/5 lg:text-xl/7",
+          isGrid ? "text-brand-ink" : "text-brand-inverted"
+        )}
+      >
+        {signature.name}
+      </span>
+    </div>
+  )
+}

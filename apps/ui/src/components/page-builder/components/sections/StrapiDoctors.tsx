@@ -41,18 +41,18 @@ export function StrapiDoctors({
 }: PageBuilderComponentProps & {
   component: Data.Component<"sections.doctors">
 }) {
-  const { title, subtitle, doctors, link } = component
+  const { title, subtitle, doctors, link, display } = component
 
   if (!doctors?.length) {
     return null
   }
 
-  const detailed = doctors.some((doctor) => doctor.credentials?.length)
-
   // The team page is a different page, not a wider version of the row: every
   // dentist's training is listed, and the frame sets the lot on a pane of
-  // frosted glass that laps over the photograph above it.
-  if (detailed) {
+  // frosted glass that laps over the photograph above it. The editor picks it:
+  // every doctor carries their training, so its presence no longer tells the
+  // two apart.
+  if (display === "team") {
     return <DoctorsPage title={title} doctors={doctors} />
   }
 
