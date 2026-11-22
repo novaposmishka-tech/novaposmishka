@@ -22,6 +22,7 @@ import {
   BUTTON,
   BUTTON_ON_DARK,
   CLINIC_NAME,
+  doctorRef,
   image,
   pageLink,
   PHONES,
@@ -120,8 +121,7 @@ function doctorsOf(direction) {
   const specialty = DIRECTION_SPECIALTY[direction]
   const team = doctors
     .filter((doctor) => specialty && doctor.specialty === specialty)
-    // Portraits only, as on the homepage; /likari carries the training.
-    .map(({ credentials, ...rest }) => rest)
+    .map(({ name }) => doctorRef(name))
 
   if (team.length === 0) {
     return []

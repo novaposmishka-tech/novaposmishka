@@ -21,6 +21,7 @@ import {
   BUTTON,
   BUTTON_ON_DARK,
   BUTTON_QUIET,
+  doctorRef,
   EMAIL,
   GOOGLE_RATING,
   image,
@@ -309,7 +310,8 @@ export const homepage = {
       title: "Команда лікарів",
       link: pageLink("Усі лікарі", "likari", BUTTON),
       // Portraits only here; /likari carries the training for each of them.
-      doctors: featuredDoctors.map(({ credentials, ...rest }) => rest),
+      display: "row",
+      doctors: featuredDoctors.map(({ name }) => doctorRef(name)),
     },
     {
       __component: "sections.testimonials",

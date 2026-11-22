@@ -44,7 +44,7 @@ import {
 } from "./seed-media.mjs"
 import { casesPage } from "../seed/baseline/cases.mjs"
 import { contactsPage } from "../seed/baseline/contacts.mjs"
-import { doctorsPage } from "../seed/baseline/doctors.mjs"
+import { doctors, doctorsPage } from "../seed/baseline/doctors.mjs"
 import { feedbacksPage } from "../seed/baseline/feedbacks.mjs"
 import { servicePages } from "../seed/baseline/services.mjs"
 import {
@@ -91,7 +91,14 @@ try {
     log: console.log,
   })
   const missingMedia = new Set()
-  const resolve = (data) => resolveMediaMarkers(data, media, missingMedia)
+  const resolveMedia = (data) => resolveMediaMarkers(data, media, missingMedia)
+
+  // Doctors before the pages: the team blocks, the works and the treatment
+  // stages all point at them by documentId.
+  const doctorIds = await seedDoctors(doctors, resolveMedia)
+  const missingDoctors = new Set()
+  const resolve = (data) =>
+    resolveDoctorRefs(resolveMedia(data), doctorIds, missingDoctors)
 
   // Pages first: the navbar and the service cards link to them by slug, and
   // those links need documentIds that only exist once the pages do.
@@ -147,6 +154,12 @@ try {
   if (missingPages.size > 0) {
     console.warn(
       `[seed:content] Dropped ${missingPages.size} link(s) to pages that were not seeded: ${[...missingPages].join(", ")}`
+    )
+  }
+
+  if (missingDoctors.size > 0) {
+    console.warn(
+      `[seed:content] Dropped ${missingDoctors.size} reference(s) to doctors that were not seeded: ${[...missingDoctors].join(", ")}`
     )
   }
 
@@ -238,6 +251,85 @@ async function seedSingleType(uid, label, data) {
 
   await strapi.documents(uid).create({ locale, data })
   console.log(`[seed:content] ${label}: created.`)
+}
+
+/**
+ * Creates the clinic's doctors, one Doctor document each, matched on the full
+ * name. A doctor already there is left as the editors last saved them unless
+ * `--force` is given.
+ *
+ * @returns {Promise<Map<string, string>>} each doctor's documentId by name.
+ */
+async function seedDoctors(entries, resolve) {
+  const uid = "api::doctor.doctor"
+  const ids = new Map()
+
+  for (const doctor of entries) {
+    const existing = await strapi.documents(uid).findFirst({
+      fields: ["documentId"],
+      filters: { name: doctor.name },
+    })
+
+    if (existing && !force) {
+      ids.set(doctor.name, existing.documentId)
+      console.log(
+        `[seed:content] Doctor ${doctor.name}: exists, left untouched.`
+      )
+
+      continue
+    }
+
+    const data = resolve(doctor)
+    const document = existing
+      ? await strapi
+          .documents(uid)
+          .update({ documentId: existing.documentId, data })
+      : await strapi.documents(uid).create({ data })
+
+    ids.set(doctor.name, document.documentId)
+    console.log(
+      `[seed:content] Doctor ${doctor.name}: ${existing ? "replaced" : "created"}.`
+    )
+  }
+
+  return ids
+}
+
+/**
+ * Turns every `doctorRef()` marker into the doctor's documentId, which is
+ * what a relation to the Doctor collection is written with.
+ */
+function resolveDoctorRefs(value, doctorIds, missing) {
+  if (Array.isArray(value)) {
+    return value
+      .map((item) => resolveDoctorRefs(item, doctorIds, missing))
+      .filter((item) => item !== undefined)
+  }
+
+  if (value === null || typeof value !== "object") {
+    return value
+  }
+
+  if (typeof value.__doctor === "string") {
+    const documentId = doctorIds.get(value.__doctor)
+
+    if (documentId == null) {
+      missing.add(value.__doctor)
+    }
+
+    // Undefined drops the key or the array entry in the callers above.
+    return documentId ?? undefined
+  }
+
+  const out = {}
+  for (const [key, item] of Object.entries(value)) {
+    const resolved = resolveDoctorRefs(item, doctorIds, missing)
+    if (resolved !== undefined) {
+      out[key] = resolved
+    }
+  }
+
+  return out
 }
 
 /**

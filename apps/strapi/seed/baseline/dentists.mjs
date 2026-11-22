@@ -1,37 +1,23 @@
 /**
- * The dentists a piece of work or a treatment stage is signed by, as the
- * cards name them: first name and surname, with the portrait that goes beside
- * it.
+ * The dentist a piece of work or a treatment stage is signed by, named as the
+ * cards name them: first name and surname.
  *
- * The team page (doctors.mjs) carries the full names and the training; this is
- * the shorter form the design puts under a photograph of the work. Portraits
- * are the clinic's own, taken from its previous site.
+ * The doctor themselves — full name, both portraits, training — is kept once
+ * in the Doctor collection (doctors.mjs); this only points at them.
  */
 
-import { image } from "./shared.mjs"
+import { doctors } from "./doctors.mjs"
+import { doctorRef } from "./shared.mjs"
 
-const PORTRAITS = {
-  "Сергій Шевчук": "doctor-shevchuk",
-  "Тетяна Єгоренкова": "doctor-yegorenkova",
-  "Дарина Бучинська": "doctor-buchynska",
-  "Михайло Каменчук": "doctor-kamenchuk",
-  "Андрій Пархомчук": "doctor-parkhomchuk",
-  "Віталій Замятін": "doctor-zamiatin",
-  "Артур Гончарук": "doctor-honcharuk",
-}
+/** The `doctor` relation for one of the dentists in doctors.mjs. */
+export const dentist = (shortName) => {
+  const doctor = doctors.find((entry) => entry.shortName === shortName)
 
-/** The `doctorName` and `doctorPhoto` fields for one of the dentists above. */
-export const dentist = (name) => {
-  const file = PORTRAITS[name]
-
-  if (!file) {
+  if (!doctor) {
     throw new Error(
-      `No portrait on file for "${name}"; add one to dentists.mjs.`
+      `No doctor signs as "${shortName}"; add them to doctors.mjs.`
     )
   }
 
-  return {
-    doctorName: name,
-    doctorPhoto: image(file, `${name}, лікар клініки`),
-  }
+  return { doctor: doctorRef(doctor.name) }
 }

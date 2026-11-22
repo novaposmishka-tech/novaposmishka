@@ -57,6 +57,13 @@ export const anchor = (label, href, decorations = null) => ({
 })
 
 /**
+ * A doctor, by full name, for a relation to the Doctor collection. The seeder
+ * creates the doctors before the pages and swaps the marker for the
+ * documentId, so the pages name a dentist rather than copy them out.
+ */
+export const doctorRef = (name) => ({ __doctor: name.normalize("NFC") })
+
+/**
  * A link to another seeded page, by slug. The seeder swaps the marker for the
  * page's documentId once every page exists — a relation, so the link follows
  * the page if its path ever changes.

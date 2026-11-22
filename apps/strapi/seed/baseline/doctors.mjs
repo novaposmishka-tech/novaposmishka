@@ -4,6 +4,9 @@
  * The homepage shows the first few as portraits; /likari lists them all with
  * the training the design records for each.
  *
+ * Andrii Parkhomchuk has left the clinic (2026-11-22) and is not listed; the
+ * works he signed are shown as Serhii Shevchuk's, on the clinic's instruction.
+ *
  * Five have a photograph in the design: three on the team page, and two more
  * that only appear as the small round portraits beside a treatment stage in
  * the case studies.
@@ -15,12 +18,11 @@
  * under another named dentist's name.
  */
 
-import { CLINIC_NAME, image } from "./shared.mjs"
+import { CLINIC_NAME, doctorRef, image } from "./shared.mjs"
 
 const PHOTOS = {
   "Шевчук Сергій Миколайович": "doctors-1",
   "Єгоренкова Тетяна Вікторівна": "doctors-2",
-  "Пархомчук Андрій Валентинович": "doctors-3",
   // From the case studies, where each treatment stage names its dentist.
   "Замятін Віталій Олександрович": "doctor-zamiatin",
   "Гончарук Артур Анатолійович": "doctor-honcharuk",
@@ -28,19 +30,46 @@ const PHOTOS = {
   // From the clinic's previous site, where the works are signed by them.
   "Каменчук Михайло Віталійович": "doctor-kamenchuk",
   "Бучинська Дарина Олександрівна": "doctor-buchynska",
-  // PLACEHOLDER — not this person. Borrowed so the team page has no gap.
+  // PLACEHOLDER — not this person: the photograph of Andrii Parkhomchuk, who
+  // has since left the clinic. Borrowed so the team page has no gap.
   // Replace with his own photograph; see TODO.md.
   "Острогляд Євгеній Сергійович": "doctors-3",
+}
+
+/**
+ * The small round portraits a piece of work or a treatment stage is signed
+ * with, where they are not the team photograph itself. They are the clinic's
+ * own, taken from its previous site.
+ */
+const AVATARS = {
+  "Шевчук Сергій Миколайович": "doctor-shevchuk",
+  "Єгоренкова Тетяна Вікторівна": "doctor-yegorenkova",
+}
+
+/** "Шевчук Сергій Миколайович" → "Сергій Шевчук", as the works are signed. */
+const shortNameOf = (name) => {
+  const [surname, firstName] = name.split(" ")
+
+  return `${firstName} ${surname}`
 }
 
 const withPhoto = (doctor) => {
   // Figma stores some of these names decomposed ("и" plus a combining breve
   // rather than "й"), so they look identical but do not compare equal.
-  const file = PHOTOS[doctor.name.normalize("NFC")]
+  const name = doctor.name.normalize("NFC")
+  const shortName = shortNameOf(name)
+  const file = PHOTOS[name]
+  const avatar = AVATARS[name]
 
-  return file
-    ? { ...doctor, photo: image(file, `${doctor.name}, ${doctor.specialty}`) }
-    : doctor
+  return {
+    ...doctor,
+    name,
+    shortName,
+    ...(file && { photo: image(file, `${name}, ${doctor.specialty}`) }),
+    ...(avatar && {
+      avatar: image(avatar, `${shortName}, лікар клініки`),
+    }),
+  }
 }
 
 const ALL = [
@@ -68,24 +97,6 @@ const ALL = [
         label: "Підвищення кваліфікації:",
         value:
           "«Діагностика та лікування інфекційних захворювань слизової оболонки порожнини рота у дітей» в Українській медичній стоматологічній академії",
-      },
-      {
-        label: "Післядипломна освіта:",
-        value: "НМУ ім. О.О. Богомольця – спеціалізація «Ортодонтія»",
-      },
-    ],
-  },
-  {
-    name: "Пархомчук Андрій Валентинович",
-    specialty: "Стоматолог-ортопед",
-    credentials: [
-      {
-        label: "Місце навчання:",
-        value: "Житомирський базовий медичний коледж",
-      },
-      {
-        label: "Підвищення кваліфікації:",
-        value: "КВНЗ “Житомирський медичний інститут”",
       },
       {
         label: "Післядипломна освіта:",
@@ -193,9 +204,8 @@ const ALL = [
   },
 ]
 
-export const doctors = ALL.map((doctor) =>
-  withPhoto({ ...doctor, name: doctor.name.normalize("NFC") })
-)
+/** The entries of the Doctor collection the seeder creates first. */
+export const doctors = ALL.map(withPhoto)
 
 /** The three the homepage introduces. */
 export const featuredDoctors = doctors.slice(0, 3)
@@ -226,7 +236,8 @@ export const doctorsPage = {
     {
       __component: "sections.doctors",
       title: "Наша Команда",
-      doctors,
+      display: "team",
+      doctors: doctors.map(({ name }) => doctorRef(name)),
     },
   ],
 }
