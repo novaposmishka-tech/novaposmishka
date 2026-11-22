@@ -15,11 +15,10 @@
       "component": "utilities.text"
     },
     "note": { "type": "text" },
-    "doctorName": { "type": "string" },
-    "doctorPhoto": {
-      "type": "component",
-      "repeatable": false,
-      "component": "utilities.basic-image"
+    "doctor": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "api::doctor.doctor"
     },
     "images": {
       "type": "component",

@@ -1,3 +1,4 @@
+import { strapiCacheTag } from "@repo/shared-data"
 import type { Core, UID } from "@strapi/strapi"
 
 import { logError, logger } from "../utils/logging"
@@ -25,6 +26,13 @@ const REVALIDATE_COLLECTIONS: RevalidateCollectionConfig[] = [
     uid: "api::redirect.redirect",
     mode: "path-revalidate",
     pathField: "source",
+  },
+  // A doctor is only ever shown inside pages, so editing one has to clear
+  // every page that may name them.
+  {
+    uid: "api::doctor.doctor",
+    mode: "tag-revalidate",
+    tags: [strapiCacheTag("api::page.page")],
   },
   // Add your own collections here, e.g.:
   // { uid: "api::blog-article.blog-article", mode: "path-revalidate", pathField: "fullPath" },

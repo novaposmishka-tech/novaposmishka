@@ -14,9 +14,15 @@
       "type": "text"
     },
     "doctors": {
-      "type": "component",
-      "component": "shared.doctor",
-      "repeatable": true
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::doctor.doctor"
+    },
+    "display": {
+      "type": "enumeration",
+      "enum": ["row", "team"],
+      "default": "row",
+      "required": true
     },
     "link": {
       "type": "component",

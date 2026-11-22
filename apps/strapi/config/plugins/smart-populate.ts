@@ -7,6 +7,16 @@ type ComponentPopulateMap = {
   >["populate"]
 }
 
+// Relations are populated one level deep by default, which would bring a
+// doctor without the images and training they are rendered with.
+const DOCTOR_IMAGE = { populate: { media: true } }
+
+/** A doctor as the works gallery and the treatment stages sign with them. */
+const doctorSignature = {
+  fields: ["name", "shortName", "specialty"],
+  populate: { photo: DOCTOR_IMAGE, avatar: DOCTOR_IMAGE },
+} satisfies ComponentPopulateMap["shared.case-stage"]["doctor"]
+
 const populateOverrides = [
   {
     componentUid: "utilities.link",
@@ -16,6 +26,26 @@ const populateOverrides = [
         fields: ["fullPath"],
       },
     },
+  },
+  {
+    componentUid: "sections.doctors",
+    mergeWithGeneratedPopulate: true,
+    overridePopulate: {
+      doctors: {
+        fields: ["name", "specialty"],
+        populate: { photo: DOCTOR_IMAGE, credentials: true },
+      },
+    },
+  },
+  {
+    componentUid: "shared.before-after",
+    mergeWithGeneratedPopulate: true,
+    overridePopulate: { doctor: doctorSignature },
+  },
+  {
+    componentUid: "shared.case-stage",
+    mergeWithGeneratedPopulate: true,
+    overridePopulate: { doctor: doctorSignature },
   },
 ] satisfies PopulateOverrideEntries<ComponentPopulateMap>
 

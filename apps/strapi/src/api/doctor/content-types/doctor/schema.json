@@ -1,0 +1,42 @@
+{
+  "kind": "collectionType",
+  "collectionName": "doctors",
+  "info": {
+    "singularName": "doctor",
+    "pluralName": "doctors",
+    "displayName": "Doctor",
+    "description": "One of the clinic's dentists, filled in once and picked wherever the site names them: the team blocks, the works gallery and the treatment stages."
+  },
+  "options": {
+    "draftAndPublish": false
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "name": {
+      "type": "string",
+      "required": true,
+      "unique": true
+    },
+    "shortName": {
+      "type": "string"
+    },
+    "specialty": {
+      "type": "string"
+    },
+    "photo": {
+      "type": "component",
+      "component": "utilities.basic-image",
+      "repeatable": false
+    },
+    "avatar": {
+      "type": "component",
+      "component": "utilities.basic-image",
+      "repeatable": false
+    },
+    "credentials": {
+      "type": "component",
+      "component": "shared.credential",
+      "repeatable": true
+    }
+  }
+}

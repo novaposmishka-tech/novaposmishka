@@ -169,8 +169,7 @@ export interface SharedCaseStage extends Struct.ComponentSchema {
   }
   attributes: {
     bullets: Schema.Attribute.Component<"utilities.text", true>
-    doctorName: Schema.Attribute.String
-    doctorPhoto: Schema.Attribute.Component<"utilities.basic-image", false>
+    doctor: Schema.Attribute.Relation<"oneToOne", "api::doctor.doctor">
     images: Schema.Attribute.Component<"utilities.basic-image", true>
     intro: Schema.Attribute.Text
     note: Schema.Attribute.Text
@@ -205,8 +204,11 @@ export interface SectionsDoctors extends Struct.ComponentSchema {
     icon: "user"
   }
   attributes: {
+    display: Schema.Attribute.Enumeration<["row", "team"]> &
+      Schema.Attribute.Required &
+      Schema.Attribute.DefaultTo<"row">
+    doctors: Schema.Attribute.Relation<"oneToMany", "api::doctor.doctor">
     link: Schema.Attribute.Component<"utilities.link", false>
-    doctors: Schema.Attribute.Component<"shared.doctor", true>
     subtitle: Schema.Attribute.Text
     title: Schema.Attribute.String
   }
@@ -259,8 +261,7 @@ export interface SharedBeforeAfter extends Struct.ComponentSchema {
     before: Schema.Attribute.Component<"utilities.basic-image", false> &
       Schema.Attribute.Required
     caption: Schema.Attribute.String
-    doctorName: Schema.Attribute.String
-    doctorPhoto: Schema.Attribute.Component<"utilities.basic-image", false>
+    doctor: Schema.Attribute.Relation<"oneToOne", "api::doctor.doctor">
   }
 }
 
@@ -570,21 +571,6 @@ export interface SharedCredential extends Struct.ComponentSchema {
   attributes: {
     label: Schema.Attribute.String & Schema.Attribute.Required
     value: Schema.Attribute.Text & Schema.Attribute.Required
-  }
-}
-
-export interface SharedDoctor extends Struct.ComponentSchema {
-  collectionName: "components_shared_doctors"
-  info: {
-    description: ""
-    displayName: "Doctor"
-    icon: "user"
-  }
-  attributes: {
-    credentials: Schema.Attribute.Component<"shared.credential", true>
-    name: Schema.Attribute.String & Schema.Attribute.Required
-    photo: Schema.Attribute.Component<"utilities.basic-image", false>
-    specialty: Schema.Attribute.String
   }
 }
 
@@ -1121,7 +1107,6 @@ declare module "@strapi/strapi" {
       "shared.contact-item": SharedContactItem
       "shared.credential": SharedCredential
       "shared.direction": SharedDirection
-      "shared.doctor": SharedDoctor
       "shared.figure": SharedFigure
       "shared.icon-card": SharedIconCard
       "shared.image-with-config": SharedImageWithConfig

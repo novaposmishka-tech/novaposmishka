@@ -430,6 +430,39 @@ export interface AdminUser extends Struct.CollectionTypeSchema {
   }
 }
 
+export interface ApiDoctorDoctor extends Struct.CollectionTypeSchema {
+  collectionName: "doctors"
+  info: {
+    description: "One of the clinic's dentists, filled in once and picked wherever the site names them: the team blocks, the works gallery and the treatment stages."
+    displayName: "Doctor"
+    pluralName: "doctors"
+    singularName: "doctor"
+  }
+  options: {
+    draftAndPublish: false
+  }
+  attributes: {
+    avatar: Schema.Attribute.Component<"utilities.basic-image", false>
+    createdAt: Schema.Attribute.DateTime
+    createdBy: Schema.Attribute.Relation<"oneToOne", "admin::user"> &
+      Schema.Attribute.Private
+    credentials: Schema.Attribute.Component<"shared.credential", true>
+    locale: Schema.Attribute.String & Schema.Attribute.Private
+    localizations: Schema.Attribute.Relation<"oneToMany", "api::doctor.doctor"> &
+      Schema.Attribute.Private
+    name: Schema.Attribute.String &
+      Schema.Attribute.Required &
+      Schema.Attribute.Unique
+    photo: Schema.Attribute.Component<"utilities.basic-image", false>
+    publishedAt: Schema.Attribute.DateTime
+    shortName: Schema.Attribute.String
+    specialty: Schema.Attribute.String
+    updatedAt: Schema.Attribute.DateTime
+    updatedBy: Schema.Attribute.Relation<"oneToOne", "admin::user"> &
+      Schema.Attribute.Private
+  }
+}
+
 export interface ApiFooterFooter extends Struct.SingleTypeSchema {
   collectionName: "footers"
   info: {
@@ -1287,6 +1320,7 @@ declare module "@strapi/strapi" {
       "admin::transfer-token": AdminTransferToken
       "admin::transfer-token-permission": AdminTransferTokenPermission
       "admin::user": AdminUser
+      "api::doctor.doctor": ApiDoctorDoctor
       "api::footer.footer": ApiFooterFooter
       "api::hierarchy.hierarchy": ApiHierarchyHierarchy
       "api::navbar.navbar": ApiNavbarNavbar
