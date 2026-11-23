@@ -433,7 +433,7 @@ export interface AdminUser extends Struct.CollectionTypeSchema {
 export interface ApiDirectionDirection extends Struct.CollectionTypeSchema {
   collectionName: "directions"
   info: {
-    description: "One of the clinic's directions of treatment (Терапія, Ортопедія…): the card that stands for it across the site, and the page it leads to."
+    description: "One of the clinic's directions of treatment (Терапія, Ортопедія…): the card that stands for it across the site, and the page it leads to. The icon is drawn in the services index, the illustration on the homepage card."
     displayName: "Direction"
     pluralName: "directions"
     singularName: "direction"
@@ -454,6 +454,7 @@ export interface ApiDirectionDirection extends Struct.CollectionTypeSchema {
       Schema.Attribute.Private
     description: Schema.Attribute.Text
     icon: Schema.Attribute.Component<"utilities.basic-image", false>
+    illustration: Schema.Attribute.Component<"utilities.basic-image", false>
     name: Schema.Attribute.String &
       Schema.Attribute.Required &
       Schema.Attribute.Unique
@@ -820,7 +821,7 @@ export interface ApiSubdirectionSubdirection
   extends Struct.CollectionTypeSchema {
   collectionName: "subdirections"
   info: {
-    description: "One procedure under a direction (Лікування карієсу, Брекети…): its card and the page it leads to."
+    description: "One procedure under a direction (Лікування карієсу, Брекети…): its entry in the direction's list, with the photograph shown beside it, and the page it leads to."
     displayName: "Subdirection"
     pluralName: "subdirections"
     singularName: "subdirection"
@@ -841,6 +842,7 @@ export interface ApiSubdirectionSubdirection
       Schema.Attribute.Private
     description: Schema.Attribute.Text
     direction: Schema.Attribute.Relation<"manyToOne", "api::direction.direction">
+    image: Schema.Attribute.Component<"utilities.basic-image", false>
     name: Schema.Attribute.String & Schema.Attribute.Required
     order: Schema.Attribute.Integer & Schema.Attribute.DefaultTo<0>
     page: Schema.Attribute.Relation<"oneToOne", "api::page.page">

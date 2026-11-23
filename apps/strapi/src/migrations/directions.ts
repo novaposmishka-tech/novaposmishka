@@ -24,6 +24,11 @@ const SUBDIRECTION = "api::subdirection.subdirection"
 const PAGE = "api::page.page"
 const LOCALE = "uk"
 const DONE = { type: "strapi", name: "migrations", key: "directions-filled" }
+const IMAGES_DONE = {
+  type: "strapi",
+  name: "migrations",
+  key: "direction-images-filled",
+}
 
 type Link = {
   label?: string | null
@@ -61,14 +66,18 @@ export async function fillDirections(strapi: Core.Strapi) {
       return
     }
 
-    const explorer = await block("/poslugy", "sections.service-explorer")
+    const explorer = await block(
+      strapi,
+      "/poslugy",
+      "sections.service-explorer"
+    )
 
     if (!explorer?.services?.length) {
       return
     }
 
     const homepageCards =
-      (await block("/", "sections.services"))?.services ?? []
+      (await block(strapi, "/", "sections.services"))?.services ?? []
     let created = 0
 
     for (const [index, card] of explorer.services.entries()) {
@@ -118,26 +127,13 @@ export async function fillDirections(strapi: Core.Strapi) {
     logError(error, "Filling directions from the pages failed")
   }
 
-  /** The first block of a kind on the published page at `fullPath`. */
-  async function block(fullPath: string, component: string) {
-    const page = await strapi.documents(PAGE).findFirst({
-      locale: LOCALE,
-      status: "published",
-      filters: { fullPath },
-      populate: { content: "smart" } as never,
-    })
-    const content = (page as null | { content?: Block[] })?.content ?? []
-
-    return content.find((entry) => entry.__component === component)
-  }
-
   /**
    * A direction's procedures: the list on its own page, which has a sentence
    * for each, then any tag on /poslugy that list does not have.
    */
   async function proceduresOf(card: Card, pageId: string | undefined) {
     const listed = pageId
-      ? ((await directionPageList(pageId))?.items ?? [])
+      ? ((await directionPageList(strapi, pageId))?.items ?? [])
       : []
     const procedures: Procedure[] = []
 
@@ -193,18 +189,127 @@ export async function fillDirections(strapi: Core.Strapi) {
       )?.documentId
     }
   }
+}
 
-  async function directionPageList(documentId: string) {
-    const page = await strapi.documents(PAGE).findOne({
-      documentId,
-      locale: LOCALE,
-      status: "published",
-      populate: { content: "smart" } as never,
-    })
-    const content = (page as null | { content?: Block[] })?.content ?? []
+/**
+ * Gives the directions and their procedures the pictures the blocks drew
+ * them with and the first fill did not copy: the illustration on each
+ * homepage card, and the photograph beside each procedure on its direction's
+ * page. Once, like the fill: a picture an editor later removes stays removed.
+ * Only an empty field is filled, and a database whose directions are not made
+ * yet is left for a later start.
+ */
+export async function fillDirectionImages(strapi: Core.Strapi) {
+  try {
+    if (await strapi.store.get(IMAGES_DONE)) {
+      return
+    }
 
-    return content.find((entry) => entry.__component === "sections.subservices")
+    const directions = (await strapi.documents(DIRECTION).findMany({
+      fields: ["name"],
+      populate: {
+        illustration: true,
+        page: { fields: ["fullPath"] },
+        subdirections: {
+          fields: ["name"],
+          populate: { image: true, page: { fields: ["fullPath"] } },
+        },
+      },
+    } as never)) as unknown as FilledDirection[]
+
+    if (directions.length === 0) {
+      return
+    }
+
+    const homepageCards =
+      (await block(strapi, "/", "sections.services"))?.services ?? []
+    let filled = 0
+
+    for (const direction of directions) {
+      const pageId = direction.page?.documentId
+      const card = homepageCards.find(
+        (entry) =>
+          (pageId && entry.link?.page?.documentId === pageId) ||
+          same(entry.name, direction.name)
+      )
+      const illustration = imageOf(card?.icon)
+
+      if (!direction.illustration && illustration) {
+        await strapi.documents(DIRECTION).update({
+          documentId: direction.documentId,
+          data: { illustration },
+        } as never)
+        filled += 1
+      }
+
+      const items = pageId
+        ? ((await directionPageList(strapi, pageId))?.items ?? [])
+        : []
+
+      for (const procedure of direction.subdirections ?? []) {
+        const item = items.find(
+          (entry) =>
+            (procedure.page?.documentId &&
+              entry.link?.page?.documentId === procedure.page.documentId) ||
+            same(entry.name, procedure.name)
+        )
+        const image = imageOf(item?.icon)
+
+        if (!procedure.image && image) {
+          await strapi.documents(SUBDIRECTION).update({
+            documentId: procedure.documentId,
+            data: { image },
+          } as never)
+          filled += 1
+        }
+      }
+    }
+
+    await strapi.store.set({ ...IMAGES_DONE, value: true })
+    logger.info("Direction pictures filled from the pages", { filled })
+  } catch (error) {
+    // Nothing is marked done, so the next start tries again.
+    logError(error, "Filling direction pictures from the pages failed")
   }
+}
+
+type FilledDirection = {
+  documentId: string
+  name: string
+  illustration?: unknown
+  page?: null | { documentId: string }
+  subdirections?: {
+    documentId: string
+    name: string
+    image?: unknown
+    page?: null | { documentId: string }
+  }[]
+}
+
+/** The first block of a kind on the published page at `fullPath`. */
+async function block(strapi: Core.Strapi, fullPath: string, component: string) {
+  const page = await strapi.documents(PAGE).findFirst({
+    locale: LOCALE,
+    status: "published",
+    filters: { fullPath },
+    populate: { content: "smart" } as never,
+  })
+  const content = (page as null | { content?: Block[] })?.content ?? []
+
+  return content.find((entry) => entry.__component === component)
+}
+
+/** The list of procedures on a direction's own page. */
+async function directionPageList(strapi: Core.Strapi, documentId: string) {
+  const page = await strapi.documents(PAGE).findOne({
+    documentId,
+    locale: LOCALE,
+    status: "published",
+    populate: { content: "smart" } as never,
+  })
+  const content = (page as null | { content?: Block[] })?.content ?? []
+
+  return content.find((entry) => entry.__component === "sections.subservices")
 }
 
 function imageOf(image: Image | undefined) {

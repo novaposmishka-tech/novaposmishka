@@ -6,7 +6,7 @@ import "./instrumentation"
 import { registerAutoRevalidateMiddleware } from "./documentMiddlewares/revalidate"
 import { registerAdminUserSubscriber } from "./lifeCycles/adminUser"
 import { registerUserSubscriber } from "./lifeCycles/user"
-import { fillDirections } from "./migrations/directions"
+import { fillDirectionImages, fillDirections } from "./migrations/directions"
 import { migrateWorks } from "./migrations/works"
 import { logger } from "./utils/logging"
 
@@ -38,6 +38,8 @@ export default {
     // One-off: makes the Direction and Subdirection entries from the cards the
     // pages carry. A no-op once done.
     await fillDirections(strapi)
+    // One-off as well: the pictures the blocks drew the directions with.
+    await fillDirectionImages(strapi)
 
     // One-off: makes the Work entries from the works copied out before the
     // schema dropped the gallery's own copies. Needs the directions above. A

@@ -5,7 +5,7 @@
     "singularName": "direction",
     "pluralName": "directions",
     "displayName": "Direction",
-    "description": "One of the clinic's directions of treatment (Терапія, Ортопедія…): the card that stands for it across the site, and the page it leads to."
+    "description": "One of the clinic's directions of treatment (Терапія, Ортопедія…): the card that stands for it across the site, and the page it leads to. The icon is drawn in the services index, the illustration on the homepage card."
   },
   "options": {
     "draftAndPublish": false
@@ -24,6 +24,11 @@
       "type": "text"
     },
     "icon": {
+      "type": "component",
+      "component": "utilities.basic-image",
+      "repeatable": false
+    },
+    "illustration": {
       "type": "component",
       "component": "utilities.basic-image",
       "repeatable": false

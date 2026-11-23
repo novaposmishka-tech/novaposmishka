@@ -307,11 +307,12 @@ async function seedDoctors(entries, resolve) {
  * no pages yet and left the collections for later.
  */
 async function fillDirections() {
-  const { fillDirections: fill } = require(
+  const { fillDirectionImages, fillDirections: fill } = require(
     path.join(appDir, "dist", "src", "migrations", "directions.js")
   )
 
   await fill(strapi)
+  await fillDirectionImages(strapi)
 }
 
 /**
