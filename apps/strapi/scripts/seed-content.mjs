@@ -15,6 +15,8 @@
  * It only ever creates what is missing — an existing document is left exactly
  * as the editors last saved it. Pass `--force` to replace them all instead,
  * or `--only=nashi-roboty,/` to replace just the pages named, by slug.
+ * Neither reaches the directions or the works: those are seeded once, into a
+ * database without them, and are the editors' from then on.
  *
  * A page the seed creates is also hung under its parent. One that already
  * exists is not, even when it is replaced — an editor may have moved it, or
@@ -26,10 +28,14 @@
  * plain run, and then needs, once:
  *
  *   --link-parents           the direction pages hung under the index
- *   --only=terapiia,…        each direction page, for its list of sub-services
  *
  * and its Navbar and Footer edited by hand, or replaced with `--force` along
  * with everything else, for the links to the index.
+ *
+ * The directions and the procedures under them are entries of their own, not
+ * part of any page. They are seeded once, into a database that has none, and
+ * are the editors' from then on; the works are only created into an empty
+ * collection too.
  */
 
 import { createRequire } from "node:module"
@@ -44,6 +50,7 @@ import {
 } from "./seed-media.mjs"
 import { casesPage, works } from "../seed/baseline/cases.mjs"
 import { contactsPage } from "../seed/baseline/contacts.mjs"
+import { directions } from "../seed/baseline/directions.mjs"
 import { doctors, doctorsPage } from "../seed/baseline/doctors.mjs"
 import { feedbacksPage } from "../seed/baseline/feedbacks.mjs"
 import { servicePages } from "../seed/baseline/services.mjs"
@@ -151,9 +158,9 @@ try {
   await seedSingleType("api::footer.footer", "Footer", link(footer))
   await seedPage(homepage.slug, link(homepage))
 
-  // The works last: they are filed under the directions, which Strapi makes
-  // from the service pages seeded above.
-  await fillDirections()
+  // The directions lead to the pages seeded above, and the works are filed
+  // under them.
+  await seedDirections(directions, resolve, pageIds, missingPages)
   await seedWorks(works, resolve)
 
   if (missingPages.size > 0) {
@@ -301,18 +308,71 @@ async function seedDoctors(entries, resolve) {
 }
 
 /**
- * Makes the Direction and Subdirection entries from the service pages, as
- * Strapi does at start-up — through the same compiled code, so the two cannot
- * differ. On a database the seed has just filled, the start-up before it found
- * no pages yet and left the collections for later.
+ * Marks the directions as seeded. The key is the one the start-up fill used
+ * to mark itself with, so a database it filled counts as seeded too.
  */
-async function fillDirections() {
-  const { fillDirectionImages, fillDirections: fill } = require(
-    path.join(appDir, "dist", "src", "migrations", "directions.js")
-  )
+const DIRECTIONS_SEEDED = {
+  type: "strapi",
+  name: "migrations",
+  key: "directions-filled",
+}
 
-  await fill(strapi)
-  await fillDirectionImages(strapi)
+/**
+ * Creates the directions and the procedures under each, linked to their
+ * pages — once, into a database that has none. After that they are the
+ * editors': a direction renamed or a procedure deleted is not brought back.
+ *
+ * Everything is written in one transaction with the mark, so a run that fails
+ * leaves nothing behind and the next one starts afresh. A page slug that was
+ * not seeded is reported with the other dropped links.
+ */
+async function seedDirections(entries, resolve, pageIds, missingPages) {
+  const uid = "api::direction.direction"
+
+  if (
+    (await strapi.store.get(DIRECTIONS_SEEDED)) ||
+    (await strapi.documents(uid).count({})) > 0
+  ) {
+    console.log("[seed:content] Directions: exist, left untouched.")
+
+    return
+  }
+
+  const pageOf = (slug) => {
+    const documentId = pageIds.get(slug)
+
+    if (documentId == null) {
+      missingPages.add(slug)
+    }
+
+    return documentId
+  }
+  let made = 0
+
+  await strapi.db.transaction(async () => {
+    for (const { pageSlug, subdirections, ...direction } of entries) {
+      const created = await strapi.documents(uid).create({
+        data: { ...resolve(direction), page: pageOf(pageSlug) },
+      })
+
+      for (const { pageSlug: procedurePage, ...procedure } of subdirections) {
+        await strapi.documents("api::subdirection.subdirection").create({
+          data: {
+            ...resolve(procedure),
+            direction: created.documentId,
+            page: pageOf(procedurePage),
+          },
+        })
+        made += 1
+      }
+
+      made += 1
+    }
+
+    await strapi.store.set({ ...DIRECTIONS_SEEDED, value: true })
+  })
+
+  console.log(`[seed:content] Directions and procedures: created ${made}.`)
 }
 
 /**
