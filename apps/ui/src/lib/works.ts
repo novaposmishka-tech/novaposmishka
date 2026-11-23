@@ -1,12 +1,13 @@
 import type { Data } from "@repo/strapi-types"
 
+import type { DirectionEntry } from "@/lib/directions"
+
 type Work = Data.ContentType<"api::work.work">
-type Direction = Data.ContentType<"api::direction.direction">
 
 /** One piece of work as a card shows it. */
 export type CaseItem = Pick<Work, "id" | "caption" | "before" | "after"> & {
   readonly doctor?: Work["doctor"] | null
-  readonly direction?: Pick<Direction, "documentId"> | null
+  readonly direction?: null | { documentId: string }
   readonly subdirection?: null | { documentId: string }
 }
 
@@ -15,19 +16,6 @@ export type CaseGroup = {
   readonly id: string
   readonly title: string
   readonly cases: CaseItem[]
-}
-
-type Procedure = {
-  documentId: string
-  name: string
-  page?: null | { documentId: string }
-}
-
-export type DirectionEntry = {
-  documentId: string
-  name: string
-  page?: null | { documentId: string }
-  subdirections?: Procedure[] | null
 }
 
 /**

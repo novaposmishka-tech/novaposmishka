@@ -9,9 +9,10 @@ import {
   type SubserviceItem,
 } from "@/components/elementary/SubserviceAccordion"
 import { StrapiBasicImage } from "@/components/page-builder/components/utilities/StrapiBasicImage"
-import { resolvedStrapiHref } from "@/components/page-builder/components/utilities/StrapiLink"
 import Typography from "@/components/typography"
 import { LEAD_FORM_ANCHOR } from "@/lib/analytics"
+import { directionOfPage, pageHref } from "@/lib/directions"
+import { fetchDirections } from "@/lib/strapi-api/content/server"
 import type { PageBuilderComponentProps } from "@/types/general"
 
 /**
@@ -24,28 +25,36 @@ import type { PageBuilderComponentProps } from "@/types/general"
  */
 export async function StrapiSubservices({
   component,
+  page,
 }: PageBuilderComponentProps & {
   component: Data.Component<"sections.subservices">
 }) {
-  const { title, description, items } = component
+  const { title, description } = component
 
-  if (!items?.length) {
+  // The list is the procedures the collection files under the direction this
+  // page is for; the block itself only holds the heading.
+  const [directions, t] = await Promise.all([
+    fetchDirections(),
+    getTranslations("services"),
+  ])
+  const procedures =
+    directionOfPage(directions, page?.documentId)?.subdirections ?? []
+
+  if (procedures.length === 0) {
     return null
   }
 
-  const t = await getTranslations("services")
-
-  const entries: SubserviceItem[] = items.map((item) => ({
-    id: item.id,
+  const entries: SubserviceItem[] = procedures.map((item) => ({
+    id: item.documentId,
     name: item.name,
     description: item.description,
-    // An entry whose page is not there keeps its sentence and loses the
+    // A procedure without a page of its own keeps its sentence and loses the
     // button, rather than carrying one that goes nowhere.
-    href: resolvedStrapiHref(item.link),
-    linkLabel: item.link?.label,
-    image: item.icon && (
+    href: pageHref(item),
+    linkLabel: t("detailsAndPrices"),
+    image: item.image && (
       <StrapiBasicImage
-        component={item.icon}
+        component={item.image}
         fill
         sizes="(min-width: 64rem) 50vw, 100vw"
         className="object-cover"

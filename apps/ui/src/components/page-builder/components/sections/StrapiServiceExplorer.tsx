@@ -11,13 +11,13 @@ import {
 import { operatorIcon } from "@/components/icons/operators"
 import { StrapiBasicImage } from "@/components/page-builder/components/utilities/StrapiBasicImage"
 import StrapiLink, {
-  resolvedStrapiHref,
   strapiLinkResolves,
 } from "@/components/page-builder/components/utilities/StrapiLink"
 import Typography from "@/components/typography"
 import { LEAD_FORM_ANCHOR } from "@/lib/analytics"
 import { clinicPhones, contactHref } from "@/lib/contacts"
-import { fetchNavbar } from "@/lib/strapi-api/content/server"
+import { pageHref } from "@/lib/directions"
+import { fetchDirections, fetchNavbar } from "@/lib/strapi-api/content/server"
 import type { PageBuilderComponentProps } from "@/types/general"
 
 const HELP_TITLE =
@@ -38,34 +38,37 @@ export async function StrapiServiceExplorer({
 }: PageBuilderComponentProps & {
   component: Data.Component<"sections.service-explorer">
 }) {
-  const { title, services, callToAction, urgentTitle, urgentDescription } =
-    component
+  const { title, callToAction, urgentTitle, urgentDescription } = component
 
-  if (!services?.length) {
-    return null
-  }
-
-  const [t, navbar] = await Promise.all([
+  // The directions and their procedures are kept once in their collections.
+  const [directions, t, navbar] = await Promise.all([
+    fetchDirections(),
     getTranslations("services"),
     // The same request the header makes, answered from Next's cache.
     urgentTitle && pageParams ? fetchNavbar(pageParams.locale) : undefined,
   ])
+
+  if (directions.length === 0) {
+    return null
+  }
+
   const phones = clinicPhones(navbar?.data).filter((phone): phone is string =>
     Boolean(phone)
   )
 
-  const items: ExplorerService[] = services.map((service) => ({
-    id: service.id,
+  const items: ExplorerService[] = directions.map((service) => ({
+    id: service.documentId,
     name: service.name,
     description: service.description,
     // A direction whose page is not there previews and goes nowhere.
-    href: resolvedStrapiHref(service.link),
-    linkLabel: service.link?.label,
-    tags: (service.tags ?? []).map((tag) => ({
-      id: tag.id,
-      label: tag.label,
-      // A tag whose page is not there yet stays a plain pill, not a dead link.
-      href: resolvedStrapiHref(tag),
+    href: pageHref(service),
+    linkLabel: t("detailsAndPrices"),
+    tags: (service.subdirections ?? []).map((procedure) => ({
+      id: procedure.documentId,
+      label: procedure.name,
+      // A procedure without a page of its own stays a plain pill, not a dead
+      // link.
+      href: pageHref(procedure),
     })),
     image: service.icon && (
       <StrapiBasicImage

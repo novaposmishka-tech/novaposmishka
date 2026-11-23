@@ -1,6 +1,7 @@
 import { describe, expect, it } from "vitest"
 
-import { type CaseItem, type DirectionEntry, galleryGroups } from "./works"
+import type { DirectionEntry } from "./directions"
+import { type CaseItem, galleryGroups } from "./works"
 
 const directions: DirectionEntry[] = [
   {

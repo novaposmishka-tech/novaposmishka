@@ -5,9 +5,10 @@ import type { UID } from "@repo/strapi-types"
 import { draftMode } from "next/headers"
 import type { Locale } from "next-intl"
 
+import type { DirectionEntry } from "@/lib/directions"
 import { logNonBlockingError } from "@/lib/logging"
 import { PublicStrapiClient } from "@/lib/strapi-api"
-import type { CaseItem, DirectionEntry } from "@/lib/works"
+import type { CaseItem } from "@/lib/works"
 import type { CustomFetchOptions } from "@/types/general"
 
 /**
@@ -271,22 +272,25 @@ export async function fetchWorks() {
 }
 
 /**
- * The directions and their procedures in order, each with the page it leads
- * to: what a results block needs to tell which works belong where it stands.
+ * The directions and their procedures in order, each with its words, its
+ * pictures and the page it leads to: what the service cards show, and what a
+ * results block needs to tell which works belong where it stands.
  */
 export async function fetchDirections() {
   try {
     const response = await PublicStrapiClient.fetchAll(
       "api::direction.direction",
       {
-        fields: ["name", "order"],
+        fields: ["name", "summary", "description", "order"],
         sort: ["order:asc", "name:asc"],
         populate: {
+          icon: IMAGE,
+          illustration: IMAGE,
           page: { fields: ["fullPath"] },
           subdirections: {
-            fields: ["name", "order"],
+            fields: ["name", "description", "order"],
             sort: ["order:asc", "name:asc"],
-            populate: { page: { fields: ["fullPath"] } },
+            populate: { image: IMAGE, page: { fields: ["fullPath"] } },
           },
         },
       } as never,

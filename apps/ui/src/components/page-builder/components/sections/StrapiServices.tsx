@@ -2,11 +2,15 @@ import "server-only"
 
 import type { Data } from "@repo/strapi-types"
 import { ArrowRight } from "lucide-react"
+import { getTranslations } from "next-intl/server"
 
+import AppLink from "@/components/elementary/AppLink"
 import { Container } from "@/components/elementary/Container"
 import { StrapiBasicImage } from "@/components/page-builder/components/utilities/StrapiBasicImage"
 import StrapiLink from "@/components/page-builder/components/utilities/StrapiLink"
 import Typography from "@/components/typography"
+import { pageHref } from "@/lib/directions"
+import { fetchDirections } from "@/lib/strapi-api/content/server"
 import type { PageBuilderComponentProps } from "@/types/general"
 
 /**
@@ -69,14 +73,20 @@ const CARD_TEXT = "text-brand-body mb-0! text-sm/5! lg:text-base/5.5!"
 // narrower card this margin does.
 const CLEAR_OF_ILLUSTRATION = "mr-20.5 lg:mr-30"
 
-export function StrapiServices({
+export async function StrapiServices({
   component,
 }: PageBuilderComponentProps & {
   component: Data.Component<"sections.services">
 }) {
-  const { title, subtitle, services, callToAction } = component
+  const { title, subtitle, callToAction } = component
 
-  if (!services?.length) {
+  // The cards are the directions themselves, kept once in their collection.
+  const [directions, t] = await Promise.all([
+    fetchDirections(),
+    getTranslations("services"),
+  ])
+
+  if (directions.length === 0) {
     return null
   }
 
@@ -103,9 +113,9 @@ export function StrapiServices({
           data-stagger
           className="grid list-none grid-cols-1 gap-5 md:grid-cols-2 lg:gap-6 xl:grid-cols-3"
         >
-          {services.map((service) => (
+          {directions.map((service) => (
             <li
-              key={service.id}
+              key={service.documentId}
               className={`${CARD} hover:bg-brand-stripe lift gap-2.5 bg-white lg:gap-3.75`}
             >
               {/* The title keeps the card's full width: it stands at the top,
@@ -115,7 +125,7 @@ export function StrapiServices({
                 {service.name}
               </Typography>
 
-              {service.description && (
+              {(service.summary ?? service.description) && (
                 // The frame holds the words clear of the illustration rather
                 // than letting them wrap around it — so the words stop where
                 // the illustration's box begins, with a gutter between them.
@@ -130,13 +140,14 @@ export function StrapiServices({
                 <Typography
                   className={`${CARD_TEXT} ${CLEAR_OF_ILLUSTRATION} max-w-57 lg:max-w-65`}
                 >
-                  {service.description}
+                  {service.summary ?? service.description}
                 </Typography>
               )}
 
-              {service.link && (
-                <StrapiLink
-                  component={service.link}
+              {pageHref(service) && (
+                <AppLink
+                  href={pageHref(service)!}
+                  variant="outline"
                   // The frame's link is a word and an arrow, with none of the
                   // outlined button the content type asks for. The arrow sits
                   // in a 34px circle the frame fills with white at a tenth —
@@ -144,16 +155,16 @@ export function StrapiServices({
                   // is what sets the 21px between the word and the arrowhead.
                   className="text-brand-ink hover:text-brand-teal mt-auto h-11.5 w-fit gap-2.5 border-0 bg-transparent p-0 text-sm/5 font-semibold shadow-none hover:bg-transparent lg:text-base/5.5"
                 >
-                  {service.link.label}
+                  {t("details")}
                   <span className="flex size-7.5 items-center justify-center lg:size-8.5">
                     <ArrowRight aria-hidden className="size-5" />
                   </span>
-                </StrapiLink>
+                </AppLink>
               )}
 
-              {service.icon && (
+              {(service.illustration ?? service.icon) && (
                 <StrapiBasicImage
-                  component={service.icon}
+                  component={service.illustration ?? service.icon}
                   className={ILLUSTRATION}
                 />
               )}
