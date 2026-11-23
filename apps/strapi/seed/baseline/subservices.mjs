@@ -4,9 +4,10 @@
  *
  * Every sub-service page is the same run of sections around its own copy,
  * which lives in ./subservices.data.mjs: the hero, the signs that bring a
- * patient in, the steps of the procedure, the works and the dentists where
- * the clinic has any to show, the questions, the clinic's promises, and a
- * short price table that points back at the direction's full one.
+ * patient in, the steps of the procedure, the works where the clinic has any
+ * to show, the questions, the clinic's promises, and a short price table that
+ * points back at the direction's full one. The dentists are not listed here,
+ * on the clinic's instruction: /likari has the whole team.
  *
  * The design leaves a frame for a photograph on every symptom and every
  * step. None are seeded: those are an editor's to add, card by card, and a
@@ -15,14 +16,12 @@
  */
 
 import { works } from "./cases.mjs"
-import { doctors } from "./doctors.mjs"
 import { HERO_IMAGES, SERVICE_SLUGS } from "./services.mjs"
 import {
   anchor,
   BUTTON,
   BUTTON_ON_DARK,
   CLINIC_NAME,
-  doctorRef,
   image,
   pageLink,
   PHONES,
@@ -35,22 +34,6 @@ const LEAD_FORM = "#lead-form-section"
 const DIRECTION_NAME = Object.fromEntries(
   SERVICE_SLUGS.map(({ card, slug }) => [slug, card])
 )
-
-/**
- * Who does the work in each direction, by the specialty the team page gives
- * them. Periodontology and gnathology have nobody listed here: the first has
- * no dentist on the team page under that name, and the second's only one is
- * standing in with a colleague's photograph (see doctors.mjs), which must not
- * be shown under his name on yet more pages. Their pages go without the
- * block until the clinic fills it.
- */
-const DIRECTION_SPECIALTY = {
-  terapiia: "Стоматолог-терапевт",
-  ortopediia: "Стоматолог-ортопед",
-  khirurhiia: "Стоматолог-хірург",
-  ortodontiia: "Ортодонт",
-  "dytiacha-stomatolohiia": "Дитячий стоматолог",
-}
 
 const ADVANTAGES = {
   __component: "sections.advantages",
@@ -95,26 +78,6 @@ function worksOf(name) {
       title: "Приклади робіт",
       display: "carousel",
       link: pageLink("Дивитись усі роботи", "nashi-roboty", BUTTON_ON_DARK),
-    },
-  ]
-}
-
-function doctorsOf(direction) {
-  const specialty = DIRECTION_SPECIALTY[direction]
-  const team = doctors
-    .filter((doctor) => specialty && doctor.specialty === specialty)
-    .map(({ name }) => doctorRef(name))
-
-  if (team.length === 0) {
-    return []
-  }
-
-  return [
-    {
-      __component: "sections.doctors",
-      title: "Лікарі, які виконують цю процедуру",
-      link: pageLink("Усі лікарі", "likari", BUTTON),
-      doctors: team,
     },
   ]
 }
@@ -181,7 +144,6 @@ function subservicePage({
         steps: steps.map(([title, text]) => ({ title, text })),
       },
       ...worksOf(name),
-      ...doctorsOf(direction),
       {
         __component: "sections.faq",
         layout: "cards",
