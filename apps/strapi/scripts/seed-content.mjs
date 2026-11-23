@@ -45,6 +45,7 @@
  * collection too.
  */
 
+import { existsSync } from "node:fs"
 import { createRequire } from "node:module"
 import path from "node:path"
 import process from "node:process"
@@ -263,14 +264,19 @@ async function shutDown() {
   process.exit(process.exitCode ?? 0)
 }
 
+/**
+ * Loads Strapi without serving it. In production the build the server runs is
+ * already in dist/, and compiling the TypeScript again is what runs a small
+ * container out of memory, so it is used as it is; elsewhere the source may be
+ * ahead of the last build, and it is compiled first.
+ */
 async function loadStrapi() {
-  const appContext = await compileStrapi({
-    appDir,
-    distDir: path.join(appDir, "dist"),
-    autoReload: false,
-    serveAdminPanel: false,
-  })
-  const app = createStrapi(appContext)
+  const distDir = path.join(appDir, "dist")
+  const options = { appDir, distDir, autoReload: false, serveAdminPanel: false }
+  const prebuilt =
+    process.env.NODE_ENV === "production" &&
+    existsSync(path.join(distDir, "src", "index.js"))
+  const app = createStrapi(prebuilt ? options : await compileStrapi(options))
 
   app.log.level = "error"
 
