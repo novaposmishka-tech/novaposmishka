@@ -42,7 +42,7 @@ import {
   pruneOrphanedMediaLinks,
   resolveMediaMarkers,
 } from "./seed-media.mjs"
-import { casesPage } from "../seed/baseline/cases.mjs"
+import { casesPage, works } from "../seed/baseline/cases.mjs"
 import { contactsPage } from "../seed/baseline/contacts.mjs"
 import { doctors, doctorsPage } from "../seed/baseline/doctors.mjs"
 import { feedbacksPage } from "../seed/baseline/feedbacks.mjs"
@@ -93,8 +93,8 @@ try {
   const missingMedia = new Set()
   const resolveMedia = (data) => resolveMediaMarkers(data, media, missingMedia)
 
-  // Doctors before the pages: the team blocks, the works and the treatment
-  // stages all point at them by documentId.
+  // Doctors before the pages: the team blocks and the treatment stages point
+  // at them by documentId, as the works do further down.
   const doctorIds = await seedDoctors(doctors, resolveMedia)
   const missingDoctors = new Set()
   const resolve = (data) =>
@@ -150,6 +150,11 @@ try {
   await seedSingleType("api::navbar.navbar", "Navbar", link(navbar))
   await seedSingleType("api::footer.footer", "Footer", link(footer))
   await seedPage(homepage.slug, link(homepage))
+
+  // The works last: they are filed under the directions, which Strapi makes
+  // from the service pages seeded above.
+  await fillDirections()
+  await seedWorks(works, resolve)
 
   if (missingPages.size > 0) {
     console.warn(
@@ -293,6 +298,73 @@ async function seedDoctors(entries, resolve) {
   }
 
   return ids
+}
+
+/**
+ * Makes the Direction and Subdirection entries from the service pages, as
+ * Strapi does at start-up — through the same compiled code, so the two cannot
+ * differ. On a database the seed has just filled, the start-up before it found
+ * no pages yet and left the collections for later.
+ */
+async function fillDirections() {
+  const { fillDirections: fill } = require(
+    path.join(appDir, "dist", "src", "migrations", "directions.js")
+  )
+
+  await fill(strapi)
+}
+
+/**
+ * Creates the clinic's works, filed under their direction and procedure by
+ * name. They are only made into an empty collection: a work has no name to
+ * match an existing one on, and the editors may have added, removed or
+ * re-filed any of them.
+ */
+async function seedWorks(entries, resolve) {
+  const uid = "api::work.work"
+
+  if ((await strapi.documents(uid).count({})) > 0) {
+    console.log("[seed:content] Works: exist, left untouched.")
+
+    return
+  }
+
+  const directions = await strapi
+    .documents("api::direction.direction")
+    .findMany({
+      fields: ["name"],
+      populate: { subdirections: { fields: ["name"] } },
+    })
+  const unfiled = []
+
+  for (const { direction, subdirection, ...work } of entries) {
+    const filedUnder = directions.find((entry) => entry.name === direction)
+    const procedure = filedUnder?.subdirections?.find(
+      (entry) => entry.name === subdirection
+    )
+
+    if (!filedUnder || (subdirection && !procedure)) {
+      unfiled.push(
+        `${work.caption} (${[direction, subdirection].filter(Boolean).join(" / ")})`
+      )
+    }
+
+    await strapi.documents(uid).create({
+      data: {
+        ...resolve(work),
+        direction: filedUnder?.documentId,
+        subdirection: procedure?.documentId,
+      },
+    })
+  }
+
+  console.log(`[seed:content] Works: created ${entries.length}.`)
+
+  if (unfiled.length > 0) {
+    console.warn(
+      `[seed:content] ${unfiled.length} work(s) name a direction or procedure that does not exist: ${unfiled.join(", ")}`
+    )
+  }
 }
 
 /**

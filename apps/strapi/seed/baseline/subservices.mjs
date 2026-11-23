@@ -14,7 +14,7 @@
  * photograph a page cannot do without, so it opens on its direction's.
  */
 
-import { groups } from "./cases.mjs"
+import { works } from "./cases.mjs"
 import { doctors } from "./doctors.mjs"
 import { HERO_IMAGES, SERVICE_SLUGS } from "./services.mjs"
 import {
@@ -52,23 +52,6 @@ const DIRECTION_SPECIALTY = {
   "dytiacha-stomatolohiia": "Дитячий стоматолог",
 }
 
-/**
- * The finished works that belong to a procedure, picked out of the gallery
- * by the tab they stand under and, where a tab mixes procedures, by what the
- * clinic captioned them. A procedure with none goes without the block — the
- * design's empty "before / after" frames are not seeded.
- */
-const WORKS = {
-  brekety: { group: "Ортодонтія" },
-  "zniattia-zubnykh-vidkladen": {
-    group: "Терапевтична стоматологія",
-    caption: "Професійна чистка зубів",
-  },
-  viniry: { group: "Ортопедія", caption: "Встановлення 6 вінірів" },
-  "vydalennia-zubiv": { group: "Хірургія", caption: "Видалення зуба" },
-  implantatsiia: { group: "Хірургія", caption: "Результат імплантації" },
-}
-
 const ADVANTAGES = {
   __component: "sections.advantages",
   title: "Чому обирають «Нову Посмішку»",
@@ -96,13 +79,13 @@ const ADVANTAGES = {
   ],
 }
 
-function worksOf(slug, name) {
-  const rule = WORKS[slug]
-  const cases = groups
-    .find((group) => group.title === rule?.group)
-    ?.cases.filter((item) => !rule.caption || item.caption === rule.caption)
-
-  if (!cases?.length) {
+/**
+ * The procedure's examples. The block finds its works by itself — those the
+ * Work collection files under this procedure — so it is only placed where
+ * there are some: the design's empty "before / after" frames are not seeded.
+ */
+function worksOf(name) {
+  if (works.every((work) => work.subdirection !== name)) {
     return []
   }
 
@@ -111,7 +94,6 @@ function worksOf(slug, name) {
       __component: "sections.results",
       title: "Приклади робіт",
       display: "carousel",
-      groups: [{ title: name, cases }],
       link: pageLink("Дивитись усі роботи", "nashi-roboty", BUTTON_ON_DARK),
     },
   ]
@@ -198,7 +180,7 @@ function subservicePage({
         title: "Як проходить процедура",
         steps: steps.map(([title, text]) => ({ title, text })),
       },
-      ...worksOf(slug, name),
+      ...worksOf(name),
       ...doctorsOf(direction),
       {
         __component: "sections.faq",

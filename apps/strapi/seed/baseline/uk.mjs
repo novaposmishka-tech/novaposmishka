@@ -11,7 +11,6 @@
  * ./shared.mjs.
  */
 
-import { groups } from "./cases.mjs"
 import { featuredDoctors } from "./doctors.mjs"
 import { reviews } from "./reviews.mjs"
 import { SERVICE_SLUGS } from "./services.mjs"
@@ -302,7 +301,6 @@ export const homepage = {
       __component: "sections.results",
       title: "Наші роботи",
       display: "carousel",
-      groups,
       link: pageLink("Дивитись усі роботи", "nashi-roboty", BUTTON_ON_DARK),
     },
     {
