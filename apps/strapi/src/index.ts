@@ -6,6 +6,7 @@ import "./instrumentation"
 import { registerAutoRevalidateMiddleware } from "./documentMiddlewares/revalidate"
 import { registerAdminUserSubscriber } from "./lifeCycles/adminUser"
 import { registerUserSubscriber } from "./lifeCycles/user"
+import { replaceDirectionLists } from "./migrations/direction-lists"
 import { logger } from "./utils/logging"
 
 export default {
@@ -24,7 +25,7 @@ export default {
    * This gives you an opportunity to set up your data model,
    * run jobs, or perform some special logic.
    */
-  bootstrap({ strapi }: { strapi: Core.Strapi }) {
+  async bootstrap({ strapi }: { strapi: Core.Strapi }) {
     logger.info("Strapi bootstrap started")
 
     registerAdminUserSubscriber({ strapi })
@@ -32,6 +33,10 @@ export default {
 
     // Register automatic frontend revalidation middleware for content changes
     registerAutoRevalidateMiddleware({ strapi })
+
+    // One-off: the direction pages' hand-typed lists become the Subservices
+    // block. A no-op once done.
+    await replaceDirectionLists(strapi)
 
     logger.info("Strapi bootstrap completed")
   },
