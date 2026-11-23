@@ -1,0 +1,52 @@
+{
+  "kind": "collectionType",
+  "collectionName": "works",
+  "info": {
+    "singularName": "work",
+    "pluralName": "works",
+    "displayName": "Work",
+    "description": "One finished piece of work: the result beside the start, who did it, and the direction (and, where known, the procedure) it belongs to. The works gallery and each procedure's examples are built from these."
+  },
+  "options": {
+    "draftAndPublish": false
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "caption": {
+      "type": "string"
+    },
+    "before": {
+      "type": "component",
+      "component": "utilities.basic-image",
+      "repeatable": false,
+      "required": true
+    },
+    "after": {
+      "type": "component",
+      "component": "utilities.basic-image",
+      "repeatable": false
+    },
+    "doctor": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::doctor.doctor",
+      "inversedBy": "works"
+    },
+    "direction": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::direction.direction",
+      "inversedBy": "works"
+    },
+    "subdirection": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::subdirection.subdirection",
+      "inversedBy": "works"
+    },
+    "order": {
+      "type": "integer",
+      "default": 0
+    }
+  }
+}

@@ -11,7 +11,7 @@ type ComponentPopulateMap = {
 // doctor without the images and training they are rendered with.
 const DOCTOR_IMAGE = { populate: { media: true } }
 
-/** A doctor as the works gallery and the treatment stages sign with them. */
+/** A doctor as a treatment stage is signed with them. */
 const doctorSignature = {
   fields: ["name", "shortName", "specialty"],
   populate: { photo: DOCTOR_IMAGE, avatar: DOCTOR_IMAGE },
@@ -36,11 +36,6 @@ const populateOverrides = [
         populate: { photo: DOCTOR_IMAGE, credentials: true },
       },
     },
-  },
-  {
-    componentUid: "shared.before-after",
-    mergeWithGeneratedPopulate: true,
-    overridePopulate: { doctor: doctorSignature },
   },
   {
     componentUid: "shared.case-stage",

@@ -42,6 +42,12 @@
       "relation": "oneToMany",
       "target": "api::subdirection.subdirection",
       "mappedBy": "direction"
+    },
+    "works": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::work.work",
+      "mappedBy": "direction"
     }
   }
 }

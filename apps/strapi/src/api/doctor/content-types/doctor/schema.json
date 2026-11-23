@@ -37,6 +37,12 @@
       "type": "component",
       "component": "shared.credential",
       "repeatable": true
+    },
+    "works": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::work.work",
+      "mappedBy": "doctor"
     }
   }
 }

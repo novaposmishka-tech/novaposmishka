@@ -45,6 +45,12 @@ const REVALIDATE_COLLECTIONS: RevalidateCollectionConfig[] = [
     mode: "tag-revalidate",
     tags: [strapiCacheTag("api::page.page")],
   },
+  // The works are read alongside the pages that show them, under their tag.
+  {
+    uid: "api::work.work",
+    mode: "tag-revalidate",
+    tags: [strapiCacheTag("api::page.page")],
+  },
   // Add your own collections here, e.g.:
   // { uid: "api::blog-article.blog-article", mode: "path-revalidate", pathField: "fullPath" },
   // { uid: "api::announcement.announcement", mode: "tag-revalidate" },

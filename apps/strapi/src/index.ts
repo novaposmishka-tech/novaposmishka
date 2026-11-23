@@ -7,6 +7,7 @@ import { registerAutoRevalidateMiddleware } from "./documentMiddlewares/revalida
 import { registerAdminUserSubscriber } from "./lifeCycles/adminUser"
 import { registerUserSubscriber } from "./lifeCycles/user"
 import { fillDirections } from "./migrations/directions"
+import { migrateWorks } from "./migrations/works"
 import { logger } from "./utils/logging"
 
 export default {
@@ -37,6 +38,11 @@ export default {
     // One-off: makes the Direction and Subdirection entries from the cards the
     // pages carry. A no-op once done.
     await fillDirections(strapi)
+
+    // One-off: makes the Work entries from the works copied out before the
+    // schema dropped the gallery's own copies. Needs the directions above. A
+    // no-op on every start after the first.
+    await migrateWorks(strapi)
 
     logger.info("Strapi bootstrap completed")
   },

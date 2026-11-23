@@ -242,39 +242,9 @@ export interface SectionsResults extends Struct.ComponentSchema {
     display: Schema.Attribute.Enumeration<["carousel", "grid"]> &
       Schema.Attribute.Required &
       Schema.Attribute.DefaultTo<"carousel">
-    groups: Schema.Attribute.Component<"shared.case-group", true>
     link: Schema.Attribute.Component<"utilities.link", false>
     subtitle: Schema.Attribute.Text
     title: Schema.Attribute.String
-  }
-}
-
-export interface SharedBeforeAfter extends Struct.ComponentSchema {
-  collectionName: "components_shared_before_afters"
-  info: {
-    description: ""
-    displayName: "BeforeAfter"
-    icon: "picture"
-  }
-  attributes: {
-    after: Schema.Attribute.Component<"utilities.basic-image", false>
-    before: Schema.Attribute.Component<"utilities.basic-image", false> &
-      Schema.Attribute.Required
-    caption: Schema.Attribute.String
-    doctor: Schema.Attribute.Relation<"oneToOne", "api::doctor.doctor">
-  }
-}
-
-export interface SharedCaseGroup extends Struct.ComponentSchema {
-  collectionName: "components_shared_case_groups"
-  info: {
-    description: "One tab of the works gallery: a direction of treatment and the cases shown under it."
-    displayName: "CaseGroup"
-    icon: "folder"
-  }
-  attributes: {
-    cases: Schema.Attribute.Component<"shared.before-after", true>
-    title: Schema.Attribute.String & Schema.Attribute.Required
   }
 }
 
@@ -1101,8 +1071,6 @@ declare module "@strapi/strapi" {
       "seo-utilities.seo-og": SeoUtilitiesSeoOg
       "seo-utilities.seo-twitter": SeoUtilitiesSeoTwitter
       "seo-utilities.social-icons": SeoUtilitiesSocialIcons
-      "shared.before-after": SharedBeforeAfter
-      "shared.case-group": SharedCaseGroup
       "shared.case-stage": SharedCaseStage
       "shared.contact-item": SharedContactItem
       "shared.credential": SharedCredential

@@ -33,6 +33,12 @@
       "type": "relation",
       "relation": "oneToOne",
       "target": "api::page.page"
+    },
+    "works": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::work.work",
+      "mappedBy": "subdirection"
     }
   }
 }

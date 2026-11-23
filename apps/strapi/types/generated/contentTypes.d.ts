@@ -464,6 +464,7 @@ export interface ApiDirectionDirection extends Struct.CollectionTypeSchema {
       "api::subdirection.subdirection"
     >
     summary: Schema.Attribute.Text
+    works: Schema.Attribute.Relation<"oneToMany", "api::work.work">
   }
 }
 
@@ -497,6 +498,7 @@ export interface ApiDoctorDoctor extends Struct.CollectionTypeSchema {
     updatedAt: Schema.Attribute.DateTime
     updatedBy: Schema.Attribute.Relation<"oneToOne", "admin::user"> &
       Schema.Attribute.Private
+    works: Schema.Attribute.Relation<"oneToMany", "api::work.work">
   }
 }
 
@@ -842,6 +844,7 @@ export interface ApiSubdirectionSubdirection
     name: Schema.Attribute.String & Schema.Attribute.Required
     order: Schema.Attribute.Integer & Schema.Attribute.DefaultTo<0>
     page: Schema.Attribute.Relation<"oneToOne", "api::page.page">
+    works: Schema.Attribute.Relation<"oneToMany", "api::work.work">
   }
 }
 
@@ -871,6 +874,42 @@ export interface ApiSubscriberSubscriber extends Struct.CollectionTypeSchema {
     message: Schema.Attribute.Text
     name: Schema.Attribute.String
     publishedAt: Schema.Attribute.DateTime
+    updatedAt: Schema.Attribute.DateTime
+    updatedBy: Schema.Attribute.Relation<"oneToOne", "admin::user"> &
+      Schema.Attribute.Private
+  }
+}
+
+export interface ApiWorkWork extends Struct.CollectionTypeSchema {
+  collectionName: "works"
+  info: {
+    description: "One finished piece of work: the result beside the start, who did it, and the direction (and, where known, the procedure) it belongs to. The works gallery and each procedure's examples are built from these."
+    displayName: "Work"
+    pluralName: "works"
+    singularName: "work"
+  }
+  options: {
+    draftAndPublish: false
+  }
+  attributes: {
+    after: Schema.Attribute.Component<"utilities.basic-image", false>
+    before: Schema.Attribute.Component<"utilities.basic-image", false> &
+      Schema.Attribute.Required
+    caption: Schema.Attribute.String
+    createdAt: Schema.Attribute.DateTime
+    createdBy: Schema.Attribute.Relation<"oneToOne", "admin::user"> &
+      Schema.Attribute.Private
+    direction: Schema.Attribute.Relation<"manyToOne", "api::direction.direction">
+    doctor: Schema.Attribute.Relation<"manyToOne", "api::doctor.doctor">
+    locale: Schema.Attribute.String & Schema.Attribute.Private
+    localizations: Schema.Attribute.Relation<"oneToMany", "api::work.work"> &
+      Schema.Attribute.Private
+    order: Schema.Attribute.Integer & Schema.Attribute.DefaultTo<0>
+    publishedAt: Schema.Attribute.DateTime
+    subdirection: Schema.Attribute.Relation<
+      "manyToOne",
+      "api::subdirection.subdirection"
+    >
     updatedAt: Schema.Attribute.DateTime
     updatedBy: Schema.Attribute.Relation<"oneToOne", "admin::user"> &
       Schema.Attribute.Private
@@ -1397,6 +1436,7 @@ declare module "@strapi/strapi" {
       "api::redirect.redirect": ApiRedirectRedirect
       "api::subdirection.subdirection": ApiSubdirectionSubdirection
       "api::subscriber.subscriber": ApiSubscriberSubscriber
+      "api::work.work": ApiWorkWork
       "plugin::content-releases.release": PluginContentReleasesRelease
       "plugin::content-releases.release-action": PluginContentReleasesReleaseAction
       "plugin::i18n.locale": PluginI18NLocale
