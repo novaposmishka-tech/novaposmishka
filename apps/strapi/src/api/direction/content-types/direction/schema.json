@@ -1,0 +1,47 @@
+{
+  "kind": "collectionType",
+  "collectionName": "directions",
+  "info": {
+    "singularName": "direction",
+    "pluralName": "directions",
+    "displayName": "Direction",
+    "description": "One of the clinic's directions of treatment (Терапія, Ортопедія…): the card that stands for it across the site, and the page it leads to."
+  },
+  "options": {
+    "draftAndPublish": false
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "name": {
+      "type": "string",
+      "required": true,
+      "unique": true
+    },
+    "summary": {
+      "type": "text"
+    },
+    "description": {
+      "type": "text"
+    },
+    "icon": {
+      "type": "component",
+      "component": "utilities.basic-image",
+      "repeatable": false
+    },
+    "order": {
+      "type": "integer",
+      "default": 0
+    },
+    "page": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "api::page.page"
+    },
+    "subdirections": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::subdirection.subdirection",
+      "mappedBy": "direction"
+    }
+  }
+}

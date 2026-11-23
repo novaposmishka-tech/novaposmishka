@@ -430,6 +430,43 @@ export interface AdminUser extends Struct.CollectionTypeSchema {
   }
 }
 
+export interface ApiDirectionDirection extends Struct.CollectionTypeSchema {
+  collectionName: "directions"
+  info: {
+    description: "One of the clinic's directions of treatment (Терапія, Ортопедія…): the card that stands for it across the site, and the page it leads to."
+    displayName: "Direction"
+    pluralName: "directions"
+    singularName: "direction"
+  }
+  options: {
+    draftAndPublish: false
+  }
+  attributes: {
+    createdAt: Schema.Attribute.DateTime
+    createdBy: Schema.Attribute.Relation<"oneToOne", "admin::user"> &
+      Schema.Attribute.Private
+    locale: Schema.Attribute.String & Schema.Attribute.Private
+    localizations: Schema.Attribute.Relation<"oneToMany", "api::direction.direction"> &
+      Schema.Attribute.Private
+    publishedAt: Schema.Attribute.DateTime
+    updatedAt: Schema.Attribute.DateTime
+    updatedBy: Schema.Attribute.Relation<"oneToOne", "admin::user"> &
+      Schema.Attribute.Private
+    description: Schema.Attribute.Text
+    icon: Schema.Attribute.Component<"utilities.basic-image", false>
+    name: Schema.Attribute.String &
+      Schema.Attribute.Required &
+      Schema.Attribute.Unique
+    order: Schema.Attribute.Integer & Schema.Attribute.DefaultTo<0>
+    page: Schema.Attribute.Relation<"oneToOne", "api::page.page">
+    subdirections: Schema.Attribute.Relation<
+      "oneToMany",
+      "api::subdirection.subdirection"
+    >
+    summary: Schema.Attribute.Text
+  }
+}
+
 export interface ApiDoctorDoctor extends Struct.CollectionTypeSchema {
   collectionName: "doctors"
   info: {
@@ -774,6 +811,37 @@ export interface ApiRedirectRedirect extends Struct.CollectionTypeSchema {
     updatedAt: Schema.Attribute.DateTime
     updatedBy: Schema.Attribute.Relation<"oneToOne", "admin::user"> &
       Schema.Attribute.Private
+  }
+}
+
+export interface ApiSubdirectionSubdirection
+  extends Struct.CollectionTypeSchema {
+  collectionName: "subdirections"
+  info: {
+    description: "One procedure under a direction (Лікування карієсу, Брекети…): its card and the page it leads to."
+    displayName: "Subdirection"
+    pluralName: "subdirections"
+    singularName: "subdirection"
+  }
+  options: {
+    draftAndPublish: false
+  }
+  attributes: {
+    createdAt: Schema.Attribute.DateTime
+    createdBy: Schema.Attribute.Relation<"oneToOne", "admin::user"> &
+      Schema.Attribute.Private
+    locale: Schema.Attribute.String & Schema.Attribute.Private
+    localizations: Schema.Attribute.Relation<"oneToMany", "api::subdirection.subdirection"> &
+      Schema.Attribute.Private
+    publishedAt: Schema.Attribute.DateTime
+    updatedAt: Schema.Attribute.DateTime
+    updatedBy: Schema.Attribute.Relation<"oneToOne", "admin::user"> &
+      Schema.Attribute.Private
+    description: Schema.Attribute.Text
+    direction: Schema.Attribute.Relation<"manyToOne", "api::direction.direction">
+    name: Schema.Attribute.String & Schema.Attribute.Required
+    order: Schema.Attribute.Integer & Schema.Attribute.DefaultTo<0>
+    page: Schema.Attribute.Relation<"oneToOne", "api::page.page">
   }
 }
 
@@ -1320,12 +1388,14 @@ declare module "@strapi/strapi" {
       "admin::transfer-token": AdminTransferToken
       "admin::transfer-token-permission": AdminTransferTokenPermission
       "admin::user": AdminUser
+      "api::direction.direction": ApiDirectionDirection
       "api::doctor.doctor": ApiDoctorDoctor
       "api::footer.footer": ApiFooterFooter
       "api::hierarchy.hierarchy": ApiHierarchyHierarchy
       "api::navbar.navbar": ApiNavbarNavbar
       "api::page.page": ApiPagePage
       "api::redirect.redirect": ApiRedirectRedirect
+      "api::subdirection.subdirection": ApiSubdirectionSubdirection
       "api::subscriber.subscriber": ApiSubscriberSubscriber
       "plugin::content-releases.release": PluginContentReleasesRelease
       "plugin::content-releases.release-action": PluginContentReleasesReleaseAction

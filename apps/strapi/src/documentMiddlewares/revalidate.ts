@@ -34,6 +34,17 @@ const REVALIDATE_COLLECTIONS: RevalidateCollectionConfig[] = [
     mode: "tag-revalidate",
     tags: [strapiCacheTag("api::page.page")],
   },
+  // Directions and their procedures, likewise, are shown on the pages.
+  {
+    uid: "api::direction.direction",
+    mode: "tag-revalidate",
+    tags: [strapiCacheTag("api::page.page")],
+  },
+  {
+    uid: "api::subdirection.subdirection",
+    mode: "tag-revalidate",
+    tags: [strapiCacheTag("api::page.page")],
+  },
   // Add your own collections here, e.g.:
   // { uid: "api::blog-article.blog-article", mode: "path-revalidate", pathField: "fullPath" },
   // { uid: "api::announcement.announcement", mode: "tag-revalidate" },

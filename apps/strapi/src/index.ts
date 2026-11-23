@@ -6,6 +6,7 @@ import "./instrumentation"
 import { registerAutoRevalidateMiddleware } from "./documentMiddlewares/revalidate"
 import { registerAdminUserSubscriber } from "./lifeCycles/adminUser"
 import { registerUserSubscriber } from "./lifeCycles/user"
+import { fillDirections } from "./migrations/directions"
 import { migrateDoctors } from "./migrations/doctors"
 import { logger } from "./utils/logging"
 
@@ -37,6 +38,10 @@ export default {
     // One-off: links the doctors copied out before the schema moved them into
     // their own collection. A no-op on every start after the first.
     await migrateDoctors(strapi)
+
+    // One-off: makes the Direction and Subdirection entries from the cards the
+    // pages carry. A no-op once done.
+    await fillDirections(strapi)
 
     logger.info("Strapi bootstrap completed")
   },

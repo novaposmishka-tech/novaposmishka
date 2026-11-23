@@ -1,0 +1,38 @@
+{
+  "kind": "collectionType",
+  "collectionName": "subdirections",
+  "info": {
+    "singularName": "subdirection",
+    "pluralName": "subdirections",
+    "displayName": "Subdirection",
+    "description": "One procedure under a direction (Лікування карієсу, Брекети…): its card and the page it leads to."
+  },
+  "options": {
+    "draftAndPublish": false
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "name": {
+      "type": "string",
+      "required": true
+    },
+    "description": {
+      "type": "text"
+    },
+    "order": {
+      "type": "integer",
+      "default": 0
+    },
+    "direction": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::direction.direction",
+      "inversedBy": "subdirections"
+    },
+    "page": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "api::page.page"
+    }
+  }
+}
