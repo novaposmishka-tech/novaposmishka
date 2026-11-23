@@ -10,11 +10,13 @@
  * on the clinic's instruction: /likari has the whole team.
  *
  * The design leaves a frame for a photograph on every symptom and every
- * step. None are seeded: those are an editor's to add, card by card, and a
- * card without one is drawn as the icon and the words. The hero is the one
- * photograph a page cannot do without, so it opens on its direction's.
+ * step. The procedures the clinic leads with have them (./card-photos.mjs);
+ * on the rest they are an editor's to add, card by card, and a card without
+ * one is drawn as the icon and the words. The hero is the one photograph a
+ * page cannot do without, so it opens on its direction's.
  */
 
+import { CARD_PHOTOS } from "./card-photos.mjs"
 import { works } from "./cases.mjs"
 import { HERO_IMAGES, SERVICE_SLUGS } from "./services.mjs"
 import {
@@ -82,6 +84,13 @@ function worksOf(name) {
   ]
 }
 
+/** The photograph of a symptom (s) or step (k) card, where there is one. */
+function cardPhoto(slug, part, index) {
+  const alt = CARD_PHOTOS[slug]?.[part]?.[index]
+
+  return alt ? { image: image(`card-${slug}-${part}${index + 1}`, alt) } : {}
+}
+
 function subservicePage({
   name,
   slug,
@@ -131,7 +140,11 @@ function subservicePage({
       {
         __component: "sections.symptoms",
         title: "Коли варто звернутися до лікаря",
-        items: symptoms.map(([title, icon]) => ({ title, icon })),
+        items: symptoms.map(([title, icon], index) => ({
+          title,
+          icon,
+          ...cardPhoto(slug, "s", index),
+        })),
         callToAction: {
           name: "Впізнали себе? Запишіться на огляд",
           description: "Огляд і план лікування — за 1 візит",
@@ -141,7 +154,11 @@ function subservicePage({
       {
         __component: "sections.steps",
         title: "Як проходить процедура",
-        steps: steps.map(([title, text]) => ({ title, text })),
+        steps: steps.map(([title, text], index) => ({
+          title,
+          text,
+          ...cardPhoto(slug, "k", index),
+        })),
       },
       ...worksOf(name),
       {
