@@ -13,7 +13,7 @@ import {
 import { StrapiBasicImage } from "@/components/page-builder/components/utilities/StrapiBasicImage"
 import { cn } from "@/lib/styles"
 
-type Media = Data.Component<"shared.before-after">["before"]
+type Media = Data.Component<"utilities.basic-image"> | null | undefined
 
 /** Where the handle rests before anyone touches it, in percent. */
 const INITIAL = 50

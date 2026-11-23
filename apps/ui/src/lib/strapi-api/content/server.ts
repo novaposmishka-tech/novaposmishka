@@ -7,6 +7,7 @@ import type { Locale } from "next-intl"
 
 import { logNonBlockingError } from "@/lib/logging"
 import { PublicStrapiClient } from "@/lib/strapi-api"
+import type { CaseItem, DirectionEntry } from "@/lib/works"
 import type { CustomFetchOptions } from "@/types/general"
 
 /**
@@ -230,6 +231,71 @@ export async function fetchFooter(locale: Locale) {
     )
   } catch (e: unknown) {
     rethrow(`Error fetching footer for locale '${locale}'`, e)
+  }
+}
+
+// ------ Works fetching functions
+
+const IMAGE = { populate: { media: true } }
+
+/**
+ * Every piece of work, in the order the editors set, with what a card shows
+ * and where the work is filed. Read under the pages' tag: a work is only ever
+ * shown on a page, and Strapi sends that tag when one changes.
+ */
+export async function fetchWorks() {
+  try {
+    const response = await PublicStrapiClient.fetchAll(
+      "api::work.work",
+      {
+        fields: ["caption", "order"],
+        sort: ["order:asc", "id:asc"],
+        populate: {
+          before: IMAGE,
+          after: IMAGE,
+          doctor: {
+            fields: ["name", "shortName"],
+            populate: { photo: IMAGE, avatar: IMAGE },
+          },
+          direction: { fields: ["name"] },
+          subdirection: { fields: ["name"] },
+        },
+      } as never,
+      cmsCache(undefined, [PAGE_TAG])
+    )
+
+    return response.data as unknown as CaseItem[]
+  } catch (e: unknown) {
+    rethrow("Error fetching works", e)
+  }
+}
+
+/**
+ * The directions and their procedures in order, each with the page it leads
+ * to: what a results block needs to tell which works belong where it stands.
+ */
+export async function fetchDirections() {
+  try {
+    const response = await PublicStrapiClient.fetchAll(
+      "api::direction.direction",
+      {
+        fields: ["name", "order"],
+        sort: ["order:asc", "name:asc"],
+        populate: {
+          page: { fields: ["fullPath"] },
+          subdirections: {
+            fields: ["name", "order"],
+            sort: ["order:asc", "name:asc"],
+            populate: { page: { fields: ["fullPath"] } },
+          },
+        },
+      } as never,
+      cmsCache(undefined, [PAGE_TAG])
+    )
+
+    return response.data as unknown as DirectionEntry[]
+  } catch (e: unknown) {
+    rethrow("Error fetching directions", e)
   }
 }
 

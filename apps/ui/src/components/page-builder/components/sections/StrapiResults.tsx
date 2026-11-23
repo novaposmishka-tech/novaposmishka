@@ -9,7 +9,12 @@ import { Container } from "@/components/elementary/Container"
 import StrapiLink from "@/components/page-builder/components/utilities/StrapiLink"
 import Typography from "@/components/typography"
 import { caseStudyId } from "@/lib/case-studies"
-import { fetchPage } from "@/lib/strapi-api/content/server"
+import {
+  fetchDirections,
+  fetchPage,
+  fetchWorks,
+} from "@/lib/strapi-api/content/server"
+import { galleryGroups } from "@/lib/works"
 import type { PageBuilderComponentProps } from "@/types/general"
 
 type Page = PageBuilderComponentProps["page"]
@@ -21,12 +26,18 @@ export async function StrapiResults({
 }: PageBuilderComponentProps & {
   component: Data.Component<"sections.results">
 }) {
-  const { title, subtitle, groups, link, display } = component
+  const { title, subtitle, link, display } = component
 
-  // A tab with nothing under it would be a tab that shows an empty band.
-  const filled = (groups ?? []).filter((group) => group.cases?.length)
+  // The works are entries of their own; which of them stand here depends on
+  // the page — a procedure's, a direction's, or any other (lib/works.ts).
+  const [directions, works] = await Promise.all([
+    fetchDirections(),
+    fetchWorks(),
+  ])
+  const groups = galleryGroups(page?.documentId, directions, works)
 
-  if (filled.length === 0) {
+  // Nothing to show: the block would be a heading over an empty band.
+  if (groups.length === 0) {
     return null
   }
 
@@ -82,7 +93,7 @@ export async function StrapiResults({
 
         <CaseGallery
           display={display ?? "carousel"}
-          groups={filled}
+          groups={groups}
           caseLinks={caseLinks}
           labels={{
             before: t("before"),

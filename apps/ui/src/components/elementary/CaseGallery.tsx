@@ -1,6 +1,5 @@
 "use client"
 
-import type { Data } from "@repo/strapi-types"
 import { useState } from "react"
 
 import { BeforeAfterSlider } from "@/components/elementary/BeforeAfterSlider"
@@ -9,8 +8,7 @@ import { ScrollRow } from "@/components/elementary/ScrollRow"
 import { StrapiBasicImage } from "@/components/page-builder/components/utilities/StrapiBasicImage"
 import { doctorSignature } from "@/lib/doctors"
 import { cn } from "@/lib/styles"
-
-type Group = NonNullable<Data.Component<"sections.results">["groups"]>[number]
+import type { CaseGroup, CaseItem } from "@/lib/works"
 
 /** A chip that jumps to a case written up in full, here or on another page. */
 export type CaseLink = {
@@ -24,8 +22,8 @@ const PAGE_SIZE = 4
 /**
  * The clinic's works, one tab per direction of treatment.
  *
- * Each tab is a group the CMS holds as such — a name and the cases under it —
- * so what the editor sees is what the reader gets. After the tabs come the
+ * Each tab is a direction of treatment (or, on a procedure's page, the
+ * procedure) and the works the CMS files under it. After the tabs come the
  * chips for the cases told end to end. On the listing page a chip is a tab
  * too: the case takes the grid's place while it is chosen, as the frame draws
  * it. On the homepage the chips lead to the listing instead.
@@ -40,7 +38,7 @@ export function CaseGallery({
   labels,
   display = "carousel",
 }: {
-  readonly groups: readonly Group[]
+  readonly groups: readonly CaseGroup[]
   readonly caseLinks?: readonly CaseLink[]
   readonly labels: {
     before: string
@@ -285,7 +283,7 @@ function Signature({
   doctor,
   isGrid,
 }: {
-  readonly doctor: Data.Component<"shared.before-after">["doctor"]
+  readonly doctor: CaseItem["doctor"]
   readonly isGrid: boolean
 }) {
   const signature = doctorSignature(doctor)
