@@ -20,10 +20,8 @@ import {
   BUTTON_ON_DARK,
   CLINIC_NAME,
   image,
-  pageLink,
   PHONES,
 } from "./shared.mjs"
-import { SUBSERVICES } from "./subservices.data.mjs"
 
 /**
  * The photographs each page opens on. The design gives all seven a frame of
@@ -93,25 +91,16 @@ function hero(slug, { alt, phoneAlt, x = 50, y = 50 }) {
 }
 
 /**
- * What a direction covers: its sub-services, each opening onto the sentence
- * its own page begins with and a link through to that page.
- *
- * The design sets a photograph beside the list that follows the open entry.
- * None are seeded — they are an editor's to add, entry by entry — and until
- * there is one the block is the heading and the list alone.
+ * What a direction covers. The block holds the heading and the paragraph; the
+ * procedures beside them are the direction's entries in the Subdirection
+ * collection (directions.mjs), each with the sentence its own page begins
+ * with and a link through to it.
  */
-function subservices(direction, title, description = null) {
+function subservices(title, description = null) {
   return {
     __component: "sections.subservices",
     title,
     description,
-    items: SUBSERVICES.filter((item) => item.direction === direction).map(
-      (item) => ({
-        name: item.name,
-        description: item.intro,
-        link: pageLink("Детальніше та ціни", item.slug),
-      })
-    ),
   }
 }
 
@@ -165,7 +154,6 @@ export const servicePages = [
         ],
       },
       subservices(
-        "terapiia",
         "Наша стоматологія пропонує широкий спектр послуг, включаючи:",
         "Наша команда готова надати Вам індивідуальну консультацію та розробити план лікування, який відповідає Вашим потребам та бюджету."
       ),
@@ -210,7 +198,6 @@ export const servicePages = [
         ],
       },
       subservices(
-        "ortopediia",
         "Чому варто обрати протезування зубів?",
         "Оберіть послуги протезування в нашій клініці та насолоджуйтеся здоровою та привабливою посмішкою щодня!"
       ),
@@ -255,7 +242,6 @@ export const servicePages = [
         ],
       },
       subservices(
-        "khirurhiia",
         "Наші хірургічні послуги включають:",
         "Запишіться на консультацію до наших хірургів і переконайтеся у високому рівні надання послуг які ми пропонуємо."
       ),
@@ -300,7 +286,6 @@ export const servicePages = [
         ],
       },
       subservices(
-        "ortodontiia",
         "Що Ви повинні знати про ортодонтичне лікування:",
         "Не відкладайте свою мрію про прекрасну посмішку - звертайтеся до нас.​"
       ),
@@ -345,7 +330,6 @@ export const servicePages = [
         ],
       },
       subservices(
-        "parodontolohiia",
         "Своєчасний візит до пародонтолога вкрай важливий:​",
         "У нашій клініці ми пропонуємо сучасні методи лікування та профілактики захворювань ясен, щоб забезпечити вам здорову та гарну посмішку."
       ),
@@ -390,7 +374,6 @@ export const servicePages = [
         ],
       },
       subservices(
-        "dytiacha-stomatolohiia",
         "Наша дитяча стоматологія включає в себе:",
         "Допоможемо Вашим дітям вирости зі здоровою посмішкою та переконанням, що відвідування стоматолога - це приємна та важлива частина їхнього дорослого життя"
       ),
@@ -434,7 +417,7 @@ export const servicePages = [
           anchor("Записатися на прийом", "#lead-form-section", BUTTON_ON_DARK),
         ],
       },
-      subservices("hnatolohiia", "Що Ви повинні знати про гнатологію:"),
+      subservices("Що Ви повинні знати про гнатологію:"),
       priceList("Ціни на гнатологічні послуги"),
     ],
   },

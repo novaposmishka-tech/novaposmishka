@@ -9,7 +9,7 @@ import { Container } from "@/components/elementary/Container"
 import { StrapiBasicImage } from "@/components/page-builder/components/utilities/StrapiBasicImage"
 import StrapiLink from "@/components/page-builder/components/utilities/StrapiLink"
 import Typography from "@/components/typography"
-import { pageHref } from "@/lib/directions"
+import { type DirectionEntry, pageHref } from "@/lib/directions"
 import { fetchDirections } from "@/lib/strapi-api/content/server"
 import type { PageBuilderComponentProps } from "@/types/general"
 
@@ -75,14 +75,17 @@ const CLEAR_OF_ILLUSTRATION = "mr-20.5 lg:mr-30"
 
 export async function StrapiServices({
   component,
+  directions: given,
 }: PageBuilderComponentProps & {
   component: Data.Component<"sections.services">
+  /** The directions to draw, where they are not to be read from Strapi. */
+  directions?: readonly DirectionEntry[]
 }) {
   const { title, subtitle, callToAction } = component
 
   // The cards are the directions themselves, kept once in their collection.
   const [directions, t] = await Promise.all([
-    fetchDirections(),
+    given ?? fetchDirections(),
     getTranslations("services"),
   ])
 

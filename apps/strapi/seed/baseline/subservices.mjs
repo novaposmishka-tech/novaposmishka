@@ -209,39 +209,6 @@ function subservicePage({
 
 export const subservicePages = SUBSERVICES.map(subservicePage)
 
-/**
- * What the index says of each direction. The words are the design's for this
- * page, a line longer than the homepage's cards; the illustrations are the
- * homepage's own.
- */
-const DIRECTIONS = [
-  [
-    "terapiia",
-    "Лікування карієсу та каналів під мікроскопом — щоб зберегти власний зуб, а не замінювати його.",
-  ],
-  [
-    "ortopediia",
-    "Коронки, вініри та протези, які відновлюють функцію і виглядають природно.",
-  ],
-  [
-    "khirurhiia",
-    "Видалення та імплантація з комп’ютерним плануванням і хірургічними шаблонами.",
-  ],
-  ["ortodontiia", "Рівні зуби та правильний прикус — для дітей і дорослих."],
-  [
-    "parodontolohiia",
-    "Захворювання ясен — не вирок. Лікуємо та зупиняємо пародонтит.",
-  ],
-  [
-    "dytiacha-stomatolohiia",
-    "Перше знайомство зі стоматологом — дружнє, спокійне і без болю.",
-  ],
-  [
-    "hnatolohiia",
-    "Позбавляємо болю та дискомфорту в щелепі, відновлюємо її правильну роботу.",
-  ],
-]
-
 const INDEX_DESCRIPTION =
   "Сучасна стоматологія для всієї родини — від профілактики та лікування карієсу до імплантації й виправлення прикусу. Оберіть напрямок, щоб дізнатися більше та переглянути ціни."
 
@@ -269,16 +236,7 @@ export const servicesIndexPage = {
     {
       __component: "sections.service-explorer",
       title: "Оберіть напрямок",
-      services: DIRECTIONS.map(([direction, description], index) => ({
-        name: DIRECTION_NAME[direction],
-        description,
-        icon: image(`services-${index + 1}`, ""),
-        link: pageLink("Детальніше та ціни", direction),
-        // Each sub-service, linking to its own page.
-        tags: SUBSERVICES.filter((item) => item.direction === direction).map(
-          (item) => pageLink(item.name, item.slug)
-        ),
-      })),
+      // The list is the directions and their procedures (directions.mjs).
       callToAction: {
         name: "Не знаєте, з чого почати?",
         description:

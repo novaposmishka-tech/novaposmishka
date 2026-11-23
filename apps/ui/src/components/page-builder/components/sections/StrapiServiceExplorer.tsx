@@ -16,7 +16,7 @@ import StrapiLink, {
 import Typography from "@/components/typography"
 import { LEAD_FORM_ANCHOR } from "@/lib/analytics"
 import { clinicPhones, contactHref } from "@/lib/contacts"
-import { pageHref } from "@/lib/directions"
+import { type DirectionEntry, pageHref } from "@/lib/directions"
 import { fetchDirections, fetchNavbar } from "@/lib/strapi-api/content/server"
 import type { PageBuilderComponentProps } from "@/types/general"
 
@@ -35,14 +35,17 @@ const HELP_TEXT = "text-brand-body mb-0! text-sm/[1.4]! lg:text-base/[1.4]!"
 export async function StrapiServiceExplorer({
   component,
   pageParams,
+  directions: given,
 }: PageBuilderComponentProps & {
   component: Data.Component<"sections.service-explorer">
+  /** The directions to draw, where they are not to be read from Strapi. */
+  directions?: readonly DirectionEntry[]
 }) {
   const { title, callToAction, urgentTitle, urgentDescription } = component
 
   // The directions and their procedures are kept once in their collections.
   const [directions, t, navbar] = await Promise.all([
-    fetchDirections(),
+    given ?? fetchDirections(),
     getTranslations("services"),
     // The same request the header makes, answered from Next's cache.
     urgentTitle && pageParams ? fetchNavbar(pageParams.locale) : undefined,

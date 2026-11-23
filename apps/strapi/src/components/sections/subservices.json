@@ -3,7 +3,7 @@
   "info": {
     "displayName": "Subservices",
     "icon": "bulletList",
-    "description": "What a direction covers: its sub-services as a list that opens onto a sentence about each and a link to its page."
+    "description": "What a direction covers, on its own page: a heading and a paragraph beside the procedures the Subdirection collection files under that direction."
   },
   "options": {},
   "attributes": {
@@ -12,11 +12,6 @@
     },
     "description": {
       "type": "text"
-    },
-    "items": {
-      "type": "component",
-      "component": "shared.service",
-      "repeatable": true
     }
   },
   "config": {}

@@ -3,7 +3,7 @@
   "info": {
     "displayName": "Services",
     "icon": "grid",
-    "description": ""
+    "description": "The directions of treatment as cards, read from the Direction collection, and a card for the reader who does not know where to start."
   },
   "options": {},
   "attributes": {
@@ -12,11 +12,6 @@
     },
     "subtitle": {
       "type": "text"
-    },
-    "services": {
-      "type": "component",
-      "component": "shared.service",
-      "repeatable": true
     },
     "callToAction": {
       "type": "component",

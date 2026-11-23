@@ -11,7 +11,11 @@ import {
 import { StrapiBasicImage } from "@/components/page-builder/components/utilities/StrapiBasicImage"
 import Typography from "@/components/typography"
 import { LEAD_FORM_ANCHOR } from "@/lib/analytics"
-import { directionOfPage, pageHref } from "@/lib/directions"
+import {
+  type DirectionEntry,
+  directionOfPage,
+  pageHref,
+} from "@/lib/directions"
 import { fetchDirections } from "@/lib/strapi-api/content/server"
 import type { PageBuilderComponentProps } from "@/types/general"
 
@@ -26,15 +30,18 @@ import type { PageBuilderComponentProps } from "@/types/general"
 export async function StrapiSubservices({
   component,
   page,
+  directions: given,
 }: PageBuilderComponentProps & {
   component: Data.Component<"sections.subservices">
+  /** The directions to draw, where they are not to be read from Strapi. */
+  directions?: readonly DirectionEntry[]
 }) {
   const { title, description } = component
 
   // The list is the procedures the collection files under the direction this
   // page is for; the block itself only holds the heading.
   const [directions, t] = await Promise.all([
-    fetchDirections(),
+    given ?? fetchDirections(),
     getTranslations("services"),
   ])
   const procedures =

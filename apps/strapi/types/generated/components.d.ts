@@ -302,7 +302,6 @@ export interface SectionsServices extends Struct.ComponentSchema {
   }
   attributes: {
     callToAction: Schema.Attribute.Component<"shared.service", false>
-    services: Schema.Attribute.Component<"shared.service", true>
     subtitle: Schema.Attribute.Text
     title: Schema.Attribute.String
   }
@@ -362,7 +361,6 @@ export interface SectionsServiceExplorer extends Struct.ComponentSchema {
   }
   attributes: {
     callToAction: Schema.Attribute.Component<"shared.service", false>
-    services: Schema.Attribute.Component<"shared.direction", true>
     title: Schema.Attribute.String
     urgentDescription: Schema.Attribute.Text
     urgentTitle: Schema.Attribute.String
@@ -391,7 +389,6 @@ export interface SectionsSubservices extends Struct.ComponentSchema {
   }
   attributes: {
     description: Schema.Attribute.Text
-    items: Schema.Attribute.Component<"shared.service", true>
     title: Schema.Attribute.String
   }
 }
@@ -407,22 +404,6 @@ export interface SectionsSymptoms extends Struct.ComponentSchema {
     callToAction: Schema.Attribute.Component<"shared.service", false>
     items: Schema.Attribute.Component<"shared.icon-card", true>
     title: Schema.Attribute.String
-  }
-}
-
-export interface SharedDirection extends Struct.ComponentSchema {
-  collectionName: "components_shared_directions"
-  info: {
-    description: "A row of the services index: a direction of treatment, its page and the sub-services under it."
-    displayName: "Direction"
-    icon: "arrowRight"
-  }
-  attributes: {
-    description: Schema.Attribute.Text
-    icon: Schema.Attribute.Component<"utilities.basic-image", false>
-    link: Schema.Attribute.Component<"utilities.link", false>
-    name: Schema.Attribute.String & Schema.Attribute.Required
-    tags: Schema.Attribute.Component<"utilities.link", true>
   }
 }
 
@@ -1074,7 +1055,6 @@ declare module "@strapi/strapi" {
       "shared.case-stage": SharedCaseStage
       "shared.contact-item": SharedContactItem
       "shared.credential": SharedCredential
-      "shared.direction": SharedDirection
       "shared.figure": SharedFigure
       "shared.icon-card": SharedIconCard
       "shared.image-with-config": SharedImageWithConfig

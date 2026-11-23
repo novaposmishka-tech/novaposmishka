@@ -48,20 +48,6 @@
           "sortable": true
         }
       },
-      "services": {
-        "edit": {
-          "label": "Послуги",
-          "description": "",
-          "placeholder": "",
-          "visible": true,
-          "editable": true
-        },
-        "list": {
-          "label": "Послуги",
-          "searchable": false,
-          "sortable": false
-        }
-      },
       "documentId": {
         "edit": {},
         "list": {
@@ -75,8 +61,7 @@
       "list": [
         "id",
         "title",
-        "subtitle",
-        "services"
+        "subtitle"
       ],
       "edit": [
         [
@@ -87,12 +72,6 @@
           {
             "name": "subtitle",
             "size": 6
-          }
-        ],
-        [
-          {
-            "name": "services",
-            "size": 12
           }
         ]
       ]

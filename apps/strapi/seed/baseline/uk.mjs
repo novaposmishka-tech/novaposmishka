@@ -19,7 +19,6 @@ import {
   anchor,
   BUTTON,
   BUTTON_ON_DARK,
-  BUTTON_QUIET,
   doctorRef,
   EMAIL,
   GOOGLE_RATING,
@@ -240,51 +239,7 @@ export const homepage = {
     {
       __component: "sections.services",
       title: "Ми допоможемо з будь-якою проблемою",
-      services: [
-        {
-          name: "Терапія",
-          description: "Основний скрижаль для здорових та красивих зубів",
-          icon: image("services-1", ""),
-          link: pageLink("Детальніше", "terapiia", BUTTON_QUIET),
-        },
-        {
-          name: "Ортопедія",
-          description: "Ваш шлях до здорових та гарних зубів",
-          icon: image("services-2", ""),
-          link: pageLink("Детальніше", "ortopediia", BUTTON_QUIET),
-        },
-        {
-          name: "Хірургія",
-          description: "Новий рівень турботи про Ваші зуби",
-          icon: image("services-3", ""),
-          link: pageLink("Детальніше", "khirurhiia", BUTTON_QUIET),
-        },
-        {
-          name: "Ортодонтія",
-          description: "Красива та здорова посмішка на кожен день",
-          icon: image("services-4", ""),
-          link: pageLink("Детальніше", "ortodontiia", BUTTON_QUIET),
-        },
-        {
-          name: "Пародонтологія",
-          description: "Ми знаємо, як подбати про здоров'я Ваших зубів та ясен",
-          icon: image("services-5", ""),
-          link: pageLink("Детальніше", "parodontolohiia", BUTTON_QUIET),
-        },
-        {
-          name: "Дитяча стоматологія",
-          description:
-            "Створюємо основу для здорових посмішок маленьких пацієнтів",
-          icon: image("services-6", ""),
-          link: pageLink("Детальніше", "dytiacha-stomatolohiia", BUTTON_QUIET),
-        },
-        {
-          name: "Гнатологія",
-          description: "Здоров'я скронево-нижньощелепного суглобу",
-          icon: image("services-7", ""),
-          link: pageLink("Детальніше", "hnatolohiia", BUTTON_QUIET),
-        },
-      ],
+      // The cards are the directions themselves (directions.mjs).
       callToAction: {
         name: "Не знаєте, з чого почати?",
         description:
