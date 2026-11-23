@@ -14,9 +14,16 @@
  *
  * It only ever creates what is missing — an existing document is left exactly
  * as the editors last saved it. Pass `--force` to replace them all instead,
- * or `--only=nashi-roboty,/` to replace just the pages named, by slug.
- * Neither reaches the directions or the works: those are seeded once, into a
- * database without them, and are the editors' from then on.
+ * or `--only=nashi-roboty,/` to write just the pages named, by slug: each is
+ * made if missing and replaced if there. With `--only` nothing else is
+ * touched — no other page is made, the doctors are looked up but not made,
+ * only those pages' images are uploaded, and the media links are left as
+ * they are — so it is safe to run against a database the editors work in,
+ * to add a page the baseline has and it lacks. Neither flag reaches the
+ * directions or the works: those are seeded once, into a database without
+ * them, and are the editors' from then on — though a page --only creates is
+ * linked to its direction or procedure if that has no page yet. Links to it
+ * from the navbar, the footer or other pages are not added.
  *
  * A page the seed creates is also hung under its parent. One that already
  * exists is not, even when it is replaced — an editor may have moved it, or
@@ -74,13 +81,11 @@ const linkParents = process.argv.includes("--link-parents")
  */
 const written = new Set()
 const created = new Set()
+const onlyArg = process.argv.find((arg) => arg.startsWith("--only="))
 const only = new Set(
-  process.argv
-    .find((arg) => arg.startsWith("--only="))
-    ?.slice("--only=".length)
-    .split(",")
-    .filter(Boolean)
+  onlyArg?.slice("--only=".length).split(",").filter(Boolean)
 )
+const onlyMode = onlyArg !== undefined
 
 process.env.STRAPI_TELEMETRY_DISABLED ??= "1"
 const { compileStrapi, createStrapi } = require("@strapi/strapi")
@@ -94,8 +99,37 @@ try {
 
   await ensureLocale()
 
+  const allPages = [
+    ...servicePages,
+    casesPage,
+    doctorsPage,
+    contactsPage,
+    feedbacksPage,
+    ...subservicePages,
+    servicesIndexPage,
+  ]
+
+  if (onlyMode) {
+    // An empty or mistyped --only must not fall back to seeding everything.
+    const known = new Set([...allPages, homepage].map((page) => page.slug))
+    const unknown = [...only].filter((slug) => !known.has(slug))
+
+    if (only.size === 0 || unknown.length > 0) {
+      throw new Error(
+        only.size === 0
+          ? "--only names no pages."
+          : `--only names pages the baseline does not have: ${unknown.join(", ")}`
+      )
+    }
+  }
   const media = await ensureMedia(strapi, path.join(appDir, "seed", "media"), {
     log: console.log,
+    // With --only, just the images the named pages show.
+    names: onlyMode
+      ? mediaNames(
+          [...allPages, homepage].filter((page) => only.has(page.slug))
+        )
+      : undefined,
   })
   const missingMedia = new Set()
   const resolveMedia = (data) => resolveMediaMarkers(data, media, missingMedia)
@@ -119,15 +153,13 @@ try {
   // seeded with the links that can be resolved so far, and one this run
   // wrote while some could not is written again once every page exists.
   const unlinked = []
-  for (const page of [
-    ...servicePages,
-    casesPage,
-    doctorsPage,
-    contactsPage,
-    feedbacksPage,
-    ...subservicePages,
-    servicesIndexPage,
-  ]) {
+  for (const page of allPages) {
+    if (onlyMode && !only.has(page.slug)) {
+      // Not this run's to write; only its documentId is needed, for links.
+      pageIds.set(page.slug, await existingPageId(page.fullPath))
+      continue
+    }
+
     const dropped = new Set()
     const data = resolvePageLinks(resolve(page), pageIds, dropped)
 
@@ -145,6 +177,10 @@ try {
   // Parents last: the index is the parent of pages seeded before it.
   const placed = []
   for (const page of [...servicePages, ...subservicePages]) {
+    if (onlyMode && !only.has(page.slug)) {
+      continue
+    }
+
     if (
       (created.has(page.fullPath) || linkParents) &&
       (await linkParent(page, pageIds))
@@ -154,14 +190,23 @@ try {
   }
   await revalidatePages(placed)
 
-  await seedSingleType("api::navbar.navbar", "Navbar", link(navbar))
-  await seedSingleType("api::footer.footer", "Footer", link(footer))
-  await seedPage(homepage.slug, link(homepage))
+  if (!onlyMode || only.has(homepage.slug)) {
+    await seedPage(homepage.slug, link(homepage))
+  }
 
-  // The directions lead to the pages seeded above, and the works are filed
-  // under them.
-  await seedDirections(directions, resolve, pageIds, missingPages)
-  await seedWorks(works, resolve)
+  if (!onlyMode) {
+    await seedSingleType("api::navbar.navbar", "Navbar", link(navbar))
+    await seedSingleType("api::footer.footer", "Footer", link(footer))
+
+    // The directions lead to the pages seeded above, and the works are filed
+    // under them.
+    await seedDirections(directions, resolve, pageIds, missingPages)
+    await seedWorks(works, resolve)
+  }
+
+  if (onlyMode) {
+    await linkNewPages(directions, pageIds, created)
+  }
 
   if (missingPages.size > 0) {
     console.warn(
@@ -181,7 +226,14 @@ try {
     )
   }
 
-  await pruneOrphanedMediaLinks(strapi, { log: console.log })
+  // Links whose owner is gone are cleared on every run: they are unreachable,
+  // and a new component must not inherit one. Thinning a field down to its
+  // newest link is the baseline's to do, not that of a run adding a page to a
+  // database the editors work in, where a field may rightly hold several.
+  await pruneOrphanedMediaLinks(strapi, {
+    log: console.log,
+    orphansOnly: onlyMode,
+  })
 
   console.log("[seed:content] Done.")
 } catch (error) {
@@ -282,12 +334,17 @@ async function seedDoctors(entries, resolve) {
       filters: { name: doctor.name },
     })
 
-    if (existing && !force) {
+    if (existing && (!force || onlyMode)) {
       ids.set(doctor.name, existing.documentId)
       console.log(
         `[seed:content] Doctor ${doctor.name}: exists, left untouched.`
       )
 
+      continue
+    }
+
+    if (onlyMode) {
+      skipDoctor(doctor)
       continue
     }
 
@@ -424,6 +481,98 @@ async function seedWorks(entries, resolve) {
   if (unfiled.length > 0) {
     console.warn(
       `[seed:content] ${unfiled.length} work(s) name a direction or procedure that does not exist: ${unfiled.join(", ")}`
+    )
+  }
+}
+
+/** A doctor --only does not make: an editor may have renamed or removed them. */
+function skipDoctor(doctor) {
+  console.log(
+    `[seed:content] Doctor ${doctor.name}: missing, not made with --only.`
+  )
+}
+
+/** The documentId of the page at `fullPath`, if there is one. */
+async function existingPageId(fullPath) {
+  const page = await strapi.documents("api::page.page").findFirst({
+    locale,
+    fields: ["documentId"],
+    filters: { fullPath },
+    status: "draft",
+  })
+
+  return page?.documentId
+}
+
+/** Every seed/media file name the given data refers to, by any marker. */
+function mediaNames(value, names = new Set()) {
+  if (Array.isArray(value)) {
+    for (const item of value) mediaNames(item, names)
+  } else if (value && typeof value === "object") {
+    for (const marker of ["__media", "__mediaId", "__mediaUrl"]) {
+      if (typeof value[marker] === "string") names.add(value[marker])
+    }
+    for (const item of Object.values(value)) mediaNames(item, names)
+  }
+
+  return names
+}
+
+/**
+ * Gives a direction or a procedure the page an --only run has just made for
+ * it, where it has none: the directions are seeded once, so a page added
+ * later would otherwise not be linked from the cards. Only pages this run
+ * created are considered, and an entry an editor has linked elsewhere, or
+ * renamed, is left alone. A procedure is found by its name under its
+ * direction's.
+ *
+ * Nothing else is relinked: the navbar, the footer and other pages keep the
+ * links they had. The sub-service pages need no more — the cards are how the
+ * site reaches them.
+ */
+async function linkNewPages(entries, pageIds, createdPaths) {
+  const fresh = new Set(
+    [...servicePages, ...subservicePages]
+      .filter((page) => createdPaths.has(page.fullPath))
+      .map((page) => page.slug)
+  )
+  const targets = entries.flatMap(({ name, pageSlug, subdirections }) => [
+    {
+      uid: "api::direction.direction",
+      label: name,
+      pageSlug,
+      filters: { name },
+    },
+    ...subdirections.map((procedure) => ({
+      uid: "api::subdirection.subdirection",
+      label: procedure.name,
+      pageSlug: procedure.pageSlug,
+      filters: { name: procedure.name, direction: { name } },
+    })),
+  ])
+  const linked = []
+
+  for (const { uid, label, pageSlug, filters } of targets) {
+    const page = fresh.has(pageSlug) ? pageIds.get(pageSlug) : undefined
+    const entry = page
+      ? await strapi.documents(uid).findFirst({
+          fields: ["name"],
+          filters,
+          populate: { page: { fields: ["documentId"] } },
+        })
+      : undefined
+
+    if (entry && !entry.page) {
+      await strapi
+        .documents(uid)
+        .update({ documentId: entry.documentId, data: { page } })
+      linked.push(label)
+    }
+  }
+
+  if (linked.length > 0) {
+    console.log(
+      `[seed:content] Linked to their new pages: ${linked.join(", ")}.`
     )
   }
 }

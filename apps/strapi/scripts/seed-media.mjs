@@ -31,7 +31,11 @@ const MIME_BY_EXTENSION = {
  * name without its extension) to the uploaded file's id and the path Strapi
  * serves it from.
  */
-export async function ensureMedia(strapi, mediaDir, { log = () => {} } = {}) {
+export async function ensureMedia(
+  strapi,
+  mediaDir,
+  { log = () => {}, names } = {}
+) {
   const byName = new Map()
 
   if (!fs.existsSync(mediaDir)) {
@@ -43,9 +47,17 @@ export async function ensureMedia(strapi, mediaDir, { log = () => {} } = {}) {
   const files = fs
     .readdirSync(mediaDir)
     .filter((file) => MIME_BY_EXTENSION[path.extname(file).toLowerCase()])
+    // Given a set of names, just those files: the rest are not this run's.
+    .filter(
+      (file) => !names || names.has(path.basename(file, path.extname(file)))
+    )
 
   if (files.length === 0) {
-    log("[seed:media] seed/media is empty; skipping.")
+    log(
+      names
+        ? "[seed:media] The pages asked for use no seed/media files; skipping."
+        : "[seed:media] seed/media is empty; skipping."
+    )
 
     return byName
   }
@@ -171,7 +183,10 @@ export function resolveMediaMarkers(value, mediaByName, missing = new Set()) {
  * single-valued field ended up with more than one link, the newest wins — that
  * is the one this seed just wrote.
  */
-export async function pruneOrphanedMediaLinks(strapi, { log = () => {} } = {}) {
+export async function pruneOrphanedMediaLinks(
+  strapi,
+  { log = () => {}, orphansOnly = false } = {}
+) {
   const knex = strapi.db.connection
   const rows = await knex("files_related_mph").distinct("related_type")
 
@@ -190,6 +205,14 @@ export async function pruneOrphanedMediaLinks(strapi, { log = () => {} } = {}) {
       .delete()
 
     orphaned += deleted
+  }
+
+  if (orphansOnly) {
+    if (orphaned > 0) {
+      log(`[seed:media] Pruned ${orphaned} orphaned media link(s).`)
+    }
+
+    return
   }
 
   // Keep the newest link per single-valued media field.
