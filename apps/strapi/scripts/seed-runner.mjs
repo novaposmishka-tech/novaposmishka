@@ -43,6 +43,8 @@ try {
     console.log("[seed] Auto-seed disabled.")
   }
 
+  await seedOnly(process.env.SEED_ONLY)
+
   await runStrapi(strapiArgs)
 } catch (error) {
   console.error(error instanceof Error ? error.message : error)
@@ -119,6 +121,34 @@ async function maybeSeed(mode) {
   }
 
   console.log("[seed] Restore skipped.")
+}
+
+/**
+ * Writes the baseline pages SEED_ONLY names (slugs, comma-separated) before
+ * Strapi starts — the way to add a page the baseline has to a live database.
+ * It runs here rather than beside the server because a second Strapi instance
+ * does not fit in a small container's memory. A failure is logged and the
+ * server starts all the same, so the site stays up.
+ *
+ * The pages named are replaced on every start while the variable is set, so
+ * it is meant to be set for one deploy and removed after.
+ */
+async function seedOnly(slugs) {
+  if (!slugs?.trim()) {
+    return
+  }
+
+  console.log(`[seed] SEED_ONLY=${slugs}; writing those pages.`)
+
+  try {
+    await runCommand(process.execPath, [
+      seedContentScript,
+      `--only=${slugs.trim()}`,
+    ])
+  } catch (error) {
+    console.error(error instanceof Error ? error.message : error)
+    console.error("[seed] SEED_ONLY failed; starting Strapi anyway.")
+  }
 }
 
 /**
