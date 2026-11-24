@@ -17,11 +17,8 @@ export function StrapiAdvantages({
 }: PageBuilderComponentProps & {
   component: Data.Component<"sections.advantages">
 }) {
-  // The set the block picks; what is typed into the block itself stands in
-  // for whatever the set leaves empty.
-  const { set } = component
-  const title = set?.title || component.title
-  const items = (set?.items?.length ? set : component).items
+  // The cards are the Advantage set the block picks.
+  const { title, items } = component.set ?? {}
 
   if (!items?.length) {
     return null
