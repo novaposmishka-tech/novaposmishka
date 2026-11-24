@@ -9,7 +9,7 @@ import type { PageBuilderComponentProps } from "@/types/general"
 
 /**
  * Why patients choose the clinic: a row of short cards, each a mark, a
- * promise and a line under it. A card fills with the brand's teal under the
+ * promise and a line under it, from the Advantage set the block picks. A card fills with the brand's teal under the
  * pointer; the mark keeps its pale disc, so it reads the same on both.
  */
 export function StrapiAdvantages({
@@ -17,7 +17,11 @@ export function StrapiAdvantages({
 }: PageBuilderComponentProps & {
   component: Data.Component<"sections.advantages">
 }) {
-  const { title, items } = component
+  // The set the block picks; what is typed into the block itself stands in
+  // for whatever the set leaves empty.
+  const { set } = component
+  const title = set?.title || component.title
+  const items = (set?.items?.length ? set : component).items
 
   if (!items?.length) {
     return null
