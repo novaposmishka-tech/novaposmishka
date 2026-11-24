@@ -38,37 +38,10 @@ const DIRECTION_NAME = Object.fromEntries(
   SERVICE_SLUGS.map(({ card, slug }) => [slug, card])
 )
 
-/**
- * The clinic's promises, in the words it chose for the caries page. On start-up
- * Strapi makes them the advantage set "Основний" and has every page's block
- * pick it (src/migrations/advantage-sets.ts).
- */
+/** Why patients choose the clinic: the block picks the set "Основний". */
 const ADVANTAGES = {
   __component: "sections.advantages",
   set: advantageSetRef("Основний"),
-  title: "Чому обирають «Нову Посмішку»",
-  items: [
-    {
-      icon: "heart",
-      title: "Комфортно",
-      text: "Підбираємо анестезію індивідуально та уважно ставимося до вас на кожному етапі",
-    },
-    {
-      icon: "monitor",
-      title: "Сучасне обладнання",
-      text: "КТ, сканер і мікроскоп допомагають лікувати точно. Застосовуємо їх, коли це справді потрібно",
-    },
-    {
-      icon: "document",
-      title: "Прозорі ціни",
-      text: "Вартість узгоджуємо до початку лікування. Зміни в плані погоджуємо з вами заздалегідь.",
-    },
-    {
-      icon: "award",
-      title: "Якість",
-      text: "Досвідчені лікарі та перевірені матеріали від надійних виробників.",
-    },
-  ],
 }
 
 /**

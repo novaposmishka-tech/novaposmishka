@@ -3,18 +3,10 @@
   "info": {
     "displayName": "Advantages",
     "icon": "crown",
-    "description": "Why patients choose the clinic: the advantage set chosen here, a heading and a row of short cards. The heading and cards typed into the block itself are only shown while no set is chosen."
+    "description": "Why patients choose the clinic: the advantage set chosen here, drawn as a heading and a row of short cards."
   },
   "options": {},
   "attributes": {
-    "title": {
-      "type": "string"
-    },
-    "items": {
-      "type": "component",
-      "component": "shared.icon-card",
-      "repeatable": true
-    },
     "set": {
       "type": "relation",
       "relation": "oneToOne",

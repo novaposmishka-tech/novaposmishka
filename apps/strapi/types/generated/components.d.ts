@@ -342,17 +342,15 @@ export interface SectionsWhyUs extends Struct.ComponentSchema {
 export interface SectionsAdvantages extends Struct.ComponentSchema {
   collectionName: "components_sections_advantages"
   info: {
-    description: "Why patients choose the clinic: a row of short cards."
+    description: "Why patients choose the clinic: the advantage set chosen here, drawn as a heading and a row of short cards."
     displayName: "Advantages"
     icon: "crown"
   }
   attributes: {
-    items: Schema.Attribute.Component<"shared.icon-card", true>
     set: Schema.Attribute.Relation<
       "oneToOne",
       "api::advantage-set.advantage-set"
     >
-    title: Schema.Attribute.String
   }
 }
 

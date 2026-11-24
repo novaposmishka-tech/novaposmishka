@@ -20,10 +20,10 @@
  * only those pages' images are uploaded, and the media links are left as
  * they are — so it is safe to run against a database the editors work in,
  * to add a page the baseline has and it lacks. Neither flag reaches the
- * directions or the works: those are seeded once, into a database without
- * them, and are the editors' from then on — though a page --only creates is
- * linked to its direction or procedure if that has no page yet. Links to it
- * from the navbar, the footer or other pages are not added.
+ * directions, the advantage sets or the works: those are seeded once, into a
+ * database without them, and are the editors' from then on — though a page
+ * --only creates is linked to its direction or procedure if that has no page
+ * yet. Links to it from the navbar, the footer or other pages are not added.
  *
  * A page the seed creates is also hung under its parent. One that already
  * exists is not, even when it is replaced — an editor may have moved it, or
@@ -56,6 +56,7 @@ import {
   pruneOrphanedMediaLinks,
   resolveMediaMarkers,
 } from "./seed-media.mjs"
+import { advantageSets } from "../seed/baseline/advantage-sets.mjs"
 import { casesPage, works } from "../seed/baseline/cases.mjs"
 import { contactsPage } from "../seed/baseline/contacts.mjs"
 import { directions } from "../seed/baseline/directions.mjs"
@@ -139,7 +140,12 @@ try {
   // at them by documentId, as the works do further down.
   const doctorIds = await seedDoctors(doctors, resolveMedia)
   const missingDoctors = new Set()
-  // The advantage sets the blocks pick, by name (advantageSetRef).
+  // The advantage sets the blocks pick, by name (advantageSetRef): made
+  // first, into a database without any, then looked up.
+  if (!onlyMode) {
+    await seedAdvantageSets(advantageSets)
+  }
+
   const setIds = new Map(
     (
       await strapi
@@ -592,6 +598,27 @@ async function linkNewPages(entries, pageIds, createdPaths) {
       `[seed:content] Linked to their new pages: ${linked.join(", ")}.`
     )
   }
+}
+
+/**
+ * Creates the advantage sets — only into a collection that has none: after
+ * that they are the editors', and a set renamed or removed is not brought
+ * back.
+ */
+async function seedAdvantageSets(entries) {
+  const uid = "api::advantage-set.advantage-set"
+
+  if ((await strapi.documents(uid).count({})) > 0) {
+    console.log("[seed:content] Advantage sets: exist, left untouched.")
+
+    return
+  }
+
+  for (const set of entries) {
+    await strapi.documents(uid).create({ data: set })
+  }
+
+  console.log(`[seed:content] Advantage sets: created ${entries.length}.`)
 }
 
 /**
