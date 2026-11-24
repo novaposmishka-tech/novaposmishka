@@ -139,8 +139,19 @@ try {
   // at them by documentId, as the works do further down.
   const doctorIds = await seedDoctors(doctors, resolveMedia)
   const missingDoctors = new Set()
+  // The advantage sets the blocks pick, by name (advantageSetRef).
+  const setIds = new Map(
+    (
+      await strapi
+        .documents("api::advantage-set.advantage-set")
+        .findMany({ fields: ["name"] })
+    ).map((set) => [set.name, set.documentId])
+  )
   const resolve = (data) =>
-    resolveDoctorRefs(resolveMedia(data), doctorIds, missingDoctors)
+    resolveSetRefs(
+      resolveDoctorRefs(resolveMedia(data), doctorIds, missingDoctors),
+      setIds
+    )
 
   // Pages first: the navbar and the service cards link to them by slug, and
   // those links need documentIds that only exist once the pages do.
@@ -581,6 +592,32 @@ async function linkNewPages(entries, pageIds, createdPaths) {
       `[seed:content] Linked to their new pages: ${linked.join(", ")}.`
     )
   }
+}
+
+/**
+ * Turns every `advantageSetRef()` marker into the set's documentId, and drops
+ * it where there is no such set yet.
+ */
+function resolveSetRefs(value, setIds) {
+  if (Array.isArray(value)) {
+    return value.map((item) => resolveSetRefs(item, setIds))
+  }
+
+  if (value === null || typeof value !== "object") {
+    return value
+  }
+
+  const out = {}
+  for (const [key, item] of Object.entries(value)) {
+    if (item && typeof item === "object" && "__advantageSet" in item) {
+      const documentId = setIds.get(item.__advantageSet)
+      if (documentId) out[key] = documentId
+    } else {
+      out[key] = resolveSetRefs(item, setIds)
+    }
+  }
+
+  return out
 }
 
 /**

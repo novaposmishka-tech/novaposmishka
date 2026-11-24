@@ -45,6 +45,12 @@ const REVALIDATE_COLLECTIONS: RevalidateCollectionConfig[] = [
     mode: "tag-revalidate",
     tags: [strapiCacheTag("api::page.page")],
   },
+  // An advantage set is shown on every page whose block picks it.
+  {
+    uid: "api::advantage-set.advantage-set",
+    mode: "tag-revalidate",
+    tags: [strapiCacheTag("api::page.page")],
+  },
   // The works are read alongside the pages that show them, under their tag.
   {
     uid: "api::work.work",

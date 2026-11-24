@@ -38,6 +38,15 @@ const populateOverrides = [
     },
   },
   {
+    // The set is a relation, populated one level deep by default — without
+    // the cards it holds.
+    componentUid: "sections.advantages",
+    mergeWithGeneratedPopulate: true,
+    overridePopulate: {
+      set: { fields: ["name", "title"], populate: { items: true } },
+    },
+  },
+  {
     componentUid: "shared.case-stage",
     mergeWithGeneratedPopulate: true,
     overridePopulate: { doctor: doctorSignature },

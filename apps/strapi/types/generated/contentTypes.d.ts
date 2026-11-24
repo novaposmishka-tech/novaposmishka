@@ -430,6 +430,40 @@ export interface AdminUser extends Struct.CollectionTypeSchema {
   }
 }
 
+export interface ApiAdvantageSetAdvantageSet
+  extends Struct.CollectionTypeSchema {
+  collectionName: "advantage_sets"
+  info: {
+    description: "A set of the clinic's promises — a heading and a row of short cards — that an Advantages block on a page picks, so the same set is written once and shown wherever it is chosen."
+    displayName: "Advantage set"
+    pluralName: "advantage-sets"
+    singularName: "advantage-set"
+  }
+  options: {
+    draftAndPublish: false
+  }
+  attributes: {
+    createdAt: Schema.Attribute.DateTime
+    createdBy: Schema.Attribute.Relation<"oneToOne", "admin::user"> &
+      Schema.Attribute.Private
+    items: Schema.Attribute.Component<"shared.icon-card", true>
+    locale: Schema.Attribute.String & Schema.Attribute.Private
+    localizations: Schema.Attribute.Relation<
+      "oneToMany",
+      "api::advantage-set.advantage-set"
+    > &
+      Schema.Attribute.Private
+    name: Schema.Attribute.String &
+      Schema.Attribute.Required &
+      Schema.Attribute.Unique
+    publishedAt: Schema.Attribute.DateTime
+    title: Schema.Attribute.String
+    updatedAt: Schema.Attribute.DateTime
+    updatedBy: Schema.Attribute.Relation<"oneToOne", "admin::user"> &
+      Schema.Attribute.Private
+  }
+}
+
 export interface ApiDirectionDirection extends Struct.CollectionTypeSchema {
   collectionName: "directions"
   info: {
@@ -1429,6 +1463,7 @@ declare module "@strapi/strapi" {
       "admin::transfer-token": AdminTransferToken
       "admin::transfer-token-permission": AdminTransferTokenPermission
       "admin::user": AdminUser
+      "api::advantage-set.advantage-set": ApiAdvantageSetAdvantageSet
       "api::direction.direction": ApiDirectionDirection
       "api::doctor.doctor": ApiDoctorDoctor
       "api::footer.footer": ApiFooterFooter

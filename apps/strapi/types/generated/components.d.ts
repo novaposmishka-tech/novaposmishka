@@ -348,6 +348,10 @@ export interface SectionsAdvantages extends Struct.ComponentSchema {
   }
   attributes: {
     items: Schema.Attribute.Component<"shared.icon-card", true>
+    set: Schema.Attribute.Relation<
+      "oneToOne",
+      "api::advantage-set.advantage-set"
+    >
     title: Schema.Attribute.String
   }
 }

@@ -64,6 +64,13 @@ export const anchor = (label, href, decorations = null) => ({
 export const doctorRef = (name) => ({ __doctor: name.normalize("NFC") })
 
 /**
+ * An Advantage set, by name, for a block to pick. The seeder turns it into the
+ * set's documentId, or drops it where the set is not there yet — on a fresh
+ * database Strapi makes the set at its next start and links the block then.
+ */
+export const advantageSetRef = (name) => ({ __advantageSet: name })
+
+/**
  * A link to another seeded page, by slug. The seeder swaps the marker for the
  * page's documentId once every page exists — a relation, so the link follows
  * the page if its path ever changes.

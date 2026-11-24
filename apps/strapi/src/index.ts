@@ -6,6 +6,7 @@ import "./instrumentation"
 import { registerAutoRevalidateMiddleware } from "./documentMiddlewares/revalidate"
 import { registerAdminUserSubscriber } from "./lifeCycles/adminUser"
 import { registerUserSubscriber } from "./lifeCycles/user"
+import { fillAdvantageSets } from "./migrations/advantage-sets"
 import { replaceDirectionLists } from "./migrations/direction-lists"
 import { logger } from "./utils/logging"
 
@@ -37,6 +38,9 @@ export default {
     // One-off: the direction pages' hand-typed lists become the Subservices
     // block. A no-op once done.
     await replaceDirectionLists(strapi)
+
+    // One-off: the "why choose us" cards become one set every block picks.
+    await fillAdvantageSets(strapi)
 
     logger.info("Strapi bootstrap completed")
   },

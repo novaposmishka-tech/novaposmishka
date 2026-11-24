@@ -3,7 +3,7 @@
   "info": {
     "displayName": "Advantages",
     "icon": "crown",
-    "description": "Why patients choose the clinic: a row of short cards."
+    "description": "Why patients choose the clinic: the advantage set chosen here, a heading and a row of short cards. The heading and cards typed into the block itself are only shown while no set is chosen."
   },
   "options": {},
   "attributes": {
@@ -14,6 +14,11 @@
       "type": "component",
       "component": "shared.icon-card",
       "repeatable": true
+    },
+    "set": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "api::advantage-set.advantage-set"
     }
   },
   "config": {}
