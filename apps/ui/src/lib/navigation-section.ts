@@ -32,3 +32,32 @@ export function isWithinSection(
     Boolean(item.categoryItems?.some((link) => isWithinLink(link, pathname)))
   )
 }
+
+/**
+ * Of the links in one list, the one the reader is most precisely on: the
+ * longest path that holds the current page. "Терапія" beats a row for the
+ * index of all services on /poslugy/terapiia and the pages under it, so only
+ * one row of a dropdown is lit.
+ */
+export function currentLink<T extends Link>(
+  links: readonly T[],
+  pathname: string
+): T | undefined {
+  let best: T | undefined
+  let bestLength = -1
+
+  for (const link of links) {
+    const fullPath = pagePath(link)
+
+    if (
+      fullPath != null &&
+      isWithinLink(link, pathname) &&
+      fullPath.length > bestLength
+    ) {
+      best = link
+      bestLength = fullPath.length
+    }
+  }
+
+  return best
+}

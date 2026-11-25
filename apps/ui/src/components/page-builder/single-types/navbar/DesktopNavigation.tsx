@@ -14,7 +14,11 @@ import {
   navigationMenuTriggerStyle,
 } from "@/components/ui/navigation-menu"
 import { usePathname } from "@/lib/navigation"
-import { isWithinLink, isWithinSection } from "@/lib/navigation-section"
+import {
+  currentLink,
+  isWithinLink,
+  isWithinSection,
+} from "@/lib/navigation-section"
 import { cn } from "@/lib/styles"
 
 interface DesktopNavigationProps {
@@ -104,9 +108,10 @@ function Menu({
 }) {
   const pathname = usePathname()
 
-  // A link counts as current on its own page and on the pages under it, and
-  // a dropdown on its index and anywhere inside what it lists — which is how
-  // "Послуги" lights up on /poslugy, on a direction and on a sub-service.
+  // In the bar, a link counts as current on its own page and on the pages
+  // under it, and a dropdown on its index and anywhere inside what it lists —
+  // which is how "Послуги" lights up on /poslugy, on a direction and on a
+  // sub-service. Inside a dropdown only one row is lit (currentRow below).
   const isCurrent = (link?: Data.Component<"utilities.link"> | null) =>
     isWithinLink(link, pathname)
 
@@ -118,6 +123,16 @@ function Menu({
       <NavigationMenuList className="flex items-center gap-7 xl:gap-12.5">
         {navbarItems.map((item) => {
           const hasSubItems = !!item.categoryItems?.length
+          // One row of a dropdown is lit: the one the page is most precisely
+          // under, the heading row included, so a row for the index of them
+          // all goes dark on a direction an editor has listed beside it, and
+          // an index listed both as the heading and as a row is lit once.
+          const head =
+            item.link && strapiLinkResolves(item.link) ? item.link : undefined
+          const currentRow = currentLink(
+            [...(head ? [head] : []), ...(item.categoryItems ?? [])],
+            pathname
+          )
 
           return (
             <NavigationMenuItem key={item.id} className="relative">
@@ -165,14 +180,15 @@ function Menu({
                     {/* Where the dropdown has an index of its own, a row
                         that leads to it heads the list — lit only on the
                         index itself, not on everything under it. */}
-                    {item.link && strapiLinkResolves(item.link) && (
+                    {head && (
                       <li className="list-none">
                         <StrapiLink
-                          component={item.link}
+                          component={head}
                           className={cn(
                             DROPDOWN_ROW,
-                            item.link.type === "page" &&
-                              item.link.page?.fullPath === pathname &&
+                            head === currentRow &&
+                              head.type === "page" &&
+                              head.page?.fullPath === pathname &&
                               ACTIVE
                           )}
                         />
@@ -184,7 +200,7 @@ function Menu({
                           component={subItem}
                           className={cn(
                             DROPDOWN_ROW,
-                            isCurrent(subItem) && ACTIVE
+                            subItem === currentRow && ACTIVE
                           )}
                         />
                       </li>
