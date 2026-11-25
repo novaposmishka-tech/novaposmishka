@@ -5,9 +5,12 @@ import { ArrowRight } from "lucide-react"
 
 import { Container } from "@/components/elementary/Container"
 import { ScrollRow } from "@/components/elementary/ScrollRow"
+import { JsonLd } from "@/components/page-builder/components/seo-utilities/JsonLd"
 import { StrapiBasicImage } from "@/components/page-builder/components/utilities/StrapiBasicImage"
 import StrapiLink from "@/components/page-builder/components/utilities/StrapiLink"
 import Typography from "@/components/typography"
+import { getEnvVar } from "@/lib/env-vars"
+import { doctorsSchema } from "@/lib/metadata/doctors"
 import { cn } from "@/lib/styles"
 import type { PageBuilderComponentProps } from "@/types/general"
 
@@ -53,7 +56,12 @@ export function StrapiDoctors({
   // every doctor carries their training, so its presence no longer tells the
   // two apart.
   if (display === "team") {
-    return <DoctorsPage title={title} doctors={doctors} />
+    return (
+      <>
+        <DoctorsStructuredData doctors={doctors} />
+        <DoctorsPage title={title} doctors={doctors} />
+      </>
+    )
   }
 
   return (
@@ -239,6 +247,40 @@ function DoctorsPage({
       </Container>
     </section>
   )
+}
+
+/**
+ * A photograph's address as anyone may fetch it, or nothing: media kept on
+ * the Strapi server itself is served from an address a search engine cannot
+ * reach, and that private address must not be published either.
+ */
+function publicMediaUrl(url: string | null | undefined) {
+  return url?.startsWith("https://") ? url : undefined
+}
+
+/**
+ * The team, described for search engines, on the page that lists all of them
+ * with their training.
+ */
+function DoctorsStructuredData({ doctors }: { readonly doctors: Doctors }) {
+  const baseUrl = getEnvVar("APP_PUBLIC_URL")
+  const schema =
+    baseUrl &&
+    doctorsSchema(
+      doctors.map((doctor) => ({
+        name: doctor.name,
+        specialty: doctor.specialty,
+        photoUrl: publicMediaUrl(doctor.photo?.media?.url),
+        credentials: doctor.credentials ?? [],
+      })),
+      baseUrl
+    )
+
+  if (!schema) {
+    return null
+  }
+
+  return <JsonLd schema={schema} />
 }
 
 StrapiDoctors.displayName = "StrapiDoctors"
