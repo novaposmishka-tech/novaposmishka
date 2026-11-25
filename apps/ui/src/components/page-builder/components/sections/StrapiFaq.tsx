@@ -8,6 +8,7 @@ import { getTranslations } from "next-intl/server"
 import { Container } from "@/components/elementary/Container"
 import { DiscAccordionTrigger } from "@/components/elementary/DiscAccordionTrigger"
 import { LeadFormLink } from "@/components/elementary/LeadFormLink"
+import { JsonLd } from "@/components/page-builder/components/seo-utilities/JsonLd"
 import Typography from "@/components/typography"
 import {
   Accordion,
@@ -17,6 +18,7 @@ import {
 } from "@/components/ui/accordion"
 import { LEAD_FORM_ANCHOR } from "@/lib/analytics"
 import { clinicHours, clinicPhones, contactHref } from "@/lib/contacts"
+import { faqSchema } from "@/lib/metadata/faq"
 import { fetchFooter, fetchNavbar } from "@/lib/strapi-api/content/server"
 import type { PageBuilderComponentProps } from "@/types/general"
 
@@ -32,13 +34,18 @@ export function StrapiFaq({
   // of what it covers: every entry is a card of its own, and the heading
   // column offers two ways to ask something the list does not answer.
   if (layout === "cards") {
+    const schema = faqSchema(accordions ?? [])
+
     return (
-      <FaqCards
-        title={title}
-        subTitle={subTitle}
-        accordions={accordions ?? []}
-        locale={pageParams?.locale}
-      />
+      <>
+        {schema && <JsonLd schema={schema} />}
+        <FaqCards
+          title={title}
+          subTitle={subTitle}
+          accordions={accordions ?? []}
+          locale={pageParams?.locale}
+        />
+      </>
     )
   }
 
