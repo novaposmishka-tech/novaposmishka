@@ -87,6 +87,7 @@ export function StrapiLink({
           <StrapiBasicImage
             component={leftIcon}
             fill
+            sizes="32px"
             className="size-full object-contain"
           />
         ) : undefined
@@ -96,6 +97,7 @@ export function StrapiLink({
           <StrapiBasicImage
             component={rightIcon}
             fill
+            sizes="32px"
             className="size-full object-contain"
           />
         ) : undefined

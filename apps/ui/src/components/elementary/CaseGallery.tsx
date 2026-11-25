@@ -309,6 +309,10 @@ function Signature({
           // The portraits are half-body and begin at the hairline, so a
           // centred square crop takes the top of the head off. Ranged
           // to the top it comes off the chest instead.
+          // Sized for the largest disc (70px), so a big photograph is not
+          // fetched whole for it.
+          width={70}
+          height={70}
           className="bg-brand-on-dark size-12.5 shrink-0 rounded-full object-cover object-top lg:size-17.5"
         />
       )}

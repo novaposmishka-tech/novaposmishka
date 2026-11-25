@@ -27,6 +27,7 @@ export function StrapiFeaturesList({
             <StrapiBasicImage
               component={mainImage.image}
               fill
+              sizes="(min-width: 64rem) 50vw, 100vw"
               className="object-cover object-top-left"
             />
           </div>
@@ -56,6 +57,7 @@ export function StrapiFeaturesList({
             <StrapiBasicImage
               component={mainImage.image}
               fill
+              sizes="(min-width: 64rem) 50vw, 100vw"
               className="object-cover object-top-left"
             />
           </div>

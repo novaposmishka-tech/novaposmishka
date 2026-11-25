@@ -61,6 +61,8 @@ export function ReviewCard({
               component={review.photo}
               // Ranged to the top, as the doctors' portraits are: a square
               // one is unaffected, and a tall one keeps its face.
+              width={50}
+              height={50}
               className="size-12.5 shrink-0 rounded-full object-cover object-top"
             />
           ) : (
