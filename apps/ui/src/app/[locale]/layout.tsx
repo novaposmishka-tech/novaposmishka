@@ -8,6 +8,7 @@ import { setRequestLocale } from "next-intl/server"
 import { ErrorBoundary } from "@/components/elementary/ErrorBoundary"
 import StrapiPreviewListener from "@/components/elementary/StrapiPreviewListener"
 import { TailwindIndicator } from "@/components/elementary/TailwindIndicator"
+import ClinicStructuredData from "@/components/page-builder/components/seo-utilities/ClinicStructuredData"
 import StrapiFooter from "@/components/page-builder/single-types/footer/StrapiFooter"
 import StrapiNavbar from "@/components/page-builder/single-types/navbar/StrapiNavbar"
 import { ClientProviders } from "@/components/providers/ClientProviders"
@@ -138,6 +139,12 @@ export default async function RootLayout({
 
               <ErrorBoundary hideFallback>
                 <StrapiFooter locale={locale} />
+              </ErrorBoundary>
+
+              {/* Its own boundary: a fault in the markup must not take the
+                  footer with it. */}
+              <ErrorBoundary hideFallback>
+                <ClinicStructuredData locale={locale} />
               </ErrorBoundary>
             </div>
           </ClientProviders>

@@ -397,14 +397,31 @@ for (const path of PATHS) {
               ].join("\n")
             ).toBeTruthy()
 
+            // A graph carries its @context once and a @type on each node
+            // instead of its own.
+            const nodes = Array.isArray(s["@graph"])
+              ? (s["@graph"] as Record<string, unknown>[])
+              : [s]
+
             expect(
-              s["@type"],
+              nodes.length,
               [
-                "JSON-LD missing @type",
+                "JSON-LD graph is empty",
                 `URL: ${page.url()}`,
                 `Script index: ${i}, schema index: ${j}`,
               ].join("\n")
-            ).toBeTruthy()
+            ).toBeGreaterThan(0)
+
+            for (const [k, node] of nodes.entries()) {
+              expect(
+                node["@type"],
+                [
+                  "JSON-LD missing @type",
+                  `URL: ${page.url()}`,
+                  `Script index: ${i}, schema index: ${j}, node index: ${k}`,
+                ].join("\n")
+              ).toBeTruthy()
+            }
           }
         }
       })
