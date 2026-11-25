@@ -15,6 +15,11 @@ interface Props {
   readonly locale: Locale
   /** True where the trail sits on a photograph and has to be read in white. */
   readonly onPhoto?: boolean
+  /**
+   * False on a second drawing of the same trail (one for the phone, one for
+   * the desktop), so search engines are given it once.
+   */
+  readonly withStructuredData?: boolean
 }
 
 /**
@@ -31,6 +36,7 @@ export async function Breadcrumbs({
   className,
   locale,
   onPhoto,
+  withStructuredData = true,
 }: Props) {
   const [first, ...rest] = withRoot(breadcrumbs)
 
@@ -51,9 +57,11 @@ export async function Breadcrumbs({
         className
       )}
     >
-      <StrapiStructuredData
-        structuredData={generateBreadcrumbListSchema([root, ...rest], locale)}
-      />
+      {withStructuredData && (
+        <StrapiStructuredData
+          structuredData={generateBreadcrumbListSchema([root, ...rest], locale)}
+        />
+      )}
 
       <AppLink
         href={root.fullPath}

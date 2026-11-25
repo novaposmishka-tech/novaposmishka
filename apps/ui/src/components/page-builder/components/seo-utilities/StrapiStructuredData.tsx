@@ -1,5 +1,7 @@
 import type { Data } from "@repo/strapi-types"
 
+import { jsonLdText } from "@/lib/metadata/json-ld"
+
 export function StrapiStructuredData({
   structuredData,
 }: {
@@ -11,10 +13,10 @@ export function StrapiStructuredData({
     // - if id is specified, the content will not be updated on client navigation
     // - if no id is specified, a new script tag will be added with the new content, which schema validators are not able to parse.
     // `script` tag is properly re-rendered and replaced with the new content
+    // A page can carry several of these (its own and its breadcrumbs), so the
+    // tag has no id: two would share one, which a document may not.
     return (
-      <script id="articleStructuredData" type="application/ld+json">
-        {JSON.stringify(structuredData)}
-      </script>
+      <script type="application/ld+json">{jsonLdText(structuredData)}</script>
     )
   }
 

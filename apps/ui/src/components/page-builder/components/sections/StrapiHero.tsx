@@ -89,7 +89,11 @@ export function StrapiHero({
           of the frame, and the one inside is for the desktop. */}
       {hasTrail && pageParams && isBarePhoto && (
         <Container className="lg:hidden">
-          <Breadcrumbs breadcrumbs={breadcrumbs} locale={pageParams.locale} />
+          <Breadcrumbs
+            breadcrumbs={breadcrumbs}
+            locale={pageParams.locale}
+            withStructuredData={false}
+          />
         </Container>
       )}
 
