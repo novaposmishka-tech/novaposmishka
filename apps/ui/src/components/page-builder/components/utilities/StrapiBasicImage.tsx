@@ -3,9 +3,13 @@ import Image from "next/image"
 
 import { ImgproxyImage } from "@/components/elementary/images/ImgproxyImage"
 import { isImgproxyEnabled } from "@/lib/imgproxy"
+import { isOptimizedMedia } from "@/lib/optimized-media.mjs"
 import { formatStrapiMediaUrl } from "@/lib/strapi-helpers"
 import type { StrapiImageMedia } from "@/types/api"
 import type { ImageExtendedProps } from "@/types/next"
+
+/** The largest file (in KB, as Strapi counts) sent to the optimizer. */
+const MAX_OPTIMIZED_KB = 8 * 1024
 
 export interface BasicImageProps extends Omit<
   ImageExtendedProps,
@@ -33,9 +37,11 @@ export interface BasicImageProps extends Omit<
  *
  * Configuration:
  * - with `IMGPROXY_URL`, raster Strapi images use the imgproxy loader.
- * - without `IMGPROXY_URL`, images load directly from Strapi with
- *   `unoptimized` to avoid Next.js processing CMS image traffic.
- * - SVGs bypass imgproxy because they do not need raster resizing.
+ * - without `IMGPROXY_URL`, raster images from the media bucket
+ *   (`OPTIMIZED_MEDIA_HOSTS`) go through Next's optimizer, which serves them
+ *   as AVIF/WebP at the width the screen needs.
+ * - anything else (local Strapi uploads, other hosts) loads as it is.
+ * - SVGs are never processed because they do not need raster resizing.
  */
 export function StrapiBasicImage({
   component,
@@ -76,7 +82,12 @@ export function StrapiBasicImage({
       : media?.height)
 
   const useFill = fill || !width || !height
-  const isSvg = media?.ext === ".svg"
+  // The optimizer refuses SVG, so one from a fallbackSrc or without `ext`
+  // must be caught too.
+  const isSvg =
+    media?.ext === ".svg" ||
+    media?.mime === "image/svg+xml" ||
+    /\.svg$/i.test(src.split(/[?#]/, 1)[0] ?? "")
   const useImgproxy = isImgproxyEnabled() && !isSvg
 
   const imageProps = {
@@ -100,5 +111,33 @@ export function StrapiBasicImage({
     return <ImgproxyImage {...imageProps} />
   }
 
-  return <Image {...imageProps} alt={alt} unoptimized />
+  // Strapi gives the size in KB. A file past this is left as it is: the
+  // optimizer refuses very large sources, and the image would break.
+  const isHuge = (media?.size ?? 0) > MAX_OPTIMIZED_KB
+
+  if (isSvg || isHuge || !isOptimizedMedia(src)) {
+    return <Image {...imageProps} alt={alt} unoptimized />
+  }
+
+  return (
+    <Image {...imageProps} src={versioned(src, media?.updatedAt)} alt={alt} />
+  )
+}
+
+/**
+ * The URL with the time the file last changed added to it. Strapi's "Replace
+ * media" keeps the file's URL, and the optimizer keeps what it made for a URL
+ * for a month (minimumCacheTTL), so without this a replaced photo would show
+ * the old picture that long. The bucket ignores the query.
+ */
+function versioned(src: string, updatedAt: string | undefined) {
+  if (!updatedAt) {
+    return src
+  }
+
+  const url = new URL(src)
+  // As Strapi wrote it: any change of it is a new URL, whatever its format.
+  url.searchParams.set("v", updatedAt)
+
+  return url.href
 }

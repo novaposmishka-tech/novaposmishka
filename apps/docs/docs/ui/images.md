@@ -4,7 +4,7 @@ sidebar_position: 10
 
 # Image Optimization
 
-The starter intentionally **disables** Next.js's global image optimizer. Self-hosted Next can spike CPU/memory under CMS image traffic, so each image source uses its own pipeline.
+Each image source uses its own pipeline. Next.js's optimizer processes CMS images only from the media bucket listed in `apps/ui/src/lib/optimized-media.mjs` (`OPTIMIZED_MEDIA_HOSTS`): the site runs on Vercel, where the optimizer is Vercel's. Self-hosted Next can spike CPU/memory under CMS image traffic, so on a self-hosted deploy prefer imgproxy.
 
 ## Pipelines
 
@@ -13,7 +13,8 @@ Base path: `apps/ui/src/components`
 | Source              | Component              | Optimizer                | When               |
 | ------------------- | ---------------------- | ------------------------ | ------------------ |
 | Strapi media        | `StrapiBasicImage.tsx` | imgproxy                 | `IMGPROXY_URL` set |
-| Strapi media        | `StrapiBasicImage`     | none — direct Strapi URL | local/dev fallback |
+| Strapi media        | `StrapiBasicImage`     | Next.js (AVIF/WebP)      | media bucket host  |
+| Strapi media        | `StrapiBasicImage`     | none — direct Strapi URL | local/other hosts  |
 | Local/static assets | `StaticImage.tsx`      | Next.js Sharp            | always             |
 
 :::warning Do not disable images globally
@@ -26,7 +27,7 @@ Use for any Strapi images. It:
 
 - Resolves Strapi media data → normalized URL via `formatStrapiMediaUrl()`
 - Calculates missing width/height from the media aspect ratio
-- Bypasses imgproxy for SVGs
+- Never processes SVGs (by `ext`, `mime` or a `.svg` URL)
 
 `formatStrapiMediaUrl()` returns absolute storage URLs as-is. Relative local Strapi paths such as `/uploads/...` are resolved with `STRAPI_URL` on the server and the local Strapi origin on the client during development.
 
@@ -36,7 +37,11 @@ When `IMGPROXY_URL` is set, it delegates to `ImgproxyImage`. Next.js generates r
 https://imgproxy.example.com/rs:fit:768:0/plain/{source}@webp
 ```
 
-When `IMGPROXY_URL` is **not** set, it renders `<Image unoptimized />` and the browser fetches the original from Strapi. This is the default local-dev path.
+When `IMGPROXY_URL` is **not** set, an image from a host in `OPTIMIZED_MEDIA_HOSTS` goes through Next's optimizer, which serves it as AVIF or WebP at the width the screen needs. Any other image (local `/uploads`, other hosts) renders as `<Image unoptimized />` and the browser fetches the original.
+
+Optimized URLs carry the file's `updatedAt` as `?v=`: Strapi's "Replace media" keeps the URL, and the optimizer keeps its result for a URL as long as `minimumCacheTTL` (31 days), so without it a replaced photo would show the old picture.
+
+`remotePatterns` lists only `OPTIMIZED_MEDIA_HOSTS`: any host listed there can be run through the optimizer by anyone, at the hosting quota's cost. A remote URL passed to `next/image` without `unoptimized` must come from that list, or Next throws "hostname is not configured". If the media bucket moves, change the host in `optimized-media.mjs`.
 
 ```tsx
 <StrapiBasicImage component={component.image} className="h-auto w-full" />
@@ -89,7 +94,7 @@ Common values:
 
 ## `StaticImage`
 
-Use for UI-owned images — static imports or files in `public/`. These can use Next's Sharp optimizer because traffic volume is controlled.
+Use for UI-owned images — static imports or files in `public/`. These can use Next's Sharp optimizer because traffic volume is controlled. Do not pass remote URLs: `remotePatterns` allows only the media bucket, so use `StrapiBasicImage` for CMS media.
 
 ```tsx
 import campusPhoto from "@/assets/campus.jpg"
@@ -123,9 +128,10 @@ IMGPROXY_URL=http://localhost:8080
 
 Image settings in `apps/ui/next.config.mjs`:
 
-| Setting           | Value                          | Purpose                                                |
-| ----------------- | ------------------------------ | ------------------------------------------------------ |
-| `unoptimized`     | unset globally                 | each component controls its own pipeline               |
-| `deviceSizes`     | `[420, 768, 1024, 1440, 2048]` | responsive widths for imgproxy + `StaticImage`         |
-| `formats`         | `["image/webp"]`               | output format for Next.js Sharp (mainly `StaticImage`) |
-| `minimumCacheTTL` | 1 h                            | cache duration for Next Sharp images                   |
+| Setting           | Value                          | Purpose                                             |
+| ----------------- | ------------------------------ | --------------------------------------------------- |
+| `unoptimized`     | unset globally                 | each component controls its own pipeline            |
+| `deviceSizes`     | `[420, 768, 1024, 1440, 2048]` | responsive widths for every pipeline                |
+| `formats`         | `["image/avif", "image/webp"]` | Next optimizer output; the browser's `Accept` picks |
+| `minimumCacheTTL` | 31 days                        | each remake costs quota; `?v=updatedAt` busts it    |
+| `remotePatterns`  | `OPTIMIZED_MEDIA_HOSTS`        | only the media bucket may be optimized              |

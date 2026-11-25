@@ -2,6 +2,7 @@ import { withSentryConfig } from "@sentry/nextjs"
 import plugin from "next-intl/plugin"
 
 import { env } from "./src/env.mjs"
+import { OPTIMIZED_MEDIA_HOSTS } from "./src/lib/optimized-media.mjs"
 
 const withNextIntl = plugin("./src/lib/i18n.ts")
 
@@ -31,34 +32,34 @@ const nextConfig = {
     // Image ownership in this app:
     // - Strapi media + IMGPROXY_URL: StrapiBasicImage uses imgproxy URLs.
     //   Next generates responsive srcsets, but imgproxy does the processing.
-    // - Strapi media without IMGPROXY_URL: StrapiBasicImage is unoptimized and
-    //   loads the Strapi URL directly, useful for local development.
-    // - StaticImage: uses Next's Sharp optimizer for local/static assets only.
+    // - Strapi media from the media bucket without IMGPROXY_URL: Next's
+    //   optimizer (on Vercel, Vercel's) serves it as AVIF/WebP per width.
+    // - Other Strapi media (local uploads, other hosts): loaded as it is.
+    // - StaticImage: uses Next's Sharp optimizer for local/static assets.
     // unoptimized: true,
 
-    // Used only by Next's built-in optimizer, mainly StaticImage.
-    // imgproxy/external services choose their own output format.
-    formats: ["image/webp"],
+    // AVIF first, WebP for browsers without it: the browser's Accept header
+    // picks one, so each image is made in the format browsers ask for.
+    formats: ["image/avif", "image/webp"],
 
-    // Cache TTL for images processed by Next's built-in optimizer.
-    minimumCacheTTL: 60 * 60, // 1 hour
+    // How long a processed image is kept before it is made again; every remake
+    // counts against the host's quota. Strapi's "Replace media" keeps a file's
+    // URL, so StrapiBasicImage adds the file's updatedAt to it (`?v=`): a
+    // replaced photo is a new URL and shows at once.
+    minimumCacheTTL: 60 * 60 * 24 * 31, // 31 days
 
     // Widths for generated srcsets. With imgproxy these become external
-    // imgproxy URLs; with StaticImage they are processed by Next.
+    // imgproxy URLs; otherwise Next's optimizer makes them.
     // Covers: mobile 1x (420), tablet (768), desktop 1x (1024),
     // large desktop / mobile 2x (1440), desktop 2x retina (2048).
     deviceSizes: [420, 768, 1024, 1440, 2048],
 
-    remotePatterns: [
-      {
-        protocol: "https",
-        hostname: "*",
-      },
-      {
-        protocol: "http",
-        hostname: "127.0.0.1",
-      },
-    ],
+    // Only the media bucket: any host listed here can be run through the
+    // optimizer by anyone, at our quota's cost.
+    remotePatterns: OPTIMIZED_MEDIA_HOSTS.map((hostname) => ({
+      protocol: "https",
+      hostname,
+    })),
   },
 
   // Static, build-time-constant security headers applied to every route.
