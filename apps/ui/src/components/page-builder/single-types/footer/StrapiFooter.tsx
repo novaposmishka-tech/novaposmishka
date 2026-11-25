@@ -12,7 +12,7 @@ import { Reveal } from "@/components/elementary/Reveal"
 import { operatorIcon } from "@/components/icons/operators"
 import StrapiLeadForm from "@/components/page-builder/components/forms/StrapiLeadForm"
 import StrapiImageWithLink from "@/components/page-builder/components/utilities/StrapiImageWithLink"
-import StrapiLink from "@/components/page-builder/components/utilities/StrapiLink"
+import { FooterLinks } from "@/components/page-builder/single-types/footer/FooterLinks"
 import Typography from "@/components/typography"
 import { contactHref } from "@/lib/contacts"
 import { fetchFooter } from "@/lib/strapi-api/content/server"
@@ -122,17 +122,7 @@ export function StrapiFooter({ locale }: { readonly locale: Locale }) {
                   stays in the schema for anyone who wants grouped columns, but
                   this design has none, so nothing renders them. */}
                 {footer.links && footer.links.length > 0 && (
-                  <nav className="grid w-full grid-flow-col grid-cols-2 grid-rows-3 gap-x-20 gap-y-4 lg:flex lg:justify-between lg:gap-0">
-                    {footer.links.map((link) => (
-                      <StrapiLink
-                        key={link.id}
-                        component={link}
-                        // Regular, as the frame sets them; the link variant
-                        // would make them medium.
-                        className="text-brand-ink hover:text-brand-teal h-auto w-fit p-0 text-base/5.5 font-normal"
-                      />
-                    ))}
-                  </nav>
+                  <FooterLinks links={footer.links} />
                 )}
 
                 <hr className={RULE} />
