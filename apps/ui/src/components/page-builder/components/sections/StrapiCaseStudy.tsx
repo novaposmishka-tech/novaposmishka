@@ -304,8 +304,15 @@ function CaseStage({
                 className="bg-brand-on-dark size-12.5 shrink-0 rounded-full object-cover object-top"
               />
             )}
-            <span className="text-brand-body text-sm/5 lg:text-lg/6.25">
-              {signature.name}
+            <span className="flex flex-col gap-0.5">
+              <span className="text-brand-body text-sm/5 lg:text-lg/6.25">
+                {signature.name}
+              </span>
+              {signature.specialty && (
+                <span className="text-brand-body text-xs/4 lg:text-sm/5">
+                  {signature.specialty}
+                </span>
+              )}
             </span>
           </div>
         )}

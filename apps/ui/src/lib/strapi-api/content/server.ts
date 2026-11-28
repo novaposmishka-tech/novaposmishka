@@ -255,7 +255,7 @@ export async function fetchWorks() {
           before: IMAGE,
           after: IMAGE,
           doctor: {
-            fields: ["name", "shortName"],
+            fields: ["name", "shortName", "specialty"],
             populate: { photo: IMAGE, avatar: IMAGE },
           },
           direction: { fields: ["name"] },

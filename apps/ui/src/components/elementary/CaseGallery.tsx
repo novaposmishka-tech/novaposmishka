@@ -316,13 +316,25 @@ function Signature({
           className="bg-brand-on-dark size-12.5 shrink-0 rounded-full object-cover object-top lg:size-17.5"
         />
       )}
-      <span
-        className={cn(
-          "text-sm/5 lg:text-xl/7",
-          isGrid ? "text-brand-ink" : "text-brand-inverted"
+      <span className="flex flex-col gap-0.5">
+        <span
+          className={cn(
+            "text-sm/5 lg:text-xl/7",
+            isGrid ? "text-brand-ink" : "text-brand-inverted"
+          )}
+        >
+          {signature.name}
+        </span>
+        {signature.specialty && (
+          <span
+            className={cn(
+              "text-xs/4 lg:text-base/5.5",
+              isGrid ? "text-brand-body" : "text-brand-inverted/70"
+            )}
+          >
+            {signature.specialty}
+          </span>
         )}
-      >
-        {signature.name}
       </span>
     </div>
   )
