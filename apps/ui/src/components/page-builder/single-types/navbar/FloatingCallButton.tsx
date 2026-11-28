@@ -4,11 +4,9 @@ import { MessageCircleMore, PhoneIcon } from "lucide-react"
 import { useTranslations } from "next-intl"
 import { useSyncExternalStore } from "react"
 
+import { LEAD_FORM_ANCHOR } from "@/lib/analytics"
 import { contactHref } from "@/lib/contacts"
 import { isClinicOpen } from "@/lib/working-hours"
-
-/** The form at the foot of every page, in the footer. */
-const LEAD_FORM_ANCHOR = "#lead-form-section"
 
 /**
  * A round button that stays in the bottom-right corner of every page.

@@ -6,6 +6,7 @@ import Script from "next/script"
 import { setRequestLocale } from "next-intl/server"
 
 import { ErrorBoundary } from "@/components/elementary/ErrorBoundary"
+import { LeadFormLinks } from "@/components/elementary/LeadFormLinks"
 import StrapiPreviewListener from "@/components/elementary/StrapiPreviewListener"
 import { TailwindIndicator } from "@/components/elementary/TailwindIndicator"
 import ClinicStructuredData from "@/components/page-builder/components/seo-utilities/ClinicStructuredData"
@@ -136,6 +137,8 @@ export default async function RootLayout({
               <TailwindIndicator />
 
               <Toaster />
+
+              <LeadFormLinks />
 
               <ErrorBoundary hideFallback>
                 <StrapiFooter locale={locale} />
