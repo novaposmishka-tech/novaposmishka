@@ -25,7 +25,13 @@ export function LeadFormBlock({
   description,
   gdpr,
   phones,
+  anchorId,
 }: Readonly<{
+  /**
+   * Put on the heading and fields rather than the whole card, so a "Записатися"
+   * link lands where the fields can be seen; see the scroll margins below.
+   */
+  anchorId?: string
   title?: string | null
   description?: string | null
   gdpr?: { href?: string; label?: string; newTab?: boolean }
@@ -41,8 +47,29 @@ export function LeadFormBlock({
           The frame's 601 column holds from 1360 up; narrower than that the
           tooth beside it kept its full 519 and the copy was squeezed to 185
           at 1024, so until then the copy keeps at least 460 — the heading's
-          two lines — and the tooth takes what is left. */}
-      <div className="flex w-full flex-col gap-7.5 text-center lg:min-w-115 lg:flex-1 lg:gap-10 lg:text-left min-[85rem]:max-w-150 min-[85rem]:flex-none">
+          two lines — and the tooth takes what is left.
+
+          The link to the form lands on this column, not on the card. Landing
+          on the card put the send button below the fold on a 664px phone and
+          on a 657px laptop: the phone spent 150px on the tooth above the
+          heading, and the page's 72px scroll-padding adds to every scroll
+          margin. So the margins here are counted net of those 72px:
+          - phone: the heading 80px from the top, 20 under the 60 header;
+          - desktop: the card's top edge just under the 106 header, as
+            before, where the screen is tall enough for the whole card;
+          - a shorter desktop: as much lower as the screen allows, so the
+            ~506px column ends 16px above the bottom (72 + 506 + 16 = 37.125
+            rem), the card's own top padding going under the header — but
+            never the heading: at least 40, which with the 72 puts it 6px
+            under the 106 header.
+
+          Focusable from script alone (tabIndex -1), so a booking link can
+          move the keyboard here; see LeadFormLinks. */}
+      <div
+        id={anchorId}
+        tabIndex={anchorId ? -1 : undefined}
+        className="flex w-full scroll-mt-2 flex-col gap-7.5 text-center outline-none lg:min-w-115 lg:flex-1 lg:scroll-mt-[clamp(2.5rem,100vh_-_37.125rem,5.25rem)] lg:gap-10 lg:text-left min-[85rem]:max-w-150 min-[85rem]:flex-none"
+      >
         {status !== "idle" && (
           <LeadFormOutcome
             status={status}
